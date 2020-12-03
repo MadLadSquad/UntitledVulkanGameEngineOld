@@ -32,6 +32,6 @@
 *.app
 Engine/.idea/
 Engine/cmake-build-debug/
-Engine/ThirdParty/OpenAL/
+# Engine/ThirdParty/OpenAL/
 Engine/ThirdParty/VulkanSDK/
 .idea/

@@ -13,3 +13,6 @@
 [submodule "Engine/ThirdParty/imgui"]
 	path = Engine/ThirdParty/imgui
 	url = https://github.com/MadLadSquad/imgui.git
+[submodule "Engine/ThirdParty/OpenAL"]
+	path = Engine/ThirdParty/OpenAL
+	url = https://github.com/MadLadSquad/openal-soft.git
