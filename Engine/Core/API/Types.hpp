@@ -5,10 +5,10 @@
 #include <unordered_map>
 #include <thread>
 #include "../../ThirdParty/EnTT/entt.hpp"
-#include "../../ThirdParty/glm/glm/glm.hpp"
-#include "../../ThirdParty/glm/glm/mat4x4.hpp"
-#include "../../ThirdParty/glm/glm/gtc/matrix_transform.hpp"
-#include "../../ThirdParty/glm/glm/gtc/type_ptr.hpp"
+#include "../../ThirdParty/GLM/glm/glm.hpp"
+#include "../../ThirdParty/GLM/glm/mat4x4.hpp"
+#include "../../ThirdParty/GLM/glm/gtc/matrix_transform.hpp"
+#include "../../ThirdParty/GLM/glm/gtc/type_ptr.hpp"
 
 using String = const char*;
 using FString = std::string;

@@ -3,9 +3,9 @@
 #include <iostream>
 #define LOG(x, ...) printf(x, __VA_ARGS__);
 #ifdef GAME
-	#define UVK_API __declspec(dllimport)
+	#define UVK_API
 #else
-	#define UVK_API __declspec(dllexport)
+	#define UVK_API
 #endif
 #define Legacy
 
