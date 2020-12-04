@@ -12,14 +12,6 @@ find_package(OpenGL REQUIRED)
 include_directories(imgui ThirdParty/imgui/)
 include_directories(glew ThirdParty/GLEW/include)
 
-if(WIN32)
-    message(Configuring dependencies!)
-    execute_process(COMMAND cd ThirdParty/GLEW/auto/ mingw32-make)
-else()
-    message(Configuring dependencies!)
-    execute_process(COMMAND cd ThirdParty/GLEW/auto/ make)
-endif()
-
 # Adds all engine source code
 add_library(UVKEngine SHARED Audio/AudioCore.hpp Audio/AudioRenderer/AudioRenderer.cpp
 Audio/AudioRenderer/AudioRenderer.h Core/Core.hpp
