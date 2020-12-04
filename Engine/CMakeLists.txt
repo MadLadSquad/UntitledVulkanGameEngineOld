@@ -1,13 +1,24 @@
 cmake_minimum_required(VERSION 3.17)
-project(UVKngine)
+project(UVKEngine)
 
 # Engine is set to C++17 because of the EnTT header file
 set(CMAKE_CXX_STANDARD 17)
 
+# Engine needs OpenGL for obvious reasons
 find_package(OpenGL REQUIRED)
 
+# Include directories are needed because each library uses configs for different libs and they
+# check the lib by checking for include
 include_directories(imgui ThirdParty/imgui/)
-#target_link_libraries(UVKEngine ThirdParty/GLEW/build/)
+include_directories(glew ThirdParty/GLEW/include)
+
+if(WIN32)
+    message(Configuring dependencies!)
+    execute_process(COMMAND cd ThirdParty/GLEW/auto/ mingw32-make)
+else()
+    message(Configuring dependencies!)
+    execute_process(COMMAND cd ThirdParty/GLEW/auto/ make)
+endif()
 
 # Adds all engine source code
 add_library(UVKEngine SHARED Audio/AudioCore.hpp Audio/AudioRenderer/AudioRenderer.cpp
