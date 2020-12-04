@@ -1,21 +1,16 @@
 cmake_minimum_required(VERSION 3.17)
-project(Engine)
+project(UVKngine)
 
 # Engine is set to C++17 because of the EnTT header file
 set(CMAKE_CXX_STANDARD 17)
 
+find_package(OpenGL REQUIRED)
 
-# Adds GLFW
-add_subdirectory(ThirdParty/GLFW)
-include_directories(ThirdParty/GLFW/include)
-target_link_libraries(glfw ${GLFW_LIBRARIES})
-
-# Adds OpenAL
-#target_link_libraries()
-
+include_directories(imgui ThirdParty/imgui/)
+#target_link_libraries(UVKEngine ThirdParty/GLEW/build/)
 
 # Adds all engine source code
-add_library(Engine SHARED Audio/AudioCore.hpp Audio/AudioRenderer/AudioRenderer.cpp
+add_library(UVKEngine SHARED Audio/AudioCore.hpp Audio/AudioRenderer/AudioRenderer.cpp
 Audio/AudioRenderer/AudioRenderer.h Core/Core.hpp
 Core/API/Defines.h Core/API/Entity.hpp Core/API/Types.hpp Core/GameFramework/Components.hpp Core/GameFramework/NameComponent.h
 Core/GameFramework/Actors/Actor.cpp Core/GameFramework/Actors/Actor.hpp Core/GameFramework/Actors/Pawn.cpp Core/GameFramework/Actors/Pawn.hpp

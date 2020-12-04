@@ -1,14 +1,4 @@
-#include <iostream> 
-#include <vector>
-#include <array>
-#include <map>
-#include <unordered_map>
-#include <thread>
-#include "../../ThirdParty/EnTT/entt.hpp"
-#include "../../ThirdParty/GLM/glm/glm.hpp"
-#include "../../ThirdParty/GLM/glm/mat4x4.hpp"
-#include "../../ThirdParty/GLM/glm/gtc/matrix_transform.hpp"
-#include "../../ThirdParty/GLM/glm/gtc/type_ptr.hpp"
+#include "Defines.h"
 
 using String = const char*;
 using FString = std::string;

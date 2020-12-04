@@ -4,8 +4,8 @@
 #include <fstream>
 #include "../../Core/API/Types.hpp"
 #include "../../Core/API/Defines.h"
-#include "../../ThirdParty/OpenAL/include/al.h"
-#include "../../ThirdParty/OpenAL/include/alc.h"
+#include "../../ThirdParty/OpenAL/include/AL/al.h"
+#include "../../ThirdParty/OpenAL/include/AL/alc.h"
 
 namespace UVK
 {

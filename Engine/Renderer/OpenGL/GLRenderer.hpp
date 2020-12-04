@@ -4,8 +4,8 @@
 #ifdef Legacy
 #include "../../ThirdParty/GLEW/include/GL/glew.h"
 #include "../../ThirdParty/GLFW/include/GLFW/glfw3.h"
-#include "../../ThirdParty/glm/glm/glm.hpp"
-#include "../../ThirdParty/glm/glm/gtc/type_ptr.hpp"
+#include "../../ThirdParty/GLM/glm/glm.hpp"
+#include "../../ThirdParty/GLM/glm/gtc/type_ptr.hpp"
 #include "GLCamera.hpp"
 #include "GLWindow.h"
 #include <vector>

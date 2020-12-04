@@ -1,8 +1,8 @@
 #include "GLRenderer.hpp"
 #ifndef Production
 #include "../../ThirdParty/imgui/imgui.h"
-#include "../../ThirdParty/imgui/Platforms/imgui_impl_opengl3.h"
-#include "../../ThirdParty/imgui/Platforms/imgui_impl_glfw.h"
+#include "../../ThirdParty/imgui/backends/imgui_impl_opengl3.h"
+#include "../../ThirdParty/imgui/backends/imgui_impl_glfw.h"
 #include "../../Editor/DetailsPanel.hpp"
 #include "../../Editor/Statistics.hpp"
 #endif

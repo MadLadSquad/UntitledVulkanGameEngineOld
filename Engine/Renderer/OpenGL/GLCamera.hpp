@@ -5,8 +5,8 @@
 #ifdef Legacy
 #include "../../ThirdParty/GLEW/include/GL/glew.h"
 #include "../../ThirdParty/GLFW/include/GLFW/glfw3.h"
-#include "../../ThirdParty/glm/glm/glm.hpp"
-#include "../../ThirdParty/glm/glm/gtc/matrix_transform.hpp"
+#include "../../ThirdParty/GLM/glm/glm.hpp"
+#include "../../ThirdParty/GLM/glm/gtc/matrix_transform.hpp"
 
 namespace UVK
 {
