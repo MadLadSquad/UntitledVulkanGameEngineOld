@@ -6,11 +6,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 # Engine needs OpenGL for obvious reasons
 find_package(OpenGL REQUIRED)
-
-# Include directories are needed because each library uses configs for different libs and they
-# check the lib by checking for include
-include_directories(imgui ThirdParty/imgui/)
-include_directories(glew ThirdParty/GLEW/include)
+find_package(OpenAL REQUIRED)
 
 # Adds all engine source code
 add_library(UVKEngine SHARED Audio/AudioCore.hpp Audio/AudioRenderer/AudioRenderer.cpp
@@ -27,3 +23,18 @@ Editor/DetailsPanel.hpp Editor/FileManager.hpp Editor/Statistics.hpp Renderer/Re
 Renderer/OpenGL/GLCamera.hpp Renderer/OpenGL/GLMesh.cpp Renderer/OpenGL/GLMesh.hpp Renderer/OpenGL/GLRenderer.cpp Renderer/OpenGL/GLRenderer.hpp
 Renderer/OpenGL/GLShader.cpp Renderer/OpenGL/GLShader.hpp Renderer/OpenGL/GLCamera.hpp Renderer/OpenGL/GLCamera.cpp
 Renderer/Vulkan/VkRenderer.cpp Renderer/Vulkan/VkRenderer.hpp)
+
+# Include directories are needed because each library uses configs for different libs and they
+# check the lib by checking for include
+include_directories(imgui ThirdParty/imgui/)
+include_directories(glew ThirdParty/GLEW/include)
+
+link_directories(glew ThirdParty/GLEW/lib)
+link_directories(glfw ThirdParty/GLFW)
+link_directories(openal ThirdParty/OpenAL)
+
+add_subdirectory(ThirdParty/GLFW)
+add_subdirectory(ThirdParty/OpenAL)
+
+target_link_directories(${PROJECT_NAME} PUBLIC ThirdParty/GLFW PUBLIC ThirdParty/OpenAL PUBLIC ThirdParty/GLEW/lib)
+target_link_libraries(${PROJECT_NAME} glfw openal GLEW)

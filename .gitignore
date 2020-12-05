@@ -1,6 +1,10 @@
 # Prerequisites
 *.d
-
+Content/
+Source/
+uvproj.yaml
+main.cpp
+CMakeLists.txt
 # Compiled Object files
 *.slo
 *.lo

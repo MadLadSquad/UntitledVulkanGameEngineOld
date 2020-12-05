@@ -1,0 +1,13 @@
+/snap/clion/137/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/madman10k/Desktop/UntitledVulkanGameEngine
+CMake Error at CMakeLists.txt:6 (target_link_directories):
+  Cannot specify link directories for target "Game" which is not built by
+  this project.
+
+
+CMake Error at CMakeLists.txt:7 (target_link_libraries):
+  Cannot specify link libraries for target "Game" which is not built by this
+  project.
+
+
+-- Configuring incomplete, errors occurred!
+See also "/home/madman10k/Desktop/UntitledVulkanGameEngine/cmake-build-debug/CMakeFiles/CMakeOutput.log".
