@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 # Engine needs OpenGL for obvious reasons
 find_package(OpenGL REQUIRED)
-find_package(OpenAL REQUIRED)
+#find_package(OpenAL REQUIRED)
 
 # Adds all engine source code
 add_library(UVKEngine SHARED Audio/AudioCore.hpp Audio/AudioRenderer/AudioRenderer.cpp
@@ -29,10 +29,12 @@ Renderer/Vulkan/VkRenderer.cpp Renderer/Vulkan/VkRenderer.hpp)
 include_directories(imgui ThirdParty/imgui/)
 include_directories(glew ThirdParty/GLEW/include)
 
+# Those specific link directories are needed because the CMake goes kaboom
 link_directories(glew ThirdParty/GLEW/lib)
 link_directories(glfw ThirdParty/GLFW)
 link_directories(openal ThirdParty/OpenAL)
 
+# Subdirectories
 add_subdirectory(ThirdParty/GLFW)
 add_subdirectory(ThirdParty/OpenAL)
 
