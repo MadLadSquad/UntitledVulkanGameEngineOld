@@ -5,6 +5,7 @@ Source/
 uvproj.yaml
 main.cpp
 CMakeLists.txt
+cmake-build-debug/
 # Compiled Object files
 *.slo
 *.lo
