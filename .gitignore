@@ -6,6 +6,7 @@ uvproj.yaml
 main.cpp
 CMakeLists.txt
 cmake-build-debug/
+cmake-build-release/
 # Compiled Object files
 *.slo
 *.lo
@@ -37,6 +38,7 @@ cmake-build-debug/
 *.app
 Engine/.idea/
 Engine/cmake-build-debug/
+Engine/cmake-build-release/
 # Engine/ThirdParty/OpenAL/
 Engine/ThirdParty/VulkanSDK/
 .idea/
