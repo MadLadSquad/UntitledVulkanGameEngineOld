@@ -1,1 +1,0 @@
-/usr/bin/cc -O2 -g -D_DEBUG -rdynamic CMakeFiles/openal-info.dir/utils/openal-info.c.o -o openal-info  -Wl,-rpath,/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/Engine/ThirdParty/openal: -pthread libopenal.so.1.21.0 
