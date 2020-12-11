@@ -1,44 +1,7 @@
-# Prerequisites
-*.d
-Content/
-Source/
-uvproj.yaml
-main.cpp
-CMakeLists.txt
 cmake-build-debug/
-cmake-build-release/
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app
-Engine/.idea/
-Engine/cmake-build-debug/
-Engine/cmake-build-release/
-# Engine/ThirdParty/OpenAL/
-Engine/ThirdParty/VulkanSDK/
 .idea/
+cmake-build-release/
+.vs/
+.vs-code/
+Source/Game.hpp
+main.cpp

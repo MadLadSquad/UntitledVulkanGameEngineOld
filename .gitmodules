@@ -1,0 +1,21 @@
+[submodule "Engine/ThirdParty/yaml"]
+	path = Engine/ThirdParty/yaml
+	url = https://github.com/MadLadSquad/yaml-cpp.git
+[submodule "Engine/ThirdParty/glm"]
+	path = Engine/ThirdParty/glm
+	url = https://github.com/MadLadSquad/glm.git
+[submodule "Engine/ThirdParty/imgui"]
+	path = Engine/ThirdParty/imgui
+	url = https://github.com/MadLadSquad/imgui.git
+[submodule "Engine/ThirdParty/openal"]
+	path = Engine/ThirdParty/openal
+	url = https://github.com/MadLadSquad/openal-soft.git
+[submodule "Engine/ThirdParty/glfw"]
+	path = Engine/ThirdParty/glfw
+	url = https://github.com/MadLadSquad/glfw.git
+[submodule "Engine/ThirdParty/glew"]
+	path = Engine/ThirdParty/glew
+	url = https://github.com/MadLadSquad/glew.git
+[submodule "UVKBuildTool"]
+	path = UVKBuildTool
+	url = https://github.com/MadLadSquad/UVKBuildTool.git
