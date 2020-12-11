@@ -1,3 +1,4 @@
+# THE CMAKE VERSION IS CURRENTLY PRIVATE AND IN DEVELOPMENT LOOK AT https://github.com/MadLadSquad/UntitledVulkanGameEngine-2.0 FOR THE LATEST STABLE VERSION
 # UntitledVulkanGameEngine
 Untitled Vulkan Game Engine: Full Release Date August 31 2021
 > Current version: 1.3.0 | Current unstable version: 1.3.0
