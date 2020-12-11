@@ -1,1 +1,0 @@
-/usr/bin/cc -O2 -g -D_DEBUG -rdynamic CMakeFiles/altonegen.dir/examples/altonegen.c.o -o altonegen  -Wl,-rpath,/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/Engine/ThirdParty/openal: -pthread -lm libex-common.a libopenal.so.1.21.0 -lrt 
