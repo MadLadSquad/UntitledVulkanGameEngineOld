@@ -22,7 +22,7 @@ namespace UVK
             ref.Location = location;
             ref.Name = name;
             ref.Type = type;
-
+/*
             switch (type)
             {
                 case 0:
@@ -38,8 +38,9 @@ namespace UVK
                 default:
 
             }
-
+*/
             return ref;
+
         }
 
 

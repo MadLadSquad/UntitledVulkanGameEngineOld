@@ -1,0 +1,1 @@
+/usr/bin/c++ -O2 -g -D_DEBUG -rdynamic CMakeFiles/alconvolve.dir/examples/alconvolve.c.o -o alconvolve  -Wl,-rpath,/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/Engine/ThirdParty/openal -pthread libcommon.a /usr/lib/libsndfile.so libex-common.a libopenal.so.1.21.0 -lrt 

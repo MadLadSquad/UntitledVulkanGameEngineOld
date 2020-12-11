@@ -1,0 +1,1 @@
+/usr/bin/c++ -O2 -g -D_DEBUG -rdynamic CMakeFiles/alffplay.dir/examples/alffplay.cpp.o -o alffplay  -Wl,-rpath,/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/Engine/ThirdParty/openal: -pthread -lSDL2 -lpthread -lavformat -lavcodec -lavutil -lswscale -lswresample -lz libex-common.a libopenal.so.1.21.0 -lrt 

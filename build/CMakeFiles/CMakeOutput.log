@@ -1,0 +1,937 @@
+The system is: Linux - 5.9.6_p1-debian-sources - x86_64
+Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+Compiler: /usr/bin/cc 
+Build flags: 
+Id flags:  
+
+The output was:
+0
+
+
+Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "a.out"
+
+The C compiler identification is GNU, found in "/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/3.19.1/CompilerIdC/a.out"
+
+Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+Compiler: /usr/bin/c++ 
+Build flags: 
+Id flags:  
+
+The output was:
+0
+
+
+Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "a.out"
+
+The CXX compiler identification is GNU, found in "/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/3.19.1/CompilerIdCXX/a.out"
+
+Detecting C compiler ABI info compiled with the following output:
+Change Dir: /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake cmTC_a16ae/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_a16ae.dir/build.make CMakeFiles/cmTC_a16ae.dir/build
+gmake[1]: Entering directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_a16ae.dir/CMakeCCompilerABI.c.o
+/usr/bin/cc   -v -o CMakeFiles/cmTC_a16ae.dir/CMakeCCompilerABI.c.o -c /usr/share/cmake/Modules/CMakeCCompilerABI.c
+Using built-in specs.
+COLLECT_GCC=/usr/bin/cc
+Target: x86_64-pc-linux-gnu
+Configured with: ../gcc-9.2.0/configure --disable-libssp --disable-multilib --enable-version-specific-runtime-libs --prefix=/usr --bindir=/usr/x86_64-pc-linux-gnu/gcc-bin/9.2.0 --includedir=/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include --datadir=/usr/share/gcc-data/x86_64-pc-linux-gnu/9.2.0 --mandir=/usr/share/gcc-data/x86_64-pc-linux-gnu/9.2.0/man --infodir=/usr/share/gcc-data/x86_64-pc-linux-gnu/9.2.0/info --with-gxx-include-dir=/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include/g++-v9.2.0 --enable-clocale=gnu --host=x86_64-pc-linux-gnu --enable-obsolete --disable-werror --enable-libmudflap --enable-secureplt --enable-lto --with-system-zlib --without-cloog --with-bugurl=http://bugs.funtoo.org --with-pkgversion='Funtoo 9.2.0' --enable-stage1-checking=assert,runtime,misc,tree,gc,rtlflag --enable-checking=assert,runtime --enable-languages=c,c++,fortran --disable-libgcj --enable-threads=posix --enable-__cxa_atexit --enable-libstdcxx-time --enable-libgomp --enable-bootstrap --enable-shared --build=x86_64-pc-linux-gnu --disable-libsanitizer --enable-default-pie --enable-default-ssp --disable-libstdcxx-pch --disable-vtable-verify --disable-libvtv --with-python-dir=/share/gcc-data/x86_64-pc-linux-gnu/9.2.0/python --enable-nls --with-included-gettext --with-arch=znver2
+Thread model: posix
+gcc version 9.2.0 (Funtoo 9.2.0) 
+COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_a16ae.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=znver2'
+ /usr/libexec/gcc/x86_64-pc-linux-gnu/9.2.0/cc1 -quiet -v /usr/share/cmake/Modules/CMakeCCompilerABI.c -quiet -dumpbase CMakeCCompilerABI.c -mtune=generic -march=znver2 -auxbase-strip CMakeFiles/cmTC_a16ae.dir/CMakeCCompilerABI.c.o -version -o /tmp/ccAn7zTM.s
+GNU C17 (Funtoo 9.2.0) version 9.2.0 (x86_64-pc-linux-gnu)
+	compiled by GNU C version 9.2.0, GMP version 6.1.2, MPFR version 4.0.2, MPC version 1.1.0, isl version none
+GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+ignoring nonexistent directory "/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../x86_64-pc-linux-gnu/include"
+#include "..." search starts here:
+#include <...> search starts here:
+ /usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include
+ /usr/local/include
+ /usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include-fixed
+ /usr/include
+End of search list.
+GNU C17 (Funtoo 9.2.0) version 9.2.0 (x86_64-pc-linux-gnu)
+	compiled by GNU C version 9.2.0, GMP version 6.1.2, MPFR version 4.0.2, MPC version 1.1.0, isl version none
+GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+Compiler executable checksum: e1c588f300c9a50a735191155f25ba4f
+COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_a16ae.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=znver2'
+ /usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../x86_64-pc-linux-gnu/bin/as -v --64 -o CMakeFiles/cmTC_a16ae.dir/CMakeCCompilerABI.c.o /tmp/ccAn7zTM.s
+GNU assembler version 2.32.0 (x86_64-pc-linux-gnu) using BFD version (Gentoo 2.32 p2) 2.32.0
+COMPILER_PATH=/usr/libexec/gcc/x86_64-pc-linux-gnu/9.2.0/:/usr/libexec/gcc/x86_64-pc-linux-gnu/9.2.0/:/usr/libexec/gcc/x86_64-pc-linux-gnu/:/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/:/usr/lib/gcc/x86_64-pc-linux-gnu/:/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../x86_64-pc-linux-gnu/bin/
+LIBRARY_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/:/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../x86_64-pc-linux-gnu/lib/:/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../:/lib/:/usr/lib/
+COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_a16ae.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=znver2'
+Linking C executable cmTC_a16ae
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_a16ae.dir/link.txt --verbose=1
+/usr/bin/cc  -v CMakeFiles/cmTC_a16ae.dir/CMakeCCompilerABI.c.o -o cmTC_a16ae 
+Using built-in specs.
+COLLECT_GCC=/usr/bin/cc
+COLLECT_LTO_WRAPPER=/usr/libexec/gcc/x86_64-pc-linux-gnu/9.2.0/lto-wrapper
+Target: x86_64-pc-linux-gnu
+Configured with: ../gcc-9.2.0/configure --disable-libssp --disable-multilib --enable-version-specific-runtime-libs --prefix=/usr --bindir=/usr/x86_64-pc-linux-gnu/gcc-bin/9.2.0 --includedir=/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include --datadir=/usr/share/gcc-data/x86_64-pc-linux-gnu/9.2.0 --mandir=/usr/share/gcc-data/x86_64-pc-linux-gnu/9.2.0/man --infodir=/usr/share/gcc-data/x86_64-pc-linux-gnu/9.2.0/info --with-gxx-include-dir=/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include/g++-v9.2.0 --enable-clocale=gnu --host=x86_64-pc-linux-gnu --enable-obsolete --disable-werror --enable-libmudflap --enable-secureplt --enable-lto --with-system-zlib --without-cloog --with-bugurl=http://bugs.funtoo.org --with-pkgversion='Funtoo 9.2.0' --enable-stage1-checking=assert,runtime,misc,tree,gc,rtlflag --enable-checking=assert,runtime --enable-languages=c,c++,fortran --disable-libgcj --enable-threads=posix --enable-__cxa_atexit --enable-libstdcxx-time --enable-libgomp --enable-bootstrap --enable-shared --build=x86_64-pc-linux-gnu --disable-libsanitizer --enable-default-pie --enable-default-ssp --disable-libstdcxx-pch --disable-vtable-verify --disable-libvtv --with-python-dir=/share/gcc-data/x86_64-pc-linux-gnu/9.2.0/python --enable-nls --with-included-gettext --with-arch=znver2
+Thread model: posix
+gcc version 9.2.0 (Funtoo 9.2.0) 
+COMPILER_PATH=/usr/libexec/gcc/x86_64-pc-linux-gnu/9.2.0/:/usr/libexec/gcc/x86_64-pc-linux-gnu/9.2.0/:/usr/libexec/gcc/x86_64-pc-linux-gnu/:/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/:/usr/lib/gcc/x86_64-pc-linux-gnu/:/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../x86_64-pc-linux-gnu/bin/
+LIBRARY_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/:/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../x86_64-pc-linux-gnu/lib/:/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../:/lib/:/usr/lib/
+COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_a16ae' '-mtune=generic' '-march=znver2'
+ /usr/libexec/gcc/x86_64-pc-linux-gnu/9.2.0/collect2 -plugin /usr/libexec/gcc/x86_64-pc-linux-gnu/9.2.0/liblto_plugin.so -plugin-opt=/usr/libexec/gcc/x86_64-pc-linux-gnu/9.2.0/lto-wrapper -plugin-opt=-fresolution=/tmp/ccykmHlF.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --eh-frame-hdr -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -o cmTC_a16ae /usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../lib64/Scrt1.o /usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../lib64/crti.o /usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/crtbeginS.o -L/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0 -L/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../x86_64-pc-linux-gnu/lib -L/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../.. CMakeFiles/cmTC_a16ae.dir/CMakeCCompilerABI.c.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/crtendS.o /usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../lib64/crtn.o
+COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_a16ae' '-mtune=generic' '-march=znver2'
+gmake[1]: Leaving directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+
+
+
+Parsed C implicit include dir info from above output: rv=done
+  found start of include info
+  found start of implicit include info
+    add: [/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include]
+    add: [/usr/local/include]
+    add: [/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include-fixed]
+    add: [/usr/include]
+  end of search list found
+  collapse include dir [/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include] ==> [/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include]
+  collapse include dir [/usr/local/include] ==> [/usr/local/include]
+  collapse include dir [/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include-fixed] ==> [/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include-fixed]
+  collapse include dir [/usr/include] ==> [/usr/include]
+  implicit include dirs: [/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include;/usr/local/include;/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include-fixed;/usr/include]
+
+
+Parsed C implicit link information from above output:
+  link line regex: [^( *|.*[/\])(ld|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\]+-)?ld|collect2)[^/\]*( |$)]
+  ignore line: [Change Dir: /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp]
+  ignore line: []
+  ignore line: [Run Build Command(s):/usr/bin/gmake cmTC_a16ae/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_a16ae.dir/build.make CMakeFiles/cmTC_a16ae.dir/build]
+  ignore line: [gmake[1]: Entering directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp']
+  ignore line: [Building C object CMakeFiles/cmTC_a16ae.dir/CMakeCCompilerABI.c.o]
+  ignore line: [/usr/bin/cc   -v -o CMakeFiles/cmTC_a16ae.dir/CMakeCCompilerABI.c.o -c /usr/share/cmake/Modules/CMakeCCompilerABI.c]
+  ignore line: [Using built-in specs.]
+  ignore line: [COLLECT_GCC=/usr/bin/cc]
+  ignore line: [Target: x86_64-pc-linux-gnu]
+  ignore line: [Configured with: ../gcc-9.2.0/configure --disable-libssp --disable-multilib --enable-version-specific-runtime-libs --prefix=/usr --bindir=/usr/x86_64-pc-linux-gnu/gcc-bin/9.2.0 --includedir=/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include --datadir=/usr/share/gcc-data/x86_64-pc-linux-gnu/9.2.0 --mandir=/usr/share/gcc-data/x86_64-pc-linux-gnu/9.2.0/man --infodir=/usr/share/gcc-data/x86_64-pc-linux-gnu/9.2.0/info --with-gxx-include-dir=/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include/g++-v9.2.0 --enable-clocale=gnu --host=x86_64-pc-linux-gnu --enable-obsolete --disable-werror --enable-libmudflap --enable-secureplt --enable-lto --with-system-zlib --without-cloog --with-bugurl=http://bugs.funtoo.org --with-pkgversion='Funtoo 9.2.0' --enable-stage1-checking=assert runtime misc tree gc rtlflag --enable-checking=assert runtime --enable-languages=c c++ fortran --disable-libgcj --enable-threads=posix --enable-__cxa_atexit --enable-libstdcxx-time --enable-libgomp --enable-bootstrap --enable-shared --build=x86_64-pc-linux-gnu --disable-libsanitizer --enable-default-pie --enable-default-ssp --disable-libstdcxx-pch --disable-vtable-verify --disable-libvtv --with-python-dir=/share/gcc-data/x86_64-pc-linux-gnu/9.2.0/python --enable-nls --with-included-gettext --with-arch=znver2]
+  ignore line: [Thread model: posix]
+  ignore line: [gcc version 9.2.0 (Funtoo 9.2.0) ]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_a16ae.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=znver2']
+  ignore line: [ /usr/libexec/gcc/x86_64-pc-linux-gnu/9.2.0/cc1 -quiet -v /usr/share/cmake/Modules/CMakeCCompilerABI.c -quiet -dumpbase CMakeCCompilerABI.c -mtune=generic -march=znver2 -auxbase-strip CMakeFiles/cmTC_a16ae.dir/CMakeCCompilerABI.c.o -version -o /tmp/ccAn7zTM.s]
+  ignore line: [GNU C17 (Funtoo 9.2.0) version 9.2.0 (x86_64-pc-linux-gnu)]
+  ignore line: [	compiled by GNU C version 9.2.0  GMP version 6.1.2  MPFR version 4.0.2  MPC version 1.1.0  isl version none]
+  ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
+  ignore line: [ignoring nonexistent directory "/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../x86_64-pc-linux-gnu/include"]
+  ignore line: [#include "..." search starts here:]
+  ignore line: [#include <...> search starts here:]
+  ignore line: [ /usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include]
+  ignore line: [ /usr/local/include]
+  ignore line: [ /usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include-fixed]
+  ignore line: [ /usr/include]
+  ignore line: [End of search list.]
+  ignore line: [GNU C17 (Funtoo 9.2.0) version 9.2.0 (x86_64-pc-linux-gnu)]
+  ignore line: [	compiled by GNU C version 9.2.0  GMP version 6.1.2  MPFR version 4.0.2  MPC version 1.1.0  isl version none]
+  ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
+  ignore line: [Compiler executable checksum: e1c588f300c9a50a735191155f25ba4f]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_a16ae.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=znver2']
+  ignore line: [ /usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../x86_64-pc-linux-gnu/bin/as -v --64 -o CMakeFiles/cmTC_a16ae.dir/CMakeCCompilerABI.c.o /tmp/ccAn7zTM.s]
+  ignore line: [GNU assembler version 2.32.0 (x86_64-pc-linux-gnu) using BFD version (Gentoo 2.32 p2) 2.32.0]
+  ignore line: [COMPILER_PATH=/usr/libexec/gcc/x86_64-pc-linux-gnu/9.2.0/:/usr/libexec/gcc/x86_64-pc-linux-gnu/9.2.0/:/usr/libexec/gcc/x86_64-pc-linux-gnu/:/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/:/usr/lib/gcc/x86_64-pc-linux-gnu/:/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../x86_64-pc-linux-gnu/bin/]
+  ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/:/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../x86_64-pc-linux-gnu/lib/:/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../:/lib/:/usr/lib/]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_a16ae.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=znver2']
+  ignore line: [Linking C executable cmTC_a16ae]
+  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_a16ae.dir/link.txt --verbose=1]
+  ignore line: [/usr/bin/cc  -v CMakeFiles/cmTC_a16ae.dir/CMakeCCompilerABI.c.o -o cmTC_a16ae ]
+  ignore line: [Using built-in specs.]
+  ignore line: [COLLECT_GCC=/usr/bin/cc]
+  ignore line: [COLLECT_LTO_WRAPPER=/usr/libexec/gcc/x86_64-pc-linux-gnu/9.2.0/lto-wrapper]
+  ignore line: [Target: x86_64-pc-linux-gnu]
+  ignore line: [Configured with: ../gcc-9.2.0/configure --disable-libssp --disable-multilib --enable-version-specific-runtime-libs --prefix=/usr --bindir=/usr/x86_64-pc-linux-gnu/gcc-bin/9.2.0 --includedir=/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include --datadir=/usr/share/gcc-data/x86_64-pc-linux-gnu/9.2.0 --mandir=/usr/share/gcc-data/x86_64-pc-linux-gnu/9.2.0/man --infodir=/usr/share/gcc-data/x86_64-pc-linux-gnu/9.2.0/info --with-gxx-include-dir=/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include/g++-v9.2.0 --enable-clocale=gnu --host=x86_64-pc-linux-gnu --enable-obsolete --disable-werror --enable-libmudflap --enable-secureplt --enable-lto --with-system-zlib --without-cloog --with-bugurl=http://bugs.funtoo.org --with-pkgversion='Funtoo 9.2.0' --enable-stage1-checking=assert runtime misc tree gc rtlflag --enable-checking=assert runtime --enable-languages=c c++ fortran --disable-libgcj --enable-threads=posix --enable-__cxa_atexit --enable-libstdcxx-time --enable-libgomp --enable-bootstrap --enable-shared --build=x86_64-pc-linux-gnu --disable-libsanitizer --enable-default-pie --enable-default-ssp --disable-libstdcxx-pch --disable-vtable-verify --disable-libvtv --with-python-dir=/share/gcc-data/x86_64-pc-linux-gnu/9.2.0/python --enable-nls --with-included-gettext --with-arch=znver2]
+  ignore line: [Thread model: posix]
+  ignore line: [gcc version 9.2.0 (Funtoo 9.2.0) ]
+  ignore line: [COMPILER_PATH=/usr/libexec/gcc/x86_64-pc-linux-gnu/9.2.0/:/usr/libexec/gcc/x86_64-pc-linux-gnu/9.2.0/:/usr/libexec/gcc/x86_64-pc-linux-gnu/:/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/:/usr/lib/gcc/x86_64-pc-linux-gnu/:/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../x86_64-pc-linux-gnu/bin/]
+  ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/:/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../x86_64-pc-linux-gnu/lib/:/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../:/lib/:/usr/lib/]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_a16ae' '-mtune=generic' '-march=znver2']
+  link line: [ /usr/libexec/gcc/x86_64-pc-linux-gnu/9.2.0/collect2 -plugin /usr/libexec/gcc/x86_64-pc-linux-gnu/9.2.0/liblto_plugin.so -plugin-opt=/usr/libexec/gcc/x86_64-pc-linux-gnu/9.2.0/lto-wrapper -plugin-opt=-fresolution=/tmp/ccykmHlF.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --eh-frame-hdr -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -o cmTC_a16ae /usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../lib64/Scrt1.o /usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../lib64/crti.o /usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/crtbeginS.o -L/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0 -L/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../x86_64-pc-linux-gnu/lib -L/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../.. CMakeFiles/cmTC_a16ae.dir/CMakeCCompilerABI.c.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/crtendS.o /usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../lib64/crtn.o]
+    arg [/usr/libexec/gcc/x86_64-pc-linux-gnu/9.2.0/collect2] ==> ignore
+    arg [-plugin] ==> ignore
+    arg [/usr/libexec/gcc/x86_64-pc-linux-gnu/9.2.0/liblto_plugin.so] ==> ignore
+    arg [-plugin-opt=/usr/libexec/gcc/x86_64-pc-linux-gnu/9.2.0/lto-wrapper] ==> ignore
+    arg [-plugin-opt=-fresolution=/tmp/ccykmHlF.res] ==> ignore
+    arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
+    arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
+    arg [-plugin-opt=-pass-through=-lc] ==> ignore
+    arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
+    arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
+    arg [--eh-frame-hdr] ==> ignore
+    arg [-m] ==> ignore
+    arg [elf_x86_64] ==> ignore
+    arg [-dynamic-linker] ==> ignore
+    arg [/lib64/ld-linux-x86-64.so.2] ==> ignore
+    arg [-pie] ==> ignore
+    arg [-o] ==> ignore
+    arg [cmTC_a16ae] ==> ignore
+    arg [/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../lib64/Scrt1.o] ==> ignore
+    arg [/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../lib64/crti.o] ==> ignore
+    arg [/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/crtbeginS.o] ==> ignore
+    arg [-L/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0] ==> dir [/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0]
+    arg [-L/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../lib64] ==> dir [/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../lib64]
+    arg [-L/lib/../lib64] ==> dir [/lib/../lib64]
+    arg [-L/usr/lib/../lib64] ==> dir [/usr/lib/../lib64]
+    arg [-L/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../x86_64-pc-linux-gnu/lib] ==> dir [/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../x86_64-pc-linux-gnu/lib]
+    arg [-L/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../..] ==> dir [/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../..]
+    arg [CMakeFiles/cmTC_a16ae.dir/CMakeCCompilerABI.c.o] ==> ignore
+    arg [-lgcc] ==> lib [gcc]
+    arg [--push-state] ==> ignore
+    arg [--as-needed] ==> ignore
+    arg [-lgcc_s] ==> lib [gcc_s]
+    arg [--pop-state] ==> ignore
+    arg [-lc] ==> lib [c]
+    arg [-lgcc] ==> lib [gcc]
+    arg [--push-state] ==> ignore
+    arg [--as-needed] ==> ignore
+    arg [-lgcc_s] ==> lib [gcc_s]
+    arg [--pop-state] ==> ignore
+    arg [/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/crtendS.o] ==> ignore
+    arg [/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../lib64/crtn.o] ==> ignore
+  collapse library dir [/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0] ==> [/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0]
+  collapse library dir [/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../lib64] ==> [/usr/lib64]
+  collapse library dir [/lib/../lib64] ==> [/lib64]
+  collapse library dir [/usr/lib/../lib64] ==> [/usr/lib64]
+  collapse library dir [/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../x86_64-pc-linux-gnu/lib] ==> [/usr/x86_64-pc-linux-gnu/lib]
+  collapse library dir [/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../..] ==> [/usr/lib]
+  implicit libs: [gcc;gcc_s;c;gcc;gcc_s]
+  implicit dirs: [/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0;/usr/lib64;/lib64;/usr/x86_64-pc-linux-gnu/lib;/usr/lib]
+  implicit fwks: []
+
+
+Detecting CXX compiler ABI info compiled with the following output:
+Change Dir: /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake cmTC_4b3a6/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_4b3a6.dir/build.make CMakeFiles/cmTC_4b3a6.dir/build
+gmake[1]: Entering directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_4b3a6.dir/CMakeCXXCompilerABI.cpp.o
+/usr/bin/c++   -v -o CMakeFiles/cmTC_4b3a6.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake/Modules/CMakeCXXCompilerABI.cpp
+Using built-in specs.
+COLLECT_GCC=/usr/bin/c++
+Target: x86_64-pc-linux-gnu
+Configured with: ../gcc-9.2.0/configure --disable-libssp --disable-multilib --enable-version-specific-runtime-libs --prefix=/usr --bindir=/usr/x86_64-pc-linux-gnu/gcc-bin/9.2.0 --includedir=/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include --datadir=/usr/share/gcc-data/x86_64-pc-linux-gnu/9.2.0 --mandir=/usr/share/gcc-data/x86_64-pc-linux-gnu/9.2.0/man --infodir=/usr/share/gcc-data/x86_64-pc-linux-gnu/9.2.0/info --with-gxx-include-dir=/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include/g++-v9.2.0 --enable-clocale=gnu --host=x86_64-pc-linux-gnu --enable-obsolete --disable-werror --enable-libmudflap --enable-secureplt --enable-lto --with-system-zlib --without-cloog --with-bugurl=http://bugs.funtoo.org --with-pkgversion='Funtoo 9.2.0' --enable-stage1-checking=assert,runtime,misc,tree,gc,rtlflag --enable-checking=assert,runtime --enable-languages=c,c++,fortran --disable-libgcj --enable-threads=posix --enable-__cxa_atexit --enable-libstdcxx-time --enable-libgomp --enable-bootstrap --enable-shared --build=x86_64-pc-linux-gnu --disable-libsanitizer --enable-default-pie --enable-default-ssp --disable-libstdcxx-pch --disable-vtable-verify --disable-libvtv --with-python-dir=/share/gcc-data/x86_64-pc-linux-gnu/9.2.0/python --enable-nls --with-included-gettext --with-arch=znver2
+Thread model: posix
+gcc version 9.2.0 (Funtoo 9.2.0) 
+COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_4b3a6.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=znver2'
+ /usr/libexec/gcc/x86_64-pc-linux-gnu/9.2.0/cc1plus -quiet -v -D_GNU_SOURCE /usr/share/cmake/Modules/CMakeCXXCompilerABI.cpp -quiet -dumpbase CMakeCXXCompilerABI.cpp -mtune=generic -march=znver2 -auxbase-strip CMakeFiles/cmTC_4b3a6.dir/CMakeCXXCompilerABI.cpp.o -version -o /tmp/ccC4WvgI.s
+GNU C++14 (Funtoo 9.2.0) version 9.2.0 (x86_64-pc-linux-gnu)
+	compiled by GNU C version 9.2.0, GMP version 6.1.2, MPFR version 4.0.2, MPC version 1.1.0, isl version none
+GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+ignoring nonexistent directory "/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../x86_64-pc-linux-gnu/include"
+#include "..." search starts here:
+#include <...> search starts here:
+ /usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include/g++-v9.2.0
+ /usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include/g++-v9.2.0/x86_64-pc-linux-gnu
+ /usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include/g++-v9.2.0/backward
+ /usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include
+ /usr/local/include
+ /usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include-fixed
+ /usr/include
+End of search list.
+GNU C++14 (Funtoo 9.2.0) version 9.2.0 (x86_64-pc-linux-gnu)
+	compiled by GNU C version 9.2.0, GMP version 6.1.2, MPFR version 4.0.2, MPC version 1.1.0, isl version none
+GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+Compiler executable checksum: 5d88c2882a53da392c6efaa05157063b
+COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_4b3a6.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=znver2'
+ /usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../x86_64-pc-linux-gnu/bin/as -v --64 -o CMakeFiles/cmTC_4b3a6.dir/CMakeCXXCompilerABI.cpp.o /tmp/ccC4WvgI.s
+GNU assembler version 2.32.0 (x86_64-pc-linux-gnu) using BFD version (Gentoo 2.32 p2) 2.32.0
+COMPILER_PATH=/usr/libexec/gcc/x86_64-pc-linux-gnu/9.2.0/:/usr/libexec/gcc/x86_64-pc-linux-gnu/9.2.0/:/usr/libexec/gcc/x86_64-pc-linux-gnu/:/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/:/usr/lib/gcc/x86_64-pc-linux-gnu/:/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../x86_64-pc-linux-gnu/bin/
+LIBRARY_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/:/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../x86_64-pc-linux-gnu/lib/:/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../:/lib/:/usr/lib/
+COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_4b3a6.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=znver2'
+Linking CXX executable cmTC_4b3a6
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_4b3a6.dir/link.txt --verbose=1
+/usr/bin/c++  -v CMakeFiles/cmTC_4b3a6.dir/CMakeCXXCompilerABI.cpp.o -o cmTC_4b3a6 
+Using built-in specs.
+COLLECT_GCC=/usr/bin/c++
+COLLECT_LTO_WRAPPER=/usr/libexec/gcc/x86_64-pc-linux-gnu/9.2.0/lto-wrapper
+Target: x86_64-pc-linux-gnu
+Configured with: ../gcc-9.2.0/configure --disable-libssp --disable-multilib --enable-version-specific-runtime-libs --prefix=/usr --bindir=/usr/x86_64-pc-linux-gnu/gcc-bin/9.2.0 --includedir=/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include --datadir=/usr/share/gcc-data/x86_64-pc-linux-gnu/9.2.0 --mandir=/usr/share/gcc-data/x86_64-pc-linux-gnu/9.2.0/man --infodir=/usr/share/gcc-data/x86_64-pc-linux-gnu/9.2.0/info --with-gxx-include-dir=/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include/g++-v9.2.0 --enable-clocale=gnu --host=x86_64-pc-linux-gnu --enable-obsolete --disable-werror --enable-libmudflap --enable-secureplt --enable-lto --with-system-zlib --without-cloog --with-bugurl=http://bugs.funtoo.org --with-pkgversion='Funtoo 9.2.0' --enable-stage1-checking=assert,runtime,misc,tree,gc,rtlflag --enable-checking=assert,runtime --enable-languages=c,c++,fortran --disable-libgcj --enable-threads=posix --enable-__cxa_atexit --enable-libstdcxx-time --enable-libgomp --enable-bootstrap --enable-shared --build=x86_64-pc-linux-gnu --disable-libsanitizer --enable-default-pie --enable-default-ssp --disable-libstdcxx-pch --disable-vtable-verify --disable-libvtv --with-python-dir=/share/gcc-data/x86_64-pc-linux-gnu/9.2.0/python --enable-nls --with-included-gettext --with-arch=znver2
+Thread model: posix
+gcc version 9.2.0 (Funtoo 9.2.0) 
+COMPILER_PATH=/usr/libexec/gcc/x86_64-pc-linux-gnu/9.2.0/:/usr/libexec/gcc/x86_64-pc-linux-gnu/9.2.0/:/usr/libexec/gcc/x86_64-pc-linux-gnu/:/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/:/usr/lib/gcc/x86_64-pc-linux-gnu/:/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../x86_64-pc-linux-gnu/bin/
+LIBRARY_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/:/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../x86_64-pc-linux-gnu/lib/:/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../:/lib/:/usr/lib/
+COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_4b3a6' '-shared-libgcc' '-mtune=generic' '-march=znver2'
+ /usr/libexec/gcc/x86_64-pc-linux-gnu/9.2.0/collect2 -plugin /usr/libexec/gcc/x86_64-pc-linux-gnu/9.2.0/liblto_plugin.so -plugin-opt=/usr/libexec/gcc/x86_64-pc-linux-gnu/9.2.0/lto-wrapper -plugin-opt=-fresolution=/tmp/ccVBJ6zM.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --eh-frame-hdr -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -o cmTC_4b3a6 /usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../lib64/Scrt1.o /usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../lib64/crti.o /usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/crtbeginS.o -L/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0 -L/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../x86_64-pc-linux-gnu/lib -L/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../.. CMakeFiles/cmTC_4b3a6.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/crtendS.o /usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../lib64/crtn.o
+COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_4b3a6' '-shared-libgcc' '-mtune=generic' '-march=znver2'
+gmake[1]: Leaving directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+
+
+
+Parsed CXX implicit include dir info from above output: rv=done
+  found start of include info
+  found start of implicit include info
+    add: [/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include/g++-v9.2.0]
+    add: [/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include/g++-v9.2.0/x86_64-pc-linux-gnu]
+    add: [/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include/g++-v9.2.0/backward]
+    add: [/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include]
+    add: [/usr/local/include]
+    add: [/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include-fixed]
+    add: [/usr/include]
+  end of search list found
+  collapse include dir [/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include/g++-v9.2.0] ==> [/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include/g++-v9.2.0]
+  collapse include dir [/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include/g++-v9.2.0/x86_64-pc-linux-gnu] ==> [/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include/g++-v9.2.0/x86_64-pc-linux-gnu]
+  collapse include dir [/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include/g++-v9.2.0/backward] ==> [/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include/g++-v9.2.0/backward]
+  collapse include dir [/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include] ==> [/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include]
+  collapse include dir [/usr/local/include] ==> [/usr/local/include]
+  collapse include dir [/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include-fixed] ==> [/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include-fixed]
+  collapse include dir [/usr/include] ==> [/usr/include]
+  implicit include dirs: [/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include/g++-v9.2.0;/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include/g++-v9.2.0/x86_64-pc-linux-gnu;/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include/g++-v9.2.0/backward;/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include;/usr/local/include;/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include-fixed;/usr/include]
+
+
+Parsed CXX implicit link information from above output:
+  link line regex: [^( *|.*[/\])(ld|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\]+-)?ld|collect2)[^/\]*( |$)]
+  ignore line: [Change Dir: /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp]
+  ignore line: []
+  ignore line: [Run Build Command(s):/usr/bin/gmake cmTC_4b3a6/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_4b3a6.dir/build.make CMakeFiles/cmTC_4b3a6.dir/build]
+  ignore line: [gmake[1]: Entering directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp']
+  ignore line: [Building CXX object CMakeFiles/cmTC_4b3a6.dir/CMakeCXXCompilerABI.cpp.o]
+  ignore line: [/usr/bin/c++   -v -o CMakeFiles/cmTC_4b3a6.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake/Modules/CMakeCXXCompilerABI.cpp]
+  ignore line: [Using built-in specs.]
+  ignore line: [COLLECT_GCC=/usr/bin/c++]
+  ignore line: [Target: x86_64-pc-linux-gnu]
+  ignore line: [Configured with: ../gcc-9.2.0/configure --disable-libssp --disable-multilib --enable-version-specific-runtime-libs --prefix=/usr --bindir=/usr/x86_64-pc-linux-gnu/gcc-bin/9.2.0 --includedir=/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include --datadir=/usr/share/gcc-data/x86_64-pc-linux-gnu/9.2.0 --mandir=/usr/share/gcc-data/x86_64-pc-linux-gnu/9.2.0/man --infodir=/usr/share/gcc-data/x86_64-pc-linux-gnu/9.2.0/info --with-gxx-include-dir=/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include/g++-v9.2.0 --enable-clocale=gnu --host=x86_64-pc-linux-gnu --enable-obsolete --disable-werror --enable-libmudflap --enable-secureplt --enable-lto --with-system-zlib --without-cloog --with-bugurl=http://bugs.funtoo.org --with-pkgversion='Funtoo 9.2.0' --enable-stage1-checking=assert runtime misc tree gc rtlflag --enable-checking=assert runtime --enable-languages=c c++ fortran --disable-libgcj --enable-threads=posix --enable-__cxa_atexit --enable-libstdcxx-time --enable-libgomp --enable-bootstrap --enable-shared --build=x86_64-pc-linux-gnu --disable-libsanitizer --enable-default-pie --enable-default-ssp --disable-libstdcxx-pch --disable-vtable-verify --disable-libvtv --with-python-dir=/share/gcc-data/x86_64-pc-linux-gnu/9.2.0/python --enable-nls --with-included-gettext --with-arch=znver2]
+  ignore line: [Thread model: posix]
+  ignore line: [gcc version 9.2.0 (Funtoo 9.2.0) ]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_4b3a6.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=znver2']
+  ignore line: [ /usr/libexec/gcc/x86_64-pc-linux-gnu/9.2.0/cc1plus -quiet -v -D_GNU_SOURCE /usr/share/cmake/Modules/CMakeCXXCompilerABI.cpp -quiet -dumpbase CMakeCXXCompilerABI.cpp -mtune=generic -march=znver2 -auxbase-strip CMakeFiles/cmTC_4b3a6.dir/CMakeCXXCompilerABI.cpp.o -version -o /tmp/ccC4WvgI.s]
+  ignore line: [GNU C++14 (Funtoo 9.2.0) version 9.2.0 (x86_64-pc-linux-gnu)]
+  ignore line: [	compiled by GNU C version 9.2.0  GMP version 6.1.2  MPFR version 4.0.2  MPC version 1.1.0  isl version none]
+  ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
+  ignore line: [ignoring nonexistent directory "/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../x86_64-pc-linux-gnu/include"]
+  ignore line: [#include "..." search starts here:]
+  ignore line: [#include <...> search starts here:]
+  ignore line: [ /usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include/g++-v9.2.0]
+  ignore line: [ /usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include/g++-v9.2.0/x86_64-pc-linux-gnu]
+  ignore line: [ /usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include/g++-v9.2.0/backward]
+  ignore line: [ /usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include]
+  ignore line: [ /usr/local/include]
+  ignore line: [ /usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include-fixed]
+  ignore line: [ /usr/include]
+  ignore line: [End of search list.]
+  ignore line: [GNU C++14 (Funtoo 9.2.0) version 9.2.0 (x86_64-pc-linux-gnu)]
+  ignore line: [	compiled by GNU C version 9.2.0  GMP version 6.1.2  MPFR version 4.0.2  MPC version 1.1.0  isl version none]
+  ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
+  ignore line: [Compiler executable checksum: 5d88c2882a53da392c6efaa05157063b]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_4b3a6.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=znver2']
+  ignore line: [ /usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../x86_64-pc-linux-gnu/bin/as -v --64 -o CMakeFiles/cmTC_4b3a6.dir/CMakeCXXCompilerABI.cpp.o /tmp/ccC4WvgI.s]
+  ignore line: [GNU assembler version 2.32.0 (x86_64-pc-linux-gnu) using BFD version (Gentoo 2.32 p2) 2.32.0]
+  ignore line: [COMPILER_PATH=/usr/libexec/gcc/x86_64-pc-linux-gnu/9.2.0/:/usr/libexec/gcc/x86_64-pc-linux-gnu/9.2.0/:/usr/libexec/gcc/x86_64-pc-linux-gnu/:/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/:/usr/lib/gcc/x86_64-pc-linux-gnu/:/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../x86_64-pc-linux-gnu/bin/]
+  ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/:/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../x86_64-pc-linux-gnu/lib/:/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../:/lib/:/usr/lib/]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_4b3a6.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=znver2']
+  ignore line: [Linking CXX executable cmTC_4b3a6]
+  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_4b3a6.dir/link.txt --verbose=1]
+  ignore line: [/usr/bin/c++  -v CMakeFiles/cmTC_4b3a6.dir/CMakeCXXCompilerABI.cpp.o -o cmTC_4b3a6 ]
+  ignore line: [Using built-in specs.]
+  ignore line: [COLLECT_GCC=/usr/bin/c++]
+  ignore line: [COLLECT_LTO_WRAPPER=/usr/libexec/gcc/x86_64-pc-linux-gnu/9.2.0/lto-wrapper]
+  ignore line: [Target: x86_64-pc-linux-gnu]
+  ignore line: [Configured with: ../gcc-9.2.0/configure --disable-libssp --disable-multilib --enable-version-specific-runtime-libs --prefix=/usr --bindir=/usr/x86_64-pc-linux-gnu/gcc-bin/9.2.0 --includedir=/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include --datadir=/usr/share/gcc-data/x86_64-pc-linux-gnu/9.2.0 --mandir=/usr/share/gcc-data/x86_64-pc-linux-gnu/9.2.0/man --infodir=/usr/share/gcc-data/x86_64-pc-linux-gnu/9.2.0/info --with-gxx-include-dir=/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include/g++-v9.2.0 --enable-clocale=gnu --host=x86_64-pc-linux-gnu --enable-obsolete --disable-werror --enable-libmudflap --enable-secureplt --enable-lto --with-system-zlib --without-cloog --with-bugurl=http://bugs.funtoo.org --with-pkgversion='Funtoo 9.2.0' --enable-stage1-checking=assert runtime misc tree gc rtlflag --enable-checking=assert runtime --enable-languages=c c++ fortran --disable-libgcj --enable-threads=posix --enable-__cxa_atexit --enable-libstdcxx-time --enable-libgomp --enable-bootstrap --enable-shared --build=x86_64-pc-linux-gnu --disable-libsanitizer --enable-default-pie --enable-default-ssp --disable-libstdcxx-pch --disable-vtable-verify --disable-libvtv --with-python-dir=/share/gcc-data/x86_64-pc-linux-gnu/9.2.0/python --enable-nls --with-included-gettext --with-arch=znver2]
+  ignore line: [Thread model: posix]
+  ignore line: [gcc version 9.2.0 (Funtoo 9.2.0) ]
+  ignore line: [COMPILER_PATH=/usr/libexec/gcc/x86_64-pc-linux-gnu/9.2.0/:/usr/libexec/gcc/x86_64-pc-linux-gnu/9.2.0/:/usr/libexec/gcc/x86_64-pc-linux-gnu/:/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/:/usr/lib/gcc/x86_64-pc-linux-gnu/:/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../x86_64-pc-linux-gnu/bin/]
+  ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/:/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../x86_64-pc-linux-gnu/lib/:/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../:/lib/:/usr/lib/]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_4b3a6' '-shared-libgcc' '-mtune=generic' '-march=znver2']
+  link line: [ /usr/libexec/gcc/x86_64-pc-linux-gnu/9.2.0/collect2 -plugin /usr/libexec/gcc/x86_64-pc-linux-gnu/9.2.0/liblto_plugin.so -plugin-opt=/usr/libexec/gcc/x86_64-pc-linux-gnu/9.2.0/lto-wrapper -plugin-opt=-fresolution=/tmp/ccVBJ6zM.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --eh-frame-hdr -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -o cmTC_4b3a6 /usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../lib64/Scrt1.o /usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../lib64/crti.o /usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/crtbeginS.o -L/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0 -L/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../x86_64-pc-linux-gnu/lib -L/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../.. CMakeFiles/cmTC_4b3a6.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/crtendS.o /usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../lib64/crtn.o]
+    arg [/usr/libexec/gcc/x86_64-pc-linux-gnu/9.2.0/collect2] ==> ignore
+    arg [-plugin] ==> ignore
+    arg [/usr/libexec/gcc/x86_64-pc-linux-gnu/9.2.0/liblto_plugin.so] ==> ignore
+    arg [-plugin-opt=/usr/libexec/gcc/x86_64-pc-linux-gnu/9.2.0/lto-wrapper] ==> ignore
+    arg [-plugin-opt=-fresolution=/tmp/ccVBJ6zM.res] ==> ignore
+    arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
+    arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
+    arg [-plugin-opt=-pass-through=-lc] ==> ignore
+    arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
+    arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
+    arg [--eh-frame-hdr] ==> ignore
+    arg [-m] ==> ignore
+    arg [elf_x86_64] ==> ignore
+    arg [-dynamic-linker] ==> ignore
+    arg [/lib64/ld-linux-x86-64.so.2] ==> ignore
+    arg [-pie] ==> ignore
+    arg [-o] ==> ignore
+    arg [cmTC_4b3a6] ==> ignore
+    arg [/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../lib64/Scrt1.o] ==> ignore
+    arg [/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../lib64/crti.o] ==> ignore
+    arg [/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/crtbeginS.o] ==> ignore
+    arg [-L/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0] ==> dir [/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0]
+    arg [-L/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../lib64] ==> dir [/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../lib64]
+    arg [-L/lib/../lib64] ==> dir [/lib/../lib64]
+    arg [-L/usr/lib/../lib64] ==> dir [/usr/lib/../lib64]
+    arg [-L/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../x86_64-pc-linux-gnu/lib] ==> dir [/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../x86_64-pc-linux-gnu/lib]
+    arg [-L/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../..] ==> dir [/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../..]
+    arg [CMakeFiles/cmTC_4b3a6.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
+    arg [-lstdc++] ==> lib [stdc++]
+    arg [-lm] ==> lib [m]
+    arg [-lgcc_s] ==> lib [gcc_s]
+    arg [-lgcc] ==> lib [gcc]
+    arg [-lc] ==> lib [c]
+    arg [-lgcc_s] ==> lib [gcc_s]
+    arg [-lgcc] ==> lib [gcc]
+    arg [/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/crtendS.o] ==> ignore
+    arg [/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../lib64/crtn.o] ==> ignore
+  collapse library dir [/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0] ==> [/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0]
+  collapse library dir [/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../lib64] ==> [/usr/lib64]
+  collapse library dir [/lib/../lib64] ==> [/lib64]
+  collapse library dir [/usr/lib/../lib64] ==> [/usr/lib64]
+  collapse library dir [/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../x86_64-pc-linux-gnu/lib] ==> [/usr/x86_64-pc-linux-gnu/lib]
+  collapse library dir [/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../..] ==> [/usr/lib]
+  implicit libs: [stdc++;m;gcc_s;gcc;c;gcc_s;gcc]
+  implicit dirs: [/usr/lib/gcc/x86_64-pc-linux-gnu/9.2.0;/usr/lib64;/lib64;/usr/x86_64-pc-linux-gnu/lib;/usr/lib]
+  implicit fwks: []
+
+
+Determining if the include file pthread.h exists passed with the following output:
+Change Dir: /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake cmTC_db153/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_db153.dir/build.make CMakeFiles/cmTC_db153.dir/build
+gmake[1]: Entering directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_db153.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_db153.dir/CheckIncludeFile.c.o -c /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_db153
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_db153.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_db153.dir/CheckIncludeFile.c.o -o cmTC_db153 
+gmake[1]: Leaving directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function pthread_create exists in the pthread passed with the following output:
+Change Dir: /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake cmTC_eea72/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_eea72.dir/build.make CMakeFiles/cmTC_eea72.dir/build
+gmake[1]: Entering directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_eea72.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create -o CMakeFiles/cmTC_eea72.dir/CheckFunctionExists.c.o -c /usr/share/cmake/Modules/CheckFunctionExists.c
+Linking C executable cmTC_eea72
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_eea72.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pthread_create CMakeFiles/cmTC_eea72.dir/CheckFunctionExists.c.o -o cmTC_eea72  -lpthread 
+gmake[1]: Leaving directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function XOpenDisplay exists in the /usr/lib/libX11.so;/usr/lib/libXext.so passed with the following output:
+Change Dir: /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake cmTC_ee5fd/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_ee5fd.dir/build.make CMakeFiles/cmTC_ee5fd.dir/build
+gmake[1]: Entering directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_ee5fd.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=XOpenDisplay -o CMakeFiles/cmTC_ee5fd.dir/CheckFunctionExists.c.o -c /usr/share/cmake/Modules/CheckFunctionExists.c
+Linking C executable cmTC_ee5fd
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_ee5fd.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=XOpenDisplay CMakeFiles/cmTC_ee5fd.dir/CheckFunctionExists.c.o -o cmTC_ee5fd  /usr/lib/libX11.so /usr/lib/libXext.so 
+gmake[1]: Leaving directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function gethostbyname exists passed with the following output:
+Change Dir: /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake cmTC_6d2a1/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_6d2a1.dir/build.make CMakeFiles/cmTC_6d2a1.dir/build
+gmake[1]: Entering directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_6d2a1.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=gethostbyname -o CMakeFiles/cmTC_6d2a1.dir/CheckFunctionExists.c.o -c /usr/share/cmake/Modules/CheckFunctionExists.c
+Linking C executable cmTC_6d2a1
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_6d2a1.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=gethostbyname CMakeFiles/cmTC_6d2a1.dir/CheckFunctionExists.c.o -o cmTC_6d2a1 
+gmake[1]: Leaving directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function connect exists passed with the following output:
+Change Dir: /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake cmTC_76c7b/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_76c7b.dir/build.make CMakeFiles/cmTC_76c7b.dir/build
+gmake[1]: Entering directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_76c7b.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=connect -o CMakeFiles/cmTC_76c7b.dir/CheckFunctionExists.c.o -c /usr/share/cmake/Modules/CheckFunctionExists.c
+Linking C executable cmTC_76c7b
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_76c7b.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=connect CMakeFiles/cmTC_76c7b.dir/CheckFunctionExists.c.o -o cmTC_76c7b 
+gmake[1]: Leaving directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function remove exists passed with the following output:
+Change Dir: /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake cmTC_6d2e5/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_6d2e5.dir/build.make CMakeFiles/cmTC_6d2e5.dir/build
+gmake[1]: Entering directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_6d2e5.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=remove -o CMakeFiles/cmTC_6d2e5.dir/CheckFunctionExists.c.o -c /usr/share/cmake/Modules/CheckFunctionExists.c
+Linking C executable cmTC_6d2e5
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_6d2e5.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=remove CMakeFiles/cmTC_6d2e5.dir/CheckFunctionExists.c.o -o cmTC_6d2e5 
+gmake[1]: Leaving directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function shmat exists passed with the following output:
+Change Dir: /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake cmTC_e7595/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_e7595.dir/build.make CMakeFiles/cmTC_e7595.dir/build
+gmake[1]: Entering directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_e7595.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=shmat -o CMakeFiles/cmTC_e7595.dir/CheckFunctionExists.c.o -c /usr/share/cmake/Modules/CheckFunctionExists.c
+Linking C executable cmTC_e7595
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_e7595.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=shmat CMakeFiles/cmTC_e7595.dir/CheckFunctionExists.c.o -o cmTC_e7595 
+gmake[1]: Leaving directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function IceConnectionNumber exists in the ICE passed with the following output:
+Change Dir: /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake cmTC_8d088/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_8d088.dir/build.make CMakeFiles/cmTC_8d088.dir/build
+gmake[1]: Entering directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_8d088.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=IceConnectionNumber -o CMakeFiles/cmTC_8d088.dir/CheckFunctionExists.c.o -c /usr/share/cmake/Modules/CheckFunctionExists.c
+Linking C executable cmTC_8d088
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_8d088.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=IceConnectionNumber CMakeFiles/cmTC_8d088.dir/CheckFunctionExists.c.o -o cmTC_8d088  -lICE 
+gmake[1]: Leaving directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the posix_memalign exist passed with the following output:
+Change Dir: /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake cmTC_b6eb8/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_b6eb8.dir/build.make CMakeFiles/cmTC_b6eb8.dir/build
+gmake[1]: Entering directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_b6eb8.dir/CheckSymbolExists.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_b6eb8.dir/CheckSymbolExists.c.o -c /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_b6eb8
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b6eb8.dir/link.txt --verbose=1
+/usr/bin/cc -rdynamic CMakeFiles/cmTC_b6eb8.dir/CheckSymbolExists.c.o -o cmTC_b6eb8 
+gmake[1]: Leaving directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+
+
+File /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stdlib.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef posix_memalign
+  return ((int*)(&posix_memalign))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Performing C++ SOURCE FILE Test HAVE___RESTRICT succeeded with the following output:
+Change Dir: /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake cmTC_d864f/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_d864f.dir/build.make CMakeFiles/cmTC_d864f.dir/build
+gmake[1]: Entering directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_d864f.dir/src.cxx.o
+/usr/bin/c++ -DHAVE___RESTRICT  -std=gnu++14 -o CMakeFiles/cmTC_d864f.dir/src.cxx.o -c /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_d864f
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d864f.dir/link.txt --verbose=1
+/usr/bin/c++ CMakeFiles/cmTC_d864f.dir/src.cxx.o -o cmTC_d864f 
+gmake[1]: Leaving directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+
+
+Source file was:
+int *__restrict foo;
+int main() { return 0; }
+Performing C++ SOURCE FILE Test HAVE_LIBATOMIC succeeded with the following output:
+Change Dir: /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake cmTC_f61ba/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_f61ba.dir/build.make CMakeFiles/cmTC_f61ba.dir/build
+gmake[1]: Entering directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_f61ba.dir/src.cxx.o
+/usr/bin/c++ -DHAVE_LIBATOMIC  -std=gnu++14 -o CMakeFiles/cmTC_f61ba.dir/src.cxx.o -c /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_f61ba
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_f61ba.dir/link.txt --verbose=1
+/usr/bin/c++ CMakeFiles/cmTC_f61ba.dir/src.cxx.o -o cmTC_f61ba  -latomic 
+gmake[1]: Leaving directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+
+
+Source file was:
+#include <atomic>
+std::atomic<int> foo{0};
+int main() { return foo.fetch_add(2); }
+Performing C SOURCE FILE Test HAVE_FNO_MATH_ERRNO succeeded with the following output:
+Change Dir: /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake cmTC_2b820/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_2b820.dir/build.make CMakeFiles/cmTC_2b820.dir/build
+gmake[1]: Entering directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_2b820.dir/src.c.o
+/usr/bin/cc -DHAVE_FNO_MATH_ERRNO  -fno-math-errno -std=gnu11 -o CMakeFiles/cmTC_2b820.dir/src.c.o -c /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_2b820
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_2b820.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_2b820.dir/src.c.o -o cmTC_2b820  -latomic 
+gmake[1]: Leaving directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test HAVE_GCC_PROTECTED_VISIBILITY succeeded with the following output:
+Change Dir: /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake cmTC_8fcd0/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_8fcd0.dir/build.make CMakeFiles/cmTC_8fcd0.dir/build
+gmake[1]: Entering directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_8fcd0.dir/src.c.o
+/usr/bin/cc -DHAVE_GCC_PROTECTED_VISIBILITY  -Wattributes -Werror -std=gnu11 -o CMakeFiles/cmTC_8fcd0.dir/src.c.o -c /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_8fcd0
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_8fcd0.dir/link.txt --verbose=1
+/usr/bin/cc   -Wattributes -Werror CMakeFiles/cmTC_8fcd0.dir/src.c.o -o cmTC_8fcd0  -latomic 
+gmake[1]: Leaving directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+
+
+Source file was:
+int foo() __attribute__((visibility("protected")));
+                             int main() {return 0;}
+Performing C SOURCE FILE Test HAVE_VISIBILITY_HIDDEN_SWITCH succeeded with the following output:
+Change Dir: /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake cmTC_10ddd/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_10ddd.dir/build.make CMakeFiles/cmTC_10ddd.dir/build
+gmake[1]: Entering directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_10ddd.dir/src.c.o
+/usr/bin/cc -DHAVE_VISIBILITY_HIDDEN_SWITCH  -Wattributes -Werror   -fvisibility=hidden -std=gnu11 -o CMakeFiles/cmTC_10ddd.dir/src.c.o -c /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_10ddd
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_10ddd.dir/link.txt --verbose=1
+/usr/bin/cc   -Wattributes -Werror CMakeFiles/cmTC_10ddd.dir/src.c.o -o cmTC_10ddd  -latomic 
+gmake[1]: Leaving directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test HAVE_MSSE2_SWITCH succeeded with the following output:
+Change Dir: /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake cmTC_16c54/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_16c54.dir/build.make CMakeFiles/cmTC_16c54.dir/build
+gmake[1]: Entering directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_16c54.dir/src.c.o
+/usr/bin/cc -DHAVE_MSSE2_SWITCH  -Werror   -msse2 -std=gnu11 -o CMakeFiles/cmTC_16c54.dir/src.c.o -c /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_16c54
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_16c54.dir/link.txt --verbose=1
+/usr/bin/cc   -Werror CMakeFiles/cmTC_16c54.dir/src.c.o -o cmTC_16c54  -latomic 
+gmake[1]: Leaving directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test HAVE_MSSE3_SWITCH succeeded with the following output:
+Change Dir: /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake cmTC_e4f47/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_e4f47.dir/build.make CMakeFiles/cmTC_e4f47.dir/build
+gmake[1]: Entering directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_e4f47.dir/src.c.o
+/usr/bin/cc -DHAVE_MSSE3_SWITCH  -Werror   -msse3 -std=gnu11 -o CMakeFiles/cmTC_e4f47.dir/src.c.o -c /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_e4f47
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_e4f47.dir/link.txt --verbose=1
+/usr/bin/cc   -Werror CMakeFiles/cmTC_e4f47.dir/src.c.o -o cmTC_e4f47  -latomic 
+gmake[1]: Leaving directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test HAVE_MSSE4_1_SWITCH succeeded with the following output:
+Change Dir: /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake cmTC_8dd68/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_8dd68.dir/build.make CMakeFiles/cmTC_8dd68.dir/build
+gmake[1]: Entering directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_8dd68.dir/src.c.o
+/usr/bin/cc -DHAVE_MSSE4_1_SWITCH  -Werror   -msse4.1 -std=gnu11 -o CMakeFiles/cmTC_8dd68.dir/src.c.o -c /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_8dd68
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_8dd68.dir/link.txt --verbose=1
+/usr/bin/cc   -Werror CMakeFiles/cmTC_8dd68.dir/src.c.o -o cmTC_8dd68  -latomic 
+gmake[1]: Leaving directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+
+
+Source file was:
+int main(void) { return 0; }
+Determining if the include file xmmintrin.h exists passed with the following output:
+Change Dir: /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake cmTC_21002/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_21002.dir/build.make CMakeFiles/cmTC_21002.dir/build
+gmake[1]: Entering directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_21002.dir/CheckIncludeFile.c.o
+/usr/bin/cc   -msse2  -std=gnu11 -o CMakeFiles/cmTC_21002.dir/CheckIncludeFile.c.o -c /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_21002
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_21002.dir/link.txt --verbose=1
+/usr/bin/cc  -msse2  CMakeFiles/cmTC_21002.dir/CheckIncludeFile.c.o -o cmTC_21002  -latomic 
+gmake[1]: Leaving directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the include file emmintrin.h exists passed with the following output:
+Change Dir: /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake cmTC_b95b5/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_b95b5.dir/build.make CMakeFiles/cmTC_b95b5.dir/build
+gmake[1]: Entering directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_b95b5.dir/CheckIncludeFile.c.o
+/usr/bin/cc   -msse2  -std=gnu11 -o CMakeFiles/cmTC_b95b5.dir/CheckIncludeFile.c.o -c /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_b95b5
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b95b5.dir/link.txt --verbose=1
+/usr/bin/cc  -msse2  CMakeFiles/cmTC_b95b5.dir/CheckIncludeFile.c.o -o cmTC_b95b5  -latomic 
+gmake[1]: Leaving directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the include file pmmintrin.h exists passed with the following output:
+Change Dir: /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake cmTC_391bd/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_391bd.dir/build.make CMakeFiles/cmTC_391bd.dir/build
+gmake[1]: Entering directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_391bd.dir/CheckIncludeFile.c.o
+/usr/bin/cc   -msse3  -std=gnu11 -o CMakeFiles/cmTC_391bd.dir/CheckIncludeFile.c.o -c /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_391bd
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_391bd.dir/link.txt --verbose=1
+/usr/bin/cc  -msse3  CMakeFiles/cmTC_391bd.dir/CheckIncludeFile.c.o -o cmTC_391bd  -latomic 
+gmake[1]: Leaving directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the include file smmintrin.h exists passed with the following output:
+Change Dir: /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake cmTC_13bd8/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_13bd8.dir/build.make CMakeFiles/cmTC_13bd8.dir/build
+gmake[1]: Entering directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_13bd8.dir/CheckIncludeFile.c.o
+/usr/bin/cc   -msse4.1  -std=gnu11 -o CMakeFiles/cmTC_13bd8.dir/CheckIncludeFile.c.o -c /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_13bd8
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_13bd8.dir/link.txt --verbose=1
+/usr/bin/cc  -msse4.1  CMakeFiles/cmTC_13bd8.dir/CheckIncludeFile.c.o -o cmTC_13bd8  -latomic 
+gmake[1]: Leaving directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+
+
+
+Performing C SOURCE FILE Test HAVE_SSE_INTRINSICS succeeded with the following output:
+Change Dir: /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake cmTC_7ff74/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_7ff74.dir/build.make CMakeFiles/cmTC_7ff74.dir/build
+gmake[1]: Entering directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_7ff74.dir/src.c.o
+/usr/bin/cc -DHAVE_SSE_INTRINSICS  -std=gnu11 -o CMakeFiles/cmTC_7ff74.dir/src.c.o -c /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_7ff74
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7ff74.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_7ff74.dir/src.c.o -o cmTC_7ff74  -latomic 
+gmake[1]: Leaving directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+
+
+Source file was:
+#include <emmintrin.h>
+                             int main() {_mm_pause(); return 0;}
+Determining if the include file malloc.h exists passed with the following output:
+Change Dir: /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake cmTC_f29e1/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_f29e1.dir/build.make CMakeFiles/cmTC_f29e1.dir/build
+gmake[1]: Entering directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_f29e1.dir/CheckIncludeFile.c.o
+/usr/bin/cc   -std=gnu11 -o CMakeFiles/cmTC_f29e1.dir/CheckIncludeFile.c.o -c /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_f29e1
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_f29e1.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_f29e1.dir/CheckIncludeFile.c.o -o cmTC_f29e1  -latomic 
+gmake[1]: Leaving directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the include file cpuid.h exists passed with the following output:
+Change Dir: /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake cmTC_60244/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_60244.dir/build.make CMakeFiles/cmTC_60244.dir/build
+gmake[1]: Entering directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_60244.dir/CheckIncludeFile.c.o
+/usr/bin/cc   -std=gnu11 -o CMakeFiles/cmTC_60244.dir/CheckIncludeFile.c.o -c /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_60244
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_60244.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_60244.dir/CheckIncludeFile.c.o -o cmTC_60244  -latomic 
+gmake[1]: Leaving directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function pow exists in the m passed with the following output:
+Change Dir: /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake cmTC_976d8/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_976d8.dir/build.make CMakeFiles/cmTC_976d8.dir/build
+gmake[1]: Entering directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_976d8.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pow -std=gnu11 -o CMakeFiles/cmTC_976d8.dir/CheckFunctionExists.c.o -c /usr/share/cmake/Modules/CheckFunctionExists.c
+<command-line>: warning: conflicting types for built-in function ‘pow’; expected ‘double(double,  double)’ [-Wbuiltin-declaration-mismatch]
+/usr/share/cmake/Modules/CheckFunctionExists.c:7:3: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+    7 |   CHECK_FUNCTION_EXISTS(void);
+      |   ^~~~~~~~~~~~~~~~~~~~~
+/usr/share/cmake/Modules/CheckFunctionExists.c:1:1: note: ‘pow’ is declared in header ‘<math.h>’
+  +++ |+#include <math.h>
+    1 | #ifdef CHECK_FUNCTION_EXISTS
+Linking C executable cmTC_976d8
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_976d8.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pow CMakeFiles/cmTC_976d8.dir/CheckFunctionExists.c.o -o cmTC_976d8  -lm -latomic 
+gmake[1]: Leaving directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function clock_gettime exists in the rt passed with the following output:
+Change Dir: /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake cmTC_f3b59/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_f3b59.dir/build.make CMakeFiles/cmTC_f3b59.dir/build
+gmake[1]: Entering directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_f3b59.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=clock_gettime -std=gnu11 -o CMakeFiles/cmTC_f3b59.dir/CheckFunctionExists.c.o -c /usr/share/cmake/Modules/CheckFunctionExists.c
+Linking C executable cmTC_f3b59
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_f3b59.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=clock_gettime CMakeFiles/cmTC_f3b59.dir/CheckFunctionExists.c.o -o cmTC_f3b59  -lrt -latomic -lm 
+gmake[1]: Leaving directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the include file dlfcn.h exists passed with the following output:
+Change Dir: /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake cmTC_1f9c8/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_1f9c8.dir/build.make CMakeFiles/cmTC_1f9c8.dir/build
+gmake[1]: Entering directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_1f9c8.dir/CheckIncludeFile.c.o
+/usr/bin/cc   -std=gnu11 -o CMakeFiles/cmTC_1f9c8.dir/CheckIncludeFile.c.o -c /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_1f9c8
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_1f9c8.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_1f9c8.dir/CheckIncludeFile.c.o -o cmTC_1f9c8  -latomic -lm 
+gmake[1]: Leaving directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function dlopen exists in the dl passed with the following output:
+Change Dir: /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake cmTC_797f1/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_797f1.dir/build.make CMakeFiles/cmTC_797f1.dir/build
+gmake[1]: Entering directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_797f1.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=dlopen -std=gnu11 -o CMakeFiles/cmTC_797f1.dir/CheckFunctionExists.c.o -c /usr/share/cmake/Modules/CheckFunctionExists.c
+Linking C executable cmTC_797f1
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_797f1.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=dlopen CMakeFiles/cmTC_797f1.dir/CheckFunctionExists.c.o -o cmTC_797f1  -ldl -latomic -lm 
+gmake[1]: Leaving directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+
+
+
+Performing C SOURCE FILE Test HAVE_GCC_GET_CPUID succeeded with the following output:
+Change Dir: /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake cmTC_52872/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_52872.dir/build.make CMakeFiles/cmTC_52872.dir/build
+gmake[1]: Entering directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_52872.dir/src.c.o
+/usr/bin/cc -DHAVE_GCC_GET_CPUID  -std=gnu11 -o CMakeFiles/cmTC_52872.dir/src.c.o -c /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_52872
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_52872.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_52872.dir/src.c.o -o cmTC_52872  -latomic -lm -ldl 
+gmake[1]: Leaving directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+
+
+Source file was:
+#include <cpuid.h>
+        int main()
+        {
+            unsigned int eax, ebx, ecx, edx;
+            return __get_cpuid(0, &eax, &ebx, &ecx, &edx);
+        }
+Determining if the posix_memalign exist passed with the following output:
+Change Dir: /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake cmTC_7aa7a/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_7aa7a.dir/build.make CMakeFiles/cmTC_7aa7a.dir/build
+gmake[1]: Entering directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_7aa7a.dir/CheckSymbolExists.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_7aa7a.dir/CheckSymbolExists.c.o -c /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_7aa7a
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7aa7a.dir/link.txt --verbose=1
+/usr/bin/cc -rdynamic CMakeFiles/cmTC_7aa7a.dir/CheckSymbolExists.c.o -o cmTC_7aa7a  -latomic -lm -ldl 
+gmake[1]: Leaving directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+
+
+File /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stdlib.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef posix_memalign
+  return ((int*)(&posix_memalign))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the include file pthread.h exists passed with the following output:
+Change Dir: /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake cmTC_d7744/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_d7744.dir/build.make CMakeFiles/cmTC_d7744.dir/build
+gmake[1]: Entering directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_d7744.dir/CheckIncludeFile.c.o
+/usr/bin/cc   -std=gnu11 -o CMakeFiles/cmTC_d7744.dir/CheckIncludeFile.c.o -c /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_d7744
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d7744.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_d7744.dir/CheckIncludeFile.c.o -o cmTC_d7744  -latomic -lm -ldl 
+gmake[1]: Leaving directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+
+
+
+Performing C SOURCE FILE Test HAVE_PTHREAD succeeded with the following output:
+Change Dir: /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake cmTC_ffa02/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_ffa02.dir/build.make CMakeFiles/cmTC_ffa02.dir/build
+gmake[1]: Entering directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_ffa02.dir/src.c.o
+/usr/bin/cc -DHAVE_PTHREAD  -pthread -std=gnu11 -o CMakeFiles/cmTC_ffa02.dir/src.c.o -c /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_ffa02
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_ffa02.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_ffa02.dir/src.c.o -o cmTC_ffa02  -latomic -lm -ldl 
+gmake[1]: Leaving directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+
+
+Source file was:
+int main(void) { return 0; }
+Determining if the pthread_setschedparam exist passed with the following output:
+Change Dir: /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake cmTC_07267/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_07267.dir/build.make CMakeFiles/cmTC_07267.dir/build
+gmake[1]: Entering directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_07267.dir/CheckSymbolExists.c.o
+/usr/bin/cc   -pthread -o CMakeFiles/cmTC_07267.dir/CheckSymbolExists.c.o -c /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_07267
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_07267.dir/link.txt --verbose=1
+/usr/bin/cc   -pthread -rdynamic CMakeFiles/cmTC_07267.dir/CheckSymbolExists.c.o -o cmTC_07267  -latomic -lm -ldl 
+gmake[1]: Leaving directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+
+
+File /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <pthread.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef pthread_setschedparam
+  return ((int*)(&pthread_setschedparam))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the getopt exist passed with the following output:
+Change Dir: /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake cmTC_2c263/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_2c263.dir/build.make CMakeFiles/cmTC_2c263.dir/build
+gmake[1]: Entering directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_2c263.dir/CheckSymbolExists.c.o
+/usr/bin/cc   -pthread -o CMakeFiles/cmTC_2c263.dir/CheckSymbolExists.c.o -c /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_2c263
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_2c263.dir/link.txt --verbose=1
+/usr/bin/cc   -pthread -rdynamic CMakeFiles/cmTC_2c263.dir/CheckSymbolExists.c.o -o cmTC_2c263  -latomic -lm -ldl 
+gmake[1]: Leaving directory '/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp'
+
+
+File /home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <unistd.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef getopt
+  return ((int*)(&getopt))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
