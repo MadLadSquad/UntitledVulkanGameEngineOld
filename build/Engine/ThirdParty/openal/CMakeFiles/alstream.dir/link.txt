@@ -1,1 +1,0 @@
-/usr/bin/cc -O2 -g -D_DEBUG -rdynamic CMakeFiles/alstream.dir/examples/alstream.c.o -o alstream  -Wl,-rpath,/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/Engine/ThirdParty/openal: -pthread /usr/lib/libsndfile.so libex-common.a libopenal.so.1.21.0 -lrt 
