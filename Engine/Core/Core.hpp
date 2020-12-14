@@ -1,21 +1,23 @@
 // Core.hpp
 // Last update 12/7/2020 by Stanislav Vasilev(Madman10K)
+#pragma once
 
 // Includes
 #include <vector>
 #include <map>
 #include <unordered_map>
-#include <hash_map>
 #include <queue>
 #include <iostream>
 #include <cstdio>
 #include <string>
+#include <algorithm>
 #include <glm/glm.hpp>
 #include <glm/mat3x4.hpp>
 #include <glm/vec3.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <entt.hpp>
+#include <yaml.h>
 
 // Types
 // Array
@@ -41,3 +43,23 @@ using String = const char*;
 #define UVK_LEVEL_ASSET 4
 
 #define UVK_API
+namespace Utility
+{
+    const char* toLower(const char* str)
+    {
+        auto string = static_cast<std::string>(str);
+
+        std::transform(string.begin(), string.end(), string.begin(), ::tolower);
+
+        return string.c_str();
+    }
+
+    const char* toHigher(const char* str)
+    {
+        auto string = static_cast<std::string>(str);
+
+        std::transform(string.begin(), string.end(), string.begin(), ::toupper);
+
+        return string.c_str();
+    }
+}
