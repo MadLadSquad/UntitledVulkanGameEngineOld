@@ -1,1 +1,0 @@
-/usr/bin/cc -O2 -g -D_DEBUG -rdynamic CMakeFiles/alrecord.dir/examples/alrecord.c.o -o alrecord  -Wl,-rpath,/home/i-use-gentoo-btw/Desktop/UntitledVulkanGameEngine/build/Engine/ThirdParty/openal: -pthread libex-common.a libopenal.so.1.21.0 -lrt 
