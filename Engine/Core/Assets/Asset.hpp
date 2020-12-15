@@ -40,7 +40,7 @@ namespace UVK
             }
         }
 
-        AssetReference GetAsset(AssetReference asset, String location)
+        AssetReference GetAsset(String location)
         {
             return Deserialise(location);
         }
@@ -81,7 +81,7 @@ namespace UVK
 
             if (asset["type"])
             {
-                ref.Type = asset["name"].as<int>();
+                ref.Type = std::stoi(asset["type"].as<std::string>());
             }
             else
             {
