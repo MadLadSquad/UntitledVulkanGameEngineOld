@@ -17,7 +17,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <entt.hpp>
-#include <yaml.h>
+#include <yaml-cpp/yaml.h>
+#include <UVKLog.h>
 
 // Types
 // Array
@@ -41,10 +42,11 @@ using String = const char*;
 #define UVK_SHADER_ASSET 2
 #define UVK_TEXTURE_ASSET 3
 #define UVK_LEVEL_ASSET 4
-
 #define UVK_API
-namespace Utility
+
+class Utility
 {
+public:
     const char* toLower(const char* str)
     {
         auto string = static_cast<std::string>(str);
@@ -62,4 +64,4 @@ namespace Utility
 
         return string.c_str();
     }
-}
+};

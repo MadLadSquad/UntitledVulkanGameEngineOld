@@ -20,8 +20,10 @@ include_directories(Engine/ThirdParty/)
 include_directories(Engine/ThirdParty/glew/include)
 include_directories(Engine/ThirdParty/yaml/include)
 include_directories(Engine/ThirdParty/yaml/include/yaml-cpp)
+include_directories(Engine/ThirdParty/uvklog/include)
 
-add_executable(UVKGame main.cpp Engine/Audio/AudioRenderer.cpp Engine/Audio/AudioRenderer.hpp Engine/Core/Core.hpp Engine/ThirdParty/EnTT/entt.hpp Engine/Core/Assets/Asset.hpp Engine/GameFramework/Actors/AActor.hpp Engine/GameFramework/Actors/APawn.hpp Engine/GameFramework/GameplayClasses/GameMode.hpp Engine/GameFramework/GameplayClasses/GameInstance.hpp Engine/Engine.hpp Engine/GameFramework/Components/Components.hpp Engine/GameFramework/GameplayClasses/Level/Level.hpp Engine/GameFramework/GameplayClasses/GameState.hpp Engine/GameFramework/GameplayClasses/PlayerController.hpp Engine/GameFramework/GameplayClasses/PlayerState.hpp Engine/GameFramework/GameplayClasses/Level/Level.cpp Engine/Renderer/OpenGL/GLRenderer.cpp Engine/Renderer/OpenGL/GLRenderer.hpp)
+
+add_executable(UVKGame main.cpp Engine/Audio/AudioRenderer.cpp Engine/Audio/AudioRenderer.hpp Engine/Core/Core.hpp Engine/ThirdParty/EnTT/entt.hpp Engine/Core/Assets/Asset.hpp Engine/GameFramework/Actors/AActor.hpp Engine/GameFramework/Actors/APawn.hpp Engine/GameFramework/GameplayClasses/GameMode.hpp Engine/GameFramework/GameplayClasses/GameInstance.hpp Engine/Engine.hpp Engine/GameFramework/Components/Components.hpp Engine/GameFramework/GameplayClasses/Level/Level.hpp Engine/GameFramework/GameplayClasses/GameState.hpp Engine/GameFramework/GameplayClasses/PlayerController.hpp Engine/GameFramework/GameplayClasses/PlayerState.hpp Engine/GameFramework/GameplayClasses/Level/Level.cpp Engine/Renderer/OpenGL/GLRenderer.cpp Engine/Renderer/OpenGL/GLRenderer.hpp Engine/Core/Registry.hpp)
 set_target_properties(UVKGame PROPERTIES LINKER_LANGUAGE CXX)
 
 if (WIN32)

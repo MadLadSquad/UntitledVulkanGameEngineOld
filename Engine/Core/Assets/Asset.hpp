@@ -7,8 +7,8 @@ namespace UVK
 {
     UVK_API struct AssetReference
     {
-        String Name;
-        String Location;
+        std::string Name;
+        std::string Location;
         int Type;
     };
 
@@ -21,16 +21,22 @@ namespace UVK
             {
                 case 0:
                     Serialise(type, location, name);
+                    break;
                 case 1:
                     Serialise(type, location, name);
+                    break;
                 case 2:
                     Serialise(type, location, name);
+                    break;
                 case 3:
                     Serialise(type, location, name);
+                    break;
                 case 4:
-                    std::cout << "You are trying to serialise a level! Please use the level class instead of the asset class!" << std::endl;
+                    Log.ConsoleLog("You are trying to serialise a level! Please use the level class instead of the asset class!", ERROR);
+                    break;
                 default:
-                    std::cout << "You are trying to serialise an unknown asset type! Please use another asset type that is part of the standard!" << std::endl;
+                    Log.ConsoleLog("You are trying to serialise an unknown asset type! Please use another asset type that is part of the standard!", ERROR);
+                    break;
             }
         }
 
@@ -43,12 +49,18 @@ namespace UVK
         void Serialise(int type, String location, String name)
         {
             YAML::Emitter out;
-
             out << YAML::BeginMap;
 
             out << YAML::Key << "type" << YAML::Value << type;
+            out << YAML::Key << "name" << YAML::Value << name;
+            out << YAML::Key << "location" << YAML::Value << location;
 
             out << YAML::EndMap;
+
+            std::ofstream assetOut(static_cast<std::string>(location)+static_cast<std::string>(name)+".yaml");
+            assetOut << out.c_str();
+
+            assetOut.close();
         }
 
         AssetReference Deserialise(String location)
@@ -59,11 +71,11 @@ namespace UVK
 
             if (asset["name"])
             {
-                ref.Name = asset["name"].as<const char*>();
+                ref.Name = asset["name"].as<std::string>();
             }
             else
             {
-                std::cout << "Invalid asset format" << std::endl;
+                Log.ConsoleLog("Invalid asset format", ERROR);
                 return ref;
             }
 
@@ -73,17 +85,17 @@ namespace UVK
             }
             else
             {
-                std::cout << "Invalid asset format" << std::endl;
+                Log.ConsoleLog("Invalid asset format", ERROR);
                 return ref;
             }
 
             if (asset["location"])
             {
-                ref.Location = asset["location"].as<const char*>();
+                ref.Location = asset["location"].as<std::string>();
             }
             else
             {
-                std::cout << "Invalid asset format" << std::endl;
+                Log.ConsoleLog("Invalid asset format", ERROR);
                 return ref;
             }
 
