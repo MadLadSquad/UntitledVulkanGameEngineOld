@@ -19,3 +19,6 @@
 [submodule "UVKBuildTool"]
 	path = UVKBuildTool
 	url = https://github.com/MadLadSquad/UVKBuildTool.git
+[submodule "Engine/ThirdParty/uvklog"]
+	path = Engine/ThirdParty/uvklog
+	url = https://github.com/MadLadSquad/UVKLog.git
