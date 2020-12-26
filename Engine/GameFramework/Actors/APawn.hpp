@@ -1,15 +1,15 @@
 // Core.hpp
 // Last update 12/8/2020 by Stanislav Vasilev(Madman10K)
 #pragma once
-#include "AActor.hpp"
+#include <Core.hpp>
 
 namespace UVK
 {
-    UVK_API class APawn : AActor
+    UVK_API class APawn
     {
     public:
-        virtual void BeginPlay() override;
-        virtual void EndPlay() override;
-        virtual void Tick(float DeltaTime) override;
+        virtual void BeginPlay() = 0;
+        virtual void EndPlay() = 0;
+        virtual void Tick(float DeltaTime) = 0;
     };
 }

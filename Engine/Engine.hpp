@@ -5,7 +5,6 @@
 #pragma once
 #include <Core.hpp>
 #include "Core/Assets/Asset.hpp"
-#include "GameFramework/Actors/AActor.hpp"
 #include "GameFramework/Actors/APawn.hpp"
 #include "GameFramework/GameplayClasses/GameInstance.hpp"
 #include "GameFramework/GameplayClasses/GameMode.hpp"

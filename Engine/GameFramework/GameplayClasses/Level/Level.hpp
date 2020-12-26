@@ -4,30 +4,28 @@
 #include "../GameMode.hpp"
 #include "../GameInstance.hpp"
 #include "../../Core/Assets/Asset.hpp"
-
+#include "../../Components/Components.hpp"
+#include "../../../Core/Registry.hpp"
 
 namespace UVK
 {
+
     class UVK_API Level
     {
     public:
-        void Serialise(String output);
-        void Deserialise(AssetReference assetRef);
+        virtual void Tick(float DeltaTime) = 0;
+        virtual void BeginPlay() = 0;
+        virtual void EndPlay() = 0;
 
-        void SetGameInstance(GameInstance* instance)
-        {
-            gameInstance = instance;
-        }
+        void SaveEntity(YAML::Emitter& out, Actor act);
+        void Save(String output);
+        void Open(AssetReference assetRef);
 
-        void SetGameMode(GameMode* mode)
-        {
-            gameMode = mode;
-        }
+        void SetGameInstance(GameInstance* instance){ gameInstance = instance;}
+        void SetGameMode(GameMode* mode){ gameMode = mode; }
+        GameMode& GetGameMode(){ return *gameMode; }
 
-        GameMode& GetGameMode()
-        {
-            return *gameMode;
-        }
+
 
     private:
         GameInstance* gameInstance;

@@ -5,7 +5,7 @@
 #define GLEW_STATIC
 #include <GL/glew.h>
 #include "../glfw/include/GLFW/glfw3.h"
-
+#include "UVKLog.h"
 
 
 namespace UVK

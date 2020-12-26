@@ -11,6 +11,8 @@
 #include <cstdio>
 #include <string>
 #include <algorithm>
+#include <thread>
+#include <chrono>
 #include <glm/glm.hpp>
 #include <glm/mat3x4.hpp>
 #include <glm/vec3.hpp>
@@ -28,6 +30,8 @@ using TArray = std::vector<T>;
 typedef glm::mat4 Model;
 // Vector3
 typedef glm::vec3 FVector;
+// Vector4
+typedef glm::vec4 FVector4;
 // Entity Pool owns and manages all the entities
 typedef entt::registry EntityPool;
 // Entity
@@ -65,3 +69,8 @@ public:
         return string.c_str();
     }
 };
+
+
+
+
+

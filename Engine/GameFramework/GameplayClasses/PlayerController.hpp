@@ -12,14 +12,14 @@ namespace UVK
         virtual void BeginPlay() = 0;
         virtual void Tick(float DeltaTime) = 0;
         virtual void EndPlay() = 0;
-        void Possess(APawn pawn)
+        void Possess(APawn* pawn)
         {
-            currentPawn = &pawn;
+            currentPawn = pawn;
         }
 
-        void SetStarterPawn(APawn pawn)
+        void SetStarterPawn(APawn* pawn)
         {
-            currentPawn = &pawn;
+            currentPawn = pawn;
         }
     private:
         APawn* currentPawn;
