@@ -4,11 +4,12 @@ project(UVKGame)
 set(CMAKE_CXX_STANDARD 17)
 
 find_package(OpenGL REQUIRED)
+#find_package(OpenAL REQUIRED)
 #find_package(GLEW REQUIRED)
 
 add_subdirectory(Engine/ThirdParty/glm/)
 add_subdirectory(Engine/ThirdParty/glfw/)
-add_subdirectory(Engine/ThirdParty/openal/)
+#add_subdirectory(Engine/ThirdParty/openal/)
 add_subdirectory(Engine/ThirdParty/yaml/)
 
 link_directories(Engine/ThirdParty/glew/lib)
@@ -23,11 +24,16 @@ include_directories(Engine/ThirdParty/yaml/include/yaml-cpp)
 include_directories(Engine/ThirdParty/logger/)
 
 
-add_executable(UVKGame main.cpp Engine/Audio/AudioRenderer.cpp Engine/Audio/AudioRenderer.hpp Engine/Core/Core.hpp Engine/ThirdParty/EnTT/entt.hpp Engine/Core/Assets/Asset.hpp Engine/GameFramework/Actors/APawn.hpp Engine/GameFramework/GameplayClasses/GameMode.hpp Engine/GameFramework/GameplayClasses/GameInstance.hpp Engine/Engine.hpp Engine/GameFramework/Components/Components.hpp Engine/GameFramework/GameplayClasses/Level/Level.hpp Engine/GameFramework/GameplayClasses/GameState.hpp Engine/GameFramework/GameplayClasses/PlayerController.hpp Engine/GameFramework/GameplayClasses/PlayerState.hpp Engine/GameFramework/GameplayClasses/Level/Level.cpp Engine/Renderer/OpenGL/GLRenderer.cpp Engine/Renderer/OpenGL/GLRenderer.hpp Engine/ThirdParty/logger/UVKLog.h main.cpp Engine/Core/Registry.hpp)
+add_executable(UVKGame main.cpp Engine/Audio/AudioRenderer.cpp Engine/Audio/AudioRenderer.hpp Engine/Core/Core.hpp Engine/ThirdParty/EnTT/entt.hpp Engine/Core/Assets/Asset.hpp Engine/GameFramework/Actors/AActor.hpp Engine/GameFramework/Actors/APawn.hpp Engine/GameFramework/GameplayClasses/GameMode.hpp Engine/GameFramework/GameplayClasses/GameInstance.hpp Engine/Engine.hpp Engine/GameFramework/Components/Components.hpp Engine/GameFramework/GameplayClasses/Level/Level.hpp Engine/GameFramework/GameplayClasses/GameState.hpp Engine/GameFramework/GameplayClasses/PlayerController.hpp Engine/GameFramework/GameplayClasses/PlayerState.hpp Engine/GameFramework/GameplayClasses/Level/Level.cpp Engine/Renderer/OpenGL/GLRenderer.cpp Engine/Renderer/OpenGL/GLRenderer.hpp Engine/ThirdParty/logger/UVKLog.h main.cpp)
 set_target_properties(UVKGame PROPERTIES LINKER_LANGUAGE CXX)
 
 if (WIN32)
-    target_link_libraries(UVKGame glfw opengl32 OpenAL32 GLEW yaml-cpp)
+    #target_link_libraries(UVKGame pthread glfw opengl32 OpenAL glew32 yaml-cpp)
+    if (MINGW)
+	target_link_libraries(UVKGame pthread glfw opengl32 glew32 yaml-cpp)
+    else()
+        target_link_libraries(UVKGame pthread glfw OpenAL opengl32 glew32 yaml-cpp)
+    endif()
 else()
     target_link_libraries(UVKGame glfw OpenGL GLEW OpenAL yaml-cpp)
 endif ()
