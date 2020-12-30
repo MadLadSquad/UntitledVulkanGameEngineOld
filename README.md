@@ -32,7 +32,7 @@ A game engine that is simple to develop for! The UntitledVulkanGameEngine is a f
 - Scripting language
 
 ## Learning
-You can start learning the engine from the source code or you can go to the [wiki](https://github.com/Madman10K/UntitledVulkanGameEngine-2.0/wiki) where you can go through a tutorial and after that look at the documentation
+You can start learning the engine from the source code or you can go to the [wiki](https://github.com/Madman10K/UntitledVulkanGameEngine/wiki) where you can go through a tutorial and after that look at the documentation
 ## Development
 Follow [the trello](https://trello.com/b/0upjsxT0/untitledvukangameengine2) if you want to see how it progresses 
 ## Open source libraries and SDKs we use
