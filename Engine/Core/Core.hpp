@@ -18,7 +18,7 @@
 #include <glm/vec3.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include <entt.hpp>
+#include "../ThirdParty/entt/src/entt/entt.hpp"
 #include <yaml-cpp/yaml.h>
 #include <UVKLog.h>
 

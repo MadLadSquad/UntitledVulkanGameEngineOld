@@ -22,3 +22,6 @@
 [submodule "Engine/ThirdParty/uvklog"]
 	path = Engine/ThirdParty/uvklog
 	url = https://github.com/MadLadSquad/UVKLog.git
+[submodule "Engine/ThirdParty/entt"]
+	path = Engine/ThirdParty/entt
+	url = https://github.com/skypjack/entt.git

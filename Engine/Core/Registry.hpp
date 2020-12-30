@@ -6,8 +6,7 @@ namespace Registry
     static EntityPool pool;
     static void CreateActor(String name)
     {
-        Actor act;
-        act = pool.create();
+        Actor act = pool.create();
         pool.emplace<UVK::CoreComponent>(act, name);
 
         registry.insert(std::make_pair(name, act));
@@ -16,7 +15,7 @@ namespace Registry
     template<typename T>
     static auto& GetComponent(Actor act)
     {
-        static auto& a = pool.get<T>(act);
+        auto& a = pool.get<T>(act);
         return a;
     }
 

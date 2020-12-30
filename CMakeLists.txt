@@ -10,10 +10,11 @@ add_subdirectory(Engine/ThirdParty/glm/)
 add_subdirectory(Engine/ThirdParty/glfw/)
 add_subdirectory(Engine/ThirdParty/openal/)
 add_subdirectory(Engine/ThirdParty/yaml/)
+add_subdirectory(Engine/ThirdParty/entt/)
 
 link_directories(Engine/ThirdParty/glew/lib)
 
-include_directories(Engine/ThirdParty/EnTT)
+include_directories(Engine/ThirdParty/entt/src/entt)
 include_directories(Engine/Core/)
 include_directories(Engine/ThirdParty/glm)
 include_directories(Engine/ThirdParty/)
