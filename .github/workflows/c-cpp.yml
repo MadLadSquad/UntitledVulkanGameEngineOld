@@ -1,0 +1,46 @@
+name: C/C++ CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Get dependencies
+      shell: bash
+      run: sudo apt-get install x11-xserver-utils libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev gcc make g++ libxmu-dev libxi-dev libgl-dev
+
+    - name: Checkout submodules
+      shell: bash
+      run: |
+          git submodule sync --recursive
+          git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
+    - name: configure
+      shell: bash
+      run: ./configure
+    - name: Compile GLEW
+      shell: bash
+      run: | 
+        make Engine/ThirdParty/glew/auto
+        make Engine/ThirdParyy/glew
+    - name: Make build directory
+      shell: bash
+      run: mkdir build && cd build
+    - name: Create project
+      shell: bash
+      run: git clone https://github.com/MadLadSquad/UVKSampleProject.git 
+    - name: Extractg project
+      run: cp UVKSampleProject/*.* . -r && cp UVKSampleProject/*/ . -r
+    - name: Run CMake
+      shell: bash
+      run: cmake ..
+    - name: Make
+      shell: bash
+      run: make 
