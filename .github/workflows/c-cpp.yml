@@ -22,9 +22,9 @@ jobs:
       run: |
           git submodule sync --recursive
           git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
-    - name: configure
-      shell: bash
-      run: ./configure
+#    - name: configure
+#      shell: bash
+#      run: ./configure
     - name: Compile GLEW
       shell: bash
       run: | 
