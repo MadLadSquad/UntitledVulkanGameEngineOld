@@ -30,14 +30,14 @@ jobs:
       run: | 
         cd Engine/ThirdParty/glew/auto && make && cd ../../../../
         cd Engine/ThirdParty/glew && make && cd ../../../../
-    - name: Make build directory
-      shell: bash
-      run: mkdir build && cd build
     - name: Create project
       shell: bash
       run: git clone https://github.com/MadLadSquad/UVKSampleProject.git 
     - name: Extractg project
       run: cp UVKSampleProject/*.* . -r && cp UVKSampleProject/*/ . -r
+    - name: Make build directory
+      shell: bash
+      run: mkdir build && cd build
     - name: Run CMake
       shell: bash
       run: cmake ..
