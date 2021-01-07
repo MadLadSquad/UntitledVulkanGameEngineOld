@@ -7,7 +7,7 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
+  Linux:
 
     runs-on: ubuntu-latest
 
@@ -36,17 +36,16 @@ jobs:
     - name: Make build directory and cmake
       shell: bash
       run: ls && mkdir build && cd build && cmake .. -G "Unix Makefiles" && make
-  windows:
+  Windows:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v2
     - name: Checkout submodules
-      shell: bash
       run: |
           git submodule sync --recursive
           git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
     - name: Compile GLEW
-      run: cd Engine/ThirdParty/glew/auto && mingw32-make && cd ../ && mingw32-make && cd ../../../
+      run: cd Engine/ThirdParty/glew/auto && mingw32-make +nostdlib && cd ../ && mingw32-make +nostdlib && cd ../../../
     - name: Create project
       run: git clone https://github.com/MadLadSquad/UVKSampleProject.git 
     - name: Extract project
@@ -54,6 +53,5 @@ jobs:
     - name: Generated generated files
       run: cd UVKBuildTool/ && mkdir build && cd build && cmake -G "Unix Makefiles" .. && mingw32-make && UVKBuildTool
     - name: Make build directory and cmake
-      shell: bash
       run: ls && mkdir build && cd build && cmake .. -G "Unix Makefiles" && mingw32-make
 
