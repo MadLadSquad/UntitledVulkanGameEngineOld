@@ -28,8 +28,9 @@ jobs:
     - name: BuildGlew
       shell: bash
       run: | 
-        make Engine/ThirdParty/glew/auto/
-        make Engine/ThirdParty/glew/
+        sudo make install /Engine/ThirdParty/glew/ 
+        make /Engine/ThirdParty/glew/auto/
+        make /Engine/ThirdParty/glew/
     - name: CreateProject
       run: git clone https://github.com/MadLadSquad/UVKSampleProject.git 
     - name: Createproject2
