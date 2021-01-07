@@ -16,6 +16,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Checkout submodules # checkout rest
+      shell: bash
+      run: |
+          git submodule sync --recursive
+          git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
 
     - name: CreateProject
       run: git clone https://github.com/MadLadSquad/UVKSampleProject.git 
