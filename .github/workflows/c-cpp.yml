@@ -28,8 +28,8 @@ jobs:
     - name: Compile GLEW
       shell: bash
       run: | 
-        make Engine/ThirdParty/glew/auto
-        make Engine/ThirdParyy/glew
+        cd Engine/ThirdParty/glew/auto && make
+        cd Engine/ThirdParyy/glew && make
     - name: Make build directory
       shell: bash
       run: mkdir build && cd build
