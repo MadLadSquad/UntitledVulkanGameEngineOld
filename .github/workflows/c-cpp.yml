@@ -45,7 +45,7 @@ jobs:
     - name: Fix GLEW errors
       run: del Engine/ThirdParty/glew/config/Makefile.mingw && copy Helpful/Makefile.mingw Engine/ThirdParty/glew/config/
     - name: Compile GLEW
-      run: cd Engine/ThirdParty/glew/auto && mingw32-make && cd ../ && mingw32-make && cd ../../../
+      run: cd Engine/ThirdParty/glew/ && cmake-testbuild.sh
     - name: Create project
       run: git clone https://github.com/MadLadSquad/UVKSampleProject.git 
     - name: Extract project
