@@ -18,7 +18,7 @@ jobs:
     - uses: actions/checkout@v2
     - name: GetDeps
       shell: bash
-      run: sudo apt-get install x11-xserver-utils randr
+      run: sudo apt-get install x11-xserver-utils libxrandr-dev
 
     - name: Checkout submodules
       shell: bash
