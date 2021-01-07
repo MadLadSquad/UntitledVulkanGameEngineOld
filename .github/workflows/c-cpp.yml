@@ -35,7 +35,4 @@ jobs:
       run: cp UVKSampleProject/*.* . -r && cp UVKSampleProject/*/ . -r
     - name: Make build directory and cmake
       shell: bash
-      run: ls && mkdir build && cd build && cmake .. -G "Unix Makefiles"
-    - name: Make
-      shell: bash
-      run: make 
+      run: ls && mkdir build && cd build && cmake .. -G "Unix Makefiles" && make
