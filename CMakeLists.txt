@@ -23,6 +23,14 @@ include_directories(Engine/ThirdParty/yaml/include)
 include_directories(Engine/ThirdParty/yaml/include/yaml-cpp)
 include_directories(Engine/ThirdParty/logger/)
 
+if (WIN32)
+    execute_process(COMMAND cd /Engine/ThirdParty/glew/auto/ && mingw32-make)
+else()
+    execute_process(COMMAND make ../Engine/ThirdParty/glew/auto/)
+    execute_process(COMMAND make ../Engine/ThirdParty/glew/)
+endif ()
+
+
 file(GLOB_RECURSE UVKGameSrc "Source/*.cpp" "Source/*.hpp" "Engine/Audio/*.cpp" "Engine/Audio/*.hpp" "Engine/Core/*.cpp" "Engine/Core/*.hpp" "Engine/Renderer/*.hpp" "Engine/Renderer/*.cpp" "Engine/GameFramework/*.cpp" "Engine/GameFramework/*.hpp")
 add_executable(UVKGame #main.cpp Engine/Audio/AudioRenderer.cpp Engine/Audio/AudioRenderer.hpp Engine/Core/Core.hpp Engine/GameFramework/Actors/APawn.hpp Engine/GameFramework/GameplayClasses/GameMode.hpp Engine/GameFramework/GameplayClasses/GameInstance.hpp Engine/Engine.hpp Engine/GameFramework/Components/Components.hpp Engine/GameFramework/GameplayClasses/Level/Level.hpp Engine/GameFramework/GameplayClasses/GameState.hpp Engine/GameFramework/GameplayClasses/PlayerController.hpp Engine/GameFramework/GameplayClasses/PlayerState.hpp Engine/GameFramework/GameplayClasses/Level/Level.cpp Engine/Renderer/OpenGL/GLRenderer.cpp Engine/Renderer/OpenGL/GLRenderer.hpp Engine/ThirdParty/logger/UVKLog.h main.cpp Engine/Core/Defines.hpp Engine/Core/Utility.hpp
         ${UVKGameSrc} Engine/ThirdParty/logger/UVKLog.h main.cpp)
