@@ -35,6 +35,19 @@ jobs:
       # We'll use this as our working directory for all subsequent commands
       run: cmake -E make_directory ${{github.workspace}}/build
 
+    
+
+    - name: BuildGlew1
+      shell: bash
+      run: | 
+        make Engine/ThirdParty/glew/auto
+        make Engine/ThirdParty/glew
+    - name: Build
+      working-directory: ${{github.workspace}}/build
+      shell: bash
+      # Execute the build.  You can specify a specific target with "--target <NAME>"
+      run: cmake --build . --config $BUILD_TYPE
+
     - name: Configure CMake
       # Use a bash shell so we can use the same syntax for environment variable
       # access regardless of the host operating system
@@ -44,19 +57,6 @@ jobs:
       # and build directories, but this is only available with CMake 3.13 and higher.  
       # The CMake binaries on the Github Actions machines are (as of this writing) 3.12
       run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE
-
-    - name: BuildGlew1
-      shell: bash
-      run: make Engine/ThirdParty/glew/auto
-    - name: BuildGlew2
-      shell: bash
-      run: make Engine/ThirdParty/glew
-    - name: Build
-      working-directory: ${{github.workspace}}/build
-      shell: bash
-      # Execute the build.  You can specify a specific target with "--target <NAME>"
-      run: cmake --build . --config $BUILD_TYPE
-
     - name: Test
       working-directory: ${{github.workspace}}/build
       shell: bash
