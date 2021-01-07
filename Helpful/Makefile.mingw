@@ -14,3 +14,4 @@ LIB.DEVLNK    = lib$(NAME).dll.a   # for mingw this is the dll import lib
 LIB.SHARED    = $(NAME).dll
 LIB.STATIC    = lib$(NAME).a       # the static lib will be broken
 LDFLAGS.SO    = -shared -Wl,-soname,$(LIB.SONAME) -Wl,--out-implib,lib/$(LIB.DEVLNK)
+LDFLAGS.EXTRA += -nostdlib
