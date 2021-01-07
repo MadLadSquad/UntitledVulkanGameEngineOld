@@ -29,7 +29,7 @@ jobs:
       shell: bash
       run: | 
         cd Engine/ThirdParty/glew/auto && make
-        cd Engine/ThirdParyy/glew && make
+        cd Engine/ThirdParty/glew && make
     - name: Make build directory
       shell: bash
       run: mkdir build && cd build
