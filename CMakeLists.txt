@@ -42,3 +42,4 @@ if (WIN32)
 else()
     target_link_libraries(UVKGame glfw OpenGL GLEW OpenAL yaml-cpp)
 endif ()
+

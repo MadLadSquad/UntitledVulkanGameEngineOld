@@ -5,13 +5,12 @@
 #include <ios>
 #include <chrono>
 #include <ctime>
+#include <functional>
 #define LogColGreen  "\x1B[32m"
 #define LogColYellow "\x1B[33m"
 #define LogColRed "\x1B[31m"
 #define LogColWhite  "\x1B[37m"
 #define LogColBlue  "\x1B[34m"
-
-typedef std::fstream LogFile;
 
 enum LogType
 {
@@ -54,6 +53,11 @@ public:
                     std::cout << " " << elem;
                 }
                 std::cout << std::endl;
+                if (bUsesTermination)
+                {
+                    terminator();
+                }
+
                 break;
             case NOTE:
                 std::cout << LogColBlue << " " << ctime(&CurrentTime) << " Note: " << message;
@@ -87,6 +91,10 @@ public:
                 break;
             case ERROR:
                 std::cout << LogColRed << " " << ctime(&CurrentTime) << " Error: " << message << std::endl;
+                if (bUsesTermination)
+                {
+                    terminator();
+                }
                 break;
             case NOTE:
                 std::cout << LogColBlue << " " << ctime(&CurrentTime) << " Note: " << message << std::endl;
@@ -110,6 +118,10 @@ public:
                 break;
             case ERROR:
                 file << "Error: " << " " << ctime(&CurrentTime) << message << std::endl;
+                if (bUsesTermination)
+                {
+                    terminator();
+                }
                 break;
             case NOTE:
                 file << "Note: " << " " << ctime(&CurrentTime) << message << std::endl;
@@ -149,6 +161,11 @@ public:
                     file << " " << elem;
                 }
                 file << std::endl;
+
+                if (bUsesTermination)
+                {
+                    terminator();
+                }
                 break;
             case NOTE:
                 file << "Note: " << " " << ctime(&CurrentTime) << message;
@@ -179,9 +196,16 @@ public:
         file.close();
     }
 
-private:
+    void SetTerminationFunction(std::function<void(void)> func)
+    {
+        bUsesTermination = true;
+        terminator = func;
+    }
 
+private:
+    bool bUsesTermination;
+    std::function<void(void)> terminator;
     std::ofstream file;
 };
 
-static UVKLog Log;
+inline UVKLog Log;
