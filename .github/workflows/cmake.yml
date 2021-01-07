@@ -27,10 +27,7 @@ jobs:
           git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
     - name: BuildGlew
       shell: bash
-      run: | 
-        sudo make install /Engine/ThirdParty/glew/ 
-        make /Engine/ThirdParty/glew/auto/
-        make /Engine/ThirdParty/glew/
+      run: make /Engine/ThirdParty/glew/auto/ && make /Engine/ThirdParty/glew/
     - name: CreateProject
       run: git clone https://github.com/MadLadSquad/UVKSampleProject.git 
     - name: Createproject2
