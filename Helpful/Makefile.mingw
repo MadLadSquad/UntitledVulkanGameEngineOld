@@ -6,7 +6,6 @@ LN :=
 LDFLAGS.GL = -lopengl32 -lgdi32 -luser32 -lkernel32
 LDFLAGS.EXTRA = -L/mingw/lib
 CFLAGS.EXTRA  += -fno-builtin -fno-stack-protector
-LDFLAGS.EXTRA += -nostdlib
 WARN = -Wall -W
 POPT = -O2
 BIN.SUFFIX = .exe
