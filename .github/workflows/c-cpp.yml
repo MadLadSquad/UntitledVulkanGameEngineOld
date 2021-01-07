@@ -27,20 +27,15 @@ jobs:
 #      run: ./configure
     - name: Compile GLEW
       shell: bash
-      run: | 
-        cd Engine/ThirdParty/glew/auto && make && cd ../../../../
-        cd Engine/ThirdParty/glew && make && cd ../../../../
+      run: cd Engine/ThirdParty/glew/auto && make && cd ../ && make && cd ../../../ && ls
     - name: Create project
       shell: bash
       run: git clone https://github.com/MadLadSquad/UVKSampleProject.git 
     - name: Extractg project
       run: cp UVKSampleProject/*.* . -r && cp UVKSampleProject/*/ . -r
-    - name: Make build directory
+    - name: Make build directory and cmake
       shell: bash
-      run: mkdir build && cd build
-    - name: Run CMake
-      shell: bash
-      run: cmake ..
+      run: mkdir build && cd build && cmake ..
     - name: Make
       shell: bash
       run: make 
