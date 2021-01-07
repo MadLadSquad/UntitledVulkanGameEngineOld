@@ -14,6 +14,7 @@ add_subdirectory(Engine/ThirdParty/entt/)
 
 link_directories(Engine/ThirdParty/glew/lib)
 
+include_directories(.)
 include_directories(Engine/)
 include_directories(Engine/ThirdParty/entt/src/entt)
 include_directories(Engine/Core/)
