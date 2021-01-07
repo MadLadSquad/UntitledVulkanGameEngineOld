@@ -3,7 +3,6 @@
 #include <Core.hpp>
 #include "../GameMode.hpp"
 #include "../GameInstance.hpp"
-#include "../../Core/Assets/Asset.hpp"
 #include "../../Components/Components.hpp"
 #include "../../../Core/Registry.hpp"
 
@@ -18,15 +17,12 @@ namespace UVK
         virtual void EndPlay() = 0;
 
         void SaveEntity(YAML::Emitter& out, Actor act);
-        void Save(String output);
-        void Open(AssetReference assetRef);
+        void Save(String output, String name);
+        void Open(String file);
 
         void SetGameInstance(GameInstance* instance){ gameInstance = instance;}
         void SetGameMode(GameMode* mode){ gameMode = mode; }
         GameMode& GetGameMode(){ return *gameMode; }
-
-
-
     private:
         GameInstance* gameInstance;
         GameMode* gameMode;

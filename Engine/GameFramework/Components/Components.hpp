@@ -7,30 +7,17 @@ namespace UVK
 {
     UVK_API struct CoreComponent
     {
-        String name;
-    };
-
-    struct TransformComponent
-    {
-        glm::mat4 Translate(glm::mat4* model, FVector translation)
-        {
-            return glm::translate(*model, translation);
-        }
-
-        glm::mat4 Rotate(glm::mat4* model, float degrees, FVector rotation)
-        {
-            return glm::rotate(*model, glm::radians(degrees), rotation);
-        }
-
-        glm::mat4 Scale(glm::mat4* model, FVector scale)
-        {
-            return glm::scale(*model, scale);
-        }
+        std::string name;
+        uint64_t id;
     };
 
     UVK_API struct MeshComponent
     {
-
+        glm::mat4 model;
+        FVector translation;
+        FVector scale;
+        FVector rotation;
+        float degrees;
     };
 
     UVK_API struct PointLightComponent
@@ -44,6 +31,11 @@ namespace UVK
     };
 
     UVK_API struct DirectionalLightComponent
+    {
+
+    };
+
+    struct DirectionalAudioComponent
     {
 
     };

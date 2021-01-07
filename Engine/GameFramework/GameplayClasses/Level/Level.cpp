@@ -3,10 +3,11 @@
 
 #include "Level.hpp"
 
+// Creates bindings for a FVector
 namespace YAML {
 
     template<>
-    struct convert<glm::vec3>
+    struct convert<FVector>
     {
         static Node encode(const FVector& rhs)
         {
@@ -58,12 +59,6 @@ namespace YAML {
     };
 
 }
-
-void UVK::Level::Save(String output)
-{
-
-}
-
 // Operator overloads for future transform component
 YAML::Emitter& operator<<(YAML::Emitter& out, const FVector& vect)
 {
@@ -71,7 +66,6 @@ YAML::Emitter& operator<<(YAML::Emitter& out, const FVector& vect)
     out << YAML::BeginSeq << vect.x << vect.y << vect.z << YAML::EndSeq;
     return out;
 }
-
 YAML::Emitter& operator<<(YAML::Emitter& out, const FVector4& vect)
 {
     out << YAML::Flow;
@@ -79,31 +73,63 @@ YAML::Emitter& operator<<(YAML::Emitter& out, const FVector4& vect)
     return out;
 }
 
-void UVK::Level::Open(AssetReference assetRef)
-{
-    if (assetRef.Type == 4)
-    {
-        Log.ConsoleLog("A level asset was passed", NOTE);
-
-        YAML::Node file = YAML::LoadFile(assetRef.Location);
-
-        if (file["name"])
-        {
-            assetRef.Name = file["name"].as<std::string>();
-        }
-
-        if (true)
-        {
-
-        }
-    }
-    else
-    {
-        Log.ConsoleLog("An invalid asset type was passed as level. If you are a user contact the developer of the application about this. If you are a developer use the ASSET_TYPE macros instead of plane integers and monitor what asset types you are passing to the given asset function!", ERROR);
-    }
-}
-
 void UVK::Level::SaveEntity(YAML::Emitter& out, Actor act)
 {
+    out << YAML::BeginMap;
 
+    if (pool.has<CoreComponent>(act))
+    {
+        auto& a = pool.get<CoreComponent>(act);
+        out << YAML::Key << "actor" << YAML::Value << a.name;
+        out << YAML::Key << "id" << YAML::Value << a.id;
+    }
+    out << YAML::EndMap;
+}
+
+void UVK::Level::Save(const char* location, String name)
+{
+    YAML::Emitter out;
+    out << YAML::BeginMap;
+
+    out << YAML::Key << "name" << YAML::Value << name;
+    out << YAML::Key << "actors" << YAML::Value << YAML::BeginSeq;
+    pool.each([&](auto entityID)
+    {
+        SaveEntity(out, entityID);
+    });
+    out << YAML::EndSeq;
+    out << YAML::EndMap;
+
+    std::ofstream fileout(location);
+    fileout << out.c_str();
+    //fileout.close();
+}
+
+void UVK::Level::Open(const char* location)
+{
+    pool.clear();
+    Log.ConsoleLog("Opening file", NOTE);
+    auto out = YAML::LoadFile(location);
+    Log.ConsoleLogComplex<const char*>("Opened file with name:", SUCCESS, { out["name"].as<std::string>().c_str() });
+    auto entities = out["actors"];
+    if (entities)
+    {
+        Log.ConsoleLog("Iterating entities", NOTE);
+        for (auto entity : entities)
+        {
+            auto name = entity["actor"].as<std::string>();
+
+            auto transform = entity["transform"];
+            auto id = entity["id"];
+            auto translate = transform["translation"];
+            auto act = pool.create();
+            if (id)
+            {
+                auto& a = pool.emplace<CoreComponent>(act);
+                a.id = id.as<uint64_t>();
+                a.name = name;
+            }
+        }
+        Log.ConsoleLog("Iterated entities", SUCCESS);
+    }
 }

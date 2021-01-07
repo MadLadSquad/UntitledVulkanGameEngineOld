@@ -4,7 +4,6 @@
 // A header file containing every include you would want from the engine
 #pragma once
 #include <Core.hpp>
-#include "Core/Assets/Asset.hpp"
 #include "GameFramework/Actors/APawn.hpp"
 #include "GameFramework/GameplayClasses/GameInstance.hpp"
 #include "GameFramework/GameplayClasses/GameMode.hpp"
