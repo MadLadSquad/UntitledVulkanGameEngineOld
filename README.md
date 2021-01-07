@@ -1,6 +1,6 @@
 # UntitledVulkanGameEngine
 Untitled Vulkan Game Engine Full Release Date August 31 2021
-> Current version: 1.3.0 | Current unstable version: 1.3.0
+> Current version: 0.5
 ## Information
 A game engine that is simple to develop for! The UntitledVulkanGameEngine is a fast, 3D game engine written in C++. It uses Vulkan and Modern OpenGL as graphics APIs and has a simple and easy to use C++ scripting API. The engine consists of a main engine library and helper programs. 
 ## Learning
