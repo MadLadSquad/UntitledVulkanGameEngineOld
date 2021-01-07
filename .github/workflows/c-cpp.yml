@@ -44,6 +44,8 @@ jobs:
       run: |
           git submodule sync --recursive
           git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
+    - name: Fix GLEW errors
+      run: del Engine/ThirdParty/glew/config/Makefile.mingw && copy Helpful/Makefile.mingw Engine/ThirdParty/glew/config/
     - name: Compile GLEW
       run: cd Engine/ThirdParty/glew/auto && mingw32-make && cd ../ && mingw32-make && cd ../../../
     - name: Create project
@@ -54,4 +56,3 @@ jobs:
       run: cd UVKBuildTool/ && mkdir build && cd build && cmake -G "Unix Makefiles" .. && mingw32-make && UVKBuildTool
     - name: Make build directory and cmake
       run: ls && mkdir build && cd build && cmake .. -G "Unix Makefiles" && mingw32-make
-
