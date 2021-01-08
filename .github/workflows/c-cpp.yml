@@ -2,8 +2,8 @@ name: C/C++ CI
 
 env:
   BUILD_CONFIGURATION: Release
-  SOLUTION_FILE_PATH: Engine/ThirdParty/glew/build/vc15/glew_shared.vcxproj
-  SOLUTION_FILE_PATH2: Engine/ThirdParty/glew/build/vc15/glew_static.vcxproj
+  #SOLUTION_FILE_PATH: Engine/ThirdParty/glew/build/vc15/glew_shared.vcxproj
+  #SOLUTION_FILE_PATH2: Engine/ThirdParty/glew/build/vc15/glew_static.vcxproj
 on:
   push:
     branches: [ master ]
@@ -46,22 +46,22 @@ jobs:
       run: |
           git submodule sync --recursive
           git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
-    - name: Configure dependencies
-      run: | 
-        Invoke-WebRequest -Method Get -Uri https://go.microsoft.com/fwlink/p/?LinkId=323507 -OutFile sdksetup.exe -UseBasicParsing
-        Start-Process -Wait sdksetup.exe -ArgumentList "/q", "/norestart", "/features", "OptionId.WindowsDesktopSoftwareDevelopmentKit", "OptionId.NetFxSoftwareDevelopmentKit"
+    #- name: Configure dependencies
+    #  run: | 
+    #    Invoke-WebRequest -Method Get -Uri https://go.microsoft.com/fwlink/p/?LinkId=323507 -OutFile sdksetup.exe -UseBasicParsing
+    #    Start-Process -Wait sdksetup.exe -ArgumentList "/q", "/norestart", "/features", "OptionId.WindowsDesktopSoftwareDevelopmentKit", "OptionId.NetFxSoftwareDevelopmentKit"
     #- name: Fix GLEW errors
     #  run: del Engine/ThirdParty/glew/config/Makefile.mingw && copy Helpful/Makefile.mingw Engine/ThirdParty/glew/config/
-    - name: Add MSBuild to PATH
-      uses: microsoft/setup-msbuild@v1
-    - name: Restore NuGet packages
-      working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: dir Engine/ThirdParty/glew/build && nuget restore ${{env.SOLUTION_FILE_PATH}} && nuget restore ${{env.SOLUTION_FILE_PATH2}}
-    - name: Build GLEW
-      working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} ${{env.SOLUTION_FILE_PATH}} && msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} ${{env.SOLUTION_FILE_PATH2}}
-    #- name: Compile GLEW
-    #  run: cd Engine/ThirdParty/glew/build && msbuild glew.sln /Build Release 
+    #- name: Add MSBuild to PATH
+    #  uses: microsoft/setup-msbuild@v1
+    #- name: Restore NuGet packages
+    #  working-directory: ${{env.GITHUB_WORKSPACE}}
+    #  run: dir Engine/ThirdParty/glew/build && nuget restore ${{env.SOLUTION_FILE_PATH}} && nuget restore ${{env.SOLUTION_FILE_PATH2}}
+    #- name: Build GLEW
+    #  working-directory: ${{env.GITHUB_WORKSPACE}}
+    #  run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} ${{env.SOLUTION_FILE_PATH}} && msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} ${{env.SOLUTION_FILE_PATH2}}
+    - name: Compile GLEW
+      run: mingw32-make Engine/ThirdParty/glew/auto/
     - name: Create project
       run: git clone https://github.com/MadLadSquad/UVKSampleProject.git 
     - name: Extract project
