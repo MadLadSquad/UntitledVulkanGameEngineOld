@@ -42,10 +42,10 @@ jobs:
       run: |
           git submodule sync --recursive
           git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
-    - name: Fix GLEW errors
-      run: del Engine/ThirdParty/glew/config/Makefile.mingw && copy Helpful/Makefile.mingw Engine/ThirdParty/glew/config/
+    #- name: Fix GLEW errors
+    #  run: del Engine/ThirdParty/glew/config/Makefile.mingw && copy Helpful/Makefile.mingw Engine/ThirdParty/glew/config/
     - name: Compile GLEW
-      run: cd Engine/ThirdParty/glew/ && bash cmake-testbuild.sh
+      run: cd Engine/ThirdParty/glew/ && mingw32-make && bash cmake-testbuild.sh
     - name: Create project
       run: git clone https://github.com/MadLadSquad/UVKSampleProject.git 
     - name: Extract project
