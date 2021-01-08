@@ -1,5 +1,8 @@
 name: C/C++ CI
 
+env:
+  BUILD_CONFIGURATION: Release
+  SOLUTION_FILE_PATH: Engine/ThirdParty/glew/build
 on:
   push:
     branches: [ master ]
@@ -44,8 +47,16 @@ jobs:
           git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
     #- name: Fix GLEW errors
     #  run: del Engine/ThirdParty/glew/config/Makefile.mingw && copy Helpful/Makefile.mingw Engine/ThirdParty/glew/config/
-    - name: Compile GLEW
-      run: cd Engine/ThirdParty/glew/build && msbuild glew.sln /Build Release 
+    - name: Add MSBuild to PATH
+      uses: microsoft/setup-msbuild@v1
+    - name: Restore NuGet packages
+      working-directory: ${{env.GITHUB_WORKSPACE}}
+      run: nuget restore ${{env.SOLUTION_FILE_PATH}}
+    - name: Build
+      working-directory: ${{env.GITHUB_WORKSPACE}}
+      run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} ${{env.SOLUTION_FILE_PATH}}
+    #- name: Compile GLEW
+    #  run: cd Engine/ThirdParty/glew/build && msbuild glew.sln /Build Release 
     - name: Create project
       run: git clone https://github.com/MadLadSquad/UVKSampleProject.git 
     - name: Extract project
