@@ -63,7 +63,7 @@ jobs:
     - name: Compile GLEW
       run: cd Engine/ThirdParty/glew/auto/ && mingw32-make && cd ../ && mingw32-make install && cd ../../../ && dir
     - name: Create project
-      run: git clone https://github.com/MadLadSquad/UVKSampleProject.git 
+      run: git clone https://github.com/MadLadSquad/UVKSampleProject.git && dir
     - name: Extract project
       run: xcopy UVKSampleProject\ .  
     - name: Generated generated files
