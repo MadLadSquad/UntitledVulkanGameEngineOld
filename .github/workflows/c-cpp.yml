@@ -61,7 +61,7 @@ jobs:
     #  working-directory: ${{env.GITHUB_WORKSPACE}}
     #  run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} ${{env.SOLUTION_FILE_PATH}} && msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} ${{env.SOLUTION_FILE_PATH2}}
     - name: Compile GLEW
-      run: cd Engine/ThirdParty/glew/auto/ && mingw32-make
+      run: cd Engine/ThirdParty/glew/auto/ && mingw32-make && cd ../ && mingw32-make install
     - name: Create project
       run: git clone https://github.com/MadLadSquad/UVKSampleProject.git 
     - name: Extract project
