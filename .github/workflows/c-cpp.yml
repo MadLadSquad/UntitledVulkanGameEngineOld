@@ -2,7 +2,7 @@ name: C/C++ CI
 
 env:
   BUILD_CONFIGURATION: Release
-  SOLUTION_FILE_PATH: Engine/ThirdParty/glew/build
+  SOLUTION_FILE_PATH: Engine/ThirdParty/glew/build/vc15/
 on:
   push:
     branches: [ master ]
