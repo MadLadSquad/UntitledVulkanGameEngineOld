@@ -30,7 +30,6 @@ add_executable(UVKGame ${UVKGameSrc} Engine/ThirdParty/logger/UVKLog.h main.cpp)
 set_target_properties(UVKGame PROPERTIES LINKER_LANGUAGE CXX)
 
 if (WIN32)
-    #target_link_libraries(UVKGame pthread glfw opengl32 OpenAL glew32 yaml-cpp)
     if (MINGW)
 	    target_link_libraries(UVKGame pthread glfw opengl32 glew32 yaml-cpp)
     else()
