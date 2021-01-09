@@ -6,6 +6,5 @@ cmake-build-release/
 Source/Game.hpp
 main.cpp
 build/
-*.yaml
 CMakeLists.txt
 uvproj.yaml
