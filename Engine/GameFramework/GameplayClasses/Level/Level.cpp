@@ -108,6 +108,7 @@ void UVK::Level::save(const char* location, String name)
 void UVK::Level::open(const char* location)
 {
     pool.clear();
+    id = 0;
     logger.consoleLog("Opening file", NOTE);
     auto out = YAML::LoadFile(location);
     logger.consoleLogComplex<const char*>("Opened file with name:", SUCCESS, { out["name"].as<std::string>().c_str() });
@@ -119,16 +120,13 @@ void UVK::Level::open(const char* location)
         {
             auto name = entity["actor"].as<std::string>();
 
-            auto transform = entity["transform"];
-            auto id = entity["id"];
-            auto translate = transform["translation"];
-            auto act = pool.create();
-            if (id)
-            {
-                auto& a = pool.emplace<CoreComponent>(act);
-                a.id = id.as<uint64_t>();
-                a.name = name;
-            }
+            registry.createActor(name);
+            //if (id)
+            //{
+            //    auto& a = pool.emplace<CoreComponent>(act);
+            //    //a.id = id.as<uint64_t>();
+            //    //a.name = name;
+            //}
         }
         logger.consoleLog("Iterated entities", SUCCESS);
     }
