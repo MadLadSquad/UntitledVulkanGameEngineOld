@@ -6,7 +6,7 @@
 #include <glm/vec3.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include "../ThirdParty/entt/src/entt/entt.hpp"
+#include "Engine/ThirdParty/entt/src/entt/entt.hpp"
 
 // Array
 template<typename T>

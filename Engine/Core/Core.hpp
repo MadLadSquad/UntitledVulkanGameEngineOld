@@ -15,6 +15,6 @@
 #include <stack>
 #include <yaml-cpp/yaml.h>
 #include <UVKLog.h>
-#include "Utility.hpp"
-#include "Defines.hpp"
-#include "Types.hpp"
+#include "Engine/Core/Core/Utility.hpp"
+#include "Engine/Core/Core/Defines.hpp"
+#include "Engine/Core/Core/Types.hpp"
