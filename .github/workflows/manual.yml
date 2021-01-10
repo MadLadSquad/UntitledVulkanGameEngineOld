@@ -20,8 +20,6 @@ jobs:
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
           body: |
-            Changes in this release:
-            
-            Check our [discord server](https://discord.gg/4kyWu2Vu) for patch notes
+            Check our for patch notes: https://discord.gg/4kyWu2Vu
           draft: false
           prerelease: false
