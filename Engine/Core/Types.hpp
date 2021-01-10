@@ -1,5 +1,5 @@
-// Core.hpp
-// Last update 01/3/2021 by Stanislav Vasilev(Madman10K)
+// Types.hpp
+// Last update 1/10/2021 by Madman10K
 #include <vector>
 #include <glm/glm.hpp>
 #include <glm/mat3x4.hpp>

@@ -1,5 +1,5 @@
 // Components.hpp
-// Last update 12/8/2020 by Stanislav Vasilev(Madman10K)
+// Last update 1/10/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 

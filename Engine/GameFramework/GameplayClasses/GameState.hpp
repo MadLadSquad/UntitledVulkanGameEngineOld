@@ -1,5 +1,5 @@
 // GameState.hpp
-// Last update 12/8/2020 by Stanislav Vasilev(Madman10K)
+// Last update 1/10/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 
@@ -8,8 +8,8 @@ namespace UVK
     UVK_API class GameState
     {
     public:
-        virtual void BeginPlay() = 0;
-        virtual void Tick(float DeltaTime) = 0;
-        virtual void EndPlay() = 0;
+        virtual void beginPlay() = 0;
+        virtual void tick(float deltaTime) = 0;
+        virtual void endPlay() = 0;
     };
 }

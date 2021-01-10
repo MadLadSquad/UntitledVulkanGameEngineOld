@@ -1,5 +1,5 @@
 // Level.cpp
-// Last update 12/8/2020 by Stanislav Vasilev(Madman10K)
+// Last update 1/10/2021 by Madman10K
 
 #include "Level.hpp"
 
@@ -73,7 +73,7 @@ YAML::Emitter& operator<<(YAML::Emitter& out, const FVector4& vect)
     return out;
 }
 
-void UVK::Level::SaveEntity(YAML::Emitter& out, Actor act)
+void UVK::Level::saveEntity(YAML::Emitter& out, Actor act)
 {
     out << YAML::BeginMap;
 
@@ -86,7 +86,7 @@ void UVK::Level::SaveEntity(YAML::Emitter& out, Actor act)
     out << YAML::EndMap;
 }
 
-void UVK::Level::Save(const char* location, String name)
+void UVK::Level::save(const char* location, String name)
 {
     YAML::Emitter out;
     out << YAML::BeginMap;
@@ -95,7 +95,7 @@ void UVK::Level::Save(const char* location, String name)
     out << YAML::Key << "actors" << YAML::Value << YAML::BeginSeq;
     pool.each([&](auto entityID)
     {
-        SaveEntity(out, entityID);
+        saveEntity(out, entityID);
     });
     out << YAML::EndSeq;
     out << YAML::EndMap;
@@ -105,16 +105,16 @@ void UVK::Level::Save(const char* location, String name)
     //fileout.close();
 }
 
-void UVK::Level::Open(const char* location)
+void UVK::Level::open(const char* location)
 {
     pool.clear();
-    Log.ConsoleLog("Opening file", NOTE);
+    logger.consoleLog("Opening file", NOTE);
     auto out = YAML::LoadFile(location);
-    Log.ConsoleLogComplex<const char*>("Opened file with name:", SUCCESS, { out["name"].as<std::string>().c_str() });
+    logger.consoleLogComplex<const char*>("Opened file with name:", SUCCESS, { out["name"].as<std::string>().c_str() });
     auto entities = out["actors"];
     if (entities)
     {
-        Log.ConsoleLog("Iterating entities", NOTE);
+        logger.consoleLog("Iterating entities", NOTE);
         for (auto entity : entities)
         {
             auto name = entity["actor"].as<std::string>();
@@ -130,6 +130,6 @@ void UVK::Level::Open(const char* location)
                 a.name = name;
             }
         }
-        Log.ConsoleLog("Iterated entities", SUCCESS);
+        logger.consoleLog("Iterated entities", SUCCESS);
     }
 }

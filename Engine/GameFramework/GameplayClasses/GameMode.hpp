@@ -1,5 +1,5 @@
 // GameMode.hpp
-// Last update 12/8/2020 by Stanislav Vasilev(Madman10K)
+// Last update 1/10/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 #include "GameState.hpp"
@@ -12,19 +12,19 @@ namespace UVK
     UVK_API class GameMode
     {
     public:
-        virtual void BeginPlay() = 0;
-        virtual void Tick(float DeltaTime) = 0;
-        virtual void EndPlay() = 0;
+        virtual void beginPlay() = 0;
+        virtual void tick(float deltaTime) = 0;
+        virtual void endPlay() = 0;
 
-        void SetGameState(GameState* gameState){ gs = gameState; }
-        void SetPlayerState(PlayerState* playerState){ ps = playerState; }
-        void SetPlayerController(PlayerController* playerController){ pc = playerController; }
-        void SetPawn(APawn* pawn) { this->pawn = pawn; }
+        void setGameState(GameState* gameState){ gs = gameState; }
+        void setPlayerState(PlayerState* playerState){ ps = playerState; }
+        void setPlayerController(PlayerController* playerController){ pc = playerController; }
+        void setPawn(APawn* pawn) { this->pawn = pawn; }
 
-        GameState& GetGameState(){ return *gs; }
-        PlayerState& GetPlayerState() { return *ps; }
-        PlayerController& GetPlayerController() { return *pc; }
-        APawn& GetPawn() { return *pawn; }
+        GameState& setGameState(){ return *gs; }
+        PlayerState& getPlayerState() { return *ps; }
+        PlayerController& getPlayerController() { return *pc; }
+        APawn& getPawn() { return *pawn; }
 
     private:
         GameState* gs;

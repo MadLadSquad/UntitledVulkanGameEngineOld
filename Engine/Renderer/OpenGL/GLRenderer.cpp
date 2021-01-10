@@ -1,5 +1,5 @@
-// PlayerController.hpp
-// Last update 12/8/2020 by Stanislav Vasilev(Madman10K)
+// GLRenderer.hpp
+// Last update 1/10/2021 by Madman10K
 #include "GLRenderer.hpp"
 
 
@@ -26,34 +26,29 @@ void main()
 })";
 
 
-void UVK::GLRenderer::CreateWindow()
+void UVK::GLRenderer::createWindow()
 {
-// Initialise GLFW
     if (!glfwInit())
     {
-        Log.ConsoleLog("GLFW initialisation failed!", ERROR);
+        logger.consoleLog("GLFW initialisation failed!", ERROR);
         glfwTerminate();
         return;
     }
-    Log.ConsoleLog("Setting up the window", NOTE);
-    // Setup GLFW window properties
-    // OpenGL version
+    logger.consoleLog("Setting up the window", NOTE);
+
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    // Core Profile
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    // Allow Forward Compatbility
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
-    // Create the window
     GLFWwindow *mainWindow = glfwCreateWindow(WIDTH, HEIGHT, "Test Window", NULL, NULL);
     if (!mainWindow)
     {
-        Log.ConsoleLog("GLFW window creation failed!", ERROR);
+        logger.consoleLog("GLFW window creation failed!", ERROR);
         glfwTerminate();
         return;
     }
-    Log.ConsoleLog("Window was created successfully", SUCCESS);
+    logger.consoleLog("Window was created successfully", SUCCESS);
     // Get Buffer Size information
     int bufferWidth, bufferHeight;
     glfwGetFramebufferSize(mainWindow, &bufferWidth, &bufferHeight);
@@ -66,7 +61,7 @@ void UVK::GLRenderer::CreateWindow()
 
     if (glewInit() != GLEW_OK)
     {
-        Log.ConsoleLog("GLEW initialisation failed!", ERROR);
+        logger.consoleLog("GLEW initialisation failed!", ERROR);
 
         glfwDestroyWindow(mainWindow);
         glfwTerminate();
@@ -76,10 +71,10 @@ void UVK::GLRenderer::CreateWindow()
     // Setup Viewport size
     glViewport(0, 0, bufferWidth, bufferHeight);
 
-    Log.ConsoleLog("Creating geometry", NOTE);
-    CreateTriangle();
-    CompileShaders();
-    Log.ConsoleLog("Compiled Shaders", SUCCESS);
+    logger.consoleLog("Creating geometry", NOTE);
+    createTriangle();
+    compileShaders();
+    logger.consoleLog("Compiled Shaders", SUCCESS);
     // Loop until window closed
     while (!glfwWindowShouldClose(mainWindow))
     {
@@ -102,7 +97,7 @@ void UVK::GLRenderer::CreateWindow()
     }
 }
 
-void UVK::GLRenderer::CreateTriangle()
+void UVK::GLRenderer::createTriangle()
 {
     GLfloat vertices[] = {
         -1.0f, -1.0f, 0.0f,
@@ -125,7 +120,7 @@ void UVK::GLRenderer::CreateTriangle()
     glBindVertexArray(0);
 }
 
-void UVK::GLRenderer::AddShader(GLuint theProgram, const char *shaderCode, GLenum shaderType)
+void UVK::GLRenderer::addShader(GLuint theProgram, const char *shaderCode, GLenum shaderType)
 {
     GLuint theShader = glCreateShader(shaderType);
 
@@ -145,25 +140,25 @@ void UVK::GLRenderer::AddShader(GLuint theProgram, const char *shaderCode, GLenu
     if (!result)
     {
         glGetShaderInfoLog(theShader, 1024, NULL, ErrorLog);
-        Log.ConsoleLogComplex<GLchar*>("Error compiling the a shader:", ERROR, {ErrorLog});
+        logger.consoleLogComplex<GLchar*>("Error compiling the a shader:", ERROR, {ErrorLog});
         return;
     }
 
     glAttachShader(theProgram, theShader);
 }
 
-void UVK::GLRenderer::CompileShaders()
+void UVK::GLRenderer::compileShaders()
 {
     shader = glCreateProgram();
 
     if (!shader)
     {
-        Log.ConsoleLog("Failed to create shader", ERROR);
+        logger.consoleLog("Failed to create shader", ERROR);
         return;
     }
 
-    AddShader(shader, vShader, GL_VERTEX_SHADER);
-    AddShader(shader, fShader, GL_FRAGMENT_SHADER);
+    addShader(shader, vShader, GL_VERTEX_SHADER);
+    addShader(shader, fShader, GL_FRAGMENT_SHADER);
 
     GLint result = 0;
     GLchar ErrorLog[1024] = { 0 };
@@ -173,7 +168,7 @@ void UVK::GLRenderer::CompileShaders()
     if (!result)
     {
         glGetProgramInfoLog(shader, sizeof(ErrorLog), NULL, ErrorLog);
-        Log.ConsoleLogComplex<GLchar*>("Error linking program:", ERROR, {ErrorLog});
+        logger.consoleLogComplex<GLchar*>("Error linking program:", ERROR, {ErrorLog});
         return;
     }
 
@@ -182,7 +177,7 @@ void UVK::GLRenderer::CompileShaders()
     if (!result)
     {
         glGetProgramInfoLog(shader, sizeof(ErrorLog), NULL, ErrorLog);
-        Log.ConsoleLogComplex<GLchar*>("Error validating program:", ERROR, {ErrorLog});
+        logger.consoleLogComplex<GLchar*>("Error validating program:", ERROR, {ErrorLog});
         return;
     }
 }

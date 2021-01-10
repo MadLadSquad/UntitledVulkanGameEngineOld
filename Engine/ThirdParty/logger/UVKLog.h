@@ -25,7 +25,7 @@ class UVKLog
 {
 public:
     template<typename T>
-    void ConsoleLogComplex(const char* message, LogType type, std::initializer_list<T> list)
+    void consoleLogComplex(const char* message, LogType type, std::initializer_list<T> list)
     {
         auto CurrentTime = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
         switch (type)
@@ -78,7 +78,7 @@ public:
         }
     }
 
-    void ConsoleLog(const char* message, LogType type)
+    void consoleLog(const char* message, LogType type)
     {
         auto CurrentTime = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
         switch (type)
@@ -105,7 +105,7 @@ public:
         }
     }
 
-    void FileLog(const char* message, LogType type)
+    void fileLog(const char* message, LogType type)
     {
         auto CurrentTime = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
         switch (type)
@@ -133,7 +133,7 @@ public:
     }
 
     template<typename T>
-    void FileLogComplex(const char* message, LogType type, std::initializer_list<T> list)
+    void fileLogComplex(const char* message, LogType type, std::initializer_list<T> list)
     {
         auto CurrentTime = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
         switch (type)
@@ -186,17 +186,17 @@ public:
         }
     }
 
-    void CreateFile(const char* location)
+    void createFile(const char* location)
     {
         file.open(location);
     }
 
-    void CloseFile()
+    void closeFile()
     {
         file.close();
     }
 
-    void SetTerminationFunction(std::function<void(void)> func)
+    void setTerminationFunction(std::function<void(void)> func)
     {
         bUsesTermination = true;
         terminator = func;
@@ -208,4 +208,4 @@ private:
     std::ofstream file;
 };
 
-inline UVKLog Log;
+inline UVKLog logger;

@@ -1,5 +1,5 @@
 // Engine.hpp
-// Last update 12/8/2020 by Stanislav Vasilev(Madman10K)
+// Last update 1/10/2021 by Madman10K
 
 // A header file containing every include you would want from the engine
 #pragma once

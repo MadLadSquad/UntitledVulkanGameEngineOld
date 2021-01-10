@@ -1,5 +1,5 @@
 // PlayerController.hpp
-// Last update 12/8/2020 by Stanislav Vasilev(Madman10K)
+// Last update 1/10/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 #include "../Actors/APawn.hpp"
@@ -9,15 +9,15 @@ namespace UVK
     UVK_API class PlayerController
     {
     public:
-        virtual void BeginPlay() = 0;
-        virtual void Tick(float DeltaTime) = 0;
-        virtual void EndPlay() = 0;
-        void Possess(APawn* pawn)
+        virtual void beginPlay() = 0;
+        virtual void tick(float deltaTime) = 0;
+        virtual void endPlay() = 0;
+        void possess(APawn* pawn)
         {
             currentPawn = pawn;
         }
 
-        void SetStarterPawn(APawn* pawn)
+        void setStarterPawn(APawn* pawn)
         {
             currentPawn = pawn;
         }

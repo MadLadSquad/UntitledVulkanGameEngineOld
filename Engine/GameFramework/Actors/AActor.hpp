@@ -1,5 +1,5 @@
 // AActor.hpp
-// Last update 12/7/2020 by Stanislav Vasilev(Madman10K)
+// Last update 1/10/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 // To be put in action
@@ -9,18 +9,8 @@ namespace UVK
     class AActor
     {
     public:
-
-
-        template<typename T>
-        auto& AddComponent(){}
-
-        void CreateActor(){}
-
-        template<typename T>
-        auto& GetComponent(){}
-
-        void DestroyActor(){}
-    private:
-        Actor act;
+        virtual void tick(float deltaTime) = 0;
+        virtual void beginPlay() = 0;
+        virtual void endPlay() = 0;
     };
 }

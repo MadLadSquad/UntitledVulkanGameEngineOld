@@ -1,5 +1,5 @@
 // Level.hpp
-// Last update 12/8/2020 by Stanislav Vasilev(Madman10K)
+// Last update 1/10/2021 by Madman10K
 #include <Core.hpp>
 #include "../GameMode.hpp"
 #include "../GameInstance.hpp"
@@ -12,17 +12,17 @@ namespace UVK
     class UVK_API Level
     {
     public:
-        virtual void Tick(float DeltaTime) = 0;
-        virtual void BeginPlay() = 0;
-        virtual void EndPlay() = 0;
+        virtual void tick(float deltaTime) = 0;
+        virtual void beginPlay() = 0;
+        virtual void endPlay() = 0;
 
-        void SaveEntity(YAML::Emitter& out, Actor act);
-        void Save(String output, String name);
-        void Open(String file);
+        void saveEntity(YAML::Emitter& out, Actor act);
+        void save(String output, String name);
+        void open(String file);
 
-        void SetGameInstance(GameInstance* instance){ gameInstance = instance;}
-        void SetGameMode(GameMode* mode){ gameMode = mode; }
-        GameMode& GetGameMode(){ return *gameMode; }
+        void setGameInstance(GameInstance* instance){ gameInstance = instance;}
+        void setGameMode(GameMode* mode){ gameMode = mode; }
+        GameMode& getGameMode(){ return *gameMode; }
     private:
         GameInstance* gameInstance;
         GameMode* gameMode;

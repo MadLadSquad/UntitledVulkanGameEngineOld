@@ -1,5 +1,5 @@
-// PlayerController.hpp
-// Last update 12/8/2020 by Stanislav Vasilev(Madman10K)
+// GLRenderer.hpp
+// Last update 1/10/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 #define GLEW_STATIC
@@ -13,10 +13,10 @@ namespace UVK
     class GLRenderer
     {
     public:
-        void CreateWindow();
-        void CreateTriangle();
-        void AddShader(GLuint theProgram, const char* shaderCode, GLenum shaderType);
-        void CompileShaders();
+        void createWindow();
+        void createTriangle();
+        void addShader(GLuint theProgram, const char* shaderCode, GLenum shaderType);
+        void compileShaders();
 
         GLFWwindow* window;
     };
