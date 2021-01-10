@@ -35,7 +35,7 @@ jobs:
       run: cd UVKBuildTool/ && mkdir build && cd build && cmake -G "Unix Makefiles" .. && make && ./UVKBuildTool
     - name: Make build directory and cmake
       shell: bash
-      run: ls && mkdir build && cd build && cmake .. -G "Unix Makefiles" && make
+      run: ls && mkdir build && cd build && cmake .. -G "Unix Makefiles" && make && ./Game
   Windows:
     runs-on: windows-latest
     steps:
@@ -53,4 +53,4 @@ jobs:
     - name: Generated generated files
       run: cd UVKBuildTool/ && mkdir build && cd build && cmake -G "Unix Makefiles" .. && mingw32-make && dir && ./UVKBuildTool.exe
     - name: Make build directory and cmake
-      run: ls && mkdir build && cd build && cmake .. -G "Unix Makefiles" && mingw32-make
+      run: ls && mkdir build && cd build && cmake .. -G "Unix Makefiles" && mingw32-make && ./Game
