@@ -74,7 +74,7 @@ jobs:
       shell: bash
       run: git clone https://github.com/MadLadSquad/UVKSampleProject.git 
     - name: Extract project
-      run: cp UVKSampleProject/*.* . -R && cp UVKSampleProject/*/ . -R
+      run: mv UVKSampleProject/*.* . 
     - name: Generated generated files
       shell: bash
       run: cd UVKBuildTool/ && mkdir build && cd build && cmake -G "Unix Makefiles" .. && make && ./UVKBuildTool
