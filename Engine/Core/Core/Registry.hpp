@@ -25,7 +25,7 @@ public:
     * @param Name for the actor
     * @return Actor reference
     */
-    Actor& createActor(std::string name)
+    void createActor(const std::string& name)
     {
         Actor act = pool.create();
 
@@ -34,8 +34,6 @@ public:
         a.id = id;
 
         id = id++;
-
-        return act;
     }
 
     /**
