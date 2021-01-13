@@ -10,13 +10,13 @@ You can start learning the engine from the source code or you can go to the [wik
 ## Development
 Follow [the trello](https://trello.com/b/0upjsxT0/untitledvukangameengine2) if you want to see how it progresses 
 ## Open-source libraries and SDKs we use
-- GLFW - https://github.com/glfw/glfw
-- GLEW - https://github.com/nigels-com/glew
-- GLM - https://github.com/g-truc/glm
-- EnTT - https://github.com/skypjack/entt
-- Dear imgui - https://github.com/ocornut/imgui
-- yaml-cpp - https://github.com/jbeder/yaml-cpp
-- stb_* - https://github.com/nothings/stb
-- VulkanSDK - https://vulkan.lunarg.com/
-- OpenAL - https://www.openal.org/
-- zlib - https://github.com/madler/zlib
+-   GLFW - https://github.com/glfw/glfw
+-   GLEW - https://github.com/nigels-com/glew
+-   GLM - https://github.com/g-truc/glm
+-   EnTT - https://github.com/skypjack/entt
+-   Dear imgui - https://github.com/ocornut/imgui
+-   yaml-cpp - https://github.com/jbeder/yaml-cpp
+-   stb_* - https://github.com/nothings/stb
+-   VulkanSDK - https://vulkan.lunarg.com/
+-   OpenAL - https://www.openal.org/
+-   zlib - https://github.com/madler/zlib
