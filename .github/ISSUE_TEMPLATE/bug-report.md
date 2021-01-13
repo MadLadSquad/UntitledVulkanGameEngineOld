@@ -24,9 +24,9 @@ A clear and concise description of what you expected to happen.
 Share screenshots if any
 
 **Technical information**
- -   OS: [eg. Windows]
- -   Release: [eg. 0.5.1]
- -   Any other applicable technical information
+ -  OS: [eg. Windows]
+ -  Release: [eg. 0.5.1]
+ -  Any other applicable technical information
 
 **Additional context**
 Add any other context about the problem here.
