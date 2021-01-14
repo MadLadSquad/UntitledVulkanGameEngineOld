@@ -32,7 +32,7 @@ jobs:
       run: cp UVKSampleProject/*.* . -r && cp UVKSampleProject/*/ . -r
     - name: Generated generated files
       shell: bash
-      run: cd UVKBuildTool/ && mkdir build && cd build && cmake -G "Unix Makefiles" .. && make && ./UVKBuildTool
+      run: cd UVKBuildTool/ && mkdir build && cd build && cmake -G "Unix Makefiles" .. && make && ./UVKBuildTool --generate
     - name: Make build directory and cmake
       shell: bash
       run: ls && mkdir build && cd build && cmake .. -G "Unix Makefiles" && make && ./Game
@@ -51,7 +51,7 @@ jobs:
     - name: Extract project
       run: xcopy /i /e /c /k /y /r UVKSampleProject .  
     - name: Generated generated files
-      run: cd UVKBuildTool/ && mkdir build && cd build && cmake -G "Unix Makefiles" .. && mingw32-make && dir && ./UVKBuildTool.exe
+      run: cd UVKBuildTool/ && mkdir build && cd build && cmake -G "Unix Makefiles" .. && mingw32-make && dir && ./UVKBuildTool.exe --generate
     - name: Make build directory and cmake
       run: ls && mkdir build && cd build && cmake .. -G "Unix Makefiles" && mingw32-make && ./Game
   MacOS:
@@ -76,7 +76,7 @@ jobs:
       run: mv UVKSampleProject/*.* . 
     - name: Generated generated files
       shell: bash
-      run: cd UVKBuildTool/ && mkdir build && cd build && cmake -G "Unix Makefiles" .. && make && ./UVKBuildTool
+      run: cd UVKBuildTool/ && mkdir build && cd build && cmake -G "Unix Makefiles" .. && make && ./UVKBuildTool --generate
     - name: Make build directory and cmake
       shell: bash
       run: ls && mkdir build && cd build && cmake .. -G "Unix Makefiles" && make && ./Game
