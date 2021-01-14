@@ -1,0 +1,381 @@
+#!/bin/sh
+# Copyright (c) 2015-2020 LunarG, Inc.
+set -eu
+
+usage() {
+    echo "Script to build repositories that are useful for Vulkan development"
+    echo ""
+    echo "Usage: $0 [all] [help] [glslang] [vulkan-loader|loader] [vulkan-validationlayers|layers]"
+    echo " [vulkan-tools|tools] [vulkantools|lunarg-tools] [shaderc] [spirv-tools|spirvtools]"
+    echo " [spirv-cross|spirvcross] [gfxreconstruct] [spirv-reflect] [samples] [dxc] [clean]"
+    echo ""
+    echo "Any or all options can be specified at once"
+    exit
+}
+
+build_spirv_headers() {
+    echo "~~~Building SPIRV-Headers Repo~~~"
+    cd "${SPIRV_HEADERS_DIR}"
+    [ -d "${SPIRV_HEADERS_DIR}/${BUILD_DIR}" ] || mkdir -p "${SPIRV_HEADERS_DIR}/${BUILD_DIR}"
+    cd "${SPIRV_HEADERS_DIR}/${BUILD_DIR}"
+    cmake -DCMAKE_BUILD_TYPE="Release" \
+        -DCMAKE_INSTALL_PREFIX="$ARCHDIR" \
+        "${SPIRV_HEADERS_DIR}"
+    make $NUMJOBS install
+    cd "${SDKDIR}"
+}
+
+build_glslang() {
+    echo "~~~Building glslang Repo~~~"
+    cd "$GLSL_DIR"
+    [ ! -d External/spirv-tools ] && python update_glslang_sources.py
+    [ -d "${GLSL_DIR}/${BUILD_DIR}" ] || mkdir -p "${GLSL_DIR}/${BUILD_DIR}"
+    cd "${GLSL_DIR}/${BUILD_DIR}"
+    cmake -DCMAKE_BUILD_TYPE="Release" \
+        -DCMAKE_INSTALL_PREFIX="$ARCHDIR" \
+        -DCMAKE_INSTALL_LIBDIR="$LIBDIR" \
+        -DCMAKE_INSTALL_BINDIR="$BINDIR" \
+        "${GLSL_DIR}"
+    make $NUMJOBS install
+    cd "${SDKDIR}"
+}
+
+build_headers() {
+    echo "~~~Building Vulkan-Headers~~~"
+    cd "$VH_DIR"
+    [ -d "$VH_DIR/${BUILD_DIR}" ] || mkdir "$VH_DIR/${BUILD_DIR}"
+    cd "$VH_DIR/${BUILD_DIR}"
+    cmake -DCMAKE_BUILD_TYPE="Release" \
+        -DCMAKE_INSTALL_PREFIX="$ARCHDIR" \
+        -DCMAKE_INSTALL_LIBDIR="$LIBDIR" \
+        "${VH_DIR}"
+    make $NUMJOBS install
+    cd "${SDKDIR}"
+}
+
+# Requires Vulkan-Headers
+build_loader() {
+    echo "~~~Building Vulkan-Loader~~~"
+    cd "$VL_DIR"
+    [ -d "${VL_DIR}/${BUILD_DIR}" ] || mkdir -p "${VL_DIR}/${BUILD_DIR}"
+    cd "${VL_DIR}/${BUILD_DIR}"
+    cmake -DCMAKE_BUILD_TYPE="$BUILD_TYPE" \
+        -DVULKAN_HEADERS_INSTALL_DIR="$ARCHDIR" \
+        -DVULKAN_REGISTRY_PATH_HINT="$ARCHDIR" \
+        -DCMAKE_INSTALL_PREFIX="$ARCHDIR" \
+        -DCMAKE_INSTALL_LIBDIR="$LIBDIR" \
+        -DCMAKE_INSTALL_BINDIR="$BINDIR" \
+	-DSYSCONFDIR="/etc" \
+        "${VL_DIR}"
+    make $NUMJOBS install
+    cd "${SDKDIR}"
+}
+
+# Requires the Vulkan-Loader
+build_validation_layers() {
+    echo "~~~Building Vulkan-ValidationLayers~~~"
+    cd "$VV_DIR"
+    [ -d "${VV_DIR}/${BUILD_DIR}" ] || mkdir -p "${VV_DIR}/${BUILD_DIR}"
+    cd "${VV_DIR}/${BUILD_DIR}"
+    cmake -DCMAKE_BUILD_TYPE="$BUILD_TYPE" \
+        -DVULKAN_HEADERS_INSTALL_DIR="$ARCHDIR" \
+        -DVULKAN_REGISTRY_PATH_HINT="$ARCHDIR" \
+        -DVULKAN_LOADER_INSTALL_DIR="$ARCHDIR" \
+        -DGLSLANG_INSTALL_DIR="$ARCHDIR" \
+        -DSPIRV_HEADERS_INSTALL_DIR="$GLSL_DIR/External/spirv-tools/external/spirv-headers/" \
+        -DCMAKE_INSTALL_DATAROOTDIR="etc" \
+        -DBUILD_TESTS="OFF" \
+        -DBUILD_LAYER_SUPPORT_FILES="ON" \
+        -DCMAKE_INSTALL_PREFIX="$ARCHDIR" \
+        -DCMAKE_INSTALL_LIBDIR="$LIBDIR" \
+        -DCMAKE_INSTALL_BINDIR="$BINDIR" \
+        -DANNOTATED_SPEC_LINK="\"https://vulkan.lunarg.com/doc/view/_MAGIC_VERSION_ID_.1/linux/_MAGIC_ANNOTATED_SPEC_TYPE_/vkspec.html\"" \
+        "${VV_DIR}"
+    make $NUMJOBS install
+    cd "${SDKDIR}"
+}
+
+# Requires the Vulkan-Loader
+build_tools() {
+    echo "~~~Building Vulkan-Tools~~~"
+    cd "$VT_DIR"
+    [ -d "${VT_DIR}/${BUILD_DIR}" ] || mkdir -p "${VT_DIR}/${BUILD_DIR}"
+    cd "${VT_DIR}/${BUILD_DIR}"
+    cmake -DCMAKE_BUILD_TYPE="$BUILD_TYPE" \
+        -DCMAKE_INSTALL_PREFIX="$ARCHDIR" \
+        -DVULKAN_LOADER_INSTALL_DIR="$ARCHDIR" \
+        -DGLSLANG_INSTALL_DIR="$ARCHDIR" \
+        -DVULKAN_HEADERS_INSTALL_DIR="$ARCHDIR" \
+        -DCMAKE_INSTALL_LIBDIR="$LIBDIR" \
+        -DCMAKE_INSTALL_BINDIR="$BINDIR" \
+        "${VT_DIR}"
+    make $NUMJOBS install
+    cd "${SDKDIR}"
+}
+
+# Requires Vulkan-ValidationLayers
+build_lunarg_tools() {
+      echo "~~~Building LunarG VulkanTools~~~"
+    cd "$LGVT_DIR"
+    [ -d "${LGVT_DIR}/${BUILD_DIR}" ] || mkdir -p "${LGVT_DIR}/${BUILD_DIR}"
+    cd "${LGVT_DIR}/${BUILD_DIR}"
+    cmake -DCMAKE_BUILD_TYPE="$BUILD_TYPE" \
+        -DVULKAN_LOADER_INSTALL_DIR="$ARCHDIR" \
+        -DVULKAN_HEADERS_INSTALL_DIR="$ARCHDIR" \
+        -DVULKAN_REGISTRY_PATH_HINT="$ARCHDIR" \
+        -DVULKAN_VALIDATIONLAYERS_INSTALL_DIR="$ARCHDIR" \
+        -DBUILD_TESTS="OFF" \
+        -DBUILD_VKTRACEVIEWER="OFF" \
+        -DCMAKE_INSTALL_PREFIX="$ARCHDIR" \
+        -DCMAKE_INSTALL_LIBDIR="$LIBDIR" \
+        -DCMAKE_INSTALL_BINDIR="$BINDIR" \
+	-DINSTALL_GTEST="OFF" \
+        "${LGVT_DIR}"
+    make $NUMJOBS install
+    install -d "$SHAREDIR/vulkan/config/VK_LAYER_LUNARG_device_simulation/"
+    install -vm644 "${LGVT_DIR}"/layersvt/device_simulation_examples/sdk_sample_configs/*.json "$SHAREDIR/vulkan/config/VK_LAYER_LUNARG_device_simulation/"
+    cd "${SDKDIR}"
+}
+
+build_shaderc() {
+    echo "~~~Building shaderc~~~"
+    cd "${SHADERC_DIR}"
+    python update_shaderc_sources.py
+    cd src
+    [ -d "${SHADERC_DIR}/src/${BUILD_DIR}" ] || mkdir "${SHADERC_DIR}/src/${BUILD_DIR}"
+    cd "${SHADERC_DIR}/src/${BUILD_DIR}"
+    cmake -G"Unix Makefiles" \
+        -DCMAKE_BUILD_TYPE="Release" \
+        -DSHADERC_SKIP_INSTALL="OFF" \
+        -DSHADERC_SKIP_TESTS="ON" \
+        -DSKIP_SPIRV_TOOLS_INSTALL="ON" \
+        -DSKIP_GLSLANG_INSTALL="ON" \
+        -DCMAKE_INSTALL_PREFIX="$ARCHDIR" \
+        -DCMAKE_INSTALL_LIBDIR="$LIBDIR" \
+        -DCMAKE_INSTALL_BINDIR="$BINDIR" \
+        "${SHADERC_DIR}/src/"
+    make $NUMJOBS install
+    install -vm644 "${SHADERC_DIR}/src/${BUILD_DIR}/libshaderc_util/libshaderc_util.a" "$LIBDIR"
+    cd "${SDKDIR}"
+}
+
+build_spirv_cross() {
+    echo "~~~Building SPIRV-Cross~~~"
+    cd "${SPIRV_CROSS_DIR}"
+    [ -d "${SPIRV_CROSS_DIR}/${BUILD_DIR}" ] || mkdir "${SPIRV_CROSS_DIR}/${BUILD_DIR}"
+    cd "${SPIRV_CROSS_DIR}/${BUILD_DIR}"
+    cmake -DCMAKE_BUILD_TYPE="Release" \
+        -DCMAKE_INSTALL_PREFIX="$ARCHDIR" \
+        -DCMAKE_INSTALL_BINDIR="$BINDIR" \
+        -DCMAKE_INSTALL_LIBDIR="$LIBDIR" \
+        -DSPIRV_CROSS_ENABLE_TESTS="OFF" \
+        -DSPIRV_CROSS_SHARED="ON" \
+        -DSPIRV_CROSS_FORCE_PIC="ON" \
+        "${SPIRV_CROSS_DIR}"
+    make $NUMJOBS install
+    cd "${SDKDIR}"
+}
+
+build_samples() {
+    echo "~~~Building Samples~~~"
+    cd "${SDKDIR}"/samples
+    [ -d "${SDKDIR}/samples/${BUILD_DIR}" ] || mkdir "${SDKDIR}/samples/${BUILD_DIR}"
+    cd "${SDKDIR}/samples/${BUILD_DIR}"
+    cmake -DCMAKE_BUILD_TYPE="Debug" ..
+    make $NUMJOBS
+    cd "${SDKDIR}"
+}
+
+
+build_gfxreconstruct() {
+    echo "~~~Building GFXreconstruct~~~"
+    cd "$GFXRECONSTRUCT_DIR"
+    [ -d "${GFXRECONSTRUCT_DIR}/${BUILD_DIR}" ] || mkdir "${GFXRECONSTRUCT_DIR}/${BUILD_DIR}"
+    cd "${GFXRECONSTRUCT_DIR}/${BUILD_DIR}"
+    cmake -DCMAKE_BUILD_TYPE="$BUILD_TYPE" \
+        -DCMAKE_INSTALL_PREFIX="$ARCHDIR" \
+        -DCMAKE_INSTALL_DATAROOTDIR="etc" \
+        -DCMAKE_INSTALL_LIBDIR="$LIBDIR" \
+        -DCMAKE_INSTALL_BINDIR="$BINDIR" \
+        "${GFXRECONSTRUCT_DIR}"
+    make $NUMJOBS install
+    cd "${SDKDIR}"
+}
+
+build_dxc() {
+    echo "~~~Building DXC~~~"
+    cd "$DXC_DIR"
+    [ -d "${DXC_DIR}/${BUILD_DIR}" ] || mkdir "${DXC_DIR}/${BUILD_DIR}"
+    cd "${DXC_DIR}/${BUILD_DIR}"
+    cmake -DCMAKE_BUILD_TYPE="Release" \
+        -DCMAKE_INSTALL_PREFIX="$ARCHDIR" \
+        -DCMAKE_INSTALL_BINDIR="$BINDIR" \
+        -DCMAKE_INSTALL_LIBDIR="$LIBDIR" \
+        $(cat ${DXC_DIR}/utils/cmake-predefined-config-params) \
+        -DHLSL_INCLUDE_TESTS="OFF" \
+        "${DXC_DIR}"
+    make $NUMJOBS install
+    cd "${SDKDIR}"
+}
+
+build_spirv_reflect() {
+    echo "~~~Building SPIRV-Reflect~~~"
+    cd "${SPIRV_REFLECT_DIR}"
+    [ -d "${SPIRV_REFLECT_DIR}/${BUILD_DIR}" ] || mkdir "${SPIRV_REFLECT_DIR}/${BUILD_DIR}"
+    cd "${SPIRV_REFLECT_DIR}/${BUILD_DIR}"
+    cmake -DCMAKE_BUILD_TYPE="Release" \
+        -DCMAKE_INSTALL_PREFIX="$ARCHDIR" \
+        -DCMAKE_INSTALL_BINDIR="$BINDIR" \
+        -DCMAKE_INSTALL_LIBDIR="$LIBDIR" \
+	-DSPIRV_REFLECT_BUILD_TESTS="OFF" \
+        "${SPIRV_REFLECT_DIR}"
+    make $NUMJOBS install
+    install -vd "${INCLUDEDIR}/SPIRV-Reflect/"
+    install -v "${SPIRV_REFLECT_DIR}/spirv_reflect.c" "${INCLUDEDIR}/SPIRV-Reflect/"
+    install -v "${SPIRV_REFLECT_DIR}/spirv_reflect.h" "${INCLUDEDIR}/SPIRV-Reflect/"
+    install -vd "${INCLUDEDIR}/SPIRV-Reflect/include/spirv/unified1/"
+    install -v "${SPIRV_REFLECT_DIR}/include/spirv/unified1/spirv.h" "${INCLUDEDIR}/SPIRV-Reflect/include/spirv/unified1/"
+    cd "$SDKDIR"
+}
+
+clean_builds() {
+    [ -d "${SPIRV_HEADERS_DIR:?}/${BUILD_DIR:?}" ] && rm -r "${SPIRV_HEADERS_DIR}/${BUILD_DIR}" 2>/dev/null
+    [ -d "${GLSL_DIR:?}/${BUILD_DIR:?}" ] && rm -r "${GLSL_DIR}/${BUILD_DIR}" 2>/dev/null
+    [ -d "${VH_DIR:?}/${BUILD_DIR:?}" ] && rm -r "${VH_DIR}/${BUILD_DIR}" 2>/dev/null
+    [ -d "${VL_DIR:?}/${BUILD_DIR:?}" ] && rm -r "${VL_DIR}/${BUILD_DIR}" 2>/dev/null
+    [ -d "${VV_DIR:?}/${BUILD_DIR:?}" ] && rm -r "${VV_DIR}/${BUILD_DIR}" 2>/dev/null
+    [ -d "${VT_DIR:?}/${BUILD_DIR:?}" ] && rm -r "${VT_DIR}/${BUILD_DIR}" 2>/dev/null
+    [ -d "${LGVT_DIR:?}/${BUILD_DIR:?}" ] && rm -r "${LGVT_DIR}/${BUILD_DIR}" 2>/dev/null
+    [ -d "${SAMPLES_DIR:?}/${BUILD_DIR:?}" ] && rm -r "${SAMPLES_DIR}/${BUILD_DIR}" 2>/dev/null
+    [ -d "${SHADERC_DIR:?}/src/${BUILD_DIR:?}" ] && rm -r "${SHADERC_DIR}/src/${BUILD_DIR}" 2>/dev/null
+    [ -d "${SPIRV_CROSS_DIR:?}/${BUILD_DIR:?}" ] && rm -r "${SPIRV_CROSS_DIR}/${BUILD_DIR}" 2>/dev/null
+    [ -d "${GFXRECONSTRUCT_DIR:?}/${BUILD_DIR:?}" ] && rm -r "${GFXRECONSTRUCT_DIR}/${BUILD_DIR}" 2>/dev/null
+    [ -d "${DXC_DIR:?}/${BUILD_DIR:?}" ] && rm -r "${DXC_DIR}/${BUILD_DIR}" 2>/dev/null
+    [ -d "${SPIRV_REFLECT_DIR:?}/${BUILD_DIR:?}" ] && rm -r "${SPIRV_REFLECT_DIR}/${BUILD_DIR}" 2>/dev/null
+    echo "All Build Directories Removed"
+}
+
+build_all () {
+    build_spirv_headers
+    build_glslang
+    build_headers
+    build_loader
+    build_tools
+    build_validation_layers
+    build_lunarg_tools
+    build_shaderc
+    build_spirv_cross
+    build_gfxreconstruct
+    build_dxc
+    build_spirv_reflect
+    build_samples
+}
+
+SDKDIR="$( dirname "$( readlink -f "${BASH_SOURCE:-$0}" )" )"
+if [ -z "${SDKDIR}" ] || [ ! -n "${SDKDIR}" ] || [ ! -d "${SDKDIR}" ]; then
+    echo "The SDK directory is invalid"
+    exit 1
+fi
+ARCHDIR="${SDKDIR}"/x86_64
+BINDIR="$ARCHDIR"/bin
+SHAREDIR="$ARCHDIR"/share
+LIBDIR="$ARCHDIR"/lib
+INCLUDEDIR="$ARCHDIR"/include
+SOURCEDIR="${SDKDIR}"/source
+SAMPLES_DIR="${SDKDIR}"/samples
+
+SPIRV_HEADERS_DIR="$SOURCEDIR"/SPIRV-Headers
+GLSL_DIR="$SOURCEDIR"/glslang
+VH_DIR="$SOURCEDIR"/Vulkan-Headers
+VL_DIR="$SOURCEDIR"/Vulkan-Loader
+VV_DIR="$SOURCEDIR"/Vulkan-ValidationLayers
+VT_DIR="$SOURCEDIR"/Vulkan-Tools
+LGVT_DIR="$SOURCEDIR"/VulkanTools
+SHADERC_DIR="$SOURCEDIR"/shaderc
+SPIRV_CROSS_DIR="$SOURCEDIR"/SPIRV-Cross
+GFXRECONSTRUCT_DIR="$SOURCEDIR"/gfxreconstruct
+DXC_DIR="$SOURCEDIR"/DirectXShaderCompiler
+SPIRV_REFLECT_DIR="$SOURCEDIR"/SPIRV-Reflect
+
+NUMJOBS=""
+if [ -z ${MAKEFLAGS+xyz} ]; then
+    if [ -x "$(command -v nproc)" ]; then
+        NUMJOBS=-j`nproc`
+    fi
+fi
+
+BUILD_DIR="build"
+BUILD_TYPE="RelWithDebInfo"
+
+if [ $# -eq 0 ]; then
+    build_all
+fi
+
+while test $# -gt 0; do
+    case "$1" in
+      all)
+            build_all
+            ;;
+        [Vv]ulkan[Ss]amples|samples)
+            build_samples
+            ;;
+        [Vv]ulkan-[Hh]eaders|headers)
+            build_headers
+            ;;
+        [Vv]ulkan-[Ll]oader|loader)
+            build_headers
+            build_loader
+            ;;
+        [Vv]ulkan-[Vv]alidation[Ll]ayers|layers)
+            build_glslang
+            build_headers
+            build_validation_layers
+            ;;
+        [Vv]ulkan-[Tt]ools|[Kk]hronos-[Tt]ools|tools)
+            build_headers
+            build_loader
+            build_tools
+            ;;
+        [Vv]ulkan[Tt]ools|lunarg-tools)
+            build_glslang
+            build_headers
+            build_loader
+            build_validation_layers
+            build_lunarg_tools
+            ;;
+        shaderc)
+            build_shaderc
+            ;;
+        [Ss]pirv-[Hh]eaders)
+            build_spirv_headers
+            ;;
+        glslang)
+            build_glslang
+            ;;
+        SPIRV-Tools|spirv-tools|spirvtools)
+            build_glslang
+            ;;
+        SPIRV-Cross|spirv-cross|spirvcross)
+            build_spirv_cross
+            ;;
+        gfxreconstruct|gfxrecon)
+            build_gfxreconstruct
+            ;;
+        DirectXShaderCompiler|DXC|dxc)
+            build_dxc
+            ;;
+        SPIRV-Reflect|spirv-reflect|spirvreflect)
+            build_spirv_reflect
+            ;;
+        clean)
+            clean_builds
+            ;;
+        help|--help|-h)
+            usage
+            ;;
+        *)
+            echo "error: unknown option" && usage
+            ;;
+    esac
+    shift
+done

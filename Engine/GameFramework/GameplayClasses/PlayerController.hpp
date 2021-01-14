@@ -9,6 +9,8 @@ namespace UVK
     UVK_API class PlayerController
     {
     public:
+        PlayerController(APawn* pawn){ pawn = currentPawn; }
+
         virtual void beginPlay() = 0;
         virtual void tick(float deltaTime) = 0;
         virtual void endPlay() = 0;

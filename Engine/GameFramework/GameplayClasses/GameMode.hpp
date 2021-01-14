@@ -12,6 +12,14 @@ namespace UVK
     UVK_API class GameMode
     {
     public:
+        GameMode(GameState* gs, PlayerState* ps, PlayerController* pc, APawn* pawn)
+        {
+            this->gs = gs;
+            this->ps = ps;
+            this->pc = pc;
+            this->pawn = pawn;
+        }
+
         virtual void beginPlay() = 0;
         virtual void tick(float deltaTime) = 0;
         virtual void endPlay() = 0;

@@ -3,7 +3,7 @@
 
 // A header file containing every include you would want from the engine
 #pragma once
-#include <Core.hpp>
+#include "Renderer/OpenGL/GLRenderer.hpp"
 #include "GameFramework/Actors/ScriptableObject.hpp"
 #include "GameFramework/Actors/APawn.hpp"
 #include "GameFramework/GameplayClasses/GameInstance.hpp"
@@ -13,5 +13,5 @@
 #include "GameFramework/GameplayClasses/PlayerController.hpp"
 #include "GameFramework/GameplayClasses/Level/Level.hpp"
 #include "Audio/AudioRenderer.cpp"
-#include "Renderer/OpenGL/GLRenderer.hpp"
+
 #include "Core/Events/Events.hpp"

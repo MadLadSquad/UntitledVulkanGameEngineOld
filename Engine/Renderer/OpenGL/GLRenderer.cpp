@@ -1,12 +1,44 @@
 // GLRenderer.hpp
 // Last update 1/10/2021 by Madman10K
 #include "GLRenderer.hpp"
+#include "../../Core/Events/Events.hpp"
+#include "../../ThirdParty/imgui/imgui.h"
+#include "../../ThirdParty/imgui/backends/imgui_impl_opengl3.h"
+#include "../../ThirdParty/imgui/backends/imgui_impl_glfw.h"
 
+void UVK::GLRenderer::setDarkTheme()
+{
+    auto& colours = ImGui::GetStyle().Colors;
+
+    colours[ImGuiCol_WindowBg] = ImVec4{ 0.1f, 0.1f, 0.1f, 1.0f };
+
+    colours[ImGuiCol_Header] = ImVec4{ 0.2f, 0.2f, 0.2f, 1.0f };
+    colours[ImGuiCol_HeaderHovered] = ImVec4{ 0.3f, 0.3f, 0.3f, 1.0f };
+    colours[ImGuiCol_HeaderActive] = ImVec4{ 0.15f, 0.15f, 0.15f, 1.0f };
+
+    colours[ImGuiCol_Button] = ImVec4{ 0.2f, 0.2f, 0.2f, 1.0f };
+    colours[ImGuiCol_ButtonHovered] = ImVec4{ 0.3f, 0.3f, 0.3f, 1.0f };
+    colours[ImGuiCol_ButtonActive] = ImVec4{ 0.15f, 0.15f, 0.15f, 1.0f };
+
+    colours[ImGuiCol_FrameBg] = ImVec4{ 0.2f, 0.2f, 0.2f, 1.0f };
+    colours[ImGuiCol_FrameBgHovered] = ImVec4{ 0.3f, 0.3f, 0.3f, 1.0f };
+    colours[ImGuiCol_FrameBgActive] = ImVec4{ 0.15f, 0.15f, 0.15f, 1.0f };
+
+    colours[ImGuiCol_Tab] = ImVec4{ 0.15f, 0.15f, 0.15f, 1.0f };
+    colours[ImGuiCol_TabHovered] = ImVec4{ 0.4f, 0.4f, 0.4f, 1.0f };
+    colours[ImGuiCol_TabActive] = ImVec4{ 0.3f, 0.3f, 0.3f, 1.0f };
+    colours[ImGuiCol_TabUnfocused] = ImVec4{ 0.15f, 0.15f, 0.15f, 1.0f };
+    colours[ImGuiCol_TabUnfocusedActive] = ImVec4{ 0.2f, 0.2f, 0.2f, 1.0f };
+
+    colours[ImGuiCol_TitleBg] = ImVec4{ 0.15f, 0.15f, 0.15f, 1.0f };
+    colours[ImGuiCol_TitleBgActive] = ImVec4{ 0.15f, 0.15f, 0.15f, 1.0f };
+    colours[ImGuiCol_TitleBgCollapsed] = ImVec4{ 0.95f, 0.15f, 0.95f, 1.0f };
+}
 
 const GLint WIDTH = 800, HEIGHT = 600;
 GLuint VBO, VAO, shader;
 static const char* vShader = R"(
-#version 330
+#version 460
 
 layout (location = 0) in vec3 pos;
 
@@ -16,7 +48,7 @@ void main()
 })";
 
 static const char* fShader = R"(
-#version 330
+#version 460
 
 out vec4 colour;
 
@@ -26,63 +58,64 @@ void main()
 })";
 
 
+
+
+
+
 void UVK::GLRenderer::createWindow()
 {
-    if (!glfwInit())
-    {
-        logger.consoleLog("GLFW initialisation failed!", ERROR);
-        glfwTerminate();
-        return;
-    }
-    logger.consoleLog("Setting up the window", NOTE);
-
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-
-    GLFWwindow *mainWindow = glfwCreateWindow(WIDTH, HEIGHT, "Test Window", NULL, NULL);
-    if (!mainWindow)
-    {
-        logger.consoleLog("GLFW window creation failed!", ERROR);
-        glfwTerminate();
-        return;
-    }
-    logger.consoleLog("Window was created successfully", SUCCESS);
-    // Get Buffer Size information
-    int bufferWidth, bufferHeight;
-    glfwGetFramebufferSize(mainWindow, &bufferWidth, &bufferHeight);
-
-    // Set context for GLEW to use
-    glfwMakeContextCurrent(mainWindow);
-
-    // Allow modern extension features
-    glewExperimental = GL_TRUE;
-
-    if (glewInit() != GLEW_OK)
-    {
-        logger.consoleLog("GLEW initialisation failed!", ERROR);
-
-        glfwDestroyWindow(mainWindow);
-        glfwTerminate();
-        return;
-    }
-
-    // Setup Viewport size
-    glViewport(0, 0, bufferWidth, bufferHeight);
+    window.createWindow();
 
     logger.consoleLog("Creating geometry", NOTE);
     createTriangle();
     compileShaders();
     logger.consoleLog("Compiled Shaders", SUCCESS);
-    // Loop until window closed
-    while (!glfwWindowShouldClose(mainWindow))
+
+
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+    io.ConfigViewportsNoTaskBarIcon = true;
+
+    io.FontDefault = io.Fonts->AddFontFromFileTTF("Content/Textures/Font/Roboto-Regular.ttf", 16.0f);
+    ImGui::StyleColorsDark();
+    ImGui::StyleColorsClassic();
+
+
+    ImGuiStyle& style = ImGui::GetStyle();
+    if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
     {
-        // Get + Handle user input events
+        style.WindowRounding = 0.0f;
+        style.Colors[ImGuiCol_WindowBg].w = 1.0f;
+    }
+
+    setDarkTheme();
+    ImGui_ImplGlfw_InitForOpenGL(window.getWindow(), true);
+    ImGui_ImplOpenGL3_Init("#version 460");
+
+
+    events.callBegin();
+    GLfloat DeltaTime = 0;
+    GLfloat LastTime = 0;
+
+    while (!glfwWindowShouldClose(window.getWindow()))
+    {
+
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+
         glfwPollEvents();
 
-        // Clear window
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        GLfloat now = glfwGetTime();
+        DeltaTime = now - LastTime;
+        LastTime = now;
+
+        events.callTick(DeltaTime);
+
+        glClearColor(1.0f, 0.8f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
         glUseProgram(shader);
@@ -93,8 +126,150 @@ void UVK::GLRenderer::createWindow()
 
         glUseProgram(0);
 
-        glfwSwapBuffers(mainWindow);
+        static bool opt_fullscreen = true;
+        static bool opt_padding = false;
+        static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
+
+        ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
+        window_flags |= ImGuiTreeNodeFlags_SpanAvailWidth;
+        if (opt_fullscreen)
+        {
+            ImGuiViewport* viewport = ImGui::GetMainViewport();
+            ImGui::SetNextWindowBgAlpha(1.0f);
+
+            ImGui::SetNextWindowPos(viewport->GetWorkPos());
+            ImGui::SetNextWindowSize(viewport->GetWorkSize());
+            ImGui::SetNextWindowViewport(viewport->ID);
+            ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
+            ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+            window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
+            window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
+            dockspace_flags |= ImGuiDockNodeFlags_PassthruCentralNode;
+
+        }
+        else
+        {
+            dockspace_flags &= ~ImGuiDockNodeFlags_PassthruCentralNode;
+        }
+
+
+        if (dockspace_flags & ImGuiDockNodeFlags_PassthruCentralNode)
+            window_flags |= ImGuiWindowFlags_NoBackground;
+
+        bool bIsOpen = true;
+
+        //if (!opt_padding)
+        ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+        ImGui::Begin("DockSpace Demo", &bIsOpen, window_flags);
+
+        if (!opt_padding)
+            ImGui::PopStyleVar();
+
+        if (opt_fullscreen)
+            ImGui::PopStyleVar(2);
+
+        // DockSpace
+        ImGuiIO& io = ImGui::GetIO();
+        if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
+        {
+            ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
+            ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
+        }
+
+        if (ImGui::BeginMenuBar())
+        {
+            if (ImGui::BeginMenu("File"))
+            {
+                if (ImGui::Button("New level"))
+                {
+
+                }
+
+                if (ImGui::Button("Open level"))
+                {
+
+                }
+
+                if (ImGui::Button("Exit"))
+                {
+                    glfwSetWindowShouldClose(window.getWindow(), GL_TRUE);
+                    return;
+                }
+                ImGui::EndMenu();
+            }
+            if (ImGui::BeginMenu("Edit"))
+            {
+                if (ImGui::Button("Undo"))
+                {
+
+                }
+
+                if (ImGui::Button("Redo"))
+                {
+
+                }
+
+                if (ImGui::Button("Undo history"))
+                {
+
+                }
+                ImGui::EndMenu();
+            }
+            ImGui::EndMenuBar();
+        }
+
+        ImGui::End();
+
+        {
+            ImGui::Begin("Details");
+            ImGui::End();
+        }
+
+        {
+            ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow;
+            flags |= ImGuiTreeNodeFlags_SpanAvailWidth;
+            ImGui::Begin("Scene Hierarchy");
+
+
+            ImGui::End();
+        }
+
+        {
+            ImGui::Begin("Transform");
+
+            ImGui::Text("Translation");
+            //if (ImGui::InputText(""))
+            {
+
+            }
+
+
+            ImGui::End();
+        }
+
+        {
+
+        }
+
+        ImGui::Render();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+        if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+        {
+            GLFWwindow* backup_current_context = glfwGetCurrentContext();
+            ImGui::UpdatePlatformWindows();
+            ImGui::RenderPlatformWindowsDefault();
+            glfwMakeContextCurrent(backup_current_context);
+        }
+        glfwSwapBuffers(window.getWindow());
     }
+    events.callEnd();
+
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
+
+    window.destroyWindow();
 }
 
 void UVK::GLRenderer::createTriangle()

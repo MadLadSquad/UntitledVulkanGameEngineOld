@@ -12,6 +12,8 @@ namespace UVK
     class UVK_API Level
     {
     public:
+        Level(const char* name) { open(name); }
+
         virtual void tick(float deltaTime) = 0;
         virtual void beginPlay() = 0;
         virtual void endPlay() = 0;
