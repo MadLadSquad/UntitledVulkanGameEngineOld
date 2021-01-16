@@ -8,7 +8,7 @@ A game engine that is simple to develop for! The UntitledVulkanGameEngine is a f
 ## Learning
 You can start learning the engine from the source code or you can go to the [wiki](https://github.com/MadLadSquad/UntitledVulkanGameEngine/wiki) where you can go through a tutorial and after that look at the documentation
 ## Development
-Follow [the trello](https://trello.com/b/0upjsxT0/untitledvukangameengine2) if you want to see how it progresses 
+Follow [the trello](https://trello.com/b/0upjsxT0/untitledvukangameengine2) if you want to see how the engine progresses. 
 ## Open-source libraries and SDKs we use
 -   GLFW - https://github.com/glfw/glfw
 -   GLEW - https://github.com/nigels-com/glew
