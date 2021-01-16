@@ -12,14 +12,14 @@ namespace UVK
     class UVK_API Level
     {
     public:
-        Level(const char* name) { open(name); }
+        //Level(const char* name) { open(name); }
 
         virtual void tick(float deltaTime) = 0;
         virtual void beginPlay() = 0;
         virtual void endPlay() = 0;
 
         void saveEntity(YAML::Emitter& out, Actor act);
-        void save(String output, String name);
+        void save(String location, String name);
         void open(String file);
 
         void setGameInstance(GameInstance* instance){ gameInstance = instance;}

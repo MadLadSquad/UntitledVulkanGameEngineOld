@@ -9,12 +9,16 @@
 #include "UVKLog.h"
 #include "Engine/Renderer/Window/Window.hpp"
 
+
+
 namespace UVK
 {
+    class Level;
+
     class GLRenderer
     {
     public:
-        void createWindow();
+        void createWindow(Level* level);
         void createTriangle();
         void addShader(GLuint theProgram, const char* shaderCode, GLenum shaderType);
         void compileShaders();

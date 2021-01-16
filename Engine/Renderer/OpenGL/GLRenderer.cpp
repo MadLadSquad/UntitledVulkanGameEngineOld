@@ -5,34 +5,37 @@
 #include "../../ThirdParty/imgui/imgui.h"
 #include "../../ThirdParty/imgui/backends/imgui_impl_opengl3.h"
 #include "../../ThirdParty/imgui/backends/imgui_impl_glfw.h"
+#include "../../GameFramework/GameplayClasses/Level/Level.hpp"
 
 void UVK::GLRenderer::setDarkTheme()
 {
     auto& colours = ImGui::GetStyle().Colors;
 
-    colours[ImGuiCol_WindowBg] = ImVec4{ 0.1f, 0.1f, 0.1f, 1.0f };
+    colours[ImGuiCol_WindowBg] = ImVec4{ 0.1f, 0.1f, 0.1f, 0.85f };
 
-    colours[ImGuiCol_Header] = ImVec4{ 0.2f, 0.2f, 0.2f, 1.0f };
-    colours[ImGuiCol_HeaderHovered] = ImVec4{ 0.3f, 0.3f, 0.3f, 1.0f };
-    colours[ImGuiCol_HeaderActive] = ImVec4{ 0.15f, 0.15f, 0.15f, 1.0f };
+    colours[ImGuiCol_Header] = ImVec4{ 0.2f, 0.2f, 0.2f, 0.85f };
+    colours[ImGuiCol_HeaderHovered] = ImVec4{ 0.3f, 0.3f, 0.3f, 0.85f };
+    colours[ImGuiCol_HeaderActive] = ImVec4{ 0.15f, 0.15f, 0.15f, 0.85f };
 
-    colours[ImGuiCol_Button] = ImVec4{ 0.2f, 0.2f, 0.2f, 1.0f };
-    colours[ImGuiCol_ButtonHovered] = ImVec4{ 0.3f, 0.3f, 0.3f, 1.0f };
-    colours[ImGuiCol_ButtonActive] = ImVec4{ 0.15f, 0.15f, 0.15f, 1.0f };
+    colours[ImGuiCol_Button] = ImVec4{ 0.2f, 0.2f, 0.2f, 0.85f };
+    colours[ImGuiCol_ButtonHovered] = ImVec4{ 0.3f, 0.3f, 0.3f, 0.85f };
+    colours[ImGuiCol_ButtonActive] = ImVec4{ 0.15f, 0.15f, 0.15f, 0.85f };
 
-    colours[ImGuiCol_FrameBg] = ImVec4{ 0.2f, 0.2f, 0.2f, 1.0f };
-    colours[ImGuiCol_FrameBgHovered] = ImVec4{ 0.3f, 0.3f, 0.3f, 1.0f };
-    colours[ImGuiCol_FrameBgActive] = ImVec4{ 0.15f, 0.15f, 0.15f, 1.0f };
+    colours[ImGuiCol_FrameBg] = ImVec4{ 0.2f, 0.2f, 0.2f, 0.85f };
+    colours[ImGuiCol_FrameBgHovered] = ImVec4{ 0.3f, 0.3f, 0.3f, 0.85f };
+    colours[ImGuiCol_FrameBgActive] = ImVec4{ 0.15f, 0.15f, 0.15f, 0.85f };
 
-    colours[ImGuiCol_Tab] = ImVec4{ 0.15f, 0.15f, 0.15f, 1.0f };
-    colours[ImGuiCol_TabHovered] = ImVec4{ 0.4f, 0.4f, 0.4f, 1.0f };
-    colours[ImGuiCol_TabActive] = ImVec4{ 0.3f, 0.3f, 0.3f, 1.0f };
-    colours[ImGuiCol_TabUnfocused] = ImVec4{ 0.15f, 0.15f, 0.15f, 1.0f };
-    colours[ImGuiCol_TabUnfocusedActive] = ImVec4{ 0.2f, 0.2f, 0.2f, 1.0f };
+    colours[ImGuiCol_Tab] = ImVec4{ 0.15f, 0.15f, 0.15f, 0.85f };
+    colours[ImGuiCol_TabHovered] = ImVec4{ 0.4f, 0.4f, 0.4f, 0.85f };
+    colours[ImGuiCol_TabActive] = ImVec4{ 0.3f, 0.3f, 0.3f, 0.85f };
+    colours[ImGuiCol_TabUnfocused] = ImVec4{ 0.15f, 0.15f, 0.15f, 0.85f };
+    colours[ImGuiCol_TabUnfocusedActive] = ImVec4{ 0.2f, 0.2f, 0.2f, 0.85f };
 
-    colours[ImGuiCol_TitleBg] = ImVec4{ 0.15f, 0.15f, 0.15f, 1.0f };
-    colours[ImGuiCol_TitleBgActive] = ImVec4{ 0.15f, 0.15f, 0.15f, 1.0f };
-    colours[ImGuiCol_TitleBgCollapsed] = ImVec4{ 0.95f, 0.15f, 0.95f, 1.0f };
+    colours[ImGuiCol_TitleBg] = ImVec4{ 0.15f, 0.15f, 0.15f, 0.85f };
+    colours[ImGuiCol_TitleBgActive] = ImVec4{ 0.15f, 0.15f, 0.15f, 0.85f };
+    colours[ImGuiCol_TitleBgCollapsed] = ImVec4{ 0.95f, 0.15f, 0.95f, 0.85f };
+
+    colours[ImGuiCol_MenuBarBg] = ImVec4{ 0.01, 0.01, 0.01, 0.85f };
 }
 
 const GLint WIDTH = 800, HEIGHT = 600;
@@ -62,9 +65,10 @@ void main()
 
 
 
-void UVK::GLRenderer::createWindow()
+void UVK::GLRenderer::createWindow(UVK::Level* level)
 {
     window.createWindow();
+    bool bShowOpenLevelWidget = false;
 
     logger.consoleLog("Creating geometry", NOTE);
     createTriangle();
@@ -180,6 +184,11 @@ void UVK::GLRenderer::createWindow()
         {
             if (ImGui::BeginMenu("File"))
             {
+                if (ImGui::Button("Save all"))
+                {
+                    //level->save();
+                }
+
                 if (ImGui::Button("New level"))
                 {
 
@@ -187,7 +196,27 @@ void UVK::GLRenderer::createWindow()
 
                 if (ImGui::Button("Open level"))
                 {
+                    bShowOpenLevelWidget = true;
 
+                    if (bShowOpenLevelWidget)
+                    {
+                        ImGui::Begin("Open Level");
+                        char buffer[250];
+
+                        ImGui::InputText("Level file output", buffer, 250);
+
+                        if (ImGui::Button("Submit"))
+                        {
+                            level->open(buffer);
+                        }
+                        if (ImGui::Button("Cancel"))
+                        {
+                            bShowOpenLevelWidget = false;
+                        }
+
+                        ImGui::End();
+                        bShowOpenLevelWidget = false;
+                    }
                 }
 
                 if (ImGui::Button("Exit"))
@@ -226,11 +255,22 @@ void UVK::GLRenderer::createWindow()
         }
 
         {
-            ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow;
-            flags |= ImGuiTreeNodeFlags_SpanAvailWidth;
             ImGui::Begin("Scene Hierarchy");
 
 
+            ImGui::End();
+        }
+
+        {
+            ImGui::Begin("File System");
+
+
+
+            ImGui::End();
+        }
+
+        {
+            ImGui::Begin("Toolbar");
             ImGui::End();
         }
 

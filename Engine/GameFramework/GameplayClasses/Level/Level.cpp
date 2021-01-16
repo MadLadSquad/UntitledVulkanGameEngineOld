@@ -86,7 +86,7 @@ void UVK::Level::saveEntity(YAML::Emitter& out, Actor act)
     out << YAML::EndMap;
 }
 
-void UVK::Level::save(const char* location, String name)
+void UVK::Level::save(String location, String name)
 {
     YAML::Emitter out;
     out << YAML::BeginMap;

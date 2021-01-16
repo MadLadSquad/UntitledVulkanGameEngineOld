@@ -43,14 +43,14 @@ void UVK::Window::createWindow()
         return;
     }
     logger.consoleLog("Setting up the window", NOTE);
-
+    glewExperimental = GL_TRUE;
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_SAMPLES, 16);
     glEnable(GL_MULTISAMPLE);
-    //glEnable(GL_DEPTH_TEST);
+    glEnable(GL_DEPTH_TEST);
     if (bIsFullScreen)
     {
         windowMain = glfwCreateWindow(width, height, "Test Window", glfwGetPrimaryMonitor(), NULL);
@@ -79,7 +79,7 @@ void UVK::Window::createWindow()
 
     doCallBacks();
 
-    glewExperimental = GL_TRUE;
+
 
     if (glewInit() != GLEW_OK)
     {

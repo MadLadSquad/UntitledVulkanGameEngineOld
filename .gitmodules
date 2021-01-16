@@ -25,3 +25,6 @@
 [submodule "Engine/ThirdParty/entt"]
 	path = Engine/ThirdParty/entt
 	url = https://github.com/skypjack/entt.git
+[submodule "Engine/ThirdParty/vulkan/headers"]
+	path = Engine/ThirdParty/vulkan/headers
+	url = https://github.com/KhronosGroup/Vulkan-Headers.git
