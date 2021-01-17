@@ -19,4 +19,9 @@
 #include "Engine/Core/Core/Defines.hpp"
 #include "Engine/Core/Core/Types.hpp"
 #include "Events/Input/Keys.hpp"
+
+#if __has_include(<filesystem>)
 #include <filesystem>
+#else
+#include <experimental/filesystem>
+#endif

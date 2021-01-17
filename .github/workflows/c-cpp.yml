@@ -15,7 +15,7 @@ jobs:
     - uses: actions/checkout@v2
     - name: Get dependencies
       shell: bash
-      run: sudo apt-get install x11-xserver-utils libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev gcc make g++ libxmu-dev libxi-dev libgl-dev libglu1-mesa-dev vulkan-loader
+      run: sudo apt-get install x11-xserver-utils libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev gcc make g++ libxmu-dev libxi-dev libgl-dev libglu1-mesa-dev libvulkan1 mesa-vulkan-drivers vulkan-utils
 
     - name: Checkout submodules
       shell: bash
@@ -35,7 +35,7 @@ jobs:
       run: cd UVKBuildTool/ && mkdir build && cd build && cmake -G "Unix Makefiles" .. && make && ./UVKBuildTool --generate
     - name: Make build directory and cmake
       shell: bash
-      run: ls && mkdir build && cd build && cmake .. -G "Unix Makefiles" && make && ./Game
+      run: ls && mkdir build && cd build && cmake .. -G "Unix Makefiles" && alias g++='g++ -lstdc++fs' && alias gcc='gcc -lstdc++fs' && make && ./Game
   Windows:
     runs-on: windows-latest
     steps:
