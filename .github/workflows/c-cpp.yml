@@ -35,7 +35,7 @@ jobs:
       run: cd UVKBuildTool/ && mkdir build && cd build && cmake -G "Unix Makefiles" .. && make && ./UVKBuildTool --generate
     - name: Make build directory and cmake
       shell: bash
-      run: ls && mkdir build && cd build && cmake .. -G "Unix Makefiles" && make && ./Game
+      run: ls && mkdir build && cd build && cmake .. -G "Unix Makefiles" && alias g++='g++ -lstdc++fs' && alias gcc='gcc -lstdc++fs' && make && ./Game
   Windows:
     runs-on: windows-latest
     steps:
