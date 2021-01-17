@@ -15,16 +15,16 @@ jobs:
     - uses: actions/checkout@v2
     - name: Get dependencies
       shell: bash
-      run: sudo apt-get install x11-xserver-utils libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev gcc make g++ libxmu-dev libxi-dev libgl-dev libglu1-mesa-dev
+      run: sudo apt-get install x11-xserver-utils libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev gcc make g++ libxmu-dev libxi-dev libgl-dev libglu1-mesa-dev vulkan-loader
 
     - name: Checkout submodules
       shell: bash
       run: |
           git submodule sync --recursive
           git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
-    #- name: Compile GLEW
-    #  shell: bash
-    #  run: cd Engine/ThirdParty/glew/auto && make && cd ../ && make && cd ../../../ && ls
+    - name: Compile GLEW
+      shell: bash
+      run: cd Engine/ThirdParty/glew/auto && make && cd ../ && make && cd ../../../ && ls
     - name: Create project
       shell: bash
       run: git clone https://github.com/MadLadSquad/UVKSampleProject.git 
@@ -44,8 +44,8 @@ jobs:
       run: |
           git submodule sync --recursive
           git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
-   # - name: Compile GLEW
-   #   run: cd Engine/ThirdParty/glew/auto/ && mingw32-make && cd ../ && mingw32-make install && cd ../../../ && dir
+    - name: Compile GLEW
+      run: cd Engine/ThirdParty/glew/auto/ && mingw32-make && cd ../ && mingw32-make install && cd ../../../ && dir
     - name: Create project
       run: git clone https://github.com/MadLadSquad/UVKSampleProject.git && dir
     - name: Extract project
@@ -66,9 +66,9 @@ jobs:
       run: |
           git submodule sync --recursive
           git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
-   # - name: Compile GLEW
-   #   shell: bash
-   #   run: cd Engine/ThirdParty/glew/auto && make && cd ../ && make && cd ../../../ && ls
+    - name: Compile GLEW
+      shell: bash
+      run: cd Engine/ThirdParty/glew/auto && make && cd ../ && make && cd ../../../ && ls
     - name: Create project
       shell: bash
       run: git clone https://github.com/MadLadSquad/UVKSampleProject.git 
