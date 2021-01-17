@@ -105,7 +105,7 @@ void UVK::Level::save(String location, String name)
     //fileout.close();
 }
 
-void UVK::Level::open(const char* location)
+void UVK::Level::open(const char* location) noexcept
 {
     pool.clear();
     id = 0;

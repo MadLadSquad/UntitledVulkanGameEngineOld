@@ -2,10 +2,35 @@
 // Last update 1/10/2021 by Madman10K
 #include "GLRenderer.hpp"
 #include "../../Core/Events/Events.hpp"
-#include "../../ThirdParty/imgui/imgui.h"
-#include "../../ThirdParty/imgui/backends/imgui_impl_opengl3.h"
-#include "../../ThirdParty/imgui/backends/imgui_impl_glfw.h"
+#include <imgui.h>
+#include <backends/imgui_impl_opengl3.h>
+#include <backends/imgui_impl_glfw.h>
 #include "../../GameFramework/GameplayClasses/Level/Level.hpp"
+#include "../EditorUI/DetailsPanel.hpp"
+#include "../EditorUI/SaveLevel.hpp"
+
+
+const GLint WIDTH = 800, HEIGHT = 600;
+GLuint VBO, VAO, shader;
+static const char* vShader = R"(
+#version 460
+
+layout (location = 0) in vec3 pos;
+
+void main()
+{
+    gl_Position = vec4(0.4 * pos.x, 0.4 * pos.y, pos.z, 1.0);
+})";
+
+static const char* fShader = R"(
+#version 460
+
+out vec4 colour;
+
+void main()
+{
+    colour = vec4(1.0, 0.0, 0.0, 1.0);
+})";
 
 void UVK::GLRenderer::setDarkTheme()
 {
@@ -38,37 +63,13 @@ void UVK::GLRenderer::setDarkTheme()
     colours[ImGuiCol_MenuBarBg] = ImVec4{ 0.01, 0.01, 0.01, 0.85f };
 }
 
-const GLint WIDTH = 800, HEIGHT = 600;
-GLuint VBO, VAO, shader;
-static const char* vShader = R"(
-#version 460
-
-layout (location = 0) in vec3 pos;
-
-void main()
+void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
 {
-    gl_Position = vec4(0.4 * pos.x, 0.4 * pos.y, pos.z, 1.0);
-})";
-
-static const char* fShader = R"(
-#version 460
-
-out vec4 colour;
-
-void main()
-{
-    colour = vec4(1.0, 0.0, 0.0, 1.0);
-})";
-
-
-
-
-
-
-void UVK::GLRenderer::createWindow(UVK::Level* level)
-{
+    std::string location;
+    std::string name;
+    bSetBuff = true;
+    bShowSaveLevelWidget = false;
     window.createWindow();
-    bool bShowOpenLevelWidget = false;
 
     logger.consoleLog("Creating geometry", NOTE);
     createTriangle();
@@ -119,7 +120,7 @@ void UVK::GLRenderer::createWindow(UVK::Level* level)
 
         events.callTick(DeltaTime);
 
-        glClearColor(1.0f, 0.8f, 0.0f, 1.0f);
+        glClearColor(1.0f, 0.8f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
         glUseProgram(shader);
@@ -184,39 +185,21 @@ void UVK::GLRenderer::createWindow(UVK::Level* level)
         {
             if (ImGui::BeginMenu("File"))
             {
-                if (ImGui::Button("Save all"))
+                if (ImGui::Button("Save level"))
                 {
-                    //level->save();
+                    bShowSaveLevelWidget = true;
+
+
                 }
 
                 if (ImGui::Button("New level"))
                 {
-
+                    pool.clear();
                 }
 
                 if (ImGui::Button("Open level"))
                 {
                     bShowOpenLevelWidget = true;
-
-                    if (bShowOpenLevelWidget)
-                    {
-                        ImGui::Begin("Open Level");
-                        char buffer[250];
-
-                        ImGui::InputText("Level file output", buffer, 250);
-
-                        if (ImGui::Button("Submit"))
-                        {
-                            level->open(buffer);
-                        }
-                        if (ImGui::Button("Cancel"))
-                        {
-                            bShowOpenLevelWidget = false;
-                        }
-
-                        ImGui::End();
-                        bShowOpenLevelWidget = false;
-                    }
                 }
 
                 if (ImGui::Button("Exit"))
@@ -249,38 +232,27 @@ void UVK::GLRenderer::createWindow(UVK::Level* level)
 
         ImGui::End();
 
+        if (bShowSaveLevelWidget)
         {
-            ImGui::Begin("Details");
-            ImGui::End();
+            SaveLevel::Display(bShowSaveLevelWidget, location, name);
         }
 
+        if (bShowOpenLevelWidget)
         {
-            ImGui::Begin("Scene Hierarchy");
+            ImGui::Begin("Open Level");
+            char buffer[256];
 
-
-            ImGui::End();
-        }
-
-        {
-            ImGui::Begin("File System");
-
-
-
-            ImGui::End();
-        }
-
-        {
-            ImGui::Begin("Toolbar");
-            ImGui::End();
-        }
-
-        {
-            ImGui::Begin("Transform");
-
-            ImGui::Text("Translation");
-            //if (ImGui::InputText(""))
+            ImGui::InputText("File location", buffer, 256);
+            if (ImGui::Button("Cancel"))
             {
+                bShowOpenLevelWidget = false;
+            }
 
+            ImGui::SameLine();
+            if (ImGui::Button("Submit"))
+            {
+                level->open(buffer);
+                bShowOpenLevelWidget = false;
             }
 
 
@@ -288,7 +260,45 @@ void UVK::GLRenderer::createWindow(UVK::Level* level)
         }
 
         {
+            ImGui::Begin("Scene Hierarchy");
 
+            pool.each([&](entt::entity ent)
+            {
+                auto& a = registry.getComponent<CoreComponent>(ent);
+
+                if (ImGui::Selectable(a.name.c_str()))
+                {
+                    selectedEntity = ent;
+                }
+            });
+
+            ImGui::End();
+        }
+
+        {
+            DetailsPanel::Display(selectedEntity);
+        }
+
+        {
+            ImGui::Begin("File System");
+
+            ImGui::Text("Coming soon!");
+
+            ImGui::End();
+        }
+
+        {
+            ImGui::Begin("Toolbar");
+            ImGui::Text("Coming soon!");
+            ImGui::End();
+        }
+
+        {
+            ImGui::Begin("Tools");
+
+            ImGui::Text("Coming soon!");
+
+            ImGui::End();
         }
 
         ImGui::Render();

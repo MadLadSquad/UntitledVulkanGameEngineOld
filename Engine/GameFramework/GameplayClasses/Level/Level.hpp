@@ -20,7 +20,7 @@ namespace UVK
 
         void saveEntity(YAML::Emitter& out, Actor act);
         void save(String location, String name);
-        void open(String file);
+        void open(String file) noexcept;
 
         void setGameInstance(GameInstance* instance){ gameInstance = instance;}
         void setGameMode(GameMode* mode){ gameMode = mode; }

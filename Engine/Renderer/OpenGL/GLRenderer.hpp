@@ -18,10 +18,16 @@ namespace UVK
     class GLRenderer
     {
     public:
-        void createWindow(Level* level);
+        void createWindow(Level* level) noexcept;
         void createTriangle();
         void addShader(GLuint theProgram, const char* shaderCode, GLenum shaderType);
         void compileShaders();
         void setDarkTheme();
+
+    private:
+        Actor selectedEntity;
+        bool bShowOpenLevelWidget;
+        bool bSetBuff;
+        bool bShowSaveLevelWidget;
     };
 }

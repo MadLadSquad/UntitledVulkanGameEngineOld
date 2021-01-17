@@ -36,6 +36,11 @@ void UVK::Window::createWindow()
         bIsFullScreen = out["fullscreen"].as<bool>();
     }
 
+    if (out["window-name"])
+    {
+        name = out["window-name"].as<std::string>();
+    }
+
     if (!glfwInit())
     {
         logger.consoleLog("GLFW initialisation failed!", ERROR);
@@ -53,11 +58,11 @@ void UVK::Window::createWindow()
     glEnable(GL_DEPTH_TEST);
     if (bIsFullScreen)
     {
-        windowMain = glfwCreateWindow(width, height, "Test Window", glfwGetPrimaryMonitor(), NULL);
+        windowMain = glfwCreateWindow(width, height, name.c_str(), glfwGetPrimaryMonitor(), NULL);
     }
     else
     {
-        windowMain = glfwCreateWindow(width, height, "Test Window", NULL, NULL);
+        windowMain = glfwCreateWindow(width, height, name.c_str(), NULL, NULL);
     }
     GLFWimage images[1];
     images[0].pixels = stbi_load(image.c_str(), &images[0].width, &images[0].height, 0, 4);

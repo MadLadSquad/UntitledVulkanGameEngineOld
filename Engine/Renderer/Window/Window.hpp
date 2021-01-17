@@ -31,6 +31,7 @@ namespace UVK
         int height = 600;
         bool bIsFullScreen = false;
         GLFWwindow* windowMain;
+        std::string name = "Editor";
     };
 }
 
