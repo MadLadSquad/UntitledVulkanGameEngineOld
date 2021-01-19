@@ -3,8 +3,8 @@
 #include "GLRenderer.hpp"
 #include "../../Core/Events/Events.hpp"
 #include <imgui.h>
-#include <backends/imgui_impl_opengl3.h>
-#include <backends/imgui_impl_glfw.h>
+#include <imgui_impl_opengl3.h>
+#include <imgui_impl_glfw.h>
 #include "../../GameFramework/GameplayClasses/Level/Level.hpp"
 #include "../EditorUI/DetailsPanel.hpp"
 #include "../EditorUI/SaveLevel.hpp"

@@ -1,9 +1,9 @@
 #pragma once
 #include <Core.hpp>
 #include <imgui.h>
-#include <backends/imgui_impl_opengl3.h>
-#include <backends/imgui_impl_glfw.h>
-#include <misc/cpp/imgui_stdlib.h>
+#include <imgui_impl_opengl3.h>
+#include <imgui_impl_glfw.h>
+#include <cpp/imgui_stdlib.h>
 
 namespace DetailsPanel
 {
