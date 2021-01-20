@@ -1,3 +1,5 @@
+// Window.hpp
+// Last update 1/10/2021 by Madman10K
 #pragma once
 #include <GL/glew.h>
 #include <glfw3.h>

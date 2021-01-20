@@ -1,3 +1,5 @@
+// VulkanRenderer.hpp
+// Last update 1/20/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 #include <vulkan.h>

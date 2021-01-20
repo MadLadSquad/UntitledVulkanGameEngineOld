@@ -1,3 +1,5 @@
+// SaveLevel.hpp
+// Last update 1/20/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 #include <imgui.h>
@@ -12,6 +14,7 @@ namespace UVK
 
 namespace SaveLevel
 {
+    // Needed for level opening
     class JunkLevel : public UVK::Level
     {
     public:
@@ -20,7 +23,7 @@ namespace SaveLevel
         virtual void endPlay() override {}
     };
 
-
+    // Displays the SaveLevel widget
     static void Display(bool& bOpen, std::string& location, std::string& name)
     {
         ImGui::Begin("Save level");
