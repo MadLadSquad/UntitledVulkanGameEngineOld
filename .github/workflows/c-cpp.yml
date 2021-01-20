@@ -45,7 +45,7 @@ jobs:
           git submodule sync --recursive
           git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
     - name: Compile GLEW
-      run: cd Engine/ThirdParty/glew/auto/ && mingw32-make && cd ../ && mingw32-make install && cd ../../../ && dir
+      run: doskey g++=g++ -std=c++17 -lstdc++fs --enable-libstdcxx-filesystem-ts && choco install msys2 && cd Engine/ThirdParty/glew/auto/ && mingw32-make && cd ../ && mingw32-make install && cd ../../../ && dir
     - name: Create project
       run: git clone https://github.com/MadLadSquad/UVKSampleProject.git && dir
     - name: Extract project
