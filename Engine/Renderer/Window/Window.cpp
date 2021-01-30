@@ -1,9 +1,7 @@
 // Window.cpp
 // Last update 1/20/2021 by Madman10K
 #include "Window.hpp"
-#define STB_IMAGE_IMPLEMENTATION
-#include <stb_image.h>
-
+#include "../Textures/Texture.hpp"
 
 
 void UVK::Window::doCallBacks()

@@ -5,6 +5,7 @@
 #include <glfw3.h>
 #include <yaml.h>
 #include "UVKLog.h"
+#include "../Textures/Texture.hpp"
 
 namespace UVK
 {

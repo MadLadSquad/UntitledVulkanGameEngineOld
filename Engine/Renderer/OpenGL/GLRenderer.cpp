@@ -76,6 +76,8 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
     compileShaders();
     logger.consoleLog("Compiled Shaders", SUCCESS);
 
+    Texture texture("icon.png");
+    texture.load();
 
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -283,6 +285,11 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
             ImGui::Begin("File System");
 
             ImGui::Text("Coming soon!");
+
+
+
+            ImGui::Image((void*)(intptr_t)texture.getImage(), ImVec2(texture.getWidth(), texture.getHeight()));
+
 
             ImGui::End();
         }
