@@ -15,10 +15,10 @@ void UVK::Window::framebufferSizeCallback(GLFWwindow* window, int width, int hei
 }
 
 void UVK::Window::createWindow()
-{
+{  
+    system("ls");
+    
     auto out = YAML::LoadFile("Config/Settings/Window.yaml");
-
-
 
     if (out["image"])
     {

@@ -2,7 +2,6 @@
 // Last update 1/10/2021 by Madman10K
 #pragma once
 
-#define GLEW_STATIC
 #include <GL/glew.h>
 #include "../glfw/include/GLFW/glfw3.h"
 #include <Core.hpp>

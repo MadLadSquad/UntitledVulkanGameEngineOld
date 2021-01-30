@@ -2,7 +2,7 @@
 // Last update 1/20/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
-#include <vulkan.h>
+#include <vulkan/vulkan.h>
 #include <glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
