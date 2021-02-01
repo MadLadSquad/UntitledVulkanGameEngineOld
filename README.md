@@ -24,6 +24,9 @@ Modules development status:
 -   Input: Under construction
 -   2D audio: Under construction
 -   3D audio: Under construction
+-   Renderer manager: Finished
+-   API planning and design: Finished
+-   Game framework: 50% finished
 ## Q&A
 Q: It's called the UntitledVulkanEngine but where is the Vulkan renderer
 
