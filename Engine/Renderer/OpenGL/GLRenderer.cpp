@@ -86,7 +86,7 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
     io.ConfigViewportsNoTaskBarIcon = true;
 
-    io.FontDefault = io.Fonts->AddFontFromFileTTF("Content/Textures/Font/Roboto-Regular.ttf", 16.0f);
+
     ImGui::StyleColorsDark();
     ImGui::StyleColorsClassic();
 

@@ -15,9 +15,7 @@ void UVK::Window::framebufferSizeCallback(GLFWwindow* window, int width, int hei
 }
 
 void UVK::Window::createWindow()
-{  
-    system("ls");
-    
+{
     auto out = YAML::LoadFile("Config/Settings/Window.yaml");
 
     if (out["image"])
@@ -54,15 +52,18 @@ void UVK::Window::createWindow()
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_SAMPLES, 16);
-    glEnable(GL_MULTISAMPLE);
-    glEnable(GL_DEPTH_TEST);
+
+
+    logger.consoleLog("Window settings configured", NOTE);
     if (bIsFullScreen)
     {
         windowMain = glfwCreateWindow(width, height, name.c_str(), glfwGetPrimaryMonitor(), NULL);
+        logger.consoleLog("Created window", NOTE);
     }
     else
     {
         windowMain = glfwCreateWindow(width, height, name.c_str(), NULL, NULL);
+        logger.consoleLog("Created window", NOTE);
     }
     GLFWimage images[1];
     images[0].pixels = stbi_load(image.c_str(), &images[0].width, &images[0].height, 0, 4);
@@ -79,6 +80,9 @@ void UVK::Window::createWindow()
 
     int bufferWidth, bufferHeight;
     glfwGetFramebufferSize(windowMain, &bufferWidth, &bufferHeight);
+
+    glEnable(GL_MULTISAMPLE);
+    glEnable(GL_DEPTH_TEST);
 
     glfwMakeContextCurrent(windowMain);
 
