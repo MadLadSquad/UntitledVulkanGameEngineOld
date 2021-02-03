@@ -13,6 +13,7 @@ namespace UVK
     {
     public:
         //Level(const char* name) { open(name); }
+        Level() = default;
 
         virtual void tick(float deltaTime) = 0;
         virtual void beginPlay() = 0;
