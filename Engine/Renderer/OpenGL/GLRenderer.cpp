@@ -74,7 +74,7 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
     createTriangle();
     compileShaders();
     logger.consoleLog("Compiled Shaders", SUCCESS);
-    
+
     Texture texture("icon.png");
     texture.load();
 

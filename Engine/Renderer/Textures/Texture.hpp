@@ -6,7 +6,7 @@ class Texture
 {
 public:
     Texture() = delete;
-    Texture(std::string loc)
+    explicit Texture(const std::string& loc)
         :location(loc)
     {
 
