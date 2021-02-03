@@ -7,11 +7,9 @@ class Texture
 public:
     Texture() = delete;
     explicit Texture(std::string& loc)
+        :location(loc)
     {
-        location = loc;
-        width = 0;
-        height = 0;
-        image = 0;
+
     }
 
 
@@ -26,7 +24,7 @@ public:
 
 private:
     std::string location;
-    int width;
-    int height;
-    GLuint image;
+    int width = 0;
+    int height = 0;
+    GLuint image = 0;
 };
