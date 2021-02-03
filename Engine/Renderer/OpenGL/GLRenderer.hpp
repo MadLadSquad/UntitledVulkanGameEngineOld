@@ -19,7 +19,7 @@ namespace UVK
     public:
         GLRenderer() = delete;
 
-        GLRenderer(Level* level)
+        explicit GLRenderer(Level* level)
         {
             createWindow(level);
         }
