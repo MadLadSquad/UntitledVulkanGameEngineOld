@@ -164,12 +164,10 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
 
         bool bIsOpen = true;
 
-        //if (!opt_padding)
         ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
         ImGui::Begin("DockSpace Demo", &bIsOpen, window_flags);
 
-        if (!opt_padding)
-            ImGui::PopStyleVar();
+        //ImGui::PopStyleVar();
 
         if (opt_fullscreen)
             ImGui::PopStyleVar(2);
