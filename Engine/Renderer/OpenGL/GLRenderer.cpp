@@ -74,10 +74,8 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
     createTriangle();
     compileShaders();
     logger.consoleLog("Compiled Shaders", SUCCESS);
-
-    std::string logo = "icon.png";
-
-    Texture texture = Texture(logo);
+    
+    Texture texture("icon.png");
     texture.load();
 
     IMGUI_CHECKVERSION();
