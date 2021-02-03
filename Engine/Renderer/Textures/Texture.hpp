@@ -6,9 +6,9 @@ class Texture
 {
 public:
     Texture() = delete;
-    explicit Texture(std::string loc)
+    explicit Texture(std::string& loc)
     {
-        location = std::move(loc);
+        location = loc;
         width = 0;
         height = 0;
         image = 0;

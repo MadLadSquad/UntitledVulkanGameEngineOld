@@ -69,14 +69,15 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
     std::string name;
     bSetBuff = true;
     bShowSaveLevelWidget = false;
-    window.createWindow();
 
     logger.consoleLog("Creating geometry", NOTE);
     createTriangle();
     compileShaders();
     logger.consoleLog("Compiled Shaders", SUCCESS);
 
-    Texture texture("icon.png");
+    std::string logo = "icon.png";
+
+    Texture texture = Texture(logo);
     texture.load();
 
     IMGUI_CHECKVERSION();

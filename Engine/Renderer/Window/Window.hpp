@@ -12,6 +12,11 @@ namespace UVK
     class Window
     {
     public:
+        Window()
+        {
+            createWindow();
+        }
+
         void createWindow();
 
         void dumpConfig();

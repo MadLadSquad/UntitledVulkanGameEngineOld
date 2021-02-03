@@ -10,12 +10,15 @@ namespace UVK
     class Renderer
     {
     public:
+        Renderer()
+        {
+            startRenderer();
+        }
+
         void switchRenderer()
         {
-            if (bIsVulkan)
-            {
-
-            }
+            if (bIsVulkan)bIsVulkan = true;
+            else bIsVulkan = false;
         }
 
         void startRenderer()
@@ -39,7 +42,15 @@ namespace UVK
 
         void saveSettings()
         {
+            YAML::Emitter out;
+            out << YAML::BeginMap;
 
+            out << YAML::Key << "vulkan" << YAML::Value << bIsVulkan;
+
+            out << YAML::EndMap;
+
+            std::ofstream fileout("Config/Settings/Renderer.yaml");
+            fileout << out.c_str();
         }
 
     private:

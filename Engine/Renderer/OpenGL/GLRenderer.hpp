@@ -17,6 +17,14 @@ namespace UVK
     class GLRenderer
     {
     public:
+        GLRenderer() = delete;
+
+        GLRenderer(Level* level)
+        {
+            createWindow(level);
+        }
+
+
         void createWindow(Level* level) noexcept;
         void createTriangle();
         void addShader(GLuint theProgram, const char* shaderCode, GLenum shaderType);
