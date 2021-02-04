@@ -93,7 +93,8 @@ void UVK::Window::createWindow()
     doCallBacks();
 
 
-
+#ifdef NO_GLEW
+#else
     if (glewInit() != GLEW_OK)
     {
         logger.consoleLog("GLEW initialisation failed!", ERROR);
@@ -102,7 +103,7 @@ void UVK::Window::createWindow()
         glfwTerminate();
         return;
     }
-
+#endif
     glViewport(0, 0, bufferWidth, bufferHeight);
 }
 
