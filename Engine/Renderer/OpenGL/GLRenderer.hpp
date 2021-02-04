@@ -3,6 +3,12 @@
 #pragma once
 
 #ifdef __APPLE__
+    #define NO_GLEW
+#else
+    #undef NO_GLEW
+#endif
+
+#ifdef NO_GLEW
     #include <OpenGL/gl3.h>
 #else
     #include <GL/glew.h>

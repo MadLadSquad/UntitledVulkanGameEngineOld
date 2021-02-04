@@ -1,7 +1,17 @@
 // Window.hpp
 // Last update 1/10/2021 by Madman10K
 #pragma once
+#ifdef __APPLE__
+#define NO_GLEW
+#else
+#undef NO_GLEW
+#endif
+
+#ifdef NO_GLEW
+#include <OpenGL/gl3.h>
+#else
 #include <GL/glew.h>
+#endif
 #include <glfw3.h>
 #include <yaml.h>
 #include "UVKLog.h"
