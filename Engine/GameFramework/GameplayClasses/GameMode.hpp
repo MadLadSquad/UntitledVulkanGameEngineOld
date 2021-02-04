@@ -12,6 +12,8 @@ namespace UVK
     UVK_API class GameMode
     {
     public:
+        GameMode() = delete;
+
         GameMode(GameState* gs, PlayerState* ps, PlayerController* pc, APawn* pawn)
         {
             this->gs = gs;

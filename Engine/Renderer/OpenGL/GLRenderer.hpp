@@ -2,7 +2,11 @@
 // Last update 1/10/2021 by Madman10K
 #pragma once
 
-#include <GL/glew.h>
+#ifdef __APPLE__
+    #include <OpenGL/gl3.h>
+#else
+    #include <GL/glew.h>
+#endif
 #include "../glfw/include/GLFW/glfw3.h"
 #include <Core.hpp>
 #include "UVKLog.h"
