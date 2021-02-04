@@ -58,9 +58,6 @@ jobs:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Get dependencies
-      shell: bash
-      run: brew install glew && brew install glfw
     - name: Checkout submodules
       shell: bash
       run: |
@@ -79,4 +76,4 @@ jobs:
       run: cd UVKBuildTool/ && mkdir build && cd build && cmake -G "Unix Makefiles" .. && make && ./UVKBuildTool --generate
     - name: Make build directory and cmake
       shell: bash
-      run: alias gcc="g++" && ls && mkdir build && cd build && cmake .. -G "Unix Makefiles" && make
+      run: brew install glew && brew install glfw && ls && mkdir build && cd build && cmake .. -G "Unix Makefiles" && make
