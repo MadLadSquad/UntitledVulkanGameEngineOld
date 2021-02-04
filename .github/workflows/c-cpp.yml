@@ -54,27 +54,3 @@ jobs:
       run: cd UVKBuildTool/ && mkdir build && cd build && cmake -G "Unix Makefiles" .. && mingw32-make && dir && ./UVKBuildTool.exe --generate
     - name: Make build directory and cmake
       run: ls && mkdir build && cd build && cmake .. -G "Unix Makefiles" && mingw32-make
-  MacOS:
-    runs-on: macos-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: Checkout submodules
-      shell: bash
-      run: |
-          git submodule sync --recursive
-          git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
-   # - name: Compile GLEW
-   #   shell: bash
-   #   run: cd Engine/ThirdParty/glew/auto && make && cd ../ && make && cd ../../../ && ls
-    - name: Create project
-      shell: bash
-      run: git clone https://github.com/MadLadSquad/UVKSampleProject.git 
-    - name: Extract project
-      run: mv UVKSampleProject/*.* . 
-    - name: Generated generated files
-      shell: bash
-      run: cd UVKBuildTool/ && mkdir build && cd build && cmake -G "Unix Makefiles" .. && make && ./UVKBuildTool --generate
-    - name: Make build directory and cmake
-      shell: bash
-      run: ls && mkdir build && cd build && cmake .. -G "Unix Makefiles" && make
-      #brew install glew && brew install glfw && 
