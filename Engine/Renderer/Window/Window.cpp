@@ -16,6 +16,90 @@ void UVK::Window::framebufferSizeCallback(GLFWwindow* window, int width, int hei
 
 void UVK::Window::createWindow()
 {
+    openConfig();
+
+    if (!glfwInit())
+    {
+        logger.consoleLog("GLFW initialisation failed!", ERROR);
+        glfwTerminate();
+        return;
+    }
+    logger.consoleLog("Setting up the window", NOTE);
+
+    glewExperimental = GL_TRUE;
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+    glfwWindowHint(GLFW_SAMPLES, 16);
+
+    logger.consoleLog("Window settings configured", NOTE);
+    if (bIsFullScreen)
+    {
+        windowMain = glfwCreateWindow(width, height, name.c_str(), glfwGetPrimaryMonitor(), NULL);
+        logger.consoleLog("Created window", NOTE);
+    }
+    else
+    {
+        windowMain = glfwCreateWindow(width, height, name.c_str(), NULL, NULL);
+        logger.consoleLog("Created window", NOTE);
+    }
+
+    //GLFWimage images[1];
+    //images[0].pixels = stbi_load(image.c_str(), &images[0].width, &images[0].height, 0, 4);
+    //glfwSetWindowIcon(windowMain, 1, images);
+    //stbi_image_free(images[0].pixels);
+
+    if (!windowMain)
+    {
+        logger.consoleLog("GLFW window creation failed!", ERROR);
+        glfwTerminate();
+        return;
+    }
+    logger.consoleLog("Window was created successfully", SUCCESS);
+
+    int bufferWidth, bufferHeight;
+    glfwGetFramebufferSize(windowMain, &bufferWidth, &bufferHeight);
+
+    glEnable(GL_MULTISAMPLE);
+    glEnable(GL_DEPTH_TEST);
+
+    glfwMakeContextCurrent(windowMain);
+
+    doCallBacks();
+
+    if (glewInit() != GLEW_OK)
+    {
+        logger.consoleLog("GLEW initialisation failed!", ERROR);
+
+        glfwDestroyWindow(windowMain);
+        glfwTerminate();
+        return;
+    }
+
+    glViewport(0, 0, bufferWidth, bufferHeight);
+}
+
+void UVK::Window::destroyWindow()
+{
+    glfwDestroyWindow(windowMain);
+    glfwTerminate();
+}
+
+void UVK::Window::dumpConfig()
+{
+    YAML::Emitter out;
+    out << YAML::BeginMap<< YAML::Key << "image" << YAML::Value << image;
+    out << YAML::Key << "width" << YAML::Value << width;
+    out << YAML::Key << "height" << YAML::Value << height;
+    out << YAML::Key << "fullscreen" << YAML::Value << bIsFullScreen;
+
+    std::ofstream fileout("Config/Settings/Window.yaml");
+    fileout << out.c_str();
+}
+
+void UVK::Window::openConfig()
+{
     auto out = YAML::LoadFile("Config/Settings/Window.yaml");
 
     if (out["image"])
@@ -38,89 +122,4 @@ void UVK::Window::createWindow()
     {
         name = out["window-name"].as<std::string>();
     }
-
-    if (!glfwInit())
-    {
-        logger.consoleLog("GLFW initialisation failed!", ERROR);
-        glfwTerminate();
-        return;
-    }
-    logger.consoleLog("Setting up the window", NOTE);
-
-#ifdef NO_GLEW
-#else
-    glewExperimental = GL_TRUE;
-#endif
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-    glfwWindowHint(GLFW_SAMPLES, 16);
-
-
-    logger.consoleLog("Window settings configured", NOTE);
-    if (bIsFullScreen)
-    {
-        windowMain = glfwCreateWindow(width, height, name.c_str(), glfwGetPrimaryMonitor(), NULL);
-        logger.consoleLog("Created window", NOTE);
-    }
-    else
-    {
-        windowMain = glfwCreateWindow(width, height, name.c_str(), NULL, NULL);
-        logger.consoleLog("Created window", NOTE);
-    }
-    GLFWimage images[1];
-    images[0].pixels = stbi_load(image.c_str(), &images[0].width, &images[0].height, 0, 4);
-    glfwSetWindowIcon(windowMain, 1, images);
-    stbi_image_free(images[0].pixels);
-
-    if (!windowMain)
-    {
-        logger.consoleLog("GLFW window creation failed!", ERROR);
-        glfwTerminate();
-        return;
-    }
-    logger.consoleLog("Window was created successfully", SUCCESS);
-
-    int bufferWidth, bufferHeight;
-    glfwGetFramebufferSize(windowMain, &bufferWidth, &bufferHeight);
-
-    glEnable(GL_MULTISAMPLE);
-    glEnable(GL_DEPTH_TEST);
-
-    glfwMakeContextCurrent(windowMain);
-
-    doCallBacks();
-
-
-#ifdef NO_GLEW
-#else
-    if (glewInit() != GLEW_OK)
-    {
-        logger.consoleLog("GLEW initialisation failed!", ERROR);
-
-        glfwDestroyWindow(windowMain);
-        glfwTerminate();
-        return;
-    }
-#endif
-    glViewport(0, 0, bufferWidth, bufferHeight);
-}
-
-void UVK::Window::destroyWindow()
-{
-    glfwDestroyWindow(windowMain);
-    glfwTerminate();
-}
-
-void UVK::Window::dumpConfig()
-{
-    YAML::Emitter out;
-    out << YAML::BeginMap<< YAML::Key << "image" << YAML::Value << image;
-    out << YAML::Key << "width" << YAML::Value << width;
-    out << YAML::Key << "height" << YAML::Value << height;
-    out << YAML::Key << "fullscreen" << YAML::Value << bIsFullScreen;
-
-    std::ofstream fileout("Config/Settings/Window.yaml");
-    fileout << out.c_str();
 }

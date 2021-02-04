@@ -70,6 +70,8 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
     bSetBuff = true;
     bShowSaveLevelWidget = false;
 
+    window.createWindow();
+
     logger.consoleLog("Creating geometry", NOTE);
     createTriangle();
     compileShaders();
@@ -98,7 +100,7 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
     }
 
     setDarkTheme();
-    ImGui_ImplGlfw_InitForOpenGL(window.getWindow(), true);
+    ImGui_ImplGlfw_InitForOpenGL(windowMain, true);
     ImGui_ImplOpenGL3_Init("#version 460");
 
 
@@ -106,7 +108,7 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
     GLfloat DeltaTime = 0;
     GLfloat LastTime = 0;
 
-    while (!glfwWindowShouldClose(window.getWindow()))
+    while (!glfwWindowShouldClose(windowMain))
     {
 
         ImGui_ImplOpenGL3_NewFrame();
@@ -203,7 +205,7 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
 
                 if (ImGui::Button("Exit"))
                 {
-                    glfwSetWindowShouldClose(window.getWindow(), GL_TRUE);
+                    glfwSetWindowShouldClose(windowMain, GL_TRUE);
                     return;
                 }
                 ImGui::EndMenu();
@@ -315,7 +317,7 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
             ImGui::RenderPlatformWindowsDefault();
             glfwMakeContextCurrent(backup_current_context);
         }
-        glfwSwapBuffers(window.getWindow());
+        glfwSwapBuffers(windowMain);
     }
     events.callEnd();
 
