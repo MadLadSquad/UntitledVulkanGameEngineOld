@@ -58,17 +58,14 @@ jobs:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Get dependencies
-      shell: bash
-      run: brew install glew && brew install glfw
     - name: Checkout submodules
       shell: bash
       run: |
           git submodule sync --recursive
           git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
-    - name: Compile GLEW
-      shell: bash
-      run: cd Engine/ThirdParty/glew/auto && make && cd ../ && make && cd ../../../ && ls
+   # - name: Compile GLEW
+   #   shell: bash
+   #   run: cd Engine/ThirdParty/glew/auto && make && cd ../ && make && cd ../../../ && ls
     - name: Create project
       shell: bash
       run: git clone https://github.com/MadLadSquad/UVKSampleProject.git 
@@ -80,3 +77,4 @@ jobs:
     - name: Make build directory and cmake
       shell: bash
       run: ls && mkdir build && cd build && cmake .. -G "Unix Makefiles" && make
+      #brew install glew && brew install glfw && 
