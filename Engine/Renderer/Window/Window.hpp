@@ -9,7 +9,7 @@
 
 namespace UVK
 {
-    inline GLFWwindow* windowMain;
+    
 
     class Window
     {
@@ -28,13 +28,10 @@ namespace UVK
             glfwSetWindowTitle(windowMain, newTitle.c_str());
         }
 
-        /*
         GLFWwindow* getWindow() const
         {
             return windowMain;
         }
-        */
-
 
     private:
 
@@ -49,7 +46,11 @@ namespace UVK
         bool bIsFullScreen = false;
 
         std::string name = "Editor";
+
+        GLFWwindow* windowMain = nullptr;
     };
 
-    inline UVK::Window window;
+    
 }
+
+inline UVK::Window window;

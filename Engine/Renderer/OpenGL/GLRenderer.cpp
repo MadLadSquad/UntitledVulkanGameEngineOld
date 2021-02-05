@@ -100,7 +100,7 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
     }
 
     setDarkTheme();
-    ImGui_ImplGlfw_InitForOpenGL(windowMain, true);
+    ImGui_ImplGlfw_InitForOpenGL(window.getWindow(), true);
     ImGui_ImplOpenGL3_Init("#version 460");
 
 
@@ -108,7 +108,7 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
     GLfloat DeltaTime = 0;
     GLfloat LastTime = 0;
 
-    while (!glfwWindowShouldClose(windowMain))
+    while (!glfwWindowShouldClose(window.getWindow()))
     {
 
         ImGui_ImplOpenGL3_NewFrame();
@@ -205,7 +205,7 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
 
                 if (ImGui::Button("Exit"))
                 {
-                    glfwSetWindowShouldClose(windowMain, GL_TRUE);
+                    glfwSetWindowShouldClose(window.getWindow(), GL_TRUE);
                     return;
                 }
                 ImGui::EndMenu();
@@ -317,7 +317,7 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
             ImGui::RenderPlatformWindowsDefault();
             glfwMakeContextCurrent(backup_current_context);
         }
-        glfwSwapBuffers(windowMain);
+        glfwSwapBuffers(window.getWindow());
     }
     events.callEnd();
 

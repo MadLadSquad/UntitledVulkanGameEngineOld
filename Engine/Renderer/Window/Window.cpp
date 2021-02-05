@@ -45,10 +45,10 @@ void UVK::Window::createWindow()
         logger.consoleLog("Created window", NOTE);
     }
 
-    //GLFWimage images[1];
-    //images[0].pixels = stbi_load(image.c_str(), &images[0].width, &images[0].height, 0, 4);
-    //glfwSetWindowIcon(windowMain, 1, images);
-    //stbi_image_free(images[0].pixels);
+    GLFWimage images[1];
+    images[0].pixels = stbi_load(image.c_str(), &images[0].width, &images[0].height, 0, 4);
+    glfwSetWindowIcon(windowMain, 1, images);
+    stbi_image_free(images[0].pixels);
 
     if (!windowMain)
     {
