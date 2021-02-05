@@ -3,7 +3,7 @@
 
 > Current code version: 0.5.5.2
 
-> Currently stable on: Linux, MacOS, BSD
+> Currently stable on: Linux, MacOS, BSD, Windows
 
 > Development status: Under heavy construction, we commit directly to master so there will be and possibly are countless bugs in the current master branch
 ## Information
