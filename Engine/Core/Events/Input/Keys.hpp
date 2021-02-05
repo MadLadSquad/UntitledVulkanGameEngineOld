@@ -137,5 +137,9 @@ namespace Keys
     constexpr int MouseButtonLeft = GLFW_MOUSE_BUTTON_LEFT;
     constexpr int MouseButtonRight = GLFW_MOUSE_BUTTON_RIGHT;
     constexpr int MouseButtonMiddle = GLFW_MOUSE_BUTTON_MIDDLE;
+
+    constexpr int KeyPressedEvent = GLFW_PRESS;
+    constexpr int KeyReleasedEvent = GLFW_RELEASE;
+    constexpr int KeyRepeatEvent = GLFW_REPEAT;
 }
 

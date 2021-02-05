@@ -2,6 +2,7 @@
 // Last update 1/10/2021 by Madman10K
 #pragma once
 #include <GL/glew.h>
+#include "../../Core/Events/Input/InputSystem.hpp"
 #include <glfw3.h>
 #include <yaml.h>
 #include "UVKLog.h"
@@ -9,8 +10,6 @@
 
 namespace UVK
 {
-    
-
     class Window
     {
     public:
@@ -39,6 +38,8 @@ namespace UVK
         void doCallBacks();
 
         static void framebufferSizeCallback(GLFWwindow* window, int width, int height);
+        static void keyboardInputCallback(GLFWwindow* window, int key, int scanCode, int action, int mods);
+
 
         std::string image = "icon.png";
         int width = 800;
@@ -49,8 +50,6 @@ namespace UVK
 
         GLFWwindow* windowMain = nullptr;
     };
-
-    
 }
 
 inline UVK::Window window;

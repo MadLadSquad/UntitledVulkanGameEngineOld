@@ -7,6 +7,7 @@
 void UVK::Window::doCallBacks()
 {
     glfwSetFramebufferSizeCallback(windowMain, framebufferSizeCallback);
+    glfwSetKeyCallback(windowMain, keyboardInputCallback);
 }
 
 void UVK::Window::framebufferSizeCallback(GLFWwindow* window, int width, int height)
@@ -122,4 +123,9 @@ void UVK::Window::openConfig()
     {
         name = out["window-name"].as<std::string>();
     }
+}
+
+void UVK::Window::keyboardInputCallback(GLFWwindow *window, int key, int scanCode, int action, int mods)
+{
+    input.callEvents(key, action);
 }
