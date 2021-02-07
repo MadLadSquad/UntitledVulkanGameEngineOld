@@ -21,7 +21,7 @@ Modules development status:
 -   Scene system: Finished
 -   Window system: Finished
 -   Renderer interface: Finished
--   Input: Under construction
+-   Input: Finished
 -   2D audio: Under construction
 -   3D audio: Under construction
 -   Renderer manager: Finished
