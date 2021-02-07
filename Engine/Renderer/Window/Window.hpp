@@ -1,5 +1,5 @@
 // Window.hpp
-// Last update 1/10/2021 by Madman10K
+// Last update 2/7/2021 by Madman10K
 #pragma once
 #include <GL/glew.h>
 #include "../../Core/Events/Input/InputSystem.hpp"
@@ -13,9 +13,8 @@ namespace UVK
     class Window
     {
     public:
-        Window()
-        {
-        }
+        Window() = default;
+
         void createWindow();
 
         void dumpConfig();
@@ -32,6 +31,38 @@ namespace UVK
             return windowMain;
         }
 
+        FVector2 getLastMousePosition()
+        {
+            return FVector2(lastPosX, lastPosY);
+        }
+
+        FVector2 getCurrentMousePosition()
+        {
+            return FVector2(posX, posY);
+        }
+
+        FVector2 getMousePositionChange()
+        {
+            return FVector2(offsetX, offsetY);
+        }
+
+        FVector2 getScrollVal()
+        {
+            return FVector2(scrollX, scrollY);
+        }
+
+        void setCursorVisibility(bool bIsVisible)
+        {
+            if (bIsVisible)
+            {
+                glfwSetInputMode(windowMain, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+            }
+            else
+            {
+                glfwSetInputMode(windowMain, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+            }
+        }
+
     private:
 
         void openConfig();
@@ -39,7 +70,9 @@ namespace UVK
 
         static void framebufferSizeCallback(GLFWwindow* window, int width, int height);
         static void keyboardInputCallback(GLFWwindow* window, int key, int scanCode, int action, int mods);
-
+        static void mouseKeyInputCallback(GLFWwindow* window, int button, int action, int mods);
+        static void mouseCursorPositionCallback(GLFWwindow* window, double xpos, double ypos);
+        static void scrollInputCallback(GLFWwindow* window, double xoffset, double yoffset);
 
         std::string image = "icon.png";
         int width = 800;
@@ -49,6 +82,18 @@ namespace UVK
         std::string name = "Editor";
 
         GLFWwindow* windowMain = nullptr;
+
+        bool bFirstMove = true;
+
+        GLdouble posX = 0;
+        GLdouble posY = 0;
+        GLdouble lastPosX = 0;
+        GLdouble lastPosY = 0;
+        GLdouble offsetX = 0;
+        GLdouble offsetY = 0;
+
+        GLdouble scrollX = 0;
+        GLdouble scrollY = 0;
     };
 }
 

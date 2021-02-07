@@ -1,5 +1,5 @@
 // Window.cpp
-// Last update 1/20/2021 by Madman10K
+// Last update 2/7/2021 by Madman10K
 #include "Window.hpp"
 #include "../Textures/Texture.hpp"
 
@@ -8,6 +8,9 @@ void UVK::Window::doCallBacks()
 {
     glfwSetFramebufferSizeCallback(windowMain, framebufferSizeCallback);
     glfwSetKeyCallback(windowMain, keyboardInputCallback);
+    glfwSetCursorPosCallback(windowMain, mouseCursorPositionCallback);
+    glfwSetMouseButtonCallback(windowMain, mouseKeyInputCallback);
+    glfwSetScrollCallback(windowMain, scrollInputCallback);
 }
 
 void UVK::Window::framebufferSizeCallback(GLFWwindow* window, int width, int height)
@@ -64,6 +67,7 @@ void UVK::Window::createWindow()
 
     glEnable(GL_MULTISAMPLE);
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
 
     glfwMakeContextCurrent(windowMain);
 
@@ -79,6 +83,9 @@ void UVK::Window::createWindow()
     }
 
     glViewport(0, 0, bufferWidth, bufferHeight);
+    glCullFace(GL_BACK);
+
+    glfwSetWindowUserPointer(windowMain, this);
 }
 
 void UVK::Window::destroyWindow()
@@ -125,7 +132,45 @@ void UVK::Window::openConfig()
     }
 }
 
-void UVK::Window::keyboardInputCallback(GLFWwindow *window, int key, int scanCode, int action, int mods)
+void UVK::Window::keyboardInputCallback(GLFWwindow* window, int key, int scanCode, int action, int mods)
 {
-    input.callEvents(key, action);
+    input.callKeyEvents(key, action);
+}
+
+void UVK::Window::mouseCursorPositionCallback(GLFWwindow* window, double xpos, double ypos)
+{
+    Window* windowInst = static_cast<Window*>(glfwGetWindowUserPointer(window));
+
+    if (windowInst->bFirstMove)
+    {
+        windowInst->lastPosX = xpos;
+        windowInst->lastPosY = ypos;
+        windowInst->bFirstMove = false;
+    }
+
+    windowInst->offsetX = xpos - windowInst->lastPosX;
+    windowInst->offsetY = windowInst->lastPosY - ypos;
+
+    if (windowInst->offsetX != 0 && windowInst->offsetY != 0)
+    {
+        input.callMouseMoveEvents();
+    }
+
+    windowInst->lastPosX = xpos;
+    windowInst->lastPosY = ypos;
+}
+
+void UVK::Window::mouseKeyInputCallback(GLFWwindow* window, int button, int action, int mods)
+{
+    input.callMouseClickEvents(button, action);
+}
+
+void UVK::Window::scrollInputCallback(GLFWwindow* window, double xoffset, double yoffset)
+{
+    Window* windowInst = static_cast<Window*>(glfwGetWindowUserPointer(window));
+
+    input.callScrollWheelEvents();
+
+    windowInst->scrollX = xoffset;
+    windowInst->scrollY = xoffset;
 }

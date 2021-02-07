@@ -1,5 +1,5 @@
 // GLRenderer.hpp
-// Last update 1/10/2021 by Madman10K
+// Last update 2/7/2021 by Madman10K
 #include "GLRenderer.hpp"
 #include "../../Core/Events/Events.hpp"
 #include <imgui.h>
@@ -110,7 +110,6 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
 
     while (!glfwWindowShouldClose(window.getWindow()))
     {
-
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();

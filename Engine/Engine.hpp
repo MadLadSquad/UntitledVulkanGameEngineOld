@@ -1,5 +1,5 @@
 // Engine.hpp
-// Last update 1/10/2021 by Madman10K
+// Last update 2/7/2021 by Madman10K
 
 // A header file containing every include you would want from the engine
 #pragma once
@@ -12,6 +12,6 @@
 #include "GameFramework/GameplayClasses/PlayerState.hpp"
 #include "GameFramework/GameplayClasses/PlayerController.hpp"
 #include "GameFramework/GameplayClasses/Level/Level.hpp"
-#include "Audio/AudioRenderer.cpp"
+#include "Engine/Audio/2D/Audio2D.hpp"
 
 #include "Core/Events/Events.hpp"

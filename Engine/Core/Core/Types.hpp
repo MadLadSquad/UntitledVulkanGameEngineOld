@@ -1,5 +1,5 @@
 // Types.hpp
-// Last update 1/10/2021 by Madman10K
+// Last update 2/7/2021 by Madman10K
 #include <vector>
 #include <glm/glm.hpp>
 #include <glm/mat3x4.hpp>
@@ -17,6 +17,8 @@ typedef glm::mat4 Model;
 typedef glm::vec3 FVector;
 // Vector4
 typedef glm::vec4 FVector4;
+// Vector2
+typedef glm::vec2 FVector2;
 // Entity Pool owns and manages all the entities
 typedef entt::registry EntityPool;
 // Entity

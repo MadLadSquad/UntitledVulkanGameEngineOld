@@ -1,3 +1,5 @@
+// Texture.cpp
+// Last update 2/7/2021 by Madman10K
 #define STB_IMAGE_IMPLEMENTATION
 #include "Texture.hpp"
 

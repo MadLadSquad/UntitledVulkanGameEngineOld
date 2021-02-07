@@ -1,3 +1,5 @@
+// Keys.hpp
+// Last update 2/7/2021 by Madman10K
 #pragma once
 #include <glfw3.h>
 
@@ -137,6 +139,11 @@ namespace Keys
     constexpr int MouseButtonLeft = GLFW_MOUSE_BUTTON_LEFT;
     constexpr int MouseButtonRight = GLFW_MOUSE_BUTTON_RIGHT;
     constexpr int MouseButtonMiddle = GLFW_MOUSE_BUTTON_MIDDLE;
+
+    constexpr int MouseScrollUp = 0;
+    constexpr int MouseScrollDown = 1;
+    constexpr int MouseScrollRight = 2;
+    constexpr int MouseScrollLeft = 3;
 
     constexpr int KeyPressedEvent = GLFW_PRESS;
     constexpr int KeyReleasedEvent = GLFW_RELEASE;
