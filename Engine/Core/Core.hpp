@@ -20,10 +20,12 @@
 #include "Engine/Core/Core/Types.hpp"
 #include "Events/Input/Keys.hpp"
 
-/*
-#if __has_include(<filesystem>)
-#include <filesystem>
+#ifndef __MINGW32__
+    #if __has_include(<filesystem>)
+        #include <filesystem>
+    #else
+        #include <experimental/filesystem>
+    #endif
 #else
-#include <experimental/filesystem>
+
 #endif
-*/
