@@ -63,7 +63,7 @@ namespace UVK
         float gain = 1.0f;
         float position[3] = { 0, 0, 0 };
         float velocity[3] = { 0, 0, 0};
-        bool bSoundLoop = false;
+        bool bSoundLoop = true;
         ALuint buffer = 0;
     };
 }

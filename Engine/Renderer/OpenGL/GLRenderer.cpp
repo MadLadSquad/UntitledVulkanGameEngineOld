@@ -133,6 +133,8 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
 
         glUseProgram(0);
 
+        level->tick(5);
+
         static bool opt_fullscreen = true;
         static bool opt_padding = false;
         static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
@@ -205,6 +207,8 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
                 if (ImGui::Button("Exit"))
                 {
                     glfwSetWindowShouldClose(window.getWindow(), GL_TRUE);
+                    std::terminate();
+
                     return;
                 }
                 ImGui::EndMenu();
@@ -325,6 +329,8 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
     ImGui::DestroyContext();
 
     window.destroyWindow();
+
+    std::terminate();
 }
 
 void UVK::GLRenderer::createTriangle()

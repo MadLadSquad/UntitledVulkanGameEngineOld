@@ -2,6 +2,7 @@
 // Last update 1/10/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
+#include <Audio/2D/Audio2D.hpp>
 
 namespace UVK
 {
@@ -38,5 +39,43 @@ namespace UVK
     struct DirectionalAudioComponent
     {
 
+    };
+
+    struct AudioComponent2D
+    {
+    public:
+        void play(std::string loc)
+        {
+            thread = std::thread([&]()
+            {
+                audio2d.init();
+                logger.consoleLog("Initialised audio system", SUCCESS);
+
+                buffer = audio2d.addSoundEffect(loc.c_str());
+                logger.consoleLog("Added sound effect", SUCCESS);
+
+                UVK::SoundSource2D src;
+
+                logger.consoleLog("Playing audio", SUCCESS);
+                src.play(buffer);
+
+            });
+
+            thread.join();
+        }
+
+        void stopAudio()
+        {
+            thread.join();
+        }
+
+        ALuint& getBuffer()
+        {
+            return buffer;
+        }
+
+    private:
+        ALuint buffer;
+        std::thread thread;
     };
 }
