@@ -41,6 +41,7 @@ namespace UVK
 
     };
 
+#ifndef __MINGW32__
     struct AudioComponent2D
     {
     public:
@@ -78,4 +79,11 @@ namespace UVK
         ALuint buffer;
         std::thread thread;
     };
+
+#else
+    struct AudioComponent2D
+    {
+        char foo;
+    };
+#endif
 }
