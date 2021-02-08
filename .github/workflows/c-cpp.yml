@@ -15,7 +15,7 @@ jobs:
     - uses: actions/checkout@v2
     - name: Get dependencies
       shell: bash
-      run: sudo apt-get install x11-xserver-utils libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev gcc make g++ libxmu-dev libxi-dev libgl-dev libglu1-mesa-dev libvulkan1 mesa-vulkan-drivers vulkan-utils libvulkan-dev libasound2-dev libflac-dev libogg-dev libtool libvorbis-dev libopus-dev
+      run: sudo apt-get install x11-xserver-utils libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev gcc make g++ libxmu-dev libxi-dev libgl-dev libglu1-mesa-dev libvulkan1 mesa-vulkan-drivers vulkan-utils libvulkan-dev libasound2-dev libflac-dev libogg-dev libtool libvorbis-dev libopus-dev libsndfile1-dev
 
     - name: Checkout submodules
       shell: bash
