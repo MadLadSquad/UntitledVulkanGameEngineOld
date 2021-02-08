@@ -2,7 +2,7 @@
 // Last update 2/7/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
-#include <stb_image.h>
+#include <stb/stb_image.h>
 
 class Texture
 {
