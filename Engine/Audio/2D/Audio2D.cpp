@@ -2,6 +2,7 @@
 // Last update 2/7/2021 by Madman10K
 #include "Audio2D.hpp"
 
+#ifndef __MINGW32__
 void UVK::Audio2D::play()
 {
 
@@ -180,3 +181,4 @@ void UVK::SoundSource2D::play(ALuint buff)
         alGetSourcei(source, AL_SOURCE_STATE, &state);
     }
 }
+#endif
