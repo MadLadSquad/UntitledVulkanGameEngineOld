@@ -19,6 +19,9 @@ namespace Filesystem
         {
             ImGui::BeginGroup();
 
+#if __GNUC__
+#if __GNUC_PREREQ(8,0)
+
             if (entry.is_directory())
             {
                 ImGui::Image((void*)(intptr_t)folder.getImage(), ImVec2(folder.getWidth() - 1500, folder.getHeight() - 1500));
@@ -29,7 +32,8 @@ namespace Filesystem
             }
             ImGui::Text("%s", entry.path().c_str());
             ImGui::EndGroup();
-
+#endif
+#endif
             ImGui::SameLine();
         }
 #endif
