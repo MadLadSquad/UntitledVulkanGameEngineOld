@@ -29,10 +29,10 @@ namespace Filesystem
             }
             ImGui::Text("%s", entry.path().c_str());
             ImGui::EndGroup();
-#endif
+
             ImGui::SameLine();
         }
-
+#endif
         ImGui::End();
     }
 }
