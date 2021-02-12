@@ -1,5 +1,5 @@
 // DetailsPanel.hpp
-// Last update 1/20/2021 by Madman10K
+// Last update 2/12/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 #include <imgui.h>
@@ -9,7 +9,7 @@
 
 namespace DetailsPanel
 {
-    static void Display(entt::entity ent)
+    static void display(entt::entity ent)
     {
         ImGui::Begin("Details");
         if (registry.hasComponent<UVK::CoreComponent>(ent))
@@ -21,6 +21,16 @@ namespace DetailsPanel
             ImGui::InputText("name##inputname", &a.name);
 
             ImGui::InputText("id##inputactoridentifier", &id);
+        }
+
+        if (registry.hasComponent<UVK::AudioComponent2D>(ent))
+        {
+            auto& a = registry.getComponent<UVK::AudioComponent2D>(ent);
+
+            ImGui::Checkbox("Repeat audio?##a", &a.bRepeat);
+            ImGui::SliderFloat("Pitch##2d", &a.pitch, -100.0f, 100.0f);
+            ImGui::SliderFloat("Gain##2d", &a.gain, -100.0f, 100.0f);
+            ImGui::InputText("Audio location##2d", &a.loc);
         }
 
         ImGui::End();

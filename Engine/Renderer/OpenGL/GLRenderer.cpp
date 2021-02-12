@@ -8,7 +8,7 @@
 #include "../../GameFramework/GameplayClasses/Level/Level.hpp"
 #include "../EditorUI/DetailsPanel.hpp"
 #include "../EditorUI/SaveLevel.hpp"
-
+#include "../EditorUI/Filesystem.hpp"
 
 const GLint WIDTH = 800, HEIGHT = 600;
 GLuint VBO, VAO, shader;
@@ -77,8 +77,11 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
     compileShaders();
     logger.consoleLog("Compiled Shaders", SUCCESS);
 
-    Texture texture("icon.png");
-    texture.load();
+    Texture folder("folder.png");
+    folder.load();
+
+    Texture audio("audio.png");
+    audio.load();
 
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -238,7 +241,7 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
 
         if (bShowSaveLevelWidget)
         {
-            SaveLevel::Display(bShowSaveLevelWidget, location, name);
+            SaveLevel::display(bShowSaveLevelWidget, location, name);
         }
 
         if (bShowOpenLevelWidget)
@@ -280,20 +283,11 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
         }
 
         {
-            DetailsPanel::Display(selectedEntity);
+            DetailsPanel::display(selectedEntity);
         }
 
         {
-            ImGui::Begin("File System");
-
-            ImGui::Text("Coming soon!");
-
-
-
-            ImGui::Image((void*)(intptr_t)texture.getImage(), ImVec2(texture.getWidth(), texture.getHeight()));
-
-
-            ImGui::End();
+            Filesystem::display(folder, audio);
         }
 
         {

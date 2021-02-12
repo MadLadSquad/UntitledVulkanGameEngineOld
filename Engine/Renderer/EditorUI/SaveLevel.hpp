@@ -24,7 +24,7 @@ namespace SaveLevel
     };
 
     // Displays the SaveLevel widget
-    static void Display(bool& bOpen, std::string& location, std::string& name)
+    static void display(bool& bOpen, std::string& location, std::string& name)
     {
         ImGui::Begin("Save level");
 

@@ -39,8 +39,14 @@ namespace UVK
     class SoundSource2D
     {
     public:
-        SoundSource2D()
+        SoundSource2D() = delete;
+
+        SoundSource2D(bool bLoop, float nPitch, float nGain)
         {
+            bSoundLoop = bLoop;
+            pitch = nPitch;
+            gain = nGain;
+
             alGenSources(1, &source);
             alSourcef(source, AL_PITCH, pitch);
             alSourcef(source, AL_GAIN, gain);
@@ -62,7 +68,7 @@ namespace UVK
         float pitch = 1.0f;
         float gain = 1.0f;
         float position[3] = { 0, 0, 0 };
-        float velocity[3] = { 0, 0, 0};
+        float velocity[3] = { 0, 0, 0 };
         bool bSoundLoop = true;
         ALuint buffer = 0;
     };

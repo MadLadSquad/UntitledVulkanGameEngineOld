@@ -45,7 +45,7 @@ namespace UVK
     struct AudioComponent2D
     {
     public:
-        void play(std::string loc)
+        void play()
         {
             thread = std::thread([&]()
             {
@@ -55,7 +55,7 @@ namespace UVK
                 buffer = audio2d.addSoundEffect(loc.c_str());
                 logger.consoleLog("Added sound effect", SUCCESS);
 
-                UVK::SoundSource2D src;
+                UVK::SoundSource2D src(bRepeat, pitch, gain);
 
                 logger.consoleLog("Playing audio", SUCCESS);
                 src.play(buffer);
@@ -70,12 +70,17 @@ namespace UVK
             thread.join();
         }
 
-        ALuint& getBuffer()
-        {
-            return buffer;
-        }
+        //ALuint& getBuffer()
+        //{
+        //    return buffer;
+        //}
 
+        std::string loc;
+        bool bRepeat = false;
+        float pitch = 1.0f;
+        float gain = 1.0f;
     private:
+
         ALuint buffer;
         std::thread thread;
     };

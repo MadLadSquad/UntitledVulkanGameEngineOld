@@ -83,6 +83,22 @@ void UVK::Level::saveEntity(YAML::Emitter& out, Actor act)
         out << YAML::Key << "actor" << YAML::Value << a.name;
         out << YAML::Key << "id" << YAML::Value << a.id;
     }
+
+    if (pool.has<AudioComponent2D>(act))
+    {
+        auto& a = pool.get<AudioComponent2D>(act);
+
+        out << YAML::Key << "audio2d-location" << YAML::Value << a.loc;
+        out << YAML::Key << "audio2d-pitch" << YAML::Value << a.pitch;
+        out << YAML::Key << "audio2d-gain" << YAML::Value << a.gain;
+        out << YAML::Key << "audio2d-repeat" << YAML::Value << a.bRepeat;
+    }
+
+    if (pool.has<MeshComponent>(act))
+    {
+        auto& a = pool.get<MeshComponent>(act);
+    }
+
     out << YAML::EndMap;
 }
 
@@ -121,12 +137,20 @@ void UVK::Level::open(const char* location) noexcept
             auto name = entity["actor"].as<std::string>();
 
             registry.createActor(name);
-            //if (id)
+
+            //Actor act = pool.create();
+
+            //if ()
             //{
             //    auto& a = pool.emplace<CoreComponent>(act);
             //    //a.id = id.as<uint64_t>();
             //    //a.name = name;
             //}
+            //{
+            //    auto& a = pool.emplace<AudioComponent2D>(act);
+            //}
+
+
         }
         logger.consoleLog("Iterated entities", SUCCESS);
     }

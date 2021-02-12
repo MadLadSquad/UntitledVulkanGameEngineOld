@@ -4,29 +4,33 @@
 #include <Core.hpp>
 #include <stb/stb_image.h>
 
-class Texture
+namespace UVK
 {
-public:
-    Texture() = delete;
-    explicit Texture(const std::string& loc)
-        :location(loc)
+    class Texture
     {
+    public:
+        Texture() = delete;
+        explicit Texture(const std::string& loc)
+                :location(loc)
+        {
 
-    }
+        }
 
 
-    void load();
-    void destroy();
+        void load();
+        void destroy();
 
 
-    std::string& getLocation() { return location; }
-    int& getWidth() { return width; }
-    int& getHeight() { return height; }
-    GLuint& getImage() { return image; };
+        std::string& getLocation() { return location; }
+        int& getWidth() { return width; }
+        int& getHeight() { return height; }
+        GLuint& getImage() { return image; };
 
-private:
-    std::string location;
-    int width = 0;
-    int height = 0;
-    GLuint image = 0;
-};
+    private:
+        std::string location;
+        int width = 0;
+        int height = 0;
+        GLuint image = 0;
+    };
+}
+

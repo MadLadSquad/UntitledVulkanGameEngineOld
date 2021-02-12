@@ -5,7 +5,7 @@
 
 
 
-void Texture::load()
+void UVK::Texture::load()
 {
     unsigned char* img = stbi_load(location.c_str(), &width, &height, NULL, 4);
 
@@ -27,7 +27,7 @@ void Texture::load()
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, img);
 }
 
-void Texture::destroy()
+void UVK::Texture::destroy()
 {
     stbi_image_free(&image);
 }
