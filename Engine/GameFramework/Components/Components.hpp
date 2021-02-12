@@ -89,6 +89,10 @@ namespace UVK
     struct AudioComponent2D
     {
         char foo;
+        std::string loc;
+        bool bRepeat = false;
+        float pitch = 1.0f;
+        float gain = 1.0f;
     };
 #endif
 }

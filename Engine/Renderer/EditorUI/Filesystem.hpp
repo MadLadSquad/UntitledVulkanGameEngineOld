@@ -15,7 +15,7 @@ namespace Filesystem
         ImGui::Begin("File System");
 
 #ifndef __MINGW__
-        for (const auto& entry : std::filesystem::directory_iterator(std::filesystem::path("Content")))
+        for (const auto& entry : std_filesystem::directory_iterator(std_filesystem::path("Content")))
         {
             ImGui::BeginGroup();
 
