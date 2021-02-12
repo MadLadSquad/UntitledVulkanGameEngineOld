@@ -14,6 +14,7 @@ namespace Filesystem
     {
         ImGui::Begin("File System");
 
+#ifndef __MINGW__
         for (const auto& entry : std::filesystem::directory_iterator(std::filesystem::path("Content")))
         {
             ImGui::BeginGroup();
@@ -28,7 +29,7 @@ namespace Filesystem
             }
             ImGui::Text("%s", entry.path().c_str());
             ImGui::EndGroup();
-
+#endif
             ImGui::SameLine();
         }
 
