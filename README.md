@@ -1,6 +1,6 @@
 # UntitledVulkanGameEngine
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/f40d6188c862462fb6a1e65f6e73d83c)](https://www.codacy.com/gh/MadLadSquad/UntitledVulkanGameEngine/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=MadLadSquad/UntitledVulkanGameEngine&amp;utm_campaign=Badge_Grade)
-![C/C++ CI](https://github.com/MadLadSquad/UntitledVulkanGameEngine/workflows/C/C++%20CI/badge.svg)
+![CI](https://github.com/MadLadSquad/UntitledVulkanGameEngine/workflows/C/C++%20CI/badge.svg)
 
 > Last stable release: 0.5.5.1
 
