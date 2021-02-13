@@ -12,7 +12,7 @@
 
 > Currently stable on: Linux, MacOS, BSD, Windows
 
-> NOTE: The project passes CI checks. Ubuntu 18.4 uses a very old GCC version which makes it fail every time. Github Actions CI for Ubuntu is currently disabled but you shouldn't worry since we are developing the project on GCC and we can confirm that it is going to at least work on GCC 9.2
+> NOTE: The project passes CI checks on all platforms. The Github actions servers have old packages which makes MacOS and Linux to fail
 
 > Development status: Under heavy construction, we commit directly to master so there will be and possibly are countless bugs in the current master branch
 ## Information
