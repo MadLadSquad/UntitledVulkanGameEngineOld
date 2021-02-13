@@ -15,20 +15,20 @@ You can start learning the engine from the source code or you can go to the [wik
 ## Development
 Follow [the trello](https://trello.com/b/0upjsxT0/untitledvukangameengine2) for a board detailing which parts of the engine I am currently working on.
 Modules development status:
--   OpenGL rendered: Under construction
--   Vulkan renderer: Planning phase
--   Editor: Under construction
--   Native scripting: Under construction
--   Event system: Finished
--   Scene system: Finished
--   Window system: Finished
--   Renderer interface: Finished
--   Input: Finished
--   2D audio: Under construction
--   3D audio: Under construction
--   Renderer manager: Finished
--   API planning and design: Finished
--   Game framework: 50% finished
+-   OpenGL rendered: :construction: 
+-   Vulkan renderer: :construction: 
+-   Editor: :construction: 
+-   Native scripting: :construction: 
+-   Event system: :white_check_mark:
+-   Scene system: :white_check_mark:
+-   Window system: :white_check_mark:
+-   Renderer interface: :white_check_mark:
+-   Input: :white_check_mark:
+-   2D audio: :white_check_mark:
+-   3D audio: :construction: 
+-   Renderer manager: :white_check_mark:
+-   API planning and design: :white_check_mark:
+-   Game framework: :construction: 
 ## Q&A
 Q: It's called the UntitledVulkanEngine but where is the Vulkan renderer
 
