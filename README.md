@@ -2,7 +2,7 @@
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/f40d6188c862462fb6a1e65f6e73d83c)](https://www.codacy.com/gh/MadLadSquad/UntitledVulkanGameEngine/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=MadLadSquad/UntitledVulkanGameEngine&amp;utm_campaign=Badge_Grade)
 ![CI](https://github.com/MadLadSquad/UntitledVulkanGameEngine/workflows/CI/badge.svg)
 [![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://lbesson.mit-license.org/)
-[![Discord](https://img.shields.io/discord/571284439326392321.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/4wgH8ZE)
+[![Discord](https://img.shields.io/discord/717037253292982315.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/4wgH8ZE)
 [![GitHub pull-requests](https://img.shields.io/github/issues-pr/MadLadSquad/UntitledVulkanGameEngine/UntitledVulkanGameEngine.svg)](https://github.com/MadLadSquad/UntitledVulkanGameEngine/pull/)
 [![GitHub issues](https://img.shields.io/github/issues/MadLadSquad/UntitledVulkanGameEngine/UntitledVulkanGameEngine.svg)](https://github.com/MadLadSquad/UntitledVulkanGameEngine/issues/)
 
