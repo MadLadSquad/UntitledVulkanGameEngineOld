@@ -12,7 +12,7 @@
 
 > Currently stable on: Linux, MacOS, BSD, Windows
 
-> NOTE: The project passes CI checks on all platforms. The Github actions servers have old packages which makes MacOS and Linux to fail
+> NOTE: The project passes CI checks on all platforms. The Github actions servers have old packages which makes MacOS and Linux fail
 
 > Development status: Under heavy construction, we commit directly to master so there will be and possibly are countless bugs in the current master branch
 ## Information
