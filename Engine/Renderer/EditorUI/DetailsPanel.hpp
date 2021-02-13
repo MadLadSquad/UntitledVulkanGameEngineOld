@@ -28,8 +28,8 @@ namespace DetailsPanel
             auto& a = registry.getComponent<UVK::AudioComponent2D>(ent);
 
             ImGui::Checkbox("Repeat audio?##a", &a.bRepeat);
-            ImGui::SliderFloat("Pitch##2d", &a.pitch, -100.0f, 100.0f);
-            ImGui::SliderFloat("Gain##2d", &a.gain, -100.0f, 100.0f);
+            ImGui::SliderFloat("Pitch##2d", &a.pitch, 0.5f, 2.0f);
+            ImGui::SliderFloat("Gain##2d", &a.gain, 0.0f, 10.0f);
             ImGui::InputText("Audio location##2d", &a.loc);
         }
 

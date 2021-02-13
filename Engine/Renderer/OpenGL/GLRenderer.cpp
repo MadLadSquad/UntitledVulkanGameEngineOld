@@ -83,6 +83,9 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
     Texture audio("audio.png");
     audio.load();
 
+    Texture model("model.png");
+    model.load();
+
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
@@ -287,7 +290,7 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
         }
 
         {
-            Filesystem::display(folder, audio);
+            Filesystem::display(folder, audio, model);
         }
 
         {

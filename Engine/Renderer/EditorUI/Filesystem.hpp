@@ -10,7 +10,7 @@
 
 namespace Filesystem
 {
-    static void display(UVK::Texture& folder, UVK::Texture& audio)
+    static void display(UVK::Texture& folder, UVK::Texture& audio, UVK::Texture& model)
     {
         ImGui::Begin("File System");
 
@@ -18,7 +18,7 @@ namespace Filesystem
         for (const auto& entry : std_filesystem::directory_iterator(std_filesystem::path("Content")))
         {
             ImGui::BeginGroup();
-            
+
             if (entry.is_directory())
             {
                 ImGui::Image((void*)(intptr_t)folder.getImage(), ImVec2(folder.getWidth() - 1500, folder.getHeight() - 1500));
@@ -26,6 +26,10 @@ namespace Filesystem
             else if (entry.path().extension() == ".wav")
             {
                 ImGui::Image((void*)(intptr_t)audio.getImage(), ImVec2(audio.getWidth() - 410, audio.getHeight() - 410));
+            }
+            else if (entry.path().extension() == ".obj" || entry.path().extension() == ".fbx")
+            {
+                ImGui::Image((void*)(intptr_t)model.getImage(), ImVec2(model.getWidth() - 410, model.getHeight() - 410));
             }
             ImGui::Text("%s", entry.path().c_str());
             ImGui::EndGroup();

@@ -15,6 +15,8 @@ namespace UVK
     class Audio2D
     {
     public:
+        Audio2D() = default;
+
         void play();
 
         ALuint addSoundEffect(const char* filename);
