@@ -67,8 +67,12 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
 {
     std::string location;
     std::string name;
+    std::string fileOutLocation;
+
     bSetBuff = true;
     bShowSaveLevelWidget = false;
+    bool bShowCreateFile1 = false;
+    short selectedFile = 0;
 
     window.createWindow();
 
@@ -196,8 +200,6 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
                 if (ImGui::Button("Save level"))
                 {
                     bShowSaveLevelWidget = true;
-
-
                 }
 
                 if (ImGui::Button("New level"))
@@ -208,6 +210,16 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
                 if (ImGui::Button("Open level"))
                 {
                     bShowOpenLevelWidget = true;
+                }
+
+                if (ImGui::Button("New File"))
+                {
+                    bShowCreateFile1 = true;
+                }
+
+                if (ImGui::Button("Regenerate files"))
+                {
+                    system("./../UVKBuildTool/build/UVKBuildTool --generate");
                 }
 
                 if (ImGui::Button("Exit"))
@@ -265,6 +277,65 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
                 bShowOpenLevelWidget = false;
             }
 
+
+            ImGui::End();
+        }
+
+        if (bShowCreateFile1)
+        {
+            ImGui::Begin("Create a file");
+
+            if (ImGui::Selectable("Game mode")) selectedFile = 1;
+            if (ImGui::Selectable("Game state")) selectedFile = 2;
+            if (ImGui::Selectable("Player state")) selectedFile = 3;
+            if (ImGui::Selectable("Player controller")) selectedFile = 4;
+            if (ImGui::Selectable("Pawn")) selectedFile = 5;
+            if (ImGui::Selectable("Game instance")) selectedFile = 6;
+            if (ImGui::Selectable("Level")) selectedFile = 7;
+
+            ImGui::InputText("Location##genfile", &fileOutLocation);
+
+            if (ImGui::Button("Create"))
+            {
+                switch(selectedFile)
+                {
+                    case 1:
+                        system(static_cast<std::string>("./../UVKBuildTool/build/UVKBuildTool --game-mode " + fileOutLocation).c_str());
+                        break;
+                    case 2:
+                        system(static_cast<std::string>("./../UVKBuildTool/build/UVKBuildTool --game-state " + fileOutLocation).c_str());
+                        break;
+                    case 3:
+                        system(static_cast<std::string>("./../UVKBuildTool/build/UVKBuildTool --player-state " + fileOutLocation).c_str());
+                        break;
+                    case 4:
+                        system(static_cast<std::string>("./../UVKBuildTool/build/UVKBuildTool --player-controller " + fileOutLocation).c_str());
+                        break;
+                    case 5:
+                        system(static_cast<std::string>("./../UVKBuildTool/build/UVKBuildTool --pawn " + fileOutLocation).c_str());
+                        break;
+                    case 6:
+                        system(static_cast<std::string>("./../UVKBuildTool/build/UVKBuildTool --game-instance " + fileOutLocation).c_str());
+                        break;
+                    case 7:
+                        system(static_cast<std::string>("./../UVKBuildTool/build/UVKBuildTool --level " + fileOutLocation).c_str());
+                        break;
+                    case 0:
+                        break;
+                    default:
+                        break;
+                }
+
+                selectedFile = 0;
+                bShowCreateFile1 = false;
+                fileOutLocation = "";
+            }
+            if (ImGui::Button("Cancel"))
+            {
+                selectedFile = 0;
+                bShowCreateFile1 = false;
+                fileOutLocation = "";
+            }
 
             ImGui::End();
         }
