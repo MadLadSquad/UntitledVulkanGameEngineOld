@@ -81,6 +81,7 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
     compileShaders();
     logger.consoleLog("Compiled Shaders", SUCCESS);
 
+#ifndef __MINGW32__
     std_filesystem::path res("../Content/Engine/");
 
     Texture folder(static_cast<std::string>(res.string() + "folder.png"));
@@ -91,6 +92,16 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
 
     Texture model(static_cast<std::string>(res.string() + "model.png"));
     model.load();
+#else
+    Texture folder(static_cast<std::string>("../Content/Engine/folder.png"));
+    folder.load();
+
+    Texture audio(static_cast<std::string>("../Content/Engine/audio.png"));
+    audio.load();
+
+    Texture model(static_cast<std::string>("../Content/Engine/model.png"));
+    model.load();
+#endif
     if (bEditor)
     {
 
