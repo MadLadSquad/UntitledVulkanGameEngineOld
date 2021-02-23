@@ -24,3 +24,5 @@ public:
         return string.c_str();
     }
 };
+
+inline Utility utility;

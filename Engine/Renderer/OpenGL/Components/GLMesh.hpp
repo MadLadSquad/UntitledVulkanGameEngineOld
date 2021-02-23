@@ -9,12 +9,15 @@ namespace UVK
     {
     public:
         GLMesh() = delete;
-        GLMesh(GLfloat* vertices, uint32_t* indices, uint32_t numOfVertices, uint32_t numOfIndices);
+        GLMesh(GLfloat* vertices, uint32_t* indices, uint32_t vertexNum, uint32_t indexNum);
 
         void render() const;
 
         void deleteMesh();
     private:
+
+        void createMesh(GLfloat* vertices, uint32_t* indices, uint32_t numOfVertices, uint32_t numOfIndices);
+
         GLuint VAO = 0;
         GLuint VBO = 0;
         GLuint IBO = 0;

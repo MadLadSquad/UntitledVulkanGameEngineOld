@@ -19,8 +19,10 @@ namespace UVK
     public:
         GLRenderer() = delete;
 
-        explicit GLRenderer(Level* level)
+        explicit GLRenderer(Level* level, bool& bUsesEditor)
         {
+            bEditor = bUsesEditor;
+
             createWindow(level);
         }
 
@@ -36,5 +38,6 @@ namespace UVK
         bool bShowOpenLevelWidget;
         bool bSetBuff;
         bool bShowSaveLevelWidget;
+        bool bEditor;
     };
 }
