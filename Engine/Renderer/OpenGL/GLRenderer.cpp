@@ -80,7 +80,7 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
 
     logger.consoleLog("Creating geometry", NOTE);
     createTriangle();
-    compileShaders();
+    //compileShaders();
     logger.consoleLog("Compiled Shaders", SUCCESS);
 
 #ifndef __MINGW32__
@@ -459,6 +459,7 @@ void UVK::GLRenderer::createTriangle()
     glBindVertexArray(0);
 }
 
+/*
 void UVK::GLRenderer::addShader(GLuint theProgram, const char *shaderCode, GLenum shaderType)
 {
     GLuint theShader = glCreateShader(shaderType);
@@ -520,3 +521,4 @@ void UVK::GLRenderer::compileShaders()
         return;
     }
 }
+*/

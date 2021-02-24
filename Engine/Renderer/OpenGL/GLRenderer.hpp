@@ -3,6 +3,8 @@
 #pragma once
 
 #include <GL/glew.h>
+#include "Components/GLMesh.hpp"
+#include "Components/GLShader.hpp"
 #include "../glfw/include/GLFW/glfw3.h"
 #include <Core.hpp>
 #include "UVKLog.h"
@@ -26,18 +28,17 @@ namespace UVK
             createWindow(level);
         }
 
-
         void createWindow(Level* level) noexcept;
         void createTriangle();
-        void addShader(GLuint theProgram, const char* shaderCode, GLenum shaderType);
-        void compileShaders();
-        void setDarkTheme();
-
+        //void addShader(GLuint theProgram, const char* shaderCode, GLenum shaderType);
+        //void compileShaders();
     private:
         Actor selectedEntity;
         bool bShowOpenLevelWidget;
         bool bSetBuff;
         bool bShowSaveLevelWidget;
         bool bEditor;
+
+        void setDarkTheme();
     };
 }

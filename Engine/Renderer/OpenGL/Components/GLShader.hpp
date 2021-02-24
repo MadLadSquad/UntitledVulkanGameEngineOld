@@ -1,4 +1,8 @@
+// GLShader.hpp
+// Last update 2/24/2021 by Madman10K
 #pragma once
+#include <GL/glew.h>
+
 #include <Core.hpp>
 
 namespace UVK
@@ -7,10 +11,10 @@ namespace UVK
     {
     public:
         GLShader() = delete;
-        //GLShader()
-        //{
+        GLShader(const char* vLocation, const char* fLocation)
+        {
 
-        //}
+        }
 
 
         GLuint& getProjectionLocation()
@@ -30,7 +34,10 @@ namespace UVK
     private:
         void clearShader();
         void createShader();
-        void addShader();
+        void addShader(const char* vLoc, const char* fLoc);
+
+        std::vector<unsigned char> vertexShader;
+        std::vector<unsigned char> fragmentShader;
 
         GLuint shaderID, uniformProjection, uniformModel, uniformView;
     };
