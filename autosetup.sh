@@ -1,3 +1,4 @@
+#!/bin/bash
 echo "Compiling GLEW ..."
 
 cd Engine/ThirdParty/glew/auto && make && cd .. && make && cd ../../../
