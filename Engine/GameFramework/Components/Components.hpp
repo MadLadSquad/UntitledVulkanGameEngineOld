@@ -1,5 +1,5 @@
 // Components.hpp
-// Last update 1/10/2021 by Madman10K
+// Last update 2/24/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 #include <Audio/2D/Audio2D.hpp>
@@ -61,8 +61,6 @@ namespace UVK
                 src.play(buffer);
 
             });
-
-            thread.join();
         }
 
         void stopAudio()

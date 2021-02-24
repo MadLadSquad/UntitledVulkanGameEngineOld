@@ -1,5 +1,5 @@
 // GLRenderer.hpp
-// Last update 2/7/2021 by Madman10K
+// Last update 2/24/2021 by Madman10K
 #include "GLRenderer.hpp"
 #include "../../Core/Events/Events.hpp"
 #include <imgui.h>
@@ -9,6 +9,8 @@
 #include "../EditorUI/DetailsPanel.hpp"
 #include "../EditorUI/SaveLevel.hpp"
 #include "../EditorUI/Filesystem.hpp"
+#include "../EditorUI/Statistics.hpp"
+#include "../EditorUI/WorldSettings.hpp"
 
 const GLint WIDTH = 800, HEIGHT = 600;
 GLuint VBO, VAO, shader;
@@ -133,8 +135,8 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
 
 
     events.callBegin();
-    GLfloat DeltaTime = 0;
-    GLfloat LastTime = 0;
+    GLfloat deltaTime = 0;
+    GLfloat lastTime = 0;
 
     while (!glfwWindowShouldClose(window.getWindow()))
     {
@@ -148,10 +150,10 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
         glfwPollEvents();
 
         GLfloat now = glfwGetTime();
-        DeltaTime = now - LastTime;
-        LastTime = now;
+        deltaTime = now - lastTime;
+        lastTime = now;
 
-        events.callTick(DeltaTime);
+        events.callTick(deltaTime);
 
         glClearColor(1.0f, 0.8f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
@@ -399,6 +401,14 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
                 ImGui::Text("Coming soon!");
 
                 ImGui::End();
+            }
+
+            {
+                Statistics::display(deltaTime);
+            }
+
+            {
+                WorldSettings::display(FVector4(1.0f, 1.0f, 1.0f, 1.0f), FVector4(1.0f, 1.0f, 1.0f, 1.0f), "a");
             }
 
             ImGui::Render();

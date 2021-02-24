@@ -1,5 +1,5 @@
 // Level.hpp
-// Last update 1/10/2021 by Madman10K
+// Last update 2/24/2021 by Madman10K
 #include <Core.hpp>
 #include "../GameMode.hpp"
 #include "../GameInstance.hpp"
@@ -23,12 +23,27 @@ namespace UVK
         void save(String location, String name);
         void open(String file) noexcept;
 
-        void setGameInstance(GameInstance* instance){ gameInstance = instance;}
-        void setGameMode(GameMode* mode){ gameMode = mode; }
-        GameMode* getGameMode(){ return gameMode; }
-        GameInstance* getGameInstance(){ return gameInstance; }
-    private:
         GameInstance* gameInstance;
         GameMode* gameMode;
+
+        void beginAutohandle()
+        {
+            gameInstance->beginPlay();
+            gameMode->beginPlay();
+        }
+
+        void tickAutohandle(float deltaTime)
+        {
+            gameInstance->tick(deltaTime);
+            gameMode->tick(deltaTime);
+        }
+
+        void endAutohandle()
+        {
+            gameInstance->endPlay();
+            gameMode->endPlay();
+        }
+    private:
+
     };
 }

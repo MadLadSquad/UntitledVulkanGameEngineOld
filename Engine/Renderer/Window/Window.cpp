@@ -1,5 +1,5 @@
 // Window.cpp
-// Last update 2/7/2021 by Madman10K
+// Last update 2/24/2021 by Madman10K
 #include "Window.hpp"
 #include "../Textures/Texture.hpp"
 
@@ -37,6 +37,7 @@ void UVK::Window::createWindow()
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_SAMPLES, 16);
 
+
     logger.consoleLog("Window settings configured", NOTE);
     if (bIsFullScreen)
     {
@@ -70,7 +71,7 @@ void UVK::Window::createWindow()
     glEnable(GL_CULL_FACE);
 
     glfwMakeContextCurrent(windowMain);
-
+    glfwSwapInterval(0);
     doCallBacks();
 
     if (glewInit() != GLEW_OK)
