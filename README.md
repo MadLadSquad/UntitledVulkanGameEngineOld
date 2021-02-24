@@ -6,10 +6,10 @@
 [![GitHub pull-requests](https://img.shields.io/github/issues-pr/MadLadSquad/UntitledVulkanGameEngine/UntitledVulkanGameEngine.svg)](https://github.com/MadLadSquad/UntitledVulkanGameEngine/pulls/)
 [![GitHub issues](https://img.shields.io/github/issues/MadLadSquad/UntitledVulkanGameEngine/UntitledVulkanGameEngine.svg)](https://github.com/MadLadSquad/UntitledVulkanGameEngine/issues/)
 
-> Last stable release: 0.5.5.8
+> Last stable release: 0.6.0.0
 
-> Current code version: 0.5.5.8
-
+> Current code version: 0.6.0.0
+> 
 > Currently stable on: Linux, MacOS, BSD, Windows
 
 > NOTE: The project passes CI checks on all platforms. The Github actions servers have old packages which makes MacOS and Linux fail
