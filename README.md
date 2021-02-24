@@ -6,9 +6,9 @@
 [![GitHub pull-requests](https://img.shields.io/github/issues-pr/MadLadSquad/UntitledVulkanGameEngine/UntitledVulkanGameEngine.svg)](https://github.com/MadLadSquad/UntitledVulkanGameEngine/pulls/)
 [![GitHub issues](https://img.shields.io/github/issues/MadLadSquad/UntitledVulkanGameEngine/UntitledVulkanGameEngine.svg)](https://github.com/MadLadSquad/UntitledVulkanGameEngine/issues/)
 
-> Last stable release: 0.6.0.0
+> Last stable release: 0.6.0.1
 
-> Current code version: 0.6.0.0
+> Current code version: 0.6.0.1
 > 
 > Currently stable on: Linux, MacOS, BSD, Windows
 
