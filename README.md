@@ -3,13 +3,13 @@
 ![CI](https://github.com/MadLadSquad/UntitledVulkanGameEngine/workflows/CI/badge.svg)
 [![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://lbesson.mit-license.org/)
 [![Discord](https://img.shields.io/discord/717037253292982315.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/4wgH8ZE)
-[![GitHub pull-requests](https://img.shields.io/github/issues-pr/MadLadSquad/UntitledVulkanGameEngine/UntitledVulkanGameEngine.svg)](https://github.com/MadLadSquad/UntitledVulkanGameEngine/pulls/)
+[![GitHub pull-requests](https://img.shields.io/github/issues-pr/MadLadSquad/UntitledVulkanGameEngine/issues.svg)](https://github.com/MadLadSquad/UntitledVulkanGameEngine/pulls/)
 [![GitHub issues](https://img.shields.io/github/issues/MadLadSquad/UntitledVulkanGameEngine/UntitledVulkanGameEngine.svg)](https://github.com/MadLadSquad/UntitledVulkanGameEngine/issues/)
 
 > Last stable release: 0.6.0.1
 
 > Current code version: 0.6.0.1
-> 
+
 > Currently stable on: Linux, MacOS, BSD, Windows
 
 > NOTE: The project passes CI checks on all platforms. The Github actions servers have old packages which makes MacOS and Linux fail
