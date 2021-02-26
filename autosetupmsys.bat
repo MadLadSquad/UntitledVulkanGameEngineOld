@@ -1,20 +1,27 @@
 @ECHO OFF
 
-echo "Compiling GLEW ..."
+echo Compiling GLEW ...
 
-cd Engine/ThirdParty/glew/auto && make && cd .. && make && cd ../../../
+cd Engine/ThirdParty/glew/auto && make 
 
-echo "Compiled GLEW!"
+cd .. 
 
-echo "Creating project file with default settings ..."
+make install
 
-echo "\
-name: Game 
-renderer-subsystem: Legacy
-version: 1.0.0
-engine-version: 1.0.0
-production: false" > "uvproj.yaml"
+cd ../../../
 
-echo "Compiling build tool and generating files ..."
+echo Compiled GLEW!
 
-cd UVKBuildTool/ && mkdir build && cd build && cmake .. -G "Unix Makefiles" && make && ./UVKBuildTool --generate && cd ../../ && mkdir build && cd build && cmake ..
+echo Creating project file with default settings ...
+
+echo name: Game >> "uvproj.yaml" 
+echo renderer-subsystem: Legacy >> "uvproj.yaml"
+echo version: 1.0.0 >> "uvproj.yaml"
+echo engine-version: 1.0.0 >> "uvproj.yaml"
+echo production: false >> "uvproj.yaml"
+
+echo Compiling build tool and generating files ...
+
+cd UVKBuildTool/ && mkdir build && cd build/ 
+cmake .. -G "Unix Makefiles" && make && UVKBuildTool --generate 
+cd ../../ && mkdir build && cd build && cmake ..

@@ -1,7 +1,13 @@
 #!/bin/bash
 echo "Compiling GLEW ..."
 
-cd Engine/ThirdParty/glew/auto && make && cd .. && make && cd ../../../
+cd Engine/ThirdParty/glew/auto
+
+cd ..
+
+make 
+
+cd ../../../
 
 echo "Compiled GLEW!"
 
