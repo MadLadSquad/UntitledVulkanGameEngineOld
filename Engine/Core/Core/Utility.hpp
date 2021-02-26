@@ -28,7 +28,7 @@ public:
     {
         for (int i = 0; i < str.length(); i++)
         {
-            if (str[i] == '\\' && str[i] != '\n')
+            if (str[i] == '\\')
             {
                 str[i] = '/';
             }
