@@ -6,22 +6,18 @@
 class Utility
 {
 public:
-    const char* toLower(const char* str)
+    const char* toLower(std::string& str)
     {
-        auto string = static_cast<std::string>(str);
+        std::transform(str.begin(), str.end(), str.begin(), ::tolower);
 
-        std::transform(string.begin(), string.end(), string.begin(), ::tolower);
-
-        return string.c_str();
+        return str.c_str();
     }
 
-    const char* toHigher(const char* str)
+    const char* toHigher(std::string& str)
     {
-        auto string = static_cast<std::string>(str);
+        std::transform(str.begin(), str.end(), str.begin(), ::toupper);
 
-        std::transform(string.begin(), string.end(), string.begin(), ::toupper);
-
-        return string.c_str();
+        return str.c_str();
     }
 
     const char* sanitiseFilepath(std::string& str)
