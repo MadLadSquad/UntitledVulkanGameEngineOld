@@ -23,6 +23,25 @@ public:
 
         return string.c_str();
     }
+
+    const char* sanitiseFilepath(std::string& str)
+    {
+        for (int i = 0; i < str.length(); i++)
+        {
+            if (str[i] == '\\' && str[i] != '\n')
+            {
+                str[i] = '/';
+            }
+
+            if (str[i] == ' ')
+            {
+
+            }
+        }
+
+        return str.c_str();
+    }
+
 };
 
 inline Utility utility;

@@ -32,8 +32,8 @@ namespace Filesystem
                 ImGui::Image((void*)(intptr_t)model.getImage(), ImVec2(model.getWidth() - 410, model.getHeight() - 410));
             }
 
-
-            ImGui::Text("%s", entry.path().filename().c_str());
+            ImGui::Text("%s", utility.sanitiseFilepath(entry.path().filename().string())); 
+            
             ImGui::EndGroup();
 
             ImGui::SameLine();

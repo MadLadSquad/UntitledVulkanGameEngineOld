@@ -369,14 +369,14 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
                 ImGui::Begin("Scene Hierarchy");
 
                 pool.each([&](entt::entity ent)
-                          {
-                              auto& a = registry.getComponent<CoreComponent>(ent);
+                {
+                    auto& a = registry.getComponent<CoreComponent>(ent);
 
-                              if (ImGui::Selectable(a.name.c_str()))
-                              {
-                                  selectedEntity = ent;
-                              }
-                          });
+                    if (ImGui::Selectable(a.name.c_str()))
+                    {
+                        selectedEntity = ent;
+                    }
+                });
 
                 ImGui::End();
             }
