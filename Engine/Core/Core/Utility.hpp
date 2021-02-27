@@ -20,7 +20,7 @@ public:
         return str.c_str();
     }
 
-    const char* sanitiseFilepath(std::string& str)
+    const char* sanitiseFilepath(std::string& str, bool bInput)
     {
         for (int i = 0; i < str.length(); i++)
         {
