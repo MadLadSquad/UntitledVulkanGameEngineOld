@@ -6,8 +6,13 @@
 
 namespace UVK
 {
-    UVK_API class APawn : public ScriptableObject
+    UVK_API class APawn
     {
     public:
+        virtual void beginPlay() = 0;
+        virtual void tick(float deltaTime) = 0;
+        virtual void endPlay() = 0;
+
+        virtual ~APawn() = default;
     };
 }

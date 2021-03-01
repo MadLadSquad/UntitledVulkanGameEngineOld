@@ -23,6 +23,12 @@ namespace UVK
         PlayerController* pc = nullptr;
         APawn* pawn = nullptr;
     private:
-
+        virtual ~GameMode()
+        {
+            delete gs;
+            delete ps;
+            delete pc;
+            delete pawn;
+        }
     };
 }

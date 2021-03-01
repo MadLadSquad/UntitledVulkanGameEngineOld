@@ -20,16 +20,16 @@ public:
         return str.c_str();
     }
 
-    const char* sanitiseFilepath(std::string& str, bool bInput)
+    const char* sanitiseFilepath(std::string str, bool bInput)
     {
-        for (int i = 0; i < str.length(); i++)
+        for (auto& a : str)
         {
-            if (str[i] == '\\')
+            if (a == '\\')
             {
-                str[i] = '/';
+                a = '/';
             }
 
-            if (str[i] == ' ')
+            if (a == ' ')
             {
 
             }
@@ -37,7 +37,6 @@ public:
 
         return str.c_str();
     }
-
 };
 
 inline Utility utility;

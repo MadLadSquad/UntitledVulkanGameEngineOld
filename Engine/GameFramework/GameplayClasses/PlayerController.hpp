@@ -20,6 +20,11 @@ namespace UVK
         }
 
         APawn* currentPawn;
+
+        virtual ~PlayerController()
+        {
+            delete currentPawn;
+        }
     private:
 
     };
