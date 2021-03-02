@@ -28,7 +28,7 @@ public:
      * @brief converts string to lower case
      * @param str string to be converted
      */
-    static const char* toLower(std::string& str)
+    static const char* toLowerNStr(std::string& str)
     {
         std::transform(str.begin(), str.end(), str.begin(), ::tolower);
 
@@ -39,7 +39,7 @@ public:
      * @brief converts string to upper case
      * @param str string to be converted
      */
-    static const char* toUpper(std::string& str)
+    static const char* toUpperNStr(std::string& str)
     {
         std::transform(str.begin(), str.end(), str.begin(), ::toupper);
 

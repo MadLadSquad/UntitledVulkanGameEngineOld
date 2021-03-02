@@ -10,6 +10,8 @@
 class VulkanRenderer
 {
 public:
+    VulkanRenderer() = default;
+
     void start();
 
 private:

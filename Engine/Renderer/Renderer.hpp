@@ -10,37 +10,19 @@ namespace UVK
     class Renderer
     {
     public:
-        Renderer()
+        Renderer() = delete;
+        Renderer(UVK::Level* lvl, bool bUsesEditor)
         {
-            startRenderer();
+            startRenderer(lvl, bUsesEditor);
         }
 
         void switchRenderer()
         {
-            if (bIsVulkan)bIsVulkan = true;
-            else bIsVulkan = false;
+            if (bIsVulkan)bIsVulkan = false;
+            else bIsVulkan = true;
         }
 
-        void startRenderer()
-        {
-            loadSettings();
-
-            if (bIsVulkan)
-            {
-                VulkanRenderer renderer;
-
-                renderer.start();
-            }
-            else
-            {
-                GLRenderer renderer;
-
-                renderer.createWindow();
-            }
-        }
-
-
-        void saveSettings()
+        void saveSettings() const
         {
             YAML::Emitter out;
             out << YAML::BeginMap;
@@ -62,6 +44,22 @@ namespace UVK
             if (a["vulkan"])
             {
                 bIsVulkan = a["vulkan"].as<bool>();
+            }
+        }
+
+        void startRenderer(UVK::Level* lvl, bool bUsesEditor)
+        {
+            loadSettings();
+
+            if (bIsVulkan)
+            {
+                VulkanRenderer renderer;
+
+                renderer.start();
+            }
+            else
+            {
+                GLRenderer renderer(lvl, bUsesEditor);
             }
         }
 
