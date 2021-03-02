@@ -76,11 +76,11 @@ ALuint UVK::Audio2D::addSoundEffect(const char *filename)
     else if (sfinfo.channels == 2) format = AL_FORMAT_STEREO16;
     else if (sfinfo.channels == 3)
     {
-        if (sf_command(sndfile, SFC_WAVEX_GET_AMBISONIC, NULL, 0) == SF_AMBISONIC_B_FORMAT) format = AL_FORMAT_BFORMAT2D_16;
+        if (sf_command(sndfile, SFC_WAVEX_GET_AMBISONIC, nullptr, 0) == SF_AMBISONIC_B_FORMAT) format = AL_FORMAT_BFORMAT2D_16;
     }
     else if (sfinfo.channels == 4)
     {
-        if (sf_command(sndfile, SFC_WAVEX_GET_AMBISONIC, NULL, 0) == SF_AMBISONIC_B_FORMAT) format = AL_FORMAT_BFORMAT3D_16;
+        if (sf_command(sndfile, SFC_WAVEX_GET_AMBISONIC, nullptr, 0) == SF_AMBISONIC_B_FORMAT) format = AL_FORMAT_BFORMAT3D_16;
     }
 
     if (!format)
@@ -141,7 +141,7 @@ void UVK::Audio2D::removeSoundEffect(ALuint buffer)
         {
             alDeleteBuffers(1, &*it);
 
-            it = soundEffectBuffer.erase(it);
+            soundEffectBuffer.erase(it);
 
             return;
         }

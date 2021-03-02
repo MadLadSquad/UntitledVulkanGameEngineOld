@@ -9,7 +9,7 @@
 
 namespace Statistics
 {
-    static void display(float deltaTime)
+    static void display()
     {
         ImGui::Begin("Statistics");
 

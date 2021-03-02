@@ -19,26 +19,26 @@ namespace UVK
         virtual void beginPlay() = 0;
         virtual void endPlay() = 0;
 
-        void saveEntity(YAML::Emitter& out, Actor act);
-        void save(String location, String name);
-        void open(String file) noexcept;
+        static void saveEntity(YAML::Emitter& out, Actor act);
+        static void save(String location, String name);
+        static void open(String file) noexcept;
 
-        GameInstance* gameInstance;
-        GameMode* gameMode;
+        GameInstance* gameInstance = nullptr;
+        GameMode* gameMode = nullptr;
 
-        void beginAutohandle()
+        void beginAutohandle() const
         {
             gameInstance->beginPlay();
             gameMode->beginPlay();
         }
 
-        void tickAutohandle(float deltaTime)
+        void tickAutohandle(float deltaTime) const
         {
             gameInstance->tick(deltaTime);
             gameMode->tick(deltaTime);
         }
 
-        void endAutohandle()
+        void endAutohandle() const
         {
             gameInstance->endPlay();
             gameMode->endPlay();

@@ -16,5 +16,5 @@ private:
 
     VkInstance instance;
     void createInstance();
-    bool checkExtensionSupport(std::vector<const char*>* extensions);
+    static bool checkExtensionSupport(std::vector<const char*>* extensions);
 };

@@ -29,16 +29,16 @@ namespace UVK
         }
 
         void createWindow(Level* level) noexcept;
-        void createTriangle();
+        static void createTriangle();
         //void addShader(GLuint theProgram, const char* shaderCode, GLenum shaderType);
         //void compileShaders();
     private:
         Actor selectedEntity;
-        bool bShowOpenLevelWidget;
-        bool bSetBuff;
-        bool bShowSaveLevelWidget;
+        bool bShowOpenLevelWidget= false;
+        bool bSetBuff = false;
+        bool bShowSaveLevelWidget = false;
         bool bEditor;
 
-        void setDarkTheme();
+        static void setDarkTheme();
     };
 }

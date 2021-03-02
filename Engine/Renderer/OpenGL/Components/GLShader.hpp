@@ -22,12 +22,12 @@ namespace UVK
             return uniformProjection;
         }
 
-        GLuint& getModelLocation()
+        [[maybe_unused]] GLuint& getModelLocation()
         {
             return uniformModel;
         }
 
-        GLuint& getViewLocation()
+        [[maybe_unused]] GLuint& getViewLocation()
         {
             return uniformView;
         }
@@ -39,7 +39,10 @@ namespace UVK
         std::vector<unsigned char> vertexShader;
         std::vector<unsigned char> fragmentShader;
 
-        GLuint shaderID, uniformProjection, uniformModel, uniformView;
+        GLuint shaderID = 0;
+        GLuint uniformProjection = 0;
+        GLuint uniformModel = 0;
+        GLuint uniformView = 0;
     };
 }
 

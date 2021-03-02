@@ -1,7 +1,6 @@
 // Window.cpp
 // Last update 2/24/2021 by Madman10K
 #include "Window.hpp"
-#include "../Textures/Texture.hpp"
 
 
 void UVK::Window::doCallBacks()
@@ -41,17 +40,17 @@ void UVK::Window::createWindow()
     logger.consoleLog("Window settings configured", NOTE);
     if (bIsFullScreen)
     {
-        windowMain = glfwCreateWindow(width, height, name.c_str(), glfwGetPrimaryMonitor(), NULL);
+        windowMain = glfwCreateWindow(width, height, name.c_str(), glfwGetPrimaryMonitor(), nullptr);
         logger.consoleLog("Created window", NOTE);
     }
     else
     {
-        windowMain = glfwCreateWindow(width, height, name.c_str(), NULL, NULL);
+        windowMain = glfwCreateWindow(width, height, name.c_str(), nullptr, nullptr);
         logger.consoleLog("Created window", NOTE);
     }
 
     GLFWimage images[1];
-    images[0].pixels = stbi_load(image.c_str(), &images[0].width, &images[0].height, 0, 4);
+    images[0].pixels = stbi_load(image.c_str(), &images[0].width, &images[0].height, nullptr, 4);
     glfwSetWindowIcon(windowMain, 1, images);
     stbi_image_free(images[0].pixels);
 
@@ -140,7 +139,7 @@ void UVK::Window::keyboardInputCallback(GLFWwindow* window, int key, int scanCod
 
 void UVK::Window::mouseCursorPositionCallback(GLFWwindow* window, double xpos, double ypos)
 {
-    Window* windowInst = static_cast<Window*>(glfwGetWindowUserPointer(window));
+    auto* windowInst = static_cast<Window*>(glfwGetWindowUserPointer(window));
 
     if (windowInst->bFirstMove)
     {
@@ -168,7 +167,7 @@ void UVK::Window::mouseKeyInputCallback(GLFWwindow* window, int button, int acti
 
 void UVK::Window::scrollInputCallback(GLFWwindow* window, double xoffset, double yoffset)
 {
-    Window* windowInst = static_cast<Window*>(glfwGetWindowUserPointer(window));
+    auto* windowInst = static_cast<Window*>(glfwGetWindowUserPointer(window));
 
     input.callScrollWheelEvents();
 

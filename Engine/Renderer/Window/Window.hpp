@@ -26,32 +26,32 @@ namespace UVK
             glfwSetWindowTitle(windowMain, newTitle.c_str());
         }
 
-        GLFWwindow* getWindow() const
+        [[nodiscard]] GLFWwindow* getWindow() const
         {
             return windowMain;
         }
 
-        FVector2 getLastMousePosition()
+        [[maybe_unused]] [[nodiscard]] FVector2 getLastMousePosition() const
         {
             return FVector2(lastPosX, lastPosY);
         }
 
-        FVector2 getCurrentMousePosition()
+        [[maybe_unused]] [[nodiscard]] FVector2 getCurrentMousePosition() const
         {
             return FVector2(posX, posY);
         }
 
-        FVector2 getMousePositionChange()
+        [[nodiscard]] FVector2 getMousePositionChange() const
         {
             return FVector2(offsetX, offsetY);
         }
 
-        FVector2 getScrollVal()
+        [[maybe_unused]] [[nodiscard]] FVector2 getScrollVal() const
         {
             return FVector2(scrollX, scrollY);
         }
 
-        void setCursorVisibility(bool bIsVisible)
+        [[maybe_unused]] void setCursorVisibility(bool bIsVisible)
         {
             if (bIsVisible)
             {
@@ -97,4 +97,4 @@ namespace UVK
     };
 }
 
-inline UVK::Window window;
+inline UVK::Window currentWindow;

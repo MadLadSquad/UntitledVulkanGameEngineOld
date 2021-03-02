@@ -32,8 +32,8 @@ namespace UVK
         void destroySoundBuffers();
         void createSoundBuffers();
 
-        ALCdevice* device;
-        ALCcontext* context;
+        ALCdevice* device = nullptr;
+        ALCcontext* context = nullptr;
 
         std::vector<ALuint> soundEffectBuffer;
     };
@@ -66,7 +66,7 @@ namespace UVK
         void play(ALuint buff);
 
     private:
-        ALuint source;
+        ALuint source = 0;
         float pitch = 1.0f;
         float gain = 1.0f;
         float position[3] = { 0, 0, 0 };

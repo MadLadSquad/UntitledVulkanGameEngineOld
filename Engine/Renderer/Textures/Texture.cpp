@@ -7,9 +7,9 @@
 
 void UVK::Texture::load()
 {
-    unsigned char* img = stbi_load(location.c_str(), &width, &height, NULL, 4);
+    unsigned char* img = stbi_load(location.c_str(), &width, &height, nullptr, 4);
 
-    if (img == NULL)
+    if (img == nullptr)
         return;
 
     glGenTextures(1, &image);

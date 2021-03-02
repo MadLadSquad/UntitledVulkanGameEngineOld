@@ -6,21 +6,21 @@
 class Utility
 {
 public:
-    const char* toLower(std::string& str)
+    static const char* toLower(std::string& str)
     {
         std::transform(str.begin(), str.end(), str.begin(), ::tolower);
 
         return str.c_str();
     }
 
-    const char* toHigher(std::string& str)
+    static const char* toHigher(std::string& str)
     {
         std::transform(str.begin(), str.end(), str.begin(), ::toupper);
 
         return str.c_str();
     }
 
-    const char* sanitiseFilepath(std::string str, bool bInput)
+    static const char* sanitiseFilepath(std::string str, bool bInput)
     {
         for (auto& a : str)
         {

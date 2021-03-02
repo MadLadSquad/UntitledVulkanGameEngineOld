@@ -22,7 +22,7 @@ namespace UVK
         PlayerState* ps = nullptr;
         PlayerController* pc = nullptr;
         APawn* pawn = nullptr;
-    private:
+
         virtual ~GameMode()
         {
             delete gs;
@@ -30,5 +30,7 @@ namespace UVK
             delete pc;
             delete pawn;
         }
+    private:
+
     };
 }

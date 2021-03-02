@@ -21,7 +21,7 @@ namespace UVK
         void destroy();
 
 
-        std::string& getLocation() { return location; }
+        [[maybe_unused]] std::string& getLocation() { return location; }
         int& getWidth() { return width; }
         int& getHeight() { return height; }
         GLuint& getImage() { return image; };

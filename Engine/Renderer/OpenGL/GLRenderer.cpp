@@ -76,7 +76,7 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
     bool bShowCreateFile1 = false;
     short selectedFile = 0;
 
-    window.createWindow();
+    currentWindow.createWindow();
 
     logger.consoleLog("Creating geometry", NOTE);
     createTriangle();
@@ -128,7 +128,7 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
         }
 
         setDarkTheme();
-        ImGui_ImplGlfw_InitForOpenGL(window.getWindow(), true);
+        ImGui_ImplGlfw_InitForOpenGL(currentWindow.getWindow(), true);
         ImGui_ImplOpenGL3_Init("#version 460");
     }
 
@@ -138,7 +138,7 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
     GLfloat deltaTime = 0;
     GLfloat lastTime = 0;
 
-    while (!glfwWindowShouldClose(window.getWindow()))
+    while (!glfwWindowShouldClose(currentWindow.getWindow()))
     {
         if (bEditor)
         {
@@ -249,10 +249,8 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
 
                     if (ImGui::Button("Exit"))
                     {
-                        glfwSetWindowShouldClose(window.getWindow(), GL_TRUE);
+                        glfwSetWindowShouldClose(currentWindow.getWindow(), GL_TRUE);
                         std::terminate();
-
-                        return;
                     }
                     ImGui::EndMenu();
                 }
@@ -298,7 +296,7 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
                 ImGui::SameLine();
                 if (ImGui::Button("Submit"))
                 {
-                    level->open(buffer);
+                    UVK::Level::open(buffer);
                     bShowOpenLevelWidget = false;
                 }
 
@@ -344,8 +342,6 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
                             break;
                         case 7:
                             system(static_cast<std::string>("cd ../UVKBuildTool/build && ./UVKBuildTool --level " + fileOutLocation + "cd ../../").c_str());
-                            break;
-                        case 0:
                             break;
                         default:
                             break;
@@ -404,7 +400,7 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
             }
 
             {
-                Statistics::display(deltaTime);
+                Statistics::display();
             }
 
             {
@@ -423,7 +419,7 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
             }
         }
 
-        glfwSwapBuffers(window.getWindow());
+        glfwSwapBuffers(currentWindow.getWindow());
     }
     events.callEnd();
 
@@ -431,7 +427,7 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
 
-    window.destroyWindow();
+    currentWindow.destroyWindow();
 
     std::terminate();
 }
@@ -451,7 +447,7 @@ void UVK::GLRenderer::createTriangle()
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
     glEnableVertexAttribArray(0);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
