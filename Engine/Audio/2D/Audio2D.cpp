@@ -1,5 +1,5 @@
 // Audio2D.cpp
-// Last update 2/7/2021 by Madman10K
+// Last update 2/2/2021 by Madman10K
 #include "Audio2D.hpp"
 
 #ifndef __MINGW32__
@@ -49,6 +49,7 @@ void UVK::Audio2D::cleanup()
 
 ALuint UVK::Audio2D::addSoundEffect(const char *filename)
 {
+    // All the variables we need
     ALenum err, format;
     ALuint buffer;
     SNDFILE* sndfile;
@@ -57,6 +58,7 @@ ALuint UVK::Audio2D::addSoundEffect(const char *filename)
     sf_count_t frameNum;
     ALsizei byteNum;
 
+    // Opens and reads sound file
     sndfile = sf_open(filename, SFM_READ, &sfinfo);
     if (!sndfile)
     {
@@ -88,6 +90,7 @@ ALuint UVK::Audio2D::addSoundEffect(const char *filename)
         logger.consoleLog("Unsupported channel count", ERROR);
     }
 
+    // Allocates memory for the audio buffer
     membuf = static_cast<short*>(malloc((size_t)(sfinfo.frames * sfinfo.channels) * sizeof(short)));
 
     frameNum = sf_readf_short(sndfile, membuf, sfinfo.frames);
@@ -107,12 +110,14 @@ ALuint UVK::Audio2D::addSoundEffect(const char *filename)
     alGenBuffers(1, &buffer);
     alBufferData(buffer, format, membuf, byteNum, sfinfo.samplerate);
 
+    // Freeing up our memory
     free(membuf);
 
     sf_close(sndfile);
 
     err = alGetError();
 
+    // Little error check
     if (err != AL_NO_ERROR)
     {
         logger.consoleLogComplex<std::string>("OpenAL Error:", ERROR, { alGetString(err)} );
@@ -125,6 +130,7 @@ ALuint UVK::Audio2D::addSoundEffect(const char *filename)
         return 0;
     }
 
+    // Added sound effect to the sound effects buffer array
     soundEffectBuffer.push_back(buffer);
 
     return buffer;

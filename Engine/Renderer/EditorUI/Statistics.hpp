@@ -1,5 +1,5 @@
 // Statistics.hpp
-// Last update 2/24/2021 by Madman10K
+// Last update 3/2/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 #include <imgui.h>
@@ -9,6 +9,7 @@
 
 namespace Statistics
 {
+    // Displays statistics
     static void display()
     {
         ImGui::Begin("Statistics");

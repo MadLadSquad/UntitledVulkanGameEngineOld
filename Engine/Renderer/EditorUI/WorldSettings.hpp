@@ -1,5 +1,5 @@
 // WorldSettings.hpp
-// Last update 2/24/2021 by Madman10K
+// Last update 2/2/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 #include <imgui.h>
@@ -9,6 +9,7 @@
 
 namespace WorldSettings
 {
+    // Displays the world setting widget
     static void display(FVector4 color, FVector4 ambientLight, std::string name)
     {
         ImGui::Begin("World Settings");

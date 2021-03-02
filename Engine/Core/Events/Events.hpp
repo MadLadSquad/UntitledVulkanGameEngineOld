@@ -1,5 +1,5 @@
 // Events.hpp
-// Last update 2/7/2021 by Madman10K
+// Last update 3/2/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 #include "../../GameFramework/Actors/ScriptableObject.hpp"
@@ -33,7 +33,7 @@ namespace UVK
             }
         }
 
-        void createObj(ScriptableObject* sco)
+        [[maybe_unused]] void createObj(ScriptableObject* sco)
         {
             objList.push_back(sco);
         }

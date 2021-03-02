@@ -1,5 +1,5 @@
 // DetailsPanel.hpp
-// Last update 2/12/2021 by Madman10K
+// Last update 3/2/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 #include <imgui.h>
@@ -9,6 +9,7 @@
 
 namespace DetailsPanel
 {
+    // Displays the details panel
     static void display(entt::entity ent)
     {
         ImGui::Begin("Details");

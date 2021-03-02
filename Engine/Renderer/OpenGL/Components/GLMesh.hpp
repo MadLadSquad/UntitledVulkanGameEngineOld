@@ -1,3 +1,5 @@
+// GLMesh.hpp
+// Last update 3/2/2021 by Madman10K
 #pragma once
 #include <GL/glew.h>
 #include <Core.hpp>

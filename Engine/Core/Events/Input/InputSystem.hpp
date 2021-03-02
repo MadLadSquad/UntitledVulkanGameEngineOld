@@ -11,7 +11,7 @@ namespace UVK
     public:
         Input() = default;
 
-        void inputKeyEvent(int key, int event, std::function<void(void)>func)
+        [[maybe_unused]] void inputKeyEvent(int key, int event, std::function<void(void)>func)
         {
             funcsKey.emplace_back([&](int button, int action)
             {
@@ -38,7 +38,7 @@ namespace UVK
             });
         }
 
-        void inputScrollWheel(std::function<void(void)> func)
+        [[maybe_unused]] void inputScrollWheel(std::function<void(void)> func)
         {
             funcsScrollWheel.emplace_back(func);
         }

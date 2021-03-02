@@ -1,3 +1,5 @@
+// GLMesh.cpp
+// Last update 3/2/2021 by Madman10K
 #include "GLMesh.hpp"
 
 UVK::GLMesh::GLMesh(GLfloat* vertices, uint32_t* indices, uint32_t vertexNum, uint32_t indexNum)
