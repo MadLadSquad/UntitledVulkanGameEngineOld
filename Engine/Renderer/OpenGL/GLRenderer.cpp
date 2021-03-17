@@ -76,7 +76,7 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
     //mh->createMesh(vertices, indices, 12, 12);
     //GLMesh* mh2 = new GLMesh();
     //mh2->createMesh(vertices, indices, 12, 12);
-    //GLShader* sh = new GLShader();
+    GLShader* sh = new GLShader();
 
     MeshComponentRaw ms;
 
@@ -98,7 +98,7 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
     Texture model(static_cast<std::string>(res.string() + "model.png"));
     model.load();
 
-    //sh->createFromFile(static_cast<std::string>(res.string() + "default.vshader.gl").c_str(), static_cast<std::string>(res.string() + "default.fshader.gl").c_str());
+    sh->createFromFile(static_cast<std::string>(res.string() + "default.vshader.gl").c_str(), static_cast<std::string>(res.string() + "default.fshader.gl").c_str());
 #else
     Texture folder(static_cast<std::string>("../Content/Engine/folder.png"));
     folder.load();
