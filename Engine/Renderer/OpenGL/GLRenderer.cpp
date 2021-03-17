@@ -175,43 +175,14 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
         lastTime = now;
 
         events.callTick(deltaTime);
-
-        //uniformProjection = sh->getProjectionLocation();
-        //glUniformMatrix4fv(uniformProjection, 1, GL_FALSE, glm::value_ptr(projection));
         
         Model mat = Model();
 
         mat.translate(FVector(0.0f, 2.0f, -2.5f));
         mat.rotate(90.0f, FVector(0.0f, 1.0f, 0.0f));
         mat.scale(FVector(1.0f, 1.0f, 1.0f));
-        //mat = glm::translate(mat, UVK::FVector(0.0f, 2.0f, -2.5f));
-        //mat = glm::rotate(mat, glm::radians(90.0f), UVK::FVector(0.0f, 1.0f, 0.0f));
-        //mat = glm::scale(mat, UVK::FVector(1.0f, 1.0f, 1.0f));
 
         ms.render(projection, mat);
-
-        
-
-        //sh->useShader();
-        //uniformModel = sh->getModelLocation();
-
-        
-        //glm::mat4 mat(1.0f);
-
-        //mat = glm::translate(mat, glm::vec3(0.0f, 2.0f, -2.5f));
-        //mat = glm::rotate(mat, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-        
-        //mat = glm::scale(mat, glm::vec3(1.0f, 1.0f, 1.0f));
-        //glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(mat));
-
-        //mh->render();
-
-        //glm::mat4 mat2(1.0f);
-        //mat2 = glm::translate(mat2, glm::vec3(1.0f, 0.0f, -2.5f));
-        
-        //mat2 = glm::scale(mat2, glm::vec3(1.0f, 1.0f, 1.0f));
-        //glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(mat2));
-        //mh2->render();
 
         glUseProgram(0);
 

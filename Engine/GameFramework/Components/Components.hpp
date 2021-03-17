@@ -57,17 +57,13 @@ namespace UVK
         }
         
     private:
-        glm::mat4* model;
-        //FVector translation;
-        //FVector scale;
-        //FVector rotation;
-        //float degrees;
+        glm::mat4* model = nullptr;
         
-        GLuint uniformModel;
-        GLuint uniformProjection;
+        GLuint uniformModel = 0;
+        GLuint uniformProjection = 0;
 
-        GLMesh* mesh;
-        GLShader* shader;
+        GLMesh* mesh = nullptr;
+        GLShader* shader = nullptr;
     };
 
     UVK_API struct PointLightComponent

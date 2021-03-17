@@ -101,14 +101,13 @@ void UVK::GLShader::compileShader(const char* vertex, const char* fragment)
 void UVK::GLShader::addShader(GLuint program, const char* shader, GLenum shaderType)
 {
 	GLuint theShader = glCreateShader(shaderType);
-
-	const GLchar* code[1];
-	code[0] = shader;
+	
+	const char* code = shader;
 
 	GLint codeLength[1];
 	codeLength[0] = strlen(shader);
 
-	glShaderSource(theShader, 1, code, codeLength);
+	glShaderSource(theShader, 1, &code, codeLength);
 	glCompileShader(theShader);
 
 	GLint result = 0;
