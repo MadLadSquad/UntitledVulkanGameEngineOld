@@ -102,12 +102,10 @@ void UVK::GLShader::addShader(GLuint program, const char* shader, GLenum shaderT
 {
 	GLuint theShader = glCreateShader(shaderType);
 	
-	const char* code = shader;
+	std::string code = shader;
+	GLint codeLength = code.length();
 
-	GLint codeLength[1];
-	codeLength[0] = strlen(shader);
-
-	glShaderSource(theShader, 1, &code, codeLength);
+	glShaderSource(theShader, 1, &shader, &codeLength);
 	glCompileShader(theShader);
 
 	GLint result = 0;
