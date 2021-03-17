@@ -10,7 +10,7 @@
 namespace WorldSettings
 {
     // Displays the world setting widget
-    static void display(FVector4 color, FVector4 ambientLight, std::string name)
+    static void display(UVK::FVector4 color, UVK::FVector4 ambientLight, std::string name)
     {
         ImGui::Begin("World Settings");
 

@@ -1,12 +1,13 @@
 // Window.hpp
-// Last update 3/2/2021 by Madman10K
+// Last update 3/17/2021 by Madman10K
 #pragma once
 #include <GL/glew.h>
 #include "../../Core/Events/Input/InputSystem.hpp"
+#include "../Textures/Texture.hpp"
 #include <glfw3.h>
 #include <yaml.h>
 #include "UVKLog.h"
-#include "../Textures/Texture.hpp"
+
 
 namespace UVK
 {
@@ -63,6 +64,17 @@ namespace UVK
             }
         }
 
+        int getBufferWidth()
+        {
+            return bufferWidth;
+        }
+
+
+        int getBufferHeight()
+        {
+            return bufferHeight;
+        }
+
     private:
 
         void openConfig();
@@ -94,6 +106,8 @@ namespace UVK
 
         GLdouble scrollX = 0;
         GLdouble scrollY = 0;
+
+        int bufferWidth, bufferHeight;
     };
 }
 

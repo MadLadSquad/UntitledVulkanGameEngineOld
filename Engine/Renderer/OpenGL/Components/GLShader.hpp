@@ -1,48 +1,43 @@
 // GLShader.hpp
-// Last update 3/2/2021 by Madman10K
+// Last update 3/17/2021 by Madman10K
 #pragma once
 #include <GL/glew.h>
-
-#include <Core.hpp>
+#include <iostream>
+#include <fstream>
+#include <UVKLog.h>
+#include <string>
+//#include <Core.hpp>
 
 namespace UVK
 {
-    class GLShader
+	enum ShaderImportType
+	{
+		SHADER_IMPORT_TYPE_FILE,
+		SHADER_IMPORT_TYPE_STRING,
+		SHADER_IMPORT_TYPE_SPIR
+	};
+	
+	class GLShader
     {
     public:
-        GLShader() = delete;
-        GLShader(const char* vLocation, const char* fLocation)
-        {
+		GLShader() = default;
 
-        }
+		void createFromString(const char* vertex, const char* fragment);
+		void createFromFile(const char* vLocation, const char* fLocation);
 
+		GLuint getProjectionLocation();
+		GLuint getModelLocation();
 
-        GLuint& getProjectionLocation()
-        {
-            return uniformProjection;
-        }
+		void useShader();
+		void clearShader();
 
-        [[maybe_unused]] GLuint& getModelLocation()
-        {
-            return uniformModel;
-        }
-
-        [[maybe_unused]] GLuint& getViewLocation()
-        {
-            return uniformView;
-        }
-    private:
-        void clearShader();
-        void createShader();
-        void addShader(const char* vLoc, const char* fLoc);
-
-        std::vector<unsigned char> vertexShader;
-        std::vector<unsigned char> fragmentShader;
-
-        GLuint shaderID = 0;
-        GLuint uniformProjection = 0;
-        GLuint uniformModel = 0;
-        GLuint uniformView = 0;
+	private:
+		GLuint shaderID, uniformProjection, uniformModel;
+		
+		std::string readFile(const char* location);
+		
+		void compileShader(const char* vertex, const char* fragment);
+		void addShader(GLuint program, const char* shader, GLenum shaderType);
     };
 }
 

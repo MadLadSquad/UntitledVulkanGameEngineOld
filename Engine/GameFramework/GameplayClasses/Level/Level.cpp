@@ -1,5 +1,5 @@
 // Level.cpp
-// Last update 1/10/2021 by Madman10K
+// Last update 3/17/2021 by Madman10K
 
 #include "Level.hpp"
 
@@ -7,9 +7,9 @@
 namespace YAML {
 
     template<>
-    struct convert<FVector>
+    struct convert<UVK::FVector>
     {
-        static Node encode(const FVector& rhs)
+        static Node encode(const UVK::FVector& rhs)
         {
             Node node;
             node.push_back(rhs.x);
@@ -19,7 +19,7 @@ namespace YAML {
             return node;
         }
 
-        static bool decode(const Node& node, FVector& rhs)
+        static bool decode(const Node& node, UVK::FVector& rhs)
         {
             if (!node.IsSequence() || node.size() != 3)
                 return false;
@@ -32,9 +32,9 @@ namespace YAML {
     };
 
     template<>
-    struct convert<FVector4>
+    struct convert<UVK::FVector4>
     {
-        static Node encode(const FVector4& rhs)
+        static Node encode(const UVK::FVector4& rhs)
         {
             Node node;
             node.push_back(rhs.x);
@@ -45,7 +45,7 @@ namespace YAML {
             return node;
         }
 
-        static bool decode(const Node& node, FVector4& rhs)
+        static bool decode(const Node& node, UVK::FVector4& rhs)
         {
             if (!node.IsSequence() || node.size() != 4)
                 return false;
@@ -60,13 +60,13 @@ namespace YAML {
 
 }
 // Operator overloads for future transform component
-YAML::Emitter& operator<<(YAML::Emitter& out, const FVector& vect)
+YAML::Emitter& operator<<(YAML::Emitter& out, const UVK::FVector& vect)
 {
     out << YAML::Flow;
     out << YAML::BeginSeq << vect.x << vect.y << vect.z << YAML::EndSeq;
     return out;
 }
-YAML::Emitter& operator<<(YAML::Emitter& out, const FVector4& vect)
+YAML::Emitter& operator<<(YAML::Emitter& out, const UVK::FVector4& vect)
 {
     out << YAML::Flow;
     out << YAML::BeginSeq << vect.x << vect.y << vect.z << vect.w << YAML::EndSeq;
@@ -94,9 +94,9 @@ void UVK::Level::saveEntity(YAML::Emitter& out, Actor act)
         out << YAML::Key << "audio2d-repeat" << YAML::Value << a.bRepeat;
     }
 
-    if (pool.has<MeshComponent>(act))
+    if (pool.has<MeshComponentRaw>(act))
     {
-        auto& a = pool.get<MeshComponent>(act);
+        auto& a = pool.get<MeshComponentRaw>(act);
     }
 
     out << YAML::EndMap;
@@ -121,7 +121,7 @@ void UVK::Level::save(String location, String name)
     //fileout.close();
 }
 
-void UVK::Level::open(const char* location) noexcept
+void UVK::Level::open(String location) noexcept
 {
     pool.clear();
     id = 0;

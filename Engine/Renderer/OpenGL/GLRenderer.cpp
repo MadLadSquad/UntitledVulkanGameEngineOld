@@ -1,5 +1,6 @@
 // GLRenderer.hpp
-// Last update 3/2/2021 by Madman10K
+// Last update 3/17/2021 by Madman10K
+#include "Components/GLMesh.hpp"
 #include "GLRenderer.hpp"
 #include "../../Core/Events/Events.hpp"
 #include <imgui.h>
@@ -11,28 +12,6 @@
 #include "../EditorUI/Filesystem.hpp"
 #include "../EditorUI/Statistics.hpp"
 #include "../EditorUI/WorldSettings.hpp"
-
-const GLint WIDTH = 800, HEIGHT = 600;
-GLuint VBO, VAO, shader;
-static const char* vShader = R"(
-#version 460
-
-layout (location = 0) in vec3 pos;
-
-void main()
-{
-    gl_Position = vec4(0.4 * pos.x, 0.4 * pos.y, pos.z, 1.0);
-})";
-
-static const char* fShader = R"(
-#version 460
-
-out vec4 colour;
-
-void main()
-{
-    colour = vec4(1.0, 0.0, 0.0, 1.0);
-})";
 
 void UVK::GLRenderer::setDarkTheme()
 {
@@ -67,6 +46,20 @@ void UVK::GLRenderer::setDarkTheme()
 
 void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
 {
+    unsigned int indices[] = {
+        0, 3, 1,
+        1, 3, 2,
+        2, 3, 0,
+        0, 1, 2
+    };
+
+    GLfloat vertices[] = {
+        -1.0f, -1.0f, 0.0f,
+        0.0f, -1.0f, 1.0f,
+        1.0f, -1.0f, 0.0f,
+        0.0f, 1.0f, 0.0f
+    };
+    
     std::string location;
     std::string name;
     std::string fileOutLocation;
@@ -79,8 +72,18 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
     currentWindow.createWindow();
 
     logger.consoleLog("Creating geometry", NOTE);
-    createTriangle();
-    //compileShaders();
+    //GLMesh* mh = new GLMesh();
+    //mh->createMesh(vertices, indices, 12, 12);
+    //GLMesh* mh2 = new GLMesh();
+    //mh2->createMesh(vertices, indices, 12, 12);
+    //GLShader* sh = new GLShader();
+
+    MeshComponentRaw ms;
+
+    ms.createMesh(vertices, indices, 12, 12, "../Content/Engine/default.vshader.gl", "../Content/Engine/default.fshader.gl", SHADER_IMPORT_TYPE_FILE);
+
+    GLuint uniformProjection = 0, uniformModel = 0;
+    glm::mat4 projection = glm::perspective(glm::radians(90.0f), (GLfloat)currentWindow.getBufferWidth() / currentWindow.getBufferHeight(), 1.0f, 100.0f);
     logger.consoleLog("Compiled Shaders", SUCCESS);
 
 #ifndef __MINGW32__
@@ -94,6 +97,8 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
 
     Texture model(static_cast<std::string>(res.string() + "model.png"));
     model.load();
+
+    //sh->createFromFile(static_cast<std::string>(res.string() + "default.vshader.gl").c_str(), static_cast<std::string>(res.string() + "default.fshader.gl").c_str());
 #else
     Texture folder(static_cast<std::string>("../Content/Engine/folder.png"));
     folder.load();
@@ -103,6 +108,8 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
 
     Texture model(static_cast<std::string>("../Content/Engine/model.png"));
     model.load();
+
+    sh->createFromFile("../Content/Engine/default.vshader.gl", "../Content/Engine/default.fshader.gl");
 #endif
     if (bEditor)
     {
@@ -129,7 +136,7 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
 
         setDarkTheme();
         ImGui_ImplGlfw_InitForOpenGL(currentWindow.getWindow(), true);
-        ImGui_ImplOpenGL3_Init("#version 460");
+        ImGui_ImplOpenGL3_Init("#version 330");
     }
 
 
@@ -137,9 +144,23 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
     events.callBegin();
     GLfloat deltaTime = 0;
     GLfloat lastTime = 0;
-
+    
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_MULTISAMPLE);
+    glCullFace(GL_BACK);
+    glFrontFace(GL_CCW);
+    
     while (!glfwWindowShouldClose(currentWindow.getWindow()))
     {
+        // Why do I do this here I do not know. I really shouldn't have to do this since it is enabled on window creation
+        // but for some reason I have to enable it on tick
+        //glEnable(GL_DEPTH_TEST);
+        
+        glfwPollEvents();
+        glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+
         if (bEditor)
         {
             ImGui_ImplOpenGL3_NewFrame();
@@ -147,7 +168,7 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
             ImGui::NewFrame();
         }
 
-        glfwPollEvents();
+        
 
         GLfloat now = glfwGetTime();
         deltaTime = now - lastTime;
@@ -155,14 +176,42 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
 
         events.callTick(deltaTime);
 
-        glClearColor(1.0f, 0.8f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        //uniformProjection = sh->getProjectionLocation();
+        //glUniformMatrix4fv(uniformProjection, 1, GL_FALSE, glm::value_ptr(projection));
+        
+        Model mat = Model();
 
-        glUseProgram(shader);
+        mat.translate(FVector(0.0f, 2.0f, -2.5f));
+        mat.rotate(90.0f, FVector(0.0f, 1.0f, 0.0f));
+        mat.scale(FVector(1.0f, 1.0f, 1.0f));
+        //mat = glm::translate(mat, UVK::FVector(0.0f, 2.0f, -2.5f));
+        //mat = glm::rotate(mat, glm::radians(90.0f), UVK::FVector(0.0f, 1.0f, 0.0f));
+        //mat = glm::scale(mat, UVK::FVector(1.0f, 1.0f, 1.0f));
 
-        glBindVertexArray(VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
-        glBindVertexArray(0);
+        ms.render(projection, mat);
+
+        
+
+        //sh->useShader();
+        //uniformModel = sh->getModelLocation();
+
+        
+        //glm::mat4 mat(1.0f);
+
+        //mat = glm::translate(mat, glm::vec3(0.0f, 2.0f, -2.5f));
+        //mat = glm::rotate(mat, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        
+        //mat = glm::scale(mat, glm::vec3(1.0f, 1.0f, 1.0f));
+        //glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(mat));
+
+        //mh->render();
+
+        //glm::mat4 mat2(1.0f);
+        //mat2 = glm::translate(mat2, glm::vec3(1.0f, 0.0f, -2.5f));
+        
+        //mat2 = glm::scale(mat2, glm::vec3(1.0f, 1.0f, 1.0f));
+        //glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(mat2));
+        //mh2->render();
 
         glUseProgram(0);
 
@@ -205,7 +254,7 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
             ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
             ImGui::Begin("DockSpace Demo", &bIsOpen, window_flags);
 
-            //ImGui::PopStyleVar();
+            ImGui::PopStyleVar();
 
             if (opt_fullscreen)
                 ImGui::PopStyleVar(2);
@@ -432,7 +481,7 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
     std::terminate();
 }
 
-void UVK::GLRenderer::createTriangle()
+/*void UVK::GLRenderer::createTriangle()
 {
     GLfloat vertices[] = {
         -1.0f, -1.0f, 0.0f,

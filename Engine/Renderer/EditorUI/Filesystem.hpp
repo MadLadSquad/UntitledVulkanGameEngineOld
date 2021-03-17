@@ -1,5 +1,5 @@
 // Filesystem.hpp
-// Last update 3/2/2021 by Madman10K
+// Last update 3/17/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 #include "../Textures/Texture.hpp"
@@ -18,6 +18,9 @@ namespace Filesystem
 #ifndef __MINGW32__
         for (const auto& entry : std_filesystem::directory_iterator(std_filesystem::path("../Content")))
         {
+            std::string path = entry.path().filename().string();
+            utility.sanitiseFilepath(path, true);
+            
             ImGui::BeginGroup();
 
             if (entry.is_directory())
@@ -33,7 +36,7 @@ namespace Filesystem
                 ImGui::Image((void*)(intptr_t)model.getImage(), ImVec2(model.getWidth() - 410, model.getHeight() - 410));
             }
 
-            ImGui::Text("%s", utility.sanitiseFilepath(entry.path().filename().string(), true)); 
+            ImGui::Text("%s", path); 
             
             ImGui::EndGroup();
 

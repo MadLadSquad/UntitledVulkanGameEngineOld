@@ -1,14 +1,14 @@
 // GLRenderer.hpp
-// Last update 3/2/2021 by Madman10K
+// Last update 3/17/2021 by Madman10K
 #pragma once
 
-#include <GL/glew.h>
-#include "Components/GLMesh.hpp"
-#include "Components/GLShader.hpp"
-#include "../glfw/include/GLFW/glfw3.h"
+//#include <GL/glew.h>
+//#include "Components/GLMesh.hpp"
+//#include "Components/GLShader.hpp"
 #include <Core.hpp>
-#include "UVKLog.h"
 #include "Engine/Renderer/Window/Window.hpp"
+#include "UVKLog.h"
+
 
 
 
@@ -29,9 +29,6 @@ namespace UVK
         }
 
         void createWindow(Level* level) noexcept;
-        static void createTriangle();
-        //void addShader(GLuint theProgram, const char* shaderCode, GLenum shaderType);
-        //void compileShaders();
     private:
         Actor selectedEntity;
         bool bShowOpenLevelWidget= false;

@@ -1,10 +1,10 @@
 // Level.hpp
-// Last update 3/2/2021 by Madman10K
+// Last update 3/17/2021 by Madman10K
+#include "../../Components/Components.hpp"
+#include "Engine/Core/Core/Registry.hpp"
 #include <Core.hpp>
 #include "../GameMode.hpp"
 #include "../GameInstance.hpp"
-#include "../../Components/Components.hpp"
-#include "Engine/Core/Core/Registry.hpp"
 
 namespace UVK
 {

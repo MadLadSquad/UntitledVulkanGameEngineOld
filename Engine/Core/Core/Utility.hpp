@@ -1,5 +1,5 @@
 // Utility.hpp
-// Last update 3/2/2021 by Madman10K
+// Last update 3/17/2021 by Madman10K
 #pragma once
 #include <iostream>
 
@@ -50,9 +50,9 @@ public:
      * @brief Sanitises filepaths
      * @param str the string it sanitises
      * @param bInput is this text inputed by the user or output
-     * @return
+     * @return sanitised string
      */
-    static const char* sanitiseFilepath(std::string str, bool bInput)
+    static void sanitiseFilepath(std::string& str, bool bInput)
     {
         for (auto& a : str)
         {
@@ -66,8 +66,6 @@ public:
 
             }
         }
-
-        return str.c_str();
     }
 };
 

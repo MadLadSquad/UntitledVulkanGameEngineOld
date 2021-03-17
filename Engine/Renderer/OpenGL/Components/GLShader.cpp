@@ -1,87 +1,126 @@
 // GLShader.cpp
-// Last update 3/2/2021 by Madman10K
+// Last update 3/17/2021 by Madman10K
 #include "GLShader.hpp"
+
+void UVK::GLShader::createFromString(const char* vertex, const char* fragment)
+{
+	compileShader(vertex, fragment);
+}
+
+void UVK::GLShader::createFromFile(const char* vLocation, const char* fLocation)
+{
+	compileShader(readFile(vLocation).c_str(), readFile(fLocation).c_str());
+}
+
+std::string UVK::GLShader::readFile(const char* location)
+{
+	std::string content;
+	std::ifstream fileStream(location, std::ios::in);
+
+	if (!fileStream.is_open()) {
+		logger.consoleLogComplex("Failed to read file at location:", ERROR, { location });
+		return "";
+	}
+
+	std::string line = "";
+	while (!fileStream.eof())
+	{
+		std::getline(fileStream, line);
+		content.append(line + "\n");
+	}
+
+	fileStream.close();
+	return content;
+}
+
+GLuint UVK::GLShader::getProjectionLocation()
+{
+	return uniformProjection;
+}
+
+GLuint UVK::GLShader::getModelLocation()
+{
+	return uniformModel;
+}
+
+void UVK::GLShader::useShader()
+{
+	glUseProgram(shaderID);
+}
 
 void UVK::GLShader::clearShader()
 {
+	if (shaderID != 0)
+	{
+		glDeleteProgram(shaderID);
+		shaderID = 0;
+	}
 
+	uniformModel = 0;
+	uniformProjection = 0;
 }
 
-void UVK::GLShader::createShader()
+void UVK::GLShader::compileShader(const char* vertex, const char* fragment)
 {
-    GLuint vShader = glCreateShader(GL_VERTEX_SHADER);
+	shaderID = glCreateProgram();
 
-    glShaderBinary(1, &vShader, GL_SHADER_BINARY_FORMAT_SPIR_V, vertexShader.data(), vertexShader.size());
+	if (!shaderID)
+	{
+		logger.consoleLog("Failed to create shader program", ERROR);
+		return;
+	}
 
-    std::string vsEntrypoint = "main";
-    glSpecializeShader(vShader, (const GLchar*)vsEntrypoint.c_str(), 0, nullptr, nullptr);
+	addShader(shaderID, vertex, GL_VERTEX_SHADER);
+	addShader(shaderID, fragment, GL_FRAGMENT_SHADER);
 
-    GLint isCompiled = 0;
-    glGetShaderiv(vShader, GL_COMPILE_STATUS, &isCompiled);
-    if (isCompiled == GL_FALSE)
-    {
-        GLint maxLength = 0;
-        glGetShaderiv(vShader, GL_INFO_LOG_LENGTH, &maxLength);
+	GLint result = 0;
+	GLchar errorLog[1024] = { 0 };
 
-        std::vector<GLchar> infoLog(maxLength);
-        glGetShaderInfoLog(vShader, maxLength, &maxLength, &infoLog[0]);
+	glLinkProgram(shaderID);
+	glGetProgramiv(shaderID, GL_LINK_STATUS, &result);
+	if (!result)
+	{
+		glGetProgramInfoLog(shaderID, sizeof(errorLog), NULL, errorLog);
+		logger.consoleLogComplex("Error linking program", ERROR, { errorLog });
+		return;
+	}
 
-        glDeleteShader(vShader);
-        return;
-    }
+	glValidateProgram(shaderID);
+	glGetProgramiv(shaderID, GL_VALIDATE_STATUS, &result);
+	if (!result)
+	{
+		glGetProgramInfoLog(shaderID, sizeof(errorLog), NULL, errorLog);
+		logger.consoleLogComplex("Error validating program", ERROR, { errorLog });
+		return;
+	}
 
-    GLuint fShader = glCreateShader(GL_FRAGMENT_SHADER);
-
-    glShaderBinary(1, &fShader, GL_SHADER_BINARY_FORMAT_SPIR_V, fragmentShader.data(), fragmentShader.size());
-
-    std::string fsEntrypoint = "main"; //Get VS entry point name
-    glSpecializeShader(fShader, (const GLchar*)fsEntrypoint.c_str(), 0, nullptr, nullptr);
-
-    glGetShaderiv(fShader, GL_COMPILE_STATUS, &isCompiled);
-    if (isCompiled == GL_FALSE)
-    {
-        GLint maxLength = 0;
-        glGetShaderiv(fShader, GL_INFO_LOG_LENGTH, &maxLength);
-
-        std::vector<GLchar> infoLog(maxLength);
-        glGetShaderInfoLog(fShader, maxLength, &maxLength, &infoLog[0]);
-
-        glDeleteShader(fShader);
-
-        glDeleteShader(vShader);
-
-        return;
-    }
-    GLuint program = glCreateProgram();
-
-    glAttachShader(program, vShader);
-    glAttachShader(program, fShader);
-
-    glLinkProgram(program);
-
-    GLint isLinked = 0;
-    glGetProgramiv(program, GL_LINK_STATUS, (int *)&isLinked);
-    if (isLinked == GL_FALSE)
-    {
-        GLint maxLength = 0;
-        glGetProgramiv(program, GL_INFO_LOG_LENGTH, &maxLength);
-
-        std::vector<GLchar> infoLog(maxLength);
-        glGetProgramInfoLog(program, maxLength, &maxLength, &infoLog[0]);
-
-        glDeleteProgram(program);
-
-        glDeleteShader(vShader);
-        glDeleteShader(fShader);
-
-        return;
-    }
-
-    glDetachShader(program, vShader);
-    glDetachShader(program, fShader);
+	uniformProjection = glGetUniformLocation(shaderID, "projection");
+	uniformModel = glGetUniformLocation(shaderID, "model");
 }
 
-void UVK::GLShader::addShader(const char* vLoc, const char* fLoc)
+void UVK::GLShader::addShader(GLuint program, const char* shader, GLenum shaderType)
 {
-    
+	GLuint theShader = glCreateShader(shaderType);
+
+	const GLchar* code[1];
+	code[0] = shader;
+
+	GLint codeLength[1];
+	codeLength[0] = strlen(shader);
+
+	glShaderSource(theShader, 1, code, codeLength);
+	glCompileShader(theShader);
+
+	GLint result = 0;
+	GLchar errorLog[1024] = { 0 };
+
+	glGetShaderiv(theShader, GL_COMPILE_STATUS, &result);
+	if (!result)
+	{
+		glGetShaderInfoLog(theShader, sizeof(errorLog), NULL, errorLog);
+		logger.consoleLogComplex<std::string>("Failed to compile shader with type", ERROR, { std::to_string(shaderType), errorLog });
+		return;
+	}
+
+	glAttachShader(program, theShader);
 }

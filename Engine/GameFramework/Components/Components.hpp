@@ -1,7 +1,8 @@
 // Components.hpp
-// Last update 2/24/2021 by Madman10K
+// Last update 3/17/2021 by Madman10K
 #pragma once
-#include <Core.hpp>
+#include <GL/glew.h>
+#include <../Renderer/OpenGL/Components/GLMesh.hpp>
 #include <Audio/2D/Audio2D.hpp>
 
 namespace UVK
@@ -12,13 +13,61 @@ namespace UVK
         uint64_t id;
     };
 
-    UVK_API struct MeshComponent
-    {
-        glm::mat4 model;
-        FVector translation;
-        FVector scale;
-        FVector rotation;
-        float degrees;
+    UVK_API struct MeshComponentRaw
+    {    
+        void createMesh(GLfloat* vertices, uint32_t* indices, uint32_t vertexNum, uint32_t indexNum, const char* vertexShader, const char* fragmentShader, ShaderImportType type)
+        {
+            mesh = new GLMesh();
+            shader = new GLShader();
+
+            mesh->createMesh(vertices, indices, vertexNum, indexNum);
+
+            switch (type)
+            {
+            case SHADER_IMPORT_TYPE_FILE:
+                shader->createFromFile(vertexShader, fragmentShader);
+                break;
+            case SHADER_IMPORT_TYPE_STRING:
+                shader->createFromString(vertexShader, fragmentShader);
+                break;
+            case SHADER_IMPORT_TYPE_SPIR:
+                logger.consoleLog("SPIR-V in OpenGL not implemented yet!", ERROR);
+                break;
+            }
+        }
+        
+        void render(glm::mat4 projection, Model& mat)
+        {   
+            shader->useShader();
+            uniformModel = shader->getModelLocation();
+            uniformProjection = shader->getProjectionLocation();
+
+            glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(mat.getModel()));
+            glUniformMatrix4fv(uniformProjection, 1, GL_FALSE, glm::value_ptr(projection));
+
+            mesh->render();
+        }
+
+        void clearMesh()
+        {
+            mesh->clear();
+            shader->clearShader();
+            
+            delete mesh, shader;
+        }
+        
+    private:
+        glm::mat4* model;
+        //FVector translation;
+        //FVector scale;
+        //FVector rotation;
+        //float degrees;
+        
+        GLuint uniformModel;
+        GLuint uniformProjection;
+
+        GLMesh* mesh;
+        GLShader* shader;
     };
 
     UVK_API struct PointLightComponent
@@ -93,4 +142,5 @@ namespace UVK
         float gain = 1.0f;
     };
 #endif
+
 }

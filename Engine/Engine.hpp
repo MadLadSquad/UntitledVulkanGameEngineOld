@@ -1,8 +1,9 @@
 // Engine.hpp
-// Last update 2/7/2021 by Madman10K
+// Last update 3/17/2021 by Madman10K
 
 // A header file containing every include you would want from the engine
 #pragma once
+#include <GL/glew.h>
 #include "Renderer/Renderer.hpp"
 #include "GameFramework/Actors/ScriptableObject.hpp"
 #include "GameFramework/Actors/APawn.hpp"
