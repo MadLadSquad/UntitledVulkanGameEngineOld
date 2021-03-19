@@ -14,10 +14,10 @@ namespace Filesystem
     static void display(UVK::Texture& folder, UVK::Texture& audio, UVK::Texture& model)
     {
         ImGui::Begin("File System");
-
+#ifndef __MINGW32__
         std_filesystem::path pt("../Content");
 
-#ifndef __MINGW32__
+
         for (const auto& entry : std_filesystem::directory_iterator(pt))
         {
             bool directory = false;
