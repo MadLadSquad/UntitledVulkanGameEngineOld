@@ -3,18 +3,14 @@
 #include "Audio2D.hpp"
 
 #ifndef __MINGW32__
-void UVK::Audio2D::play()
-{
 
-}
-
-void UVK::Audio2D::init()
+void UVK::Audio::init()
 {
     createDevice();
     createSoundBuffers();
 }
 
-void UVK::Audio2D::createDevice()
+void UVK::Audio::createDevice()
 {
     device = alcOpenDevice(nullptr);
 
@@ -34,20 +30,20 @@ void UVK::Audio2D::createDevice()
     logger.consoleLog("Successfully opened a sound device", SUCCESS);
 }
 
-void UVK::Audio2D::destroyDevice()
+void UVK::Audio::destroyDevice()
 {
     alcMakeContextCurrent(nullptr);
     alcDestroyContext(context);
     alcCloseDevice(device);
 }
 
-void UVK::Audio2D::cleanup()
+void UVK::Audio::cleanup()
 {
     destroyDevice();
     destroySoundBuffers();
 }
 
-ALuint UVK::Audio2D::addSoundEffect(const char *filename)
+ALuint UVK::Audio::addSoundEffect(const char *filename)
 {
     // All the variables we need
     ALenum err, format;
@@ -136,7 +132,7 @@ ALuint UVK::Audio2D::addSoundEffect(const char *filename)
     return buffer;
 }
 
-void UVK::Audio2D::removeSoundEffect(ALuint buffer)
+void UVK::Audio::removeSoundEffect(ALuint buffer)
 {
     // Using iterators here because we need to pass in an iterator for erase
     auto it = soundEffectBuffer.begin();
@@ -158,14 +154,14 @@ void UVK::Audio2D::removeSoundEffect(ALuint buffer)
     }
 }
 
-void UVK::Audio2D::destroySoundBuffers()
+void UVK::Audio::destroySoundBuffers()
 {
     alDeleteBuffers(soundEffectBuffer.size(), soundEffectBuffer.data());
 
     soundEffectBuffer.clear();
 }
 
-void UVK::Audio2D::createSoundBuffers()
+void UVK::Audio::createSoundBuffers()
 {
     soundEffectBuffer.clear();
 }

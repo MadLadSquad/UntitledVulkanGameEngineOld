@@ -15,29 +15,41 @@ namespace Filesystem
     {
         ImGui::Begin("File System");
 
+        std_filesystem::path pt("../Content");
+
 #ifndef __MINGW32__
-        for (const auto& entry : std_filesystem::directory_iterator(std_filesystem::path("../Content")))
+        for (const auto& entry : std_filesystem::directory_iterator(pt))
         {
+            bool directory = false;
             std::string path = entry.path().filename().string();
             utility.sanitiseFilepath(path, true);
-            
-            ImGui::BeginGroup();
+            ImTextureID txt = 0;
+            ImVec2 dm;
 
+            ImGui::BeginGroup();
             if (entry.is_directory())
             {
-                ImGui::Image((void*)(intptr_t)folder.getImage(), ImVec2(folder.getWidth() - 1500, folder.getHeight() - 1500));
+                directory = true;
+                txt = (void*)(intptr_t)folder.getImage();
+                dm = ImVec2(folder.getWidth() - 1500, folder.getHeight() - 1500);
             }
             else if (entry.path().extension() == ".wav")
             {
-                ImGui::Image((void*)(intptr_t)audio.getImage(), ImVec2(audio.getWidth() - 410, audio.getHeight() - 410));
+                txt = (void*)(intptr_t)audio.getImage();
+                dm = ImVec2(audio.getWidth() - 410, audio.getHeight() - 410);
             }
             else if (entry.path().extension() == ".obj" || entry.path().extension() == ".fbx")
             {
-                ImGui::Image((void*)(intptr_t)model.getImage(), ImVec2(model.getWidth() - 410, model.getHeight() - 410));
+                txt = (void*)(intptr_t)model.getImage(); 
+                dm = ImVec2(model.getWidth() - 410, model.getHeight() - 410);
             }
-
-            ImGui::Text("%s", path); 
             
+            if (ImGui::ImageButton(txt, dm) && directory)
+            {
+                pt = std_filesystem::path(entry.path().filename().string());
+            }
+            ImGui::Text("%s", path);
+
             ImGui::EndGroup();
 
             ImGui::SameLine();

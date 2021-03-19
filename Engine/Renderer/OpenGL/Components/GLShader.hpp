@@ -37,7 +37,7 @@ namespace UVK
 		std::string readFile(const char* location);
 		
 		void compileShader(const char* vertex, const char* fragment);
-		void addShader(GLuint program, const char* shader, GLenum shaderType);
+		void addShader(GLuint program, std::string shader, GLenum shaderType);
     };
 }
 

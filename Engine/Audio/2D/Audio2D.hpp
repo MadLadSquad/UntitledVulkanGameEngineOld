@@ -12,15 +12,13 @@
 
 namespace UVK
 {
-    class Audio2D
+    class Audio
     {
     public:
-        Audio2D() = default;
-
-        /**
-         * @brief plays 2D audio
-         */
-        void play();
+        Audio()
+        {
+            init();
+        }
 
         /**
          * @brief Adds sound effect from a file location
@@ -38,8 +36,9 @@ namespace UVK
         /*
          * @brief initialises our audio
          */
-        void init();
+        
     private:
+        void init();
 
         // cleanup what do you expect?
         void cleanup();
@@ -115,5 +114,5 @@ namespace UVK
     };
 }
 
-inline UVK::Audio2D audio2d;
+inline UVK::Audio audio;
 #endif

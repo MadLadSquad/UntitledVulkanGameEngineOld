@@ -113,8 +113,6 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
 #endif
     if (bEditor)
     {
-
-
         IMGUI_CHECKVERSION();
         ImGui::CreateContext();
         ImGuiIO& io = ImGui::GetIO(); (void)io;
@@ -139,8 +137,6 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
         ImGui_ImplOpenGL3_Init("#version 330");
     }
 
-
-
     events.callBegin();
     GLfloat deltaTime = 0;
     GLfloat lastTime = 0;
@@ -151,15 +147,10 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
     glFrontFace(GL_CCW);
     
     while (!glfwWindowShouldClose(currentWindow.getWindow()))
-    {
-        // Why do I do this here I do not know. I really shouldn't have to do this since it is enabled on window creation
-        // but for some reason I have to enable it on tick
-        //glEnable(GL_DEPTH_TEST);
-        
+    {        
         glfwPollEvents();
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 
         if (bEditor)
         {
@@ -167,9 +158,7 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
             ImGui_ImplGlfw_NewFrame();
             ImGui::NewFrame();
         }
-
         
-
         GLfloat now = glfwGetTime();
         deltaTime = now - lastTime;
         lastTime = now;
@@ -451,90 +440,3 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
 
     std::terminate();
 }
-
-/*void UVK::GLRenderer::createTriangle()
-{
-    GLfloat vertices[] = {
-        -1.0f, -1.0f, 0.0f,
-        1.0f, -1.0f, 0.0f,
-        0.0f, 1.0f, 0.0f
-    };
-
-    glGenVertexArrays(1, &VAO);
-    glBindVertexArray(VAO);
-
-    glGenBuffers(1, &VBO);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
-    glEnableVertexAttribArray(0);
-
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-    glBindVertexArray(0);
-}
-
-/*
-void UVK::GLRenderer::addShader(GLuint theProgram, const char *shaderCode, GLenum shaderType)
-{
-    GLuint theShader = glCreateShader(shaderType);
-
-    const GLchar* theCode[1];
-    theCode[0] = shaderCode;
-
-    GLint codeLength[1];
-    codeLength[0] = static_cast<std::string>(shaderCode).length();
-
-    glShaderSource(theShader, 1, theCode, codeLength);
-    glCompileShader(theShader);
-
-    GLint result = 0;
-    GLchar ErrorLog[1024] = { 0 };
-
-    glGetShaderiv(theShader, GL_COMPILE_STATUS, &result);
-    if (!result)
-    {
-        glGetShaderInfoLog(theShader, 1024, NULL, ErrorLog);
-        logger.consoleLogComplex<GLchar*>("Error compiling the a shader:", ERROR, {ErrorLog});
-        return;
-    }
-
-    glAttachShader(theProgram, theShader);
-}
-
-void UVK::GLRenderer::compileShaders()
-{
-    shader = glCreateProgram();
-
-    if (!shader)
-    {
-        logger.consoleLog("Failed to create shader", ERROR);
-        return;
-    }
-
-    addShader(shader, vShader, GL_VERTEX_SHADER);
-    addShader(shader, fShader, GL_FRAGMENT_SHADER);
-
-    GLint result = 0;
-    GLchar ErrorLog[1024] = { 0 };
-
-    glLinkProgram(shader);
-    glGetProgramiv(shader, GL_LINK_STATUS, &result);
-    if (!result)
-    {
-        glGetProgramInfoLog(shader, sizeof(ErrorLog), NULL, ErrorLog);
-        logger.consoleLogComplex<GLchar*>("Error linking program:", ERROR, {ErrorLog});
-        return;
-    }
-
-    glValidateProgram(shader);
-    glGetProgramiv(shader, GL_VALIDATE_STATUS, &result);
-    if (!result)
-    {
-        glGetProgramInfoLog(shader, sizeof(ErrorLog), NULL, ErrorLog);
-        logger.consoleLogComplex<GLchar*>("Error validating program:", ERROR, {ErrorLog});
-        return;
-    }
-}
-*/

@@ -98,14 +98,14 @@ void UVK::GLShader::compileShader(const char* vertex, const char* fragment)
 	uniformModel = glGetUniformLocation(shaderID, "model");
 }
 
-void UVK::GLShader::addShader(GLuint program, const char* shader, GLenum shaderType)
+void UVK::GLShader::addShader(GLuint program, std::string shader, GLenum shaderType)
 {
 	GLuint theShader = glCreateShader(shaderType);
 	
-	std::string code = shader;
-	GLint codeLength = code.length();
+	GLint codeLength = shader.length();
+	auto a = shader.c_str();
 
-	glShaderSource(theShader, 1, &shader, &codeLength);
+	glShaderSource(theShader, 1, &a, &codeLength);
 	glCompileShader(theShader);
 
 	GLint result = 0;

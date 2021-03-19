@@ -90,42 +90,60 @@ namespace UVK
     struct AudioComponent2D
     {
     public:
-        void play()
+        void play(const char* location, bool bRepeat, float pitch, float gain)
         {
-            thread = std::thread([&]()
-            {
-                audio2d.init();
-                logger.consoleLog("Initialised audio system", SUCCESS);
+            loc = location;
+            this->bAudioRepeat = bRepeat;
+            this->pitch = pitch;
+            this->gain = gain;
 
-                buffer = audio2d.addSoundEffect(loc.c_str());
-                logger.consoleLog("Added sound effect", SUCCESS);
+            //thread = std::thread([&]()
+           //{
+            logger.consoleLog("Initialised audio system", SUCCESS);
 
-                UVK::SoundSource2D src(bRepeat, pitch, gain);
+            buffer = audio.addSoundEffect(loc);
+            logger.consoleLog("Added sound effect", SUCCESS);
 
-                logger.consoleLog("Playing audio", SUCCESS);
-                src.play(buffer);
+            UVK::SoundSource2D src(bRepeat, pitch, gain);
 
-            });
+            logger.consoleLog("Playing audio", SUCCESS);
+            src.play(buffer);
+            //;});
+            src.~SoundSource2D();
         }
 
         void stopAudio()
         {
-            thread.join();
+            //thread.join();
         }
 
-        //ALuint& getBuffer()
-        //{
-        //    return buffer;
-        //}
+        const char* getLocation()
+        {
+            return loc;
+        }
 
-        std::string loc;
-        bool bRepeat = false;
-        float pitch = 1.0f;
-        float gain = 1.0f;
+        bool getRepeat()
+        {
+            return bAudioRepeat;
+        }
+
+        float getPitch()
+        {
+            return pitch;
+        }
+
+        float getGain()
+        {
+            return gain;
+        }
     private:
+        const char* loc;
+        bool bAudioRepeat;
+        float pitch;
+        float gain;
 
         ALuint buffer;
-        std::thread thread;
+        //std::thread thread;
     };
 
 #else
@@ -139,4 +157,78 @@ namespace UVK
     };
 #endif
 
+#ifndef __MINGW32__
+    struct AudioComponent3D
+    {
+    public:
+        void play(const char* location, bool bRepeat, float pitch, float gain, FVector translation)
+        {
+            loc = location;
+            bAudioRepeat = bRepeat;
+            this->pitch = pitch;
+            this->gain = gain;
+            trs = translation;
+
+            thread = std::thread([&]()
+            {
+                logger.consoleLog("Initialised audio system", SUCCESS);
+
+                buffer = audio.addSoundEffect(loc);
+                logger.consoleLog("Added sound effect", SUCCESS);
+                
+                //UVK::SoundSource3D src(bRepeat, pitch, gain, translation);
+                
+                logger.consoleLog("Playing audio", SUCCESS);
+                //src.play(buffer);
+            });
+        }
+
+        void stopAudio()
+        {
+            thread.join();
+        }
+
+        const char* getLocation()
+        {
+            return loc;
+        }
+
+        bool getRepeat()
+        {
+            return bAudioRepeat;
+        }
+
+        float getPitch()
+        {
+            return pitch;
+        }
+
+        float getGain()
+        {
+            return gain;
+        }
+
+        FVector getTranslation()
+        {
+            return trs;
+        }
+    private:
+        const char* loc;
+        bool bAudioRepeat;
+        float pitch;
+        float gain;
+        FVector trs;
+
+        ALuint buffer;
+        std::thread thread;
+    };
+#else
+    struct AudioComponent3D
+    {
+        std::string loc;
+        bool bRepeat = false;
+        float pitch = 1.0f;
+        float gain = 1.0f;
+    };
+#endif
 }

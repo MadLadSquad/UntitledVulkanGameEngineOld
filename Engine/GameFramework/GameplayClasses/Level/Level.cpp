@@ -88,10 +88,10 @@ void UVK::Level::saveEntity(YAML::Emitter& out, Actor act)
     {
         auto& a = pool.get<AudioComponent2D>(act);
 
-        out << YAML::Key << "audio2d-location" << YAML::Value << a.loc;
-        out << YAML::Key << "audio2d-pitch" << YAML::Value << a.pitch;
-        out << YAML::Key << "audio2d-gain" << YAML::Value << a.gain;
-        out << YAML::Key << "audio2d-repeat" << YAML::Value << a.bRepeat;
+        out << YAML::Key << "audio2d-location" << YAML::Value << a.getLocation();
+        out << YAML::Key << "audio2d-pitch" << YAML::Value << a.getPitch();
+        out << YAML::Key << "audio2d-gain" << YAML::Value << a.getGain();
+        out << YAML::Key << "audio2d-repeat" << YAML::Value << a.getRepeat();
     }
 
     if (pool.has<MeshComponentRaw>(act))
