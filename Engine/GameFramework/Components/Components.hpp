@@ -151,7 +151,7 @@ namespace UVK
     {
         char foo;
         const char* loc;
-        bool bRepeat = false;
+        bool bAudioRepeat = false;
         float pitch = 1.0f;
         float gain = 1.0f;
 
