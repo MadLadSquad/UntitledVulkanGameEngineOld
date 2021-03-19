@@ -154,6 +154,31 @@ namespace UVK
         bool bRepeat = false;
         float pitch = 1.0f;
         float gain = 1.0f;
+
+        void stopAudio()
+        {
+            //thread.join();
+        }
+
+        const char* getLocation()
+        {
+            return loc;
+        }
+
+        bool getRepeat()
+        {
+            return bAudioRepeat;
+        }
+
+        float getPitch()
+        {
+            return pitch;
+        }
+
+        float getGain()
+        {
+            return gain;
+        }
     };
 #endif
 
