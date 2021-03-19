@@ -150,7 +150,7 @@ namespace UVK
     struct AudioComponent2D
     {
         char foo;
-        std::string loc;
+        const char* loc;
         bool bRepeat = false;
         float pitch = 1.0f;
         float gain = 1.0f;
