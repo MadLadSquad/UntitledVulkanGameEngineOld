@@ -45,7 +45,11 @@ A: The vulkan renderer is going to be built in the future because we are first t
 -   EnTT - https://github.com/skypjack/entt
 -   Dear imgui - https://github.com/ocornut/imgui
 -   yaml-cpp - https://github.com/jbeder/yaml-cpp
--   stb_* - https://github.com/nothings/stb
+-   stb - https://github.com/nothings/stb
 -   VulkanSDK - https://vulkan.lunarg.com/
 -   OpenAL - https://www.openal.org/
 -   zlib - https://github.com/madler/zlib
+-   imguizmo - https://github.com/CedricGuillemet/ImGuizmo
+-   implot - https://github.com/epezent/implot
+-   sndfile - http://www.mega-nerd.com/libsndfile/
+-   imgui memory editor - https://github.com/ocornut/imgui_club
