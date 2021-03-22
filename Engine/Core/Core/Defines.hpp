@@ -16,3 +16,6 @@
 #else
 
 #endif
+
+// If this is not set to true iostream will do syncing with stdio which can slow down read speed by a lot
+#define ENABLE_FAST_IO(x) std::ios_base::sync_with_stdio(!x)

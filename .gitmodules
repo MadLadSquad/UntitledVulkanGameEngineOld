@@ -28,3 +28,6 @@
 [submodule "Engine/ThirdParty/entt"]
 	path = Engine/ThirdParty/entt
 	url = https://github.com/MadLadSquad/entt.git
+[submodule "Engine/ThirdParty/imguiex/implot"]
+	path = Engine/ThirdParty/imguiex/implot
+	url = https://github.com/MadLadSquad/implot.git

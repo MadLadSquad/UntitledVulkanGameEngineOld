@@ -80,7 +80,7 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
 
     MeshComponentRaw ms;
 
-    ms.createMesh(vertices, indices, 12, 12, "../Content/Engine/default.vshader.gl", "../Content/Engine/default.fshader.gl", SHADER_IMPORT_TYPE_FILE);
+    ms.createMesh(vertices, indices, 12, 12, "../Content/Engine/defaultvshader.gl", "../Content/Engine/defaultfshader.gl", SHADER_IMPORT_TYPE_FILE);
 
     GLuint uniformProjection = 0, uniformModel = 0;
     glm::mat4 projection = glm::perspective(glm::radians(90.0f), (GLfloat)currentWindow.getBufferWidth() / currentWindow.getBufferHeight(), 1.0f, 100.0f);
@@ -88,6 +88,7 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
 
 #ifndef __MINGW32__
     std_filesystem::path res("../Content/Engine/");
+    std_filesystem::path pt("../Content/");
 
     Texture folder(static_cast<std::string>(res.string() + "folder.png"));
     folder.load();
@@ -98,7 +99,7 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
     Texture model(static_cast<std::string>(res.string() + "model.png"));
     model.load();
 
-    sh->createFromFile(static_cast<std::string>(res.string() + "default.vshader.gl").c_str(), static_cast<std::string>(res.string() + "default.fshader.gl").c_str());
+    sh->createFromFile(static_cast<std::string>(res.string() + "defaultvshader.gl").c_str(), static_cast<std::string>(res.string() + "defaultfshader.gl").c_str());
 #else
     Texture folder(static_cast<std::string>("../Content/Engine/folder.png"));
     folder.load();
@@ -109,12 +110,13 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
     Texture model(static_cast<std::string>("../Content/Engine/model.png"));
     model.load();
 
-    sh->createFromFile("../Content/Engine/default.vshader.gl", "../Content/Engine/default.fshader.gl");
+    sh->createFromFile("../Content/Engine/defaultvshader.gl", "../Content/Engine/defaultfshader.gl");
 #endif
     if (bEditor)
     {
         IMGUI_CHECKVERSION();
         ImGui::CreateContext();
+        ImPlot::CreateContext();
         ImGuiIO& io = ImGui::GetIO(); (void)io;
         //io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
         io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
@@ -389,11 +391,11 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
             {
                 DetailsPanel::display(selectedEntity);
             }
-
+#ifndef __MINGW32__
             {
-                Filesystem::display(folder, audio, model);
+                Filesystem::display(folder, audio, model, pt);
             }
-
+#endif
             {
                 ImGui::Begin("Toolbar");
                 ImGui::Text("Coming soon!");
@@ -435,7 +437,7 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
-
+    ImPlot::DestroyContext();
     currentWindow.destroyWindow();
 
     std::terminate();

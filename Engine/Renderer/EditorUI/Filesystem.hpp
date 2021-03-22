@@ -7,15 +7,13 @@
 #include <imgui_impl_opengl3.h>
 #include <imgui_impl_glfw.h>
 #include <cpp/imgui_stdlib.h>
-
+#ifndef __MINGW32__
 namespace Filesystem
 {
     // filesystem widget
-    static void display(UVK::Texture& folder, UVK::Texture& audio, UVK::Texture& model)
+    static void display(UVK::Texture& folder, UVK::Texture& audio, UVK::Texture& model, std_filesystem::path& pt)
     {
         ImGui::Begin("File System");
-#ifndef __MINGW32__
-        std_filesystem::path pt("../Content");
 
 
         for (const auto& entry : std_filesystem::directory_iterator(pt))
@@ -43,10 +41,14 @@ namespace Filesystem
                 txt = (void*)(intptr_t)model.getImage(); 
                 dm = ImVec2(model.getWidth() - 410, model.getHeight() - 410);
             }
-            
-            if (ImGui::ImageButton(txt, dm) && directory)
+            else
             {
-                pt = std_filesystem::path(entry.path().filename().string());
+                txt = (void*)(intptr_t)model.getImage();
+                dm = ImVec2(model.getWidth() - 410, model.getHeight() - 410);
+            }
+            if (ImGui::ImageButton(txt, dm))
+            {
+                pt = std_filesystem::path(static_cast<std::string>(pt.string() + entry.path().filename().string()));
             }
             ImGui::Text("%s", path);
 
@@ -54,7 +56,8 @@ namespace Filesystem
 
             ImGui::SameLine();
         }
-#endif
+
         ImGui::End();
     }
 }
+#endif
