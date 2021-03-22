@@ -31,3 +31,6 @@
 [submodule "Engine/ThirdParty/imguiex/implot"]
 	path = Engine/ThirdParty/imguiex/implot
 	url = https://github.com/MadLadSquad/implot.git
+[submodule "Engine/ThirdParty/imguiex/imguizmo"]
+	path = Engine/ThirdParty/imguiex/imguizmo
+	url = https://github.com/MadLadSquad/ImGuizmo.git
