@@ -10,13 +10,13 @@
 namespace WorldSettings
 {
     // Displays the world setting widget
-    static void display(UVK::FVector4 color, UVK::FVector4 ambientLight, std::string name)
+    static void display(UVK::FVector4& colour, UVK::FVector4 ambientLight, std::string& name)
     {
         ImGui::Begin("World Settings");
 
         ImGui::InputText("Level Name", &name);
 
-        ImGui::ColorEdit4("Colour background", (float*)&color);
+        ImGui::ColorEdit4("Colour background", (float*)&colour);
         ImGui::ColorEdit4("Ambient Light", (float*)&ambientLight); // W is for ambient light intensity
 
         ImGui::End();

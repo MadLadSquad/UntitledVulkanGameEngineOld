@@ -1,5 +1,5 @@
 // GLRenderer.hpp
-// Last update 3/17/2021 by Madman10K
+// Last update 3/23/2021 by Madman10K
 #pragma once
 
 //#include <GL/glew.h>
@@ -36,6 +36,26 @@ namespace UVK
         bool bShowSaveLevelWidget = false;
         bool bEditor;
 
+        void renderEditor();
+        void initEditor();
+
+        void loadResources();
+
         static void setDarkTheme();
+
+        FVector4 colour;
+
+        std::string levelName;
+        std::string openLevel;
+        std::string location;
+        std::string name;
+        std::string fileOutLocation;
+
+        bool bShowCreateFile1 = false;
+        short selectedFile = 0;
+
+        Texture* audioImg;
+        Texture* model;
+        Texture* folder;
     };
 }

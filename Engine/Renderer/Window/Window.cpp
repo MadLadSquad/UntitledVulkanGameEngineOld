@@ -69,7 +69,7 @@ void UVK::Window::createWindow()
     glfwGetFramebufferSize(windowMain, &bufferWidth, &bufferHeight);
     glfwMakeContextCurrent(windowMain);
     glfwSwapInterval(0);
-    
+    //glfwSetInputMode(windowMain, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     doCallBacks();
 
     if (glewInit() != GLEW_OK)
@@ -131,7 +131,18 @@ void UVK::Window::openConfig()
 
 void UVK::Window::keyboardInputCallback(GLFWwindow* window, int key, int scanCode, int action, int mods)
 {
-    input.callKeyEvents(key, action);
+    auto* windowInst = static_cast<Window*>(glfwGetWindowUserPointer(window));
+    
+    //input.callKeyEvents(key, action);
+
+    if (action == Keys::KeyPressedEvent || action == Keys::KeyRepeatEvent)
+    {
+        windowInst->keysArr[key] = true;
+    }
+    else
+    {
+        windowInst->keysArr[key] = false;
+    }
 }
 
 void UVK::Window::mouseCursorPositionCallback(GLFWwindow* window, double xpos, double ypos)
@@ -159,7 +170,16 @@ void UVK::Window::mouseCursorPositionCallback(GLFWwindow* window, double xpos, d
 
 void UVK::Window::mouseKeyInputCallback(GLFWwindow* window, int button, int action, int mods)
 {
-    input.callMouseClickEvents(button, action);
+   // input.callMouseClickEvents(button, action);
+    auto* windowInst = static_cast<Window*>(glfwGetWindowUserPointer(window));
+    if (action == Keys::KeyPressedEvent || action == Keys::KeyRepeatEvent)
+    {
+        windowInst->mouseArr[button] = true;
+    }
+    else
+    {
+        windowInst->mouseArr[button] = false;
+    }
 }
 
 void UVK::Window::scrollInputCallback(GLFWwindow* window, double xoffset, double yoffset)

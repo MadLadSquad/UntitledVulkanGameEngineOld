@@ -14,7 +14,13 @@ namespace UVK
     class Window
     {
     public:
-        Window() = default;
+        Window()
+        {
+            for (auto& a : keysArr)
+            {
+                a = false;
+            }
+        }
 
         void createWindow();
 
@@ -74,7 +80,8 @@ namespace UVK
         {
             return bufferHeight;
         }
-
+        std::array<bool, 200> keysArr;
+        std::array<bool, 20> mouseArr;
     private:
 
         void openConfig();
@@ -108,6 +115,8 @@ namespace UVK
         GLdouble scrollY = 0;
 
         int bufferWidth, bufferHeight;
+
+        
     };
 }
 

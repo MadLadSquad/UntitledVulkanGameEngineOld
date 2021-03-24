@@ -2,7 +2,9 @@
 // Last update 3/17/2021 by Madman10K
 #pragma once
 #include <GL/glew.h>
+
 #include <../Renderer/OpenGL/Components/GLMesh.hpp>
+#include <../Renderer/OpenGL/Components/GLCamera.hpp>
 #include <Audio/2D/Audio2D.hpp>
 
 namespace UVK
@@ -36,15 +38,16 @@ namespace UVK
             }
         }
         
-        void render(glm::mat4 projection, Model& mat)
+        void render(glm::mat4 projection, Model& mat, GLCamera& camera)
         {   
             shader->useShader();
             uniformModel = shader->getModelLocation();
             uniformProjection = shader->getProjectionLocation();
+            uniformView = shader->getViewLocation();
 
             glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(mat.getModel()));
             glUniformMatrix4fv(uniformProjection, 1, GL_FALSE, glm::value_ptr(projection));
-
+            glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(camera.calculateViewMatrix()));
             mesh->render();
         }
 
@@ -61,6 +64,7 @@ namespace UVK
         
         GLuint uniformModel = 0;
         GLuint uniformProjection = 0;
+        GLuint uniformView = 0;
 
         GLMesh* mesh = nullptr;
         GLShader* shader = nullptr;

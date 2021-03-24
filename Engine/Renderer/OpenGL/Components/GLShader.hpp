@@ -27,12 +27,13 @@ namespace UVK
 
 		GLuint getProjectionLocation();
 		GLuint getModelLocation();
+		GLuint getViewLocation();
 
 		void useShader();
 		void clearShader();
 
 	private:
-		GLuint shaderID, uniformProjection, uniformModel;
+		GLuint shaderID, uniformProjection, uniformModel, uniformView;
 		
 		std::string readFile(const char* location);
 		

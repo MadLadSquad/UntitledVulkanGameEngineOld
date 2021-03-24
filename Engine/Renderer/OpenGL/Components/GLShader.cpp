@@ -43,6 +43,11 @@ GLuint UVK::GLShader::getModelLocation()
 	return uniformModel;
 }
 
+GLuint UVK::GLShader::getViewLocation()
+{
+	return uniformView;
+}
+
 void UVK::GLShader::useShader()
 {
 	glUseProgram(shaderID);
@@ -96,6 +101,7 @@ void UVK::GLShader::compileShader(const char* vertex, const char* fragment)
 
 	uniformProjection = glGetUniformLocation(shaderID, "projection");
 	uniformModel = glGetUniformLocation(shaderID, "model");
+	uniformView = glGetUniformLocation(shaderID, "view");
 }
 
 void UVK::GLShader::addShader(GLuint program, std::string shader, GLenum shaderType)
