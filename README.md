@@ -30,7 +30,7 @@ Modules development status:
 -   Renderer interface: :white_check_mark:
 -   Input: :white_check_mark:
 -   2D audio: :white_check_mark:
--   3D audio: :construction: 
+-   3D audio: :white_check_mark:
 -   Renderer manager: :white_check_mark:
 -   API planning and design: :white_check_mark:
 -   Game framework: :construction: 
