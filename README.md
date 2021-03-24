@@ -14,7 +14,7 @@
 
 > Development status: Under heavy construction, we commit directly to master so there will be and possibly are countless bugs in the current master branch
 ## Information
-A game engine that is simple to develop for! The UntitledVulkanGameEngine is a fast, 3D game engine written in C++. It uses Vulkan and Modern OpenGL as graphics APIs and has a simple and easy to use C++ scripting API. The engine follows the Gentoo philosophy which means that everything is compiled by the user, no binaries needed. We also support multiple platforms like Linux, MacOS and BSD. For patchnotes, announcements and development logs join our [discord server](https://discord.gg/4TAwNSx) and subscribe to our [youtube channel](https://www.youtube.com/channel/UCWKEvueStyfeMGnkvVJuGxQ)
+The UntitledVulkanGameEngine is a 3D game engine written in C++. It uses Vulkan and Modern OpenGL as graphics APIs and has a simple and easy to use C++ scripting API. The engine follows the Gentoo philosophy which means that everything is compiled by the user, no binaries needed. We also support multiple platforms like Linux, MacOS and BSD. For patchnotes, announcements and development logs join our [discord server](https://discord.gg/4TAwNSx) and subscribe to our [youtube channel](https://www.youtube.com/channel/UCWKEvueStyfeMGnkvVJuGxQ)
 ## Learning
 You can start learning the engine from the source code or you can go to the [wiki](https://github.com/MadLadSquad/UntitledVulkanGameEngine/wiki) where you can go through a tutorial and after that look at the documentation
 ## Development
