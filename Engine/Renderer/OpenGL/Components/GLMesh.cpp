@@ -1,5 +1,5 @@
 // GLMesh.cpp
-// Last update 3/17/2021 by Madman10K
+// Last update 3/26/2021 by Madman10K
 #include "GLMesh.hpp"
 
 void UVK::GLMesh::createMesh(GLfloat* vertices, uint32_t* indices, uint32_t vertexNum, uint32_t indexNum)
@@ -17,7 +17,7 @@ void UVK::GLMesh::createMesh(GLfloat* vertices, uint32_t* indices, uint32_t vert
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices[0]) * vertexNum, vertices, GL_STATIC_DRAW);
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 	glEnableVertexAttribArray(0);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -26,11 +26,11 @@ void UVK::GLMesh::createMesh(GLfloat* vertices, uint32_t* indices, uint32_t vert
 	glBindVertexArray(0);
 }
 
-void UVK::GLMesh::render()
+void UVK::GLMesh::render() const
 {
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
-	glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, nullptr);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 }

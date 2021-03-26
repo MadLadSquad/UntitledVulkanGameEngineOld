@@ -1,5 +1,5 @@
 // GLRenderer.hpp
-// Last update 3/23/2021 by Madman10K
+// Last update 3/26/2021 by Madman10K
 #pragma once
 
 //#include <GL/glew.h>
@@ -15,16 +15,6 @@
 namespace UVK
 {
     class Level;
-
-    struct RendererResources
-    { 
-        RendererResources() = default;
-        
-        Texture audioImg;
-        Texture model;
-        Texture folder;
-        Texture play;
-    };
 
     class GLRenderer
     {
@@ -47,13 +37,13 @@ namespace UVK
         bool bEditor;
 
         void renderEditor(Texture& play);
-        void initEditor();
+        void initEditor() const;
 
         void loadResources();
 
         static void setDarkTheme();
 
-        FVector4 colour;
+        FVector4 colour{};
 
         std::string levelName;
         std::string openLevel;
@@ -65,8 +55,5 @@ namespace UVK
         short selectedFile = 0;
 
         std::thread game;
-        bool bGameRunning;
-
-        RendererResources re;
     };
 }

@@ -1,5 +1,5 @@
 // GLRenderer.cpp
-// Last update 3/23/2021 by Madman10K
+// Last update 3/26/2021 by Madman10K
 #include "Components/GLMesh.hpp"
 #include "Components/GLCamera.hpp"
 #include "GLRenderer.hpp"
@@ -10,7 +10,7 @@
 #include "../../GameFramework/GameplayClasses/Level/Level.hpp"
 #include "../EditorUI/DetailsPanel.hpp"
 #include "../EditorUI/SaveLevel.hpp"
-#include "../EditorUI/Filesystem.hpp"
+//#include "../EditorUI/Filesystem.hpp"
 #include "../EditorUI/Statistics.hpp"
 #include "../EditorUI/WorldSettings.hpp"
 #include "../imguiex/memory_editor/imgui_memory_editor.h"
@@ -99,8 +99,13 @@ void UVK::GLRenderer::renderEditor(Texture& play)
 #else
                 lnt = system("cd ../UVKBuildTool/build/ && ./UVKBuildTool --generate && cd ../../");
 #endif
+
+                if (!lnt)
+                {
+                    logger.consoleLog("Error when regenerating files!", UVK_LOG_TYPE_ERROR, lnt);
+                }
             }
-    
+
             if (ImGui::Button("Exit"))
             {
                 glfwSetWindowShouldClose(currentWindow.getWindow(), GL_TRUE);
@@ -231,6 +236,11 @@ void UVK::GLRenderer::renderEditor(Texture& play)
                     break;
             }
 
+            if (!lnt)
+            {
+                logger.consoleLog("Error when generating files!", UVK_LOG_TYPE_ERROR, lnt);
+            }
+
             selectedFile = 0;
             bShowCreateFile1 = false;
             fileOutLocation = "";
@@ -274,7 +284,7 @@ void UVK::GLRenderer::renderEditor(Texture& play)
     {
         ImGui::Begin("Toolbar");
         
-        if (ImGui::ImageButton((void*)(intptr_t)play.getImage(), ImVec2(play.getWidth(), play.getHeight())))
+        if (ImGui::ImageButton((void*)(intptr_t)play.getImage(), ImVec2((float)play.getWidth(), (float)play.getHeight())))
         {
 #ifdef _WIN32
             system("Game.exe");  
@@ -327,7 +337,7 @@ void UVK::GLRenderer::renderEditor(Texture& play)
     }
 }
 
-void UVK::GLRenderer::initEditor()
+void UVK::GLRenderer::initEditor() const
 {
     if (bEditor)
     {
@@ -421,7 +431,7 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
 
     logger.consoleLog("Creating geometry", UVK_LOG_TYPE_NOTE);
     
-    GLShader* sh = new GLShader();
+    auto* sh = new GLShader();
 #ifndef __MINGW32__
     std_filesystem::path res("../Content/Engine/");
     std_filesystem::path pt("../Content/");
@@ -460,9 +470,9 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
     ms.createMesh(vertices, indices, 12, 12, "../Content/Engine/defaultvshader.gl", "../Content/Engine/defaultfshader.gl", SHADER_IMPORT_TYPE_FILE);
 
     // Will soon be removed because uniforms bad
-    GLuint uniformProjection = 0, uniformModel = 0, uniformView = 0;
+    //GLuint uniformProjection = 0, uniformModel = 0, uniformView = 0;
 
-    glm::mat4 projection = glm::perspective(glm::radians(90.0f), (GLfloat)currentWindow.getBufferWidth() / currentWindow.getBufferHeight(), 0.1f, 100.0f);
+    glm::mat4 projection = glm::perspective(glm::radians(90.0f), (GLfloat)currentWindow.getBufferWidth() / (GLfloat)currentWindow.getBufferHeight(), 0.1f, 100.0f);
     logger.consoleLog("Compiled Shaders", UVK_LOG_TYPE_SUCCESS);
 
 
@@ -475,7 +485,7 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
         events.callBegin();
     }
     
-    GLfloat deltaTime = 0;
+    GLfloat deltaTime;
     GLfloat lastTime = 0;
     
     colour = FVector4(1.0f, 1.0f, 1.0f, 1.0f);
@@ -483,12 +493,14 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
     {        
         glfwPollEvents();
 
+        logger.consoleLog("Scroll, X, Y", UVK_LOG_TYPE_ERROR, input.getMouseWheelMovement().x, input.getMouseWheelMovement().y);
+
         GLfloat now = glfwGetTime();
         deltaTime = now - lastTime;
         lastTime = now;
 
         cm.move(deltaTime);
-        cm.moveMouse(deltaTime, currentWindow.getXMousePositionChange(), currentWindow.getYMousePositionChange());
+        cm.moveMouse(deltaTime, input.getMousePositionChange());
 
         glClearColor(colour.x, colour.y, colour.z, colour.w);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -501,21 +513,15 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
 
             events.callTick(deltaTime);
         }
-
-        
         
         Model mat = Model();
 
         mat.translate(FVector(0.0f, 2.0f, -2.5f));
         mat.rotate(90.0f, FVector(0.0f, 1.0f, 0.0f));
         mat.scale(FVector(1.0f, 1.0f, 1.0f));
-
         ms.render(projection, mat, cm);
         
-
         glUseProgram(0);
-
-        
 
         if (bEditor)
         {
@@ -535,5 +541,5 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
     ImPlot::DestroyContext();
     currentWindow.destroyWindow();
 
-    std::terminate();
+    
 }

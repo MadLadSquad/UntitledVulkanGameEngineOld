@@ -1,8 +1,7 @@
 // Window.hpp
-// Last update 3/17/2021 by Madman10K
+// Last update 3/26/2021 by Madman10K
 #pragma once
 #include <GL/glew.h>
-#include "../../Core/Events/Input/InputSystem.hpp"
 #include "../Textures/Texture.hpp"
 #include <glfw3.h>
 #include <yaml.h>
@@ -19,6 +18,11 @@ namespace UVK
             for (auto& a : keysArr)
             {
                 a = false;
+            }
+
+            for (auto& b : mouseArr)
+            {
+                b = false;
             }
         }
 
@@ -48,6 +52,55 @@ namespace UVK
             return FVector2(posX, posY);
         }
 
+        [[nodiscard]] FVector2 getScrollVal() const
+        {
+            auto a = FVector2(scrollX, scrollY);
+
+            //scrollX = 0;
+            //scrollY = 0;
+
+            return a;
+        }
+
+        [[maybe_unused]] void setCursorVisibility(bool bIsVisible)
+        {
+            if (bIsVisible)
+            {
+                glfwSetInputMode(windowMain, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+            }
+            else
+            {
+                glfwSetInputMode(windowMain, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+            }
+        }
+
+        [[nodiscard]] int getBufferWidth() const
+        {
+            return bufferWidth;
+        }
+        
+        FVector2 getMousePositionChage()
+        {
+            return FVector2(getXMousePositionChange(), getYMousePositionChange());
+        }
+
+        [[nodiscard]] int getBufferHeight() const
+        {
+            return bufferHeight;
+        }
+        std::array<bool, 142> keysArr{};
+        std::array<bool, 20> mouseArr{};
+    private:
+
+        void openConfig();
+        void doCallBacks();
+
+        static void framebufferSizeCallback(GLFWwindow* window, int width, int height);
+        static void keyboardInputCallback(GLFWwindow* window, int key, int scanCode, int action, int mods);
+        static void mouseKeyInputCallback(GLFWwindow* window, int button, int action, int mods);
+        static void mouseCursorPositionCallback(GLFWwindow* window, double xpos, double ypos);
+        static void scrollInputCallback(GLFWwindow* window, double xoffset, double yoffset);
+
         [[nodiscard]] double getXMousePositionChange()
         {
             GLfloat a = offsetX;
@@ -63,47 +116,6 @@ namespace UVK
 
             return a;
         }
-
-
-        [[maybe_unused]] [[nodiscard]] FVector2 getScrollVal() const
-        {
-            return FVector2(scrollX, scrollY);
-        }
-
-        [[maybe_unused]] void setCursorVisibility(bool bIsVisible)
-        {
-            if (bIsVisible)
-            {
-                glfwSetInputMode(windowMain, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-            }
-            else
-            {
-                glfwSetInputMode(windowMain, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-            }
-        }
-
-        int getBufferWidth()
-        {
-            return bufferWidth;
-        }
-
-
-        int getBufferHeight()
-        {
-            return bufferHeight;
-        }
-        std::array<bool, 200> keysArr;
-        std::array<bool, 20> mouseArr;
-    private:
-
-        void openConfig();
-        void doCallBacks();
-
-        static void framebufferSizeCallback(GLFWwindow* window, int width, int height);
-        static void keyboardInputCallback(GLFWwindow* window, int key, int scanCode, int action, int mods);
-        static void mouseKeyInputCallback(GLFWwindow* window, int button, int action, int mods);
-        static void mouseCursorPositionCallback(GLFWwindow* window, double xpos, double ypos);
-        static void scrollInputCallback(GLFWwindow* window, double xoffset, double yoffset);
 
         std::string image = "icon.png";
         int width = 800;
@@ -126,10 +138,61 @@ namespace UVK
         GLdouble scrollX = 0;
         GLdouble scrollY = 0;
 
-        int bufferWidth, bufferHeight;
-
-        
+        int bufferWidth = 0;
+        int bufferHeight = 0;
     };
 }
 
 inline UVK::Window currentWindow;
+
+namespace UVK
+{
+    class Input
+    {
+    public:
+        Input() = default;
+
+        static bool getKeyPressed(const int key)
+        {
+            if (currentWindow.keysArr[key])
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        static bool getMouseKeyPressed(const int key)
+        {
+            if (currentWindow.mouseArr[key])
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        static FVector2 getMousePositionChange()
+        {
+            return currentWindow.getMousePositionChage();
+        }
+
+        static FVector2 getCurrentMousePosition()
+        {
+            return currentWindow.getCurrentMousePosition();
+        }
+
+        static FVector2 getLastMousePosition()
+        {
+            return currentWindow.getLastMousePosition();
+        }
+
+        static FVector2 getMouseWheelMovement()
+        {
+            return currentWindow.getScrollVal();
+        }
+    private:
+    };
+}
+
+inline UVK::Input input;

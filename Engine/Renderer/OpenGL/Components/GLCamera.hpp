@@ -1,8 +1,7 @@
 // GLCamera.hpp
-// Last update 3/23/2021 by Madman10K
+// Last update 3/26/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
-#include <Events/Input/InputSystem.hpp>
 
 namespace UVK
 {
@@ -14,40 +13,50 @@ namespace UVK
 	
 	
 		void move(float deltaTime);
-		void moveMouse(float deltaTime, float xChange, float yChange);
+		void moveMouse(float deltaTime, FVector2 change);
 
 		glm::mat4 calculateViewMatrix();
 
+		[[nodiscard]] float getYaw() const
+		{
+			return yaw;
+		}
 
-		FVector position;
-		FVector front;
-		FVector up;
-		FVector right;
-		FVector worldUp;
+		[[nodiscard]] float getPitch() const
+		{
+			return pitch;
+		}
 
-		GLfloat yaw;
-		GLfloat pitch;
+		[[nodiscard]] float getMovementSpeed() const
+		{
+			return moveSpeed;
+		}
 
-		GLfloat moveSpeed;
-		GLfloat turnSpeed;
+		[[nodiscard]] float getTurnSpeed() const
+		{
+			return turnSpeed;
+		}
+
+		FVector getPosition()
+		{
+			return position;
+		}
 	private:
 
 		bool holdingRight = false;
 
-		/*FVector position;
-		FVector front;
-		FVector up;
-		FVector right;
-		FVector worldUp;
+		FVector position{};
+		FVector front{};
+		FVector up{};
+		FVector right{};
+		FVector worldUp{};
 
-		GLfloat yaw;
-		GLfloat pitch;
+		GLfloat yaw = 0;
+		GLfloat pitch = 0;
 
-		GLfloat moveSpeed;
-		GLfloat turnSpeed;
-		*/
-		void update();
+		GLfloat moveSpeed = 0;
+		GLfloat turnSpeed = 0;
 
-		//friend class GLRenderer;
+		void recalculate();
 	};
 }

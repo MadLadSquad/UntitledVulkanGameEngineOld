@@ -1,5 +1,5 @@
 // GLShader.cpp
-// Last update 3/17/2021 by Madman10K
+// Last update 3/26/2021 by Madman10K
 #include "GLShader.hpp"
 
 void UVK::GLShader::createFromString(const char* vertex, const char* fragment)
@@ -22,7 +22,7 @@ std::string UVK::GLShader::readFile(const char* location)
 		return "";
 	}
 
-	std::string line = "";
+	std::string line;
 	while (!fileStream.eof())
 	{
 		std::getline(fileStream, line);
@@ -33,22 +33,22 @@ std::string UVK::GLShader::readFile(const char* location)
 	return content;
 }
 
-GLuint UVK::GLShader::getProjectionLocation()
+GLuint UVK::GLShader::getProjectionLocation() const
 {
 	return uniformProjection;
 }
 
-GLuint UVK::GLShader::getModelLocation()
+GLuint UVK::GLShader::getModelLocation() const
 {
 	return uniformModel;
 }
 
-GLuint UVK::GLShader::getViewLocation()
+GLuint UVK::GLShader::getViewLocation() const
 {
 	return uniformView;
 }
 
-void UVK::GLShader::useShader()
+void UVK::GLShader::useShader() const
 {
 	glUseProgram(shaderID);
 }
@@ -85,7 +85,7 @@ void UVK::GLShader::compileShader(const char* vertex, const char* fragment)
 	glGetProgramiv(shaderID, GL_LINK_STATUS, &result);
 	if (!result)
 	{
-		glGetProgramInfoLog(shaderID, sizeof(errorLog), NULL, errorLog);
+		glGetProgramInfoLog(shaderID, sizeof(errorLog), nullptr, errorLog);
 		logger.consoleLog("Error linking program", UVK_LOG_TYPE_ERROR, errorLog);
 		return;
 	}
@@ -94,7 +94,7 @@ void UVK::GLShader::compileShader(const char* vertex, const char* fragment)
 	glGetProgramiv(shaderID, GL_VALIDATE_STATUS, &result);
 	if (!result)
 	{
-		glGetProgramInfoLog(shaderID, sizeof(errorLog), NULL, errorLog);
+		glGetProgramInfoLog(shaderID, sizeof(errorLog), nullptr, errorLog);
 		logger.consoleLog("Error validating program", UVK_LOG_TYPE_ERROR, errorLog);
 		return;
 	}
@@ -120,7 +120,7 @@ void UVK::GLShader::addShader(GLuint program, std::string shader, GLenum shaderT
 	glGetShaderiv(theShader, GL_COMPILE_STATUS, &result);
 	if (!result)
 	{
-		glGetShaderInfoLog(theShader, sizeof(errorLog), NULL, errorLog);
+		glGetShaderInfoLog(theShader, sizeof(errorLog), nullptr, errorLog);
 		logger.consoleLog("Failed to compile shader with type", UVK_LOG_TYPE_ERROR, shaderType, errorLog);
 		return;
 	}

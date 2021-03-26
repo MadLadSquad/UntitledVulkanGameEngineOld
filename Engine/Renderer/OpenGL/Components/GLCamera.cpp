@@ -1,5 +1,5 @@
 // GLCamera.cpp
-// Last update 3/23/2021 by Madman10K
+// Last update 3/27/2021 by Madman10K
 #include "../../Window/Window.hpp"
 #include "GLCamera.hpp"
 
@@ -15,36 +15,36 @@ UVK::GLCamera::GLCamera(FVector position, FVector up, GLfloat yaw, GLfloat pitch
 	moveSpeed = movementSpeed;
 	this->turnSpeed = turnSpeed;
 
-	update();
+	recalculate();
 }
 
 void UVK::GLCamera::move(float deltaTime)
 {
-    if (currentWindow.mouseArr[Keys::MouseButtonRight])
+    if (UVK::Input::getMouseKeyPressed(Keys::MouseButtonRight))
     {
         currentWindow.setCursorVisibility(false);
 
-        if (currentWindow.keysArr[Keys::W])
+        if (UVK::Input::getKeyPressed(Keys::W))
         {
             position += front * moveSpeed * deltaTime;
         }
-        if (currentWindow.keysArr[Keys::S])
+        if (UVK::Input::getKeyPressed(Keys::S))
         {
             position -= front * moveSpeed * deltaTime;
         }
-        if (currentWindow.keysArr[Keys::A])
+        if (UVK::Input::getKeyPressed(Keys::A))
         {
             position -= right * moveSpeed * deltaTime;
         }
-        if (currentWindow.keysArr[Keys::D])
+        if (UVK::Input::getKeyPressed(Keys::D))
         {
             position += right * moveSpeed * deltaTime;
         }
-        if (currentWindow.keysArr[Keys::Q])
+        if (UVK::Input::getKeyPressed(Keys::Q))
         {
             position -= up * moveSpeed * deltaTime;
         }
-        if (currentWindow.keysArr[Keys::E])
+        if (UVK::Input::getKeyPressed(Keys::E))
         {
             position += up * moveSpeed * deltaTime;
         }
@@ -56,15 +56,15 @@ void UVK::GLCamera::move(float deltaTime)
     }
 }
 
-void UVK::GLCamera::moveMouse(float deltaTime, float xChange, float yChange)
+void UVK::GLCamera::moveMouse(float deltaTime, FVector2 change)
 {
-    if (currentWindow.mouseArr[Keys::MouseButtonRight])
+    if (UVK::Input::getMouseKeyPressed(Keys::MouseButtonRight))
     {
-        xChange *= turnSpeed * deltaTime;
-        yChange *= turnSpeed * deltaTime;
+        change.x *= turnSpeed * deltaTime;
+        change.y *= turnSpeed * deltaTime;
 
-        yaw += xChange;
-        pitch += yChange;
+        yaw += change.x;
+        pitch += change.y;
 
         if (pitch > 89.0f)
         {
@@ -76,7 +76,8 @@ void UVK::GLCamera::moveMouse(float deltaTime, float xChange, float yChange)
             pitch = -89.0f;
         }
     }
-    update();
+    
+    recalculate();
 }
 
 glm::mat4 UVK::GLCamera::calculateViewMatrix()
@@ -84,7 +85,7 @@ glm::mat4 UVK::GLCamera::calculateViewMatrix()
 	return glm::lookAt(position, position + front, up);
 }
 
-void UVK::GLCamera::update()
+void UVK::GLCamera::recalculate()
 {
 	front.x = glm::cos(glm::radians(yaw)) * glm::cos(glm::radians(pitch));
 	front.y = glm::sin(glm::radians(pitch));

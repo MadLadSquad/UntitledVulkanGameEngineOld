@@ -1,5 +1,5 @@
 // Components.hpp
-// Last update 3/17/2021 by Madman10K
+// Last update 3/26/2021 by Madman10K
 #pragma once
 #include <GL/glew.h>
 
@@ -56,7 +56,8 @@ namespace UVK
             mesh->clear();
             shader->clearShader();
             
-            delete mesh, shader;
+            delete mesh;
+            delete shader;
         }
         
     private:
@@ -94,12 +95,12 @@ namespace UVK
     struct AudioComponent2D
     {
     public:
-        void play(const char* location, bool bRepeat, float pitch, float gain)
+        void play(const char* location, bool bRepeat, float pitchArg, float gainArg)
         {
             loc = location;
-            this->bAudioRepeat = bRepeat;
-            this->pitch = pitch;
-            this->gain = gain;
+            bAudioRepeat = bRepeat;
+            pitch = pitchArg;
+            gain = gainArg;
 
             //thread = std::thread([&]()
            //{
@@ -190,12 +191,12 @@ namespace UVK
     struct AudioComponent3D
     {
     public:
-        void play(const char* location, bool bRepeat, float pitch, float gain, FVector translation)
+        void play(const char* location, bool bRepeat, float pitchArg, float gainArg, FVector translation)
         {
             loc = location;
             bAudioRepeat = bRepeat;
-            this->pitch = pitch;
-            this->gain = gain;
+            pitch = pitchArg;
+            gain = gainArg;
             trs = translation;
 
             thread = std::thread([&]()

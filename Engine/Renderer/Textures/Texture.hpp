@@ -1,5 +1,5 @@
 // Texture.hpp
-// Last update 3/2/2021 by Madman10K
+// Last update 3/26/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 #include <stb/stb_image.h>
@@ -20,7 +20,7 @@ namespace UVK
         void load();
         void loadImgui();
         void destroy();
-        void useTexture();
+        void useTexture() const;
 
         [[maybe_unused]] std::string& getLocation() { return location; }
         int& getWidth() { return width; }

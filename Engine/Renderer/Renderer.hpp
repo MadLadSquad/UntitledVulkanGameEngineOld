@@ -53,7 +53,7 @@ namespace UVK
 
             if (bIsVulkan)
             {
-                VulkanRenderer renderer;
+                VulkanRenderer renderer{};
 
                 renderer.start();
             }

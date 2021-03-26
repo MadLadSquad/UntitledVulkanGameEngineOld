@@ -1,5 +1,5 @@
 // Window.cpp
-// Last update 3/17/2021 by Madman10K
+// Last update 3/26/2021 by Madman10K
 #include "Window.hpp"
 
 
@@ -161,7 +161,7 @@ void UVK::Window::mouseCursorPositionCallback(GLFWwindow* window, double xpos, d
 
     if (windowInst->offsetX != 0 && windowInst->offsetY != 0)
     {
-        input.callMouseMoveEvents();
+
     }
 
     windowInst->lastPosX = xpos;
@@ -185,8 +185,6 @@ void UVK::Window::mouseKeyInputCallback(GLFWwindow* window, int button, int acti
 void UVK::Window::scrollInputCallback(GLFWwindow* window, double xoffset, double yoffset)
 {
     auto* windowInst = static_cast<Window*>(glfwGetWindowUserPointer(window));
-
-    input.callScrollWheelEvents();
 
     windowInst->scrollX = xoffset;
     windowInst->scrollY = xoffset;

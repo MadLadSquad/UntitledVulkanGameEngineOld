@@ -1,5 +1,5 @@
 // Defines.hpp
-// Last update 3/2/2021 by Madman10K
+// Last update 3/26/2021 by Madman10K
 #pragma once
 #include <any>
 // Defines
@@ -20,7 +20,3 @@
 
 // If this is not set to true iostream will do syncing with stdio which can slow down read speed by a lot
 #define ENABLE_FAST_IO(x) std::ios_base::sync_with_stdio(!x)
-
-// needed for the add to memory editor macro
-inline std::vector<std::any> vect;
-#define ADD_TO_MEMORY_EDITOR(x) vect.push_back(&x)

@@ -1,5 +1,5 @@
 // Texture.cpp
-// Last update 3/24/2021 by Madman10K
+// Last update 3/26/2021 by Madman10K
 #define STB_IMAGE_IMPLEMENTATION
 #include "GL/glew.h"
 #include "Texture.hpp"
@@ -28,7 +28,7 @@ void UVK::Texture::load()
 
 void UVK::Texture::loadImgui()
 {
-    unsigned char* img = stbi_load(location.c_str(), &width, &height, NULL, 4);
+    unsigned char* img = stbi_load(location.c_str(), &width, &height, nullptr, 4);
     if (img == nullptr)
         return;
 
@@ -58,7 +58,7 @@ void UVK::Texture::destroy()
     height = 0;
 }
 
-void UVK::Texture::useTexture()
+void UVK::Texture::useTexture() const
 {
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, image);

@@ -1,4 +1,7 @@
 #pragma once
+#if _MSC_VER && !__INTEL_COMPILER
+    #define _CRT_SECURE_NO_WARNINGS
+#endif
 #include <iostream>
 #include <fstream>
 #include <ostream>
@@ -170,7 +173,7 @@ public:
         fileout.close();
     }
 private:
-    std::string getCurrentTime()
+    static std::string getCurrentTime()
     {
         auto now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
 
