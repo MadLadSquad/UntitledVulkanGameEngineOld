@@ -7,11 +7,11 @@
 #include <ctime>
 #include <functional>
 
-#define LogColGreen "\x1B[32m";
-#define LogColYellow "\x1B[33m";
-#define LogColRed "\x1B[31m";
-#define LogColWhite "\x1B[37m";
-#define LogColBlue "\x1B[34m";
+#define LogColGreen "\x1B[32m"
+#define LogColYellow "\x1B[33m"
+#define LogColRed "\x1B[31m"
+#define LogColWhite "\x1B[37m"
+#define LogColBlue "\x1B[34m"
 
 enum LogType
 {
