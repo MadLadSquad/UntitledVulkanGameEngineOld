@@ -239,7 +239,11 @@ void UVK::GLRenderer::renderEditor(Texture& play)
         
         if (ImGui::ImageButton((void*)(intptr_t)play.getImage(), ImVec2(play.getWidth(), play.getHeight())))
         {
+#if _WIN32
             system("Game.exe");  
+#else
+            system("./Game");
+#endif
         }
 
         ImGui::End();
