@@ -7,7 +7,11 @@
 #include <ctime>
 #include <functional>
 
-
+#define LogColGreen = "\x1B[32m";
+#define LogColYellow = "\x1B[33m";
+#define LogColRed = "\x1B[31m";
+#define LogColWhite = "\x1B[37m";
+#define LogColBlue = "\x1B[34m";
 
 enum LogType
 {
@@ -26,11 +30,6 @@ public:
     void setLogFileLocation(const char* file)
     {
         fileout = std::ofstream(file);
-    }
-
-    const char* getLogFileLocation()
-    {
-        //return fileout.getloc().global().name();
     }
 
     // A general logging function that is useful for when you want to print to the console and to a file
@@ -188,12 +187,7 @@ private:
 
     std::ofstream fileout;
 
-    // Don't ask me why
-    static constexpr char* LogColGreen = "\x1B[32m";
-    static constexpr char* LogColYellow = "\x1B[33m";
-    static constexpr char* LogColRed = "\x1B[31m";
-    static constexpr char* LogColWhite = "\x1B[37m";
-    static constexpr char* LogColBlue = "\x1B[34m";
+
 };
 
 // Yes I know global variables are bad but singletons are worse so I will not even bother
