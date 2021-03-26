@@ -401,13 +401,16 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
     sh->createFromFile(static_cast<std::string>(res.string() + "defaultvshader.gl").c_str(), static_cast<std::string>(res.string() + "defaultfshader.gl").c_str());
 #else
     Texture folder(static_cast<std::string>("../Content/Engine/folder.png"));
-    folder.load();
+    folder.loadImgui();
 
     Texture audio(static_cast<std::string>("../Content/Engine/audio.png"));
-    audio.load();
+    audio.loadImgui();
 
     Texture model(static_cast<std::string>("../Content/Engine/model.png"));
-    model.load();
+    model.loadImgui();
+
+    Texture play(static_cast<std::string>("../Content/Engine/Play.png"));
+    play.loadImgui();
 
     sh->createFromFile("../Content/Engine/defaultvshader.gl", "../Content/Engine/defaultfshader.gl");
 #endif
