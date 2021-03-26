@@ -70,6 +70,8 @@ void UVK::GLRenderer::renderEditor(Texture& play)
     {
         if (ImGui::BeginMenu("File"))
         {
+            int lnt;
+
             if (ImGui::Button("Save level"))
             {
                 bShowSaveLevelWidget = true;
@@ -92,7 +94,11 @@ void UVK::GLRenderer::renderEditor(Texture& play)
     
             if (ImGui::Button("Regenerate files"))
             {
-                system("cd ../UVKBuildTool/build/ && ./UVKBuildTool --generate && cd ../../");
+#ifdef _WIN32
+                lnt = system("cd ../UVKBuildTool/build/ && UVKBuildTool.exe --generate && cd ../../");
+#else
+                lnt = system("cd ../UVKBuildTool/build/ && ./UVKBuildTool --generate && cd ../../");
+#endif
             }
     
             if (ImGui::Button("Exit"))
@@ -155,6 +161,9 @@ void UVK::GLRenderer::renderEditor(Texture& play)
     {
         ImGui::Begin("Create a file");
 
+        // This is so the linter can shut up
+        int lnt = 0;
+
         if (ImGui::Selectable("Game mode")) selectedFile = 1;
         if (ImGui::Selectable("Game state")) selectedFile = 2;
         if (ImGui::Selectable("Player state")) selectedFile = 3;
@@ -170,25 +179,53 @@ void UVK::GLRenderer::renderEditor(Texture& play)
             switch(selectedFile)
             {
                 case 1:
-                    system(static_cast<std::string>("cd ../UVKBuildTool/build && ./UVKBuildTool --game-mode " + fileOutLocation + "cd ../../").c_str());
+#ifdef _WIN32
+                    lnt = system(static_cast<std::string>("cd ../UVKBuildTool/build && UVKBuildTool.exe --game-mode " + fileOutLocation + "cd ../../").c_str());
+#else
+                    lnt = system(static_cast<std::string>("cd ../UVKBuildTool/build && ./UVKBuildTool --game-mode " + fileOutLocation + "cd ../../").c_str());
+#endif
                     break;
                 case 2:
-                    system(static_cast<std::string>("cd ../UVKBuildTool/build && ./UVKBuildTool --game-state " + fileOutLocation + "cd ../../").c_str());
+#ifdef _WIN32
+                    lnt = system(static_cast<std::string>("cd ../UVKBuildTool/build && UVKBuildTool.exe --game-state " + fileOutLocation + "cd ../../").c_str());
+#else                    
+                    lnt = system(static_cast<std::string>("cd ../UVKBuildTool/build && ./UVKBuildTool --game-state " + fileOutLocation + "cd ../../").c_str());
+#endif
                     break;
                 case 3:
-                    system(static_cast<std::string>("cd ../UVKBuildTool/build && ./UVKBuildTool --player-state " + fileOutLocation + "cd ../../").c_str());
+#ifdef _WIN32
+                    lnt = system(static_cast<std::string>("cd ../UVKBuildTool/build && UVKBuildTool.exe --player-state " + fileOutLocation + "cd ../../").c_str());
+#else                    
+                    lnt = system(static_cast<std::string>("cd ../UVKBuildTool/build && ./UVKBuildTool --player-state " + fileOutLocation + "cd ../../").c_str());
+#endif
                     break;
                 case 4:
-                    system(static_cast<std::string>("cd ../UVKBuildTool/build && ./UVKBuildTool --player-controller " + fileOutLocation + "cd ../../").c_str());
+#ifdef _WIN32                    
+                    lnt = system(static_cast<std::string>("cd ../UVKBuildTool/build && UVKBuildTool.exe --player-controller " + fileOutLocation + "cd ../../").c_str());
+#else                    
+                    lnt = system(static_cast<std::string>("cd ../UVKBuildTool/build && ./UVKBuildTool --player-controller " + fileOutLocation + "cd ../../").c_str());
+#endif                    
                     break;
                 case 5:
-                    system(static_cast<std::string>("cd ../UVKBuildTool/build && ./UVKBuildTool --pawn " + fileOutLocation + "cd ../../").c_str());
+#ifdef _WIN32      
+                    lnt = system(static_cast<std::string>("cd ../UVKBuildTool/build && UVKBuildTool.exe --pawn " + fileOutLocation + "cd ../../").c_str());
+#else           
+                    lnt = system(static_cast<std::string>("cd ../UVKBuildTool/build && ./UVKBuildTool --pawn " + fileOutLocation + "cd ../../").c_str());
+#endif  
                     break;
                 case 6:
-                    system(static_cast<std::string>("cd ../UVKBuildTool/build && ./UVKBuildTool --game-instance " + fileOutLocation + "cd ../../").c_str());
+#ifdef _WIN32 
+                    lnt = system(static_cast<std::string>("cd ../UVKBuildTool/build && UVKBuildTool.exe --game-instance " + fileOutLocation + "cd ../../").c_str());
+#else
+                    lnt = system(static_cast<std::string>("cd ../UVKBuildTool/build && ./UVKBuildTool --game-instance " + fileOutLocation + "cd ../../").c_str());
+#endif  
                     break;
                 case 7:
-                    system(static_cast<std::string>("cd ../UVKBuildTool/build && ./UVKBuildTool --level " + fileOutLocation + "cd ../../").c_str());
+#ifdef _WIN32
+                    lnt = system(static_cast<std::string>("cd ../UVKBuildTool/build && UVKBuildTool.exe --level " + fileOutLocation + "cd ../../").c_str());
+#else
+                    lnt = system(static_cast<std::string>("cd ../UVKBuildTool/build && ./UVKBuildTool --level " + fileOutLocation + "cd ../../").c_str());
+#endif   
                     break;
                 default:
                     break;
@@ -239,7 +276,7 @@ void UVK::GLRenderer::renderEditor(Texture& play)
         
         if (ImGui::ImageButton((void*)(intptr_t)play.getImage(), ImVec2(play.getWidth(), play.getHeight())))
         {
-#if _WIN32
+#ifdef _WIN32
             system("Game.exe");  
 #else
             system("./Game");
