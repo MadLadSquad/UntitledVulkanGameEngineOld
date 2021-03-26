@@ -18,7 +18,7 @@ std::string UVK::GLShader::readFile(const char* location)
 	std::ifstream fileStream(location, std::ios::in);
 
 	if (!fileStream.is_open()) {
-		logger.consoleLogComplex("Failed to read file at location:", ERROR, { location });
+		logger.consoleLog("Failed to read file at location:", UVK_LOG_TYPE_ERROR, location);
 		return "";
 	}
 
@@ -71,7 +71,7 @@ void UVK::GLShader::compileShader(const char* vertex, const char* fragment)
 
 	if (!shaderID)
 	{
-		logger.consoleLog("Failed to create shader program", ERROR);
+		logger.consoleLog("Failed to create shader program", UVK_LOG_TYPE_ERROR);
 		return;
 	}
 
@@ -86,7 +86,7 @@ void UVK::GLShader::compileShader(const char* vertex, const char* fragment)
 	if (!result)
 	{
 		glGetProgramInfoLog(shaderID, sizeof(errorLog), NULL, errorLog);
-		logger.consoleLogComplex("Error linking program", ERROR, { errorLog });
+		logger.consoleLog("Error linking program", UVK_LOG_TYPE_ERROR, errorLog);
 		return;
 	}
 
@@ -95,7 +95,7 @@ void UVK::GLShader::compileShader(const char* vertex, const char* fragment)
 	if (!result)
 	{
 		glGetProgramInfoLog(shaderID, sizeof(errorLog), NULL, errorLog);
-		logger.consoleLogComplex("Error validating program", ERROR, { errorLog });
+		logger.consoleLog("Error validating program", UVK_LOG_TYPE_ERROR, errorLog);
 		return;
 	}
 
@@ -121,7 +121,7 @@ void UVK::GLShader::addShader(GLuint program, std::string shader, GLenum shaderT
 	if (!result)
 	{
 		glGetShaderInfoLog(theShader, sizeof(errorLog), NULL, errorLog);
-		logger.consoleLogComplex<std::string>("Failed to compile shader with type", ERROR, { std::to_string(shaderType), errorLog });
+		logger.consoleLog("Failed to compile shader with type", UVK_LOG_TYPE_ERROR, shaderType, errorLog);
 		return;
 	}
 

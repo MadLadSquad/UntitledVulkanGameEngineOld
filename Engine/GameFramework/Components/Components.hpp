@@ -33,7 +33,7 @@ namespace UVK
                 shader->createFromString(vertexShader, fragmentShader);
                 break;
             case SHADER_IMPORT_TYPE_SPIR:
-                logger.consoleLog("SPIR-V in OpenGL not implemented yet!", ERROR);
+                logger.consoleLog("SPIR-V in OpenGL not implemented yet!", UVK_LOG_TYPE_ERROR);
                 break;
             }
         }
@@ -103,14 +103,14 @@ namespace UVK
 
             //thread = std::thread([&]()
            //{
-            logger.consoleLog("Initialised audio system", SUCCESS);
+            logger.consoleLog("Initialised audio system", UVK_LOG_TYPE_SUCCESS);
 
             buffer = audio.addSoundEffect(loc);
-            logger.consoleLog("Added sound effect", SUCCESS);
+            logger.consoleLog("Added sound effect", UVK_LOG_TYPE_SUCCESS);
 
             UVK::SoundSource2D src(bRepeat, pitch, gain);
 
-            logger.consoleLog("Playing audio", SUCCESS);
+            logger.consoleLog("Playing audio", UVK_LOG_TYPE_SUCCESS);
             src.play(buffer);
             //;});
             src.~SoundSource2D();
@@ -200,14 +200,14 @@ namespace UVK
 
             thread = std::thread([&]()
             {
-                logger.consoleLog("Initialised audio system", SUCCESS);
+                logger.consoleLog("Initialised audio system", UVK_LOG_TYPE_SUCCESS);
 
                 buffer = audio.addSoundEffect(loc);
-                logger.consoleLog("Added sound effect", SUCCESS);
+                logger.consoleLog("Added sound effect", UVK_LOG_TYPE_SUCCESS);
                 
                 //UVK::SoundSource3D src(bRepeat, pitch, gain, translation);
                 
-                logger.consoleLog("Playing audio", SUCCESS);
+                logger.consoleLog("Playing audio", UVK_LOG_TYPE_SUCCESS);
                 //src.play(buffer);
             });
         }

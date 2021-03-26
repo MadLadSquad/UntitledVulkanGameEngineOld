@@ -14,20 +14,20 @@ void UVK::Audio::createDevice()
 {
     device = alcOpenDevice(nullptr);
 
-    if (!device) logger.consoleLog("Failed to get sound device", ERROR);
+    if (!device) logger.consoleLog("Failed to get sound device", UVK_LOG_TYPE_ERROR);
 
     context = alcCreateContext(device, nullptr);
 
-    if (!context) logger.consoleLog("Failed to get sound context", ERROR);
-    if (!alcMakeContextCurrent(context)) logger.consoleLog("Failed to use the context", ERROR);
+    if (!context) logger.consoleLog("Failed to get sound context", UVK_LOG_TYPE_ERROR);
+    if (!alcMakeContextCurrent(context)) logger.consoleLog("Failed to use the context", UVK_LOG_TYPE_ERROR);
 
     const ALchar* name = nullptr;
 
     if (alcIsExtensionPresent(device, "ALC_ENUMERATE_ALL_EXT")) name = alcGetString(device, ALC_ALL_DEVICES_SPECIFIER);
     if (!name || alcGetError(device) != AL_NO_ERROR) name = alcGetString(device, ALC_DEVICE_SPECIFIER);
 
-    logger.consoleLogComplex("Loaded sound device:", SUCCESS, { name });
-    logger.consoleLog("Successfully opened a sound device", SUCCESS);
+    logger.consoleLog("Loaded sound device:", UVK_LOG_TYPE_SUCCESS, name);
+    logger.consoleLog("Successfully opened a sound device", UVK_LOG_TYPE_SUCCESS);
 }
 
 void UVK::Audio::destroyDevice()
@@ -58,13 +58,13 @@ ALuint UVK::Audio::addSoundEffect(const char *filename)
     sndfile = sf_open(filename, SFM_READ, &sfinfo);
     if (!sndfile)
     {
-        logger.consoleLog("Could not open audio file", ERROR);
+        logger.consoleLog("Could not open audio file", UVK_LOG_TYPE_ERROR);
         return 0;
     }
 
     if (sfinfo.frames < 1 || sfinfo.frames > (sf_count_t)(INT_MAX / sizeof(short)) / sfinfo.channels)
     {
-        logger.consoleLog("Bad sample count", ERROR);
+        logger.consoleLog("Bad sample count", UVK_LOG_TYPE_ERROR);
         return 0;
     }
 
@@ -83,7 +83,7 @@ ALuint UVK::Audio::addSoundEffect(const char *filename)
 
     if (!format)
     {
-        logger.consoleLog("Unsupported channel count", ERROR);
+        logger.consoleLog("Unsupported channel count", UVK_LOG_TYPE_ERROR);
     }
 
     // Allocates memory for the audio buffer
@@ -95,7 +95,7 @@ ALuint UVK::Audio::addSoundEffect(const char *filename)
     {
         free(membuf);
         sf_close(sndfile);
-        logger.consoleLog("Failed to read samples", ERROR);
+        logger.consoleLog("Failed to read samples", UVK_LOG_TYPE_ERROR);
         return 0;
     }
 
@@ -116,7 +116,7 @@ ALuint UVK::Audio::addSoundEffect(const char *filename)
     // Little error check
     if (err != AL_NO_ERROR)
     {
-        logger.consoleLogComplex<std::string>("OpenAL Error:", ERROR, { alGetString(err)} );
+        logger.consoleLog("OpenAL Error:", UVK_LOG_TYPE_ERROR, alGetString(err));
 
         if (buffer && alIsBuffer(buffer))
         {

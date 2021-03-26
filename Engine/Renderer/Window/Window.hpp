@@ -48,10 +48,22 @@ namespace UVK
             return FVector2(posX, posY);
         }
 
-        [[nodiscard]] FVector2 getMousePositionChange() const
+        [[nodiscard]] double getXMousePositionChange()
         {
-            return FVector2(offsetX, offsetY);
+            GLfloat a = offsetX;
+            offsetX = 0.0f;
+
+            return a;
         }
+
+        [[nodiscard]] double getYMousePositionChange()
+        {
+            GLfloat a = offsetY;
+            offsetY = 0.0f;
+
+            return a;
+        }
+
 
         [[maybe_unused]] [[nodiscard]] FVector2 getScrollVal() const
         {

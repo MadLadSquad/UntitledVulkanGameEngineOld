@@ -15,7 +15,7 @@
 #include "../EditorUI/WorldSettings.hpp"
 #include "../imguiex/memory_editor/imgui_memory_editor.h"
 
-void UVK::GLRenderer::renderEditor()
+void UVK::GLRenderer::renderEditor(Texture& play)
 {
 
     static bool opt_fullscreen = true;
@@ -236,7 +236,12 @@ void UVK::GLRenderer::renderEditor()
         
     {
         ImGui::Begin("Toolbar");
-        ImGui::Text("Coming soon!");
+        
+        if (ImGui::ImageButton((void*)(intptr_t)play.getImage(), ImVec2(play.getWidth(), play.getHeight())))
+        {
+            system("Game.exe");  
+        }
+
         ImGui::End();
     }
     
@@ -317,33 +322,7 @@ void UVK::GLRenderer::initEditor()
 
 void UVK::GLRenderer::loadResources()
 {
-    GLShader* sh = new GLShader();
-#ifndef __MINGW32__
-    std_filesystem::path res("../Content/Engine/");
-    std_filesystem::path pt("../Content/");
 
-    folder = new Texture(static_cast<std::string>(res.string() + "folder.png"));
-    folder->load();
-
-    audioImg = new Texture(static_cast<std::string>(res.string() + "audio.png"));
-    audioImg->load();
-
-    model = new Texture(static_cast<std::string>(res.string() + "model.png"));
-    model->load();
-
-    sh->createFromFile(static_cast<std::string>(res.string() + "defaultvshader.gl").c_str(), static_cast<std::string>(res.string() + "defaultfshader.gl").c_str());
-#else
-    Texture folder(static_cast<std::string>("../Content/Engine/folder.png"));
-    folder.load();
-
-    Texture audio(static_cast<std::string>("../Content/Engine/audio.png"));
-    audio.load();
-
-    Texture model(static_cast<std::string>("../Content/Engine/model.png"));
-    model.load();
-
-    sh->createFromFile("../Content/Engine/defaultvshader.gl", "../Content/Engine/defaultfshader.gl");
-#endif
 }
 
 void UVK::GLRenderer::setDarkTheme()
@@ -379,7 +358,9 @@ void UVK::GLRenderer::setDarkTheme()
 
 void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
 {
-    GLCamera cm = GLCamera(FVector(0.0f, 0.0f, 0.0f), FVector(0.0f, 1.0f, 0.0f), -90.0f, 0.0f, 5.0f, 1.0f);
+
+    
+    GLCamera cm = GLCamera(FVector(0.0f, 0.0f, 0.0f), FVector(0.0f, 1.0f, 0.0f), -90.0f, 0.0f, 5.0f, 750.0f);
     
     unsigned int indices[] = {
         0, 3, 1,
@@ -397,8 +378,39 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
 
     currentWindow.createWindow();
 
-    logger.consoleLog("Creating geometry", NOTE);
+    logger.consoleLog("Creating geometry", UVK_LOG_TYPE_NOTE);
     
+    GLShader* sh = new GLShader();
+#ifndef __MINGW32__
+    std_filesystem::path res("../Content/Engine/");
+    std_filesystem::path pt("../Content/");
+
+    Texture folder(static_cast<std::string>(res.string() + "folder.png"));
+    folder.loadImgui();
+    //folder.useTexture();
+
+    Texture audioImg(static_cast<std::string>(res.string() + "audio.png"));
+    audioImg.loadImgui();
+
+    Texture model(static_cast<std::string>(res.string() + "model.png"));
+    model.loadImgui();
+
+    Texture play(static_cast<std::string>(res.string() + "Play.png"));
+    play.loadImgui();
+
+    sh->createFromFile(static_cast<std::string>(res.string() + "defaultvshader.gl").c_str(), static_cast<std::string>(res.string() + "defaultfshader.gl").c_str());
+#else
+    Texture folder(static_cast<std::string>("../Content/Engine/folder.png"));
+    folder.load();
+
+    Texture audio(static_cast<std::string>("../Content/Engine/audio.png"));
+    audio.load();
+
+    Texture model(static_cast<std::string>("../Content/Engine/model.png"));
+    model.load();
+
+    sh->createFromFile("../Content/Engine/defaultvshader.gl", "../Content/Engine/defaultfshader.gl");
+#endif
 
     MeshComponentRaw ms;
     ms.createMesh(vertices, indices, 12, 12, "../Content/Engine/defaultvshader.gl", "../Content/Engine/defaultfshader.gl", SHADER_IMPORT_TYPE_FILE);
@@ -406,76 +418,33 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
     // Will soon be removed because uniforms bad
     GLuint uniformProjection = 0, uniformModel = 0, uniformView = 0;
 
-    glm::mat4 projection = glm::perspective(glm::radians(90.0f), (GLfloat)currentWindow.getBufferWidth() / currentWindow.getBufferHeight(), 1.0f, 100.0f);
-    logger.consoleLog("Compiled Shaders", SUCCESS);
+    glm::mat4 projection = glm::perspective(glm::radians(90.0f), (GLfloat)currentWindow.getBufferWidth() / currentWindow.getBufferHeight(), 0.1f, 100.0f);
+    logger.consoleLog("Compiled Shaders", UVK_LOG_TYPE_SUCCESS);
 
 
     initEditor();
 
-    if (bEditor)
+    logger.consoleLog("Init editor", UVK_LOG_TYPE_SUCCESS);
+
+    if (!bEditor)
     {
         events.callBegin();
     }
     
     GLfloat deltaTime = 0;
     GLfloat lastTime = 0;
-   
     
+    colour = FVector4(1.0f, 1.0f, 1.0f, 1.0f);
     while (!glfwWindowShouldClose(currentWindow.getWindow()))
     {        
         glfwPollEvents();
-        /*
-        input.inputKeyEvent(Keys::W, Keys::KeyPressedEvent, [&]()
-        {
-            cm.position += cm.front * cm.moveSpeed;
-        });
-
-        input.inputKeyEvent(Keys::A, Keys::KeyPressedEvent, [&]()
-        {
-            cm.position -= cm.right * cm.moveSpeed;
-        });
-
-        input.inputKeyEvent(Keys::S, Keys::KeyPressedEvent, [&]()
-        {
-            cm.position -= cm.front * cm.moveSpeed;
-        });
-
-        input.inputKeyEvent(Keys::D, Keys::KeyPressedEvent, [&]()
-        {
-            cm.position += cm.right * cm.moveSpeed;
-        });
-        */
-        //cm.move();
 
         GLfloat now = glfwGetTime();
         deltaTime = now - lastTime;
         lastTime = now;
-        
-        if (currentWindow.mouseArr[Keys::MouseButtonRight])
-        {
-            currentWindow.setCursorVisibility(false);
-            
-            if (currentWindow.keysArr[Keys::W])
-            {
-                cm.position += cm.front * cm.moveSpeed * deltaTime;
-            }
-            if (currentWindow.keysArr[Keys::S])
-            {
-                cm.position -= cm.front * cm.moveSpeed * deltaTime;
-            }
-            if (currentWindow.keysArr[Keys::A])
-            {
-                cm.position -= cm.right * cm.moveSpeed * deltaTime;
-            }
-            if (currentWindow.keysArr[Keys::D])
-            {
-                cm.position += cm.right * cm.moveSpeed * deltaTime;
-            }
-        }
-        else
-        {
-            currentWindow.setCursorVisibility(true);
-        }
+
+        cm.move(deltaTime);
+        cm.moveMouse(deltaTime, currentWindow.getXMousePositionChange(), currentWindow.getYMousePositionChange());
 
         glClearColor(colour.x, colour.y, colour.z, colour.w);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -485,11 +454,11 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
             ImGui_ImplOpenGL3_NewFrame();
             ImGui_ImplGlfw_NewFrame();
             ImGui::NewFrame();
+
+            events.callTick(deltaTime);
         }
+
         
-
-
-        events.callTick(deltaTime);
         
         Model mat = Model();
 
@@ -498,19 +467,23 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
         mat.scale(FVector(1.0f, 1.0f, 1.0f));
 
         ms.render(projection, mat, cm);
+        
 
         glUseProgram(0);
 
-        level->tick(5);
+        
 
         if (bEditor)
         {
-            renderEditor();
+            level->tick(deltaTime);
+            renderEditor(play);
         }
 
         glfwSwapBuffers(currentWindow.getWindow());
     }
     events.callEnd();
+
+    game.detach();
 
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();

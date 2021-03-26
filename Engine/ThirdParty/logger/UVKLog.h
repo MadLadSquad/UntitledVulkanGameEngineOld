@@ -6,206 +6,196 @@
 #include <chrono>
 #include <ctime>
 #include <functional>
-#define LogColGreen  "\x1B[32m"
-#define LogColYellow "\x1B[33m"
-#define LogColRed "\x1B[31m"
-#define LogColWhite  "\x1B[37m"
-#define LogColBlue  "\x1B[34m"
+
+
 
 enum LogType
 {
-    WARNING,
-    ERROR,
-    NOTE,
-    SUCCESS,
-    MESSAGE
+    UVK_LOG_TYPE_WARNING,
+    UVK_LOG_TYPE_ERROR,
+    UVK_LOG_TYPE_NOTE,
+    UVK_LOG_TYPE_SUCCESS,
+    UVK_LOG_TYPE_MESSAGE
 };
 
 class UVKLog
 {
 public:
-    template<typename T>
-    void consoleLogComplex(const char* message, LogType type, std::initializer_list<T> list)
-    {
-        auto CurrentTime = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
-        switch (type)
-        {
-            case SUCCESS:
-                std::cout << LogColGreen << " " << ctime(&CurrentTime) << " Success: " << message;
-                for (auto elem : list)
-                {
-                    std::cout << " " << elem;
-                }
-                std::cout << std::endl;
-                break;
-            case WARNING:
-                std::cout << LogColYellow << " " << ctime(&CurrentTime) << " Warning: " << message;
-                for (auto elem : list)
-                {
-                    std::cout << " " << elem;
-                }
-                std::cout << std::endl;
-                break;
-            case ERROR:
-                std::cout << LogColRed << " " << ctime(&CurrentTime) << " Error: " << message;
-                for (auto elem : list)
-                {
-                    std::cout << " " << elem;
-                }
-                std::cout << std::endl;
-                if (bUsesTermination)
-                {
-                    terminator();
-                }
+    UVKLog() = default;
 
-                break;
-            case NOTE:
-                std::cout << LogColBlue << " " << ctime(&CurrentTime) << " Note: " << message;
-                for (auto elem : list)
-                {
-                    std::cout << " " << elem;
-                }
-                std::cout << std::endl;
-                break;
-            case MESSAGE:
-                std::cout << LogColWhite << " " << ctime(&CurrentTime) << " Message: " << message;
-                for (auto elem : list)
-                {
-                    std::cout << " " << elem;
-                }
-                std::cout << std::endl;
-                break;
+    void setLogFileLocation(const char* file)
+    {
+        fileout = std::ofstream(file);
+    }
+
+    const char* getLogFileLocation()
+    {
+        //return fileout.getloc().global().name();
+    }
+
+    // A general logging function that is useful for when you want to print to the console and to a file
+    template<typename... args>
+    void generalLog(const char* message, LogType messageType, args&&... argv)
+    {
+        switch (messageType)
+        {
+        case UVK_LOG_TYPE_WARNING:
+            std::cout << LogColYellow << "[" << getCurrentTime() << "] Warning: " << message;
+            (std::cout << ... << argv);
+            std::cout << "\033[0m" << std::endl;
+
+            fileout << "[" << getCurrentTime() << "] Warning: " << message;
+            (fileout << ... << argv);
+            fileout << std::endl;
+            
+            break;
+        case UVK_LOG_TYPE_ERROR:
+            std::cout << LogColRed << "[" << getCurrentTime() << "] Error: " << message;
+            (std::cout << ... << argv);
+            std::cout << "\033[0m" << std::endl;
+
+            fileout << "[" << getCurrentTime() << "] Error: " << message;
+            (fileout << ... << argv);
+            fileout << std::endl;
+            break;
+        case UVK_LOG_TYPE_NOTE:
+            std::cout << LogColBlue << "[" << getCurrentTime() << "] Note: " << message;
+            (std::cout << ... << argv);
+            std::cout << "\033[0m" << std::endl;
+
+            fileout << "[" << getCurrentTime() << "] Note: " << message;
+            (fileout << ... << argv);
+            fileout << std::endl;
+            break;
+        case UVK_LOG_TYPE_SUCCESS:
+            std::cout << LogColGreen << "[" << getCurrentTime() << "] Success: " << message;
+            (std::cout << ... << argv);
+            std::cout << "\033[0m" << std::endl;
+
+            fileout << "[" << getCurrentTime() << "] Success: " << message;
+            (fileout << ... << argv);
+            fileout << std::endl;
+            break;
+        case UVK_LOG_TYPE_MESSAGE:
+            std::cout << LogColWhite << "[" << getCurrentTime() << "] Message: " << message;
+            (std::cout << ... << argv);
+            std::cout << "\033[0m" << std::endl;
+
+            fileout << "[" << getCurrentTime() << "] Message: " << message;
+            (fileout << ... << argv);
+            fileout << std::endl;
+            break;
         }
     }
 
-    void consoleLog(const char* message, LogType type)
+    // Simple console log function that acts similarly to printf but doesn't require formatting
+    template<typename... args>
+    void consoleLog(const char* message, LogType messageType, args&&... argv)
     {
-        auto CurrentTime = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
-        switch (type)
+        switch (messageType)
         {
-            case SUCCESS:
-                std::cout << LogColGreen << " " << ctime(&CurrentTime) << " Success: " << message << std::endl;
-                break;
-            case WARNING:
-                std::cout << LogColYellow << " " << ctime(&CurrentTime) << " Warning: " << message << std::endl;
-                break;
-            case ERROR:
-                std::cout << LogColRed << " " << ctime(&CurrentTime) << " Error: " << message << std::endl;
-                if (bUsesTermination)
-                {
-                    terminator();
-                }
-                break;
-            case NOTE:
-                std::cout << LogColBlue << " " << ctime(&CurrentTime) << " Note: " << message << std::endl;
-                break;
-            case MESSAGE:
-                std::cout << LogColWhite << " " << ctime(&CurrentTime) << " Message: " << message << std::endl;
-                break;
+        case UVK_LOG_TYPE_WARNING:
+            std::cout << LogColYellow << "[" << getCurrentTime() << "] Warning: " << message;
+            (std::cout << ... << argv);
+            std::cout << "\033[0m" << std::endl;
+
+            break;
+        case UVK_LOG_TYPE_ERROR:
+            std::cout << LogColRed << "[" << getCurrentTime() << "] Error: " << message;
+            (std::cout << ... << argv);
+            std::cout << "\033[0m" << std::endl;
+
+            break;
+        case UVK_LOG_TYPE_NOTE:
+            std::cout << LogColBlue << "[" << getCurrentTime() << "] Note: " << message;
+            (std::cout << ... << argv);
+            std::cout << "\033[0m" << std::endl;
+
+            break;
+        case UVK_LOG_TYPE_SUCCESS:
+            std::cout << LogColGreen << "[" << getCurrentTime() << "] Success: " << message;
+            (std::cout << ... << argv);
+            std::cout << "\033[0m" << std::endl;
+
+            break;
+        case UVK_LOG_TYPE_MESSAGE:
+            std::cout << LogColWhite << "[" << getCurrentTime() << "] Message: " << message;
+            (std::cout << ... << argv);
+            std::cout << "\033[0m" << std::endl;
+
+            break;
         }
     }
 
-    void fileLog(const char* message, LogType type)
+    // Simple file logging function
+    template<typename... args>
+    void fileLog(const char* message, LogType messageType, args&&... argv)
     {
-        auto CurrentTime = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
-        switch (type)
+        switch (messageType)
         {
-            case SUCCESS:
-                file << "Success: " << " " << ctime(&CurrentTime) << message << std::endl;
-                break;
-            case WARNING:
-                file << "Warning: " << " " << ctime(&CurrentTime) << message << std::endl;
-                break;
-            case ERROR:
-                file << "Error: " << " " << ctime(&CurrentTime) << message << std::endl;
-                if (bUsesTermination)
-                {
-                    terminator();
-                }
-                break;
-            case NOTE:
-                file << "Note: " << " " << ctime(&CurrentTime) << message << std::endl;
-                break;
-            case MESSAGE:
-                file << "Message: " << " " << ctime(&CurrentTime) << message << std::endl;
-                break;
+        case UVK_LOG_TYPE_WARNING:
+            fileout << "[" << getCurrentTime() << "] Warning: " << message;
+            (fileout << ... << argv);
+            fileout << std::endl;
+
+            break;
+        case UVK_LOG_TYPE_ERROR:
+            fileout << "[" << getCurrentTime() << "] Error: " << message;
+            (fileout << ... << argv);
+            fileout << std::endl;
+
+            break;
+        case UVK_LOG_TYPE_NOTE:
+            fileout << "[" << getCurrentTime() << "] Note: " << message;
+            (fileout << ... << argv);
+            fileout << std::endl;
+
+            break;
+        case UVK_LOG_TYPE_SUCCESS:
+            fileout << "[" << getCurrentTime() << "] Success: " << message;
+            (fileout << ... << argv);
+            fileout << std::endl;
+
+            break;
+        case UVK_LOG_TYPE_MESSAGE:
+            fileout << "[" << getCurrentTime() << "] Message: " << message;
+            (fileout << ... << argv);
+            fileout << std::endl;
+
+            break;
         }
     }
 
-    template<typename T>
-    void fileLogComplex(const char* message, LogType type, std::initializer_list<T> list)
+    void shutdownFileStream()
     {
-        auto CurrentTime = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
-        switch (type)
-        {
-            case SUCCESS:
-                file << "Success: " << " " << ctime(&CurrentTime) << message;
-                for (auto elem : list)
-                {
-                    file << " " << elem;
-                }
-                file << std::endl;
-                break;
-            case WARNING:
-                file << "Warning: " << " " << ctime(&CurrentTime) << message;
-                for (auto elem : list)
-                {
-                    file << " " << elem;
-                }
-                file << std::endl;
-                break;
-            case ERROR:
-                file << "Error: " << " " << ctime(&CurrentTime) << message;
-                for (auto elem : list)
-                {
-                    file << " " << elem;
-                }
-                file << std::endl;
-
-                if (bUsesTermination)
-                {
-                    terminator();
-                }
-                break;
-            case NOTE:
-                file << "Note: " << " " << ctime(&CurrentTime) << message;
-                for (auto elem : list)
-                {
-                    file << " " << elem;
-                }
-                file << std::endl;
-                break;
-            case MESSAGE:
-                file << "Message: " << " " << ctime(&CurrentTime) << message;
-                for (auto elem : list)
-                {
-                    file << " " << elem;
-                }
-                file << std::endl;
-                break;
-        }
+        fileout.close();
     }
-
-    void createFile(const char* location)
-    {
-        file.open(location);
-    }
-
-    void closeFile()
-    {
-        file.close();
-    }
-
-    void setTerminationFunction(std::function<void(void)> func)
-    {
-        bUsesTermination = true;
-        terminator = func;
-    }
-
 private:
-    bool bUsesTermination;
-    std::function<void(void)> terminator;
-    std::ofstream file;
+    std::string getCurrentTime()
+    {
+        auto now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+
+        // This temporary is required
+        std::string realTime = std::ctime(&now);
+
+        // You may ask why do I even do this and the answer is we want to remove the \n that the ctime function appends
+        // to the end of the string and we also don't want to add a space because I don't like unnecessary spaces so
+        // here we are removing the 25th character of the string and replacing it with null
+        realTime[24] = NULL;
+
+        return realTime;
+    }
+
+    std::ofstream fileout;
+
+    // Don't ask me why
+    static constexpr char* LogColGreen = "\x1B[32m";
+    static constexpr char* LogColYellow = "\x1B[33m";
+    static constexpr char* LogColRed = "\x1B[31m";
+    static constexpr char* LogColWhite = "\x1B[37m";
+    static constexpr char* LogColBlue = "\x1B[34m";
 };
 
+// Yes I know global variables are bad but singletons are worse so I will not even bother
 inline UVKLog logger;
+

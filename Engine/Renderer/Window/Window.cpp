@@ -23,11 +23,11 @@ void UVK::Window::createWindow()
 
     if (!glfwInit())
     {
-        logger.consoleLog("GLFW initialisation failed!", ERROR);
+        logger.consoleLog("GLFW initialisation failed!", UVK_LOG_TYPE_ERROR);
         glfwTerminate();
         return;
     }
-    logger.consoleLog("Setting up the window", NOTE);
+    logger.consoleLog("Setting up the window", UVK_LOG_TYPE_NOTE);
 
     glewExperimental = GL_TRUE;
     
@@ -40,16 +40,16 @@ void UVK::Window::createWindow()
     //glCullFace(GL_BACK);
     //glFrontFace(GL_CCW);
 
-    logger.consoleLog("Window settings configured", NOTE);
+    logger.consoleLog("Window settings configured", UVK_LOG_TYPE_NOTE);
     if (bIsFullScreen)
     {
         windowMain = glfwCreateWindow(width, height, name.c_str(), glfwGetPrimaryMonitor(), nullptr);
-        logger.consoleLog("Created window", NOTE);
+        logger.consoleLog("Created window", UVK_LOG_TYPE_NOTE);
     }
     else
     {
         windowMain = glfwCreateWindow(width, height, name.c_str(), nullptr, nullptr);
-        logger.consoleLog("Created window", NOTE);
+        logger.consoleLog("Created window", UVK_LOG_TYPE_NOTE);
     }
 
     GLFWimage images[1];
@@ -59,11 +59,11 @@ void UVK::Window::createWindow()
 
     if (!windowMain)
     {
-        logger.consoleLog("GLFW window creation failed!", ERROR);
+        logger.consoleLog("GLFW window creation failed!", UVK_LOG_TYPE_ERROR);
         glfwTerminate();
         return;
     }
-    logger.consoleLog("Window was created successfully", SUCCESS);
+    logger.consoleLog("Window was created successfully", UVK_LOG_TYPE_SUCCESS);
 
     
     glfwGetFramebufferSize(windowMain, &bufferWidth, &bufferHeight);
@@ -74,7 +74,7 @@ void UVK::Window::createWindow()
 
     if (glewInit() != GLEW_OK)
     {
-        logger.consoleLog("GLEW initialisation failed!", ERROR);
+        logger.consoleLog("GLEW initialisation failed!", UVK_LOG_TYPE_ERROR);
 
         glfwDestroyWindow(windowMain);
         glfwTerminate();

@@ -9,7 +9,7 @@ namespace UVK
     class Texture
     {
     public:
-        Texture() = delete;
+        Texture() = default;
         explicit Texture(const std::string& loc)
                 :location(loc)
         {
@@ -18,8 +18,9 @@ namespace UVK
 
 
         void load();
+        void loadImgui();
         void destroy();
-
+        void useTexture();
 
         [[maybe_unused]] std::string& getLocation() { return location; }
         int& getWidth() { return width; }

@@ -125,13 +125,13 @@ void UVK::Level::open(String location) noexcept
 {
     pool.clear();
     id = 0;
-    logger.consoleLog("Opening file", NOTE);
+    logger.consoleLog("Opening file", UVK_LOG_TYPE_NOTE);
     auto out = YAML::LoadFile(location);
-    logger.consoleLogComplex<const char*>("Opened file with name:", SUCCESS, { out["name"].as<std::string>().c_str() });
+    logger.consoleLog("Opened file with name:", UVK_LOG_TYPE_SUCCESS, out["name"].as<std::string>());
     auto entities = out["actors"];
     if (entities)
     {
-        logger.consoleLog("Iterating entities", NOTE);
+        logger.consoleLog("Iterating entities", UVK_LOG_TYPE_NOTE);
         for (auto entity : entities)
         {
             auto name = entity["actor"].as<std::string>();
@@ -152,6 +152,6 @@ void UVK::Level::open(String location) noexcept
 
 
         }
-        logger.consoleLog("Iterated entities", SUCCESS);
+        logger.consoleLog("Iterated entities", UVK_LOG_TYPE_SUCCESS);
     }
 }

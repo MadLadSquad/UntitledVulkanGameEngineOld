@@ -43,7 +43,7 @@ void VulkanRenderer::createInstance()
 	// Check if instance extensions are supported
     if (!checkExtensionSupport(&instanceExtensions))
     {
-        logger.consoleLog("Vulkan instance does not a support the required instance extensions", ERROR);
+        logger.consoleLog("Vulkan instance does not a support the required instance extensions", UVK_LOG_TYPE_ERROR);
     }
 
     createInfo.enabledExtensionCount = static_cast<uint32_t>(instanceExtensions.size());
@@ -55,7 +55,7 @@ void VulkanRenderer::createInstance()
 
     if (result != VK_SUCCESS)
     {
-        logger.consoleLog("Failed to create a Vulkan Instance", ERROR);
+        logger.consoleLog("Failed to create a Vulkan Instance", UVK_LOG_TYPE_ERROR);
     }
 }
 

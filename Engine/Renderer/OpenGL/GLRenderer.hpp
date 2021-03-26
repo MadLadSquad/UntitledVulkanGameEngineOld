@@ -16,6 +16,16 @@ namespace UVK
 {
     class Level;
 
+    struct RendererResources
+    { 
+        RendererResources() = default;
+        
+        Texture audioImg;
+        Texture model;
+        Texture folder;
+        Texture play;
+    };
+
     class GLRenderer
     {
     public:
@@ -36,7 +46,7 @@ namespace UVK
         bool bShowSaveLevelWidget = false;
         bool bEditor;
 
-        void renderEditor();
+        void renderEditor(Texture& play);
         void initEditor();
 
         void loadResources();
@@ -54,8 +64,9 @@ namespace UVK
         bool bShowCreateFile1 = false;
         short selectedFile = 0;
 
-        Texture* audioImg;
-        Texture* model;
-        Texture* folder;
+        std::thread game;
+        bool bGameRunning;
+
+        RendererResources re;
     };
 }

@@ -1,5 +1,6 @@
 // GLCamera.cpp
 // Last update 3/23/2021 by Madman10K
+#include "../../Window/Window.hpp"
 #include "GLCamera.hpp"
 
 
@@ -17,9 +18,65 @@ UVK::GLCamera::GLCamera(FVector position, FVector up, GLfloat yaw, GLfloat pitch
 	update();
 }
 
-void UVK::GLCamera::move()
+void UVK::GLCamera::move(float deltaTime)
 {
-	
+    if (currentWindow.mouseArr[Keys::MouseButtonRight])
+    {
+        currentWindow.setCursorVisibility(false);
+
+        if (currentWindow.keysArr[Keys::W])
+        {
+            position += front * moveSpeed * deltaTime;
+        }
+        if (currentWindow.keysArr[Keys::S])
+        {
+            position -= front * moveSpeed * deltaTime;
+        }
+        if (currentWindow.keysArr[Keys::A])
+        {
+            position -= right * moveSpeed * deltaTime;
+        }
+        if (currentWindow.keysArr[Keys::D])
+        {
+            position += right * moveSpeed * deltaTime;
+        }
+        if (currentWindow.keysArr[Keys::Q])
+        {
+            position -= up * moveSpeed * deltaTime;
+        }
+        if (currentWindow.keysArr[Keys::E])
+        {
+            position += up * moveSpeed * deltaTime;
+        }
+
+    }
+    else
+    {
+        currentWindow.setCursorVisibility(true);
+    }
+}
+
+void UVK::GLCamera::moveMouse(float deltaTime, float xChange, float yChange)
+{
+    if (currentWindow.mouseArr[Keys::MouseButtonRight])
+    {
+        xChange *= turnSpeed * deltaTime;
+        yChange *= turnSpeed * deltaTime;
+
+        yaw += xChange;
+        pitch += yChange;
+
+        if (pitch > 89.0f)
+        {
+            pitch = 89.0f;
+        }
+
+        if (pitch < -89.0f)
+        {
+            pitch = -89.0f;
+        }
+    }
+    update();
 }
 
 glm::mat4 UVK::GLCamera::calculateViewMatrix()
@@ -36,6 +93,4 @@ void UVK::GLCamera::update()
 
 	right = glm::normalize(glm::cross(front, worldUp));
 	up = glm::normalize(glm::cross(right, front));
-
-	
 }
