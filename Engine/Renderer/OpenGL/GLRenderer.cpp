@@ -255,7 +255,7 @@ void UVK::GLRenderer::renderEditor(Texture& play)
     
     {
         ImGui::Begin("Memory Editor");
-        char* hello = "Hello, World";
+        int hello = 50;
     
         //ImGui::InputInt("Memory size", siz));
     

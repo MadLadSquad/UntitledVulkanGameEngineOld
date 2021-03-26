@@ -180,7 +180,7 @@ private:
         // You may ask why do I even do this and the answer is we want to remove the \n that the ctime function appends
         // to the end of the string and we also don't want to add a space because I don't like unnecessary spaces so
         // here we are removing the 25th character of the string and replacing it with null
-        realTime[24] = NULL;
+        realTime[24] = '\0';
 
         return realTime;
     }
