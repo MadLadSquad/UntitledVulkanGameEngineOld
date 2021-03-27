@@ -1,5 +1,5 @@
 // Window.hpp
-// Last update 3/26/2021 by Madman10K
+// Last update 3/27/2021 by Madman10K
 #pragma once
 #include <GL/glew.h>
 #include "../Textures/Texture.hpp"
@@ -52,16 +52,6 @@ namespace UVK
             return FVector2(posX, posY);
         }
 
-        [[nodiscard]] FVector2 getScrollVal() const
-        {
-            auto a = FVector2(scrollX, scrollY);
-
-            //scrollX = 0;
-            //scrollY = 0;
-
-            return a;
-        }
-
         [[maybe_unused]] void setCursorVisibility(bool bIsVisible)
         {
             if (bIsVisible)
@@ -79,7 +69,7 @@ namespace UVK
             return bufferWidth;
         }
         
-        FVector2 getMousePositionChage()
+        FVector2 getMousePositionChange()
         {
             return FVector2(getXMousePositionChange(), getYMousePositionChange());
         }
@@ -135,9 +125,6 @@ namespace UVK
         GLdouble offsetX = 0;
         GLdouble offsetY = 0;
 
-        GLdouble scrollX = 0;
-        GLdouble scrollY = 0;
-
         int bufferWidth = 0;
         int bufferHeight = 0;
     };
@@ -174,7 +161,7 @@ namespace UVK
 
         static FVector2 getMousePositionChange()
         {
-            return currentWindow.getMousePositionChage();
+            return currentWindow.getMousePositionChange();
         }
 
         static FVector2 getCurrentMousePosition()
@@ -185,11 +172,6 @@ namespace UVK
         static FVector2 getLastMousePosition()
         {
             return currentWindow.getLastMousePosition();
-        }
-
-        static FVector2 getMouseWheelMovement()
-        {
-            return currentWindow.getScrollVal();
         }
     private:
     };

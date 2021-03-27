@@ -1,5 +1,5 @@
 // Window.cpp
-// Last update 3/26/2021 by Madman10K
+// Last update 3/27/2021 by Madman10K
 #include "Window.hpp"
 
 
@@ -186,6 +186,5 @@ void UVK::Window::scrollInputCallback(GLFWwindow* window, double xoffset, double
 {
     auto* windowInst = static_cast<Window*>(glfwGetWindowUserPointer(window));
 
-    windowInst->scrollX = xoffset;
-    windowInst->scrollY = xoffset;
+
 }

@@ -1,5 +1,5 @@
 // GLRenderer.cpp
-// Last update 3/26/2021 by Madman10K
+// Last update 3/27/2021 by Madman10K
 #include "Components/GLMesh.hpp"
 #include "Components/GLCamera.hpp"
 #include "GLRenderer.hpp"
@@ -282,15 +282,22 @@ void UVK::GLRenderer::renderEditor(Texture& play)
 #endif
         
     {
+        int lnt = 0;
+
         ImGui::Begin("Toolbar");
         
         if (ImGui::ImageButton((void*)(intptr_t)play.getImage(), ImVec2((float)play.getWidth(), (float)play.getHeight())))
         {
 #ifdef _WIN32
-            system("Game.exe");  
+            lnt = system("Game.exe");
 #else
-            system("./Game");
+            lnt = system("./Game");
 #endif
+        }
+
+        if (lnt)
+        {
+
         }
 
         ImGui::End();
@@ -421,10 +428,10 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
     };
 
     GLfloat vertices[] = {
-        -1.0f, -1.0f, 0.0f,
-        0.0f, -1.0f, 1.0f,
-        1.0f, -1.0f, 0.0f,
-        0.0f, 1.0f, 0.0f
+        -1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
+        0.0f, -1.0f, 1.0f, 0.5f, 0.0f,
+        1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
+        0.0f, 1.0f, 0.0f, 0.5f, 1.0f
     };
 
     currentWindow.createWindow();
@@ -449,6 +456,9 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
     Texture play(static_cast<std::string>(res.string() + "Play.png"));
     play.loadImgui();
 
+    Texture brick(static_cast<std::string>(res.string() + "brick.jpg"));
+    brick.load();
+
     sh->createFromFile(static_cast<std::string>(res.string() + "defaultvshader.gl").c_str(), static_cast<std::string>(res.string() + "defaultfshader.gl").c_str());
 #else
     Texture folder(static_cast<std::string>("../Content/Engine/folder.png"));
@@ -463,11 +473,14 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
     Texture play(static_cast<std::string>("../Content/Engine/Play.png"));
     play.loadImgui();
 
+    Texture brick(static_cast<std::string>("../Content/Engine/brick.jpg"));
+    brick.load();
+
     sh->createFromFile("../Content/Engine/defaultvshader.gl", "../Content/Engine/defaultfshader.gl");
 #endif
 
     MeshComponentRaw ms;
-    ms.createMesh(vertices, indices, 12, 12, "../Content/Engine/defaultvshader.gl", "../Content/Engine/defaultfshader.gl", SHADER_IMPORT_TYPE_FILE);
+    ms.createMesh(vertices, indices, 20, 12, "../Content/Engine/defaultvshader.gl", "../Content/Engine/defaultfshader.gl", SHADER_IMPORT_TYPE_FILE);
 
     // Will soon be removed because uniforms bad
     //GLuint uniformProjection = 0, uniformModel = 0, uniformView = 0;
@@ -493,14 +506,12 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
     {        
         glfwPollEvents();
 
-        logger.consoleLog("Scroll, X, Y", UVK_LOG_TYPE_ERROR, input.getMouseWheelMovement().x, input.getMouseWheelMovement().y);
-
         GLfloat now = glfwGetTime();
         deltaTime = now - lastTime;
         lastTime = now;
 
         cm.move(deltaTime);
-        cm.moveMouse(deltaTime, input.getMousePositionChange());
+        cm.moveMouse(deltaTime, UVK::Input::getMousePositionChange());
 
         glClearColor(colour.x, colour.y, colour.z, colour.w);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -519,6 +530,7 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
         mat.translate(FVector(0.0f, 2.0f, -2.5f));
         mat.rotate(90.0f, FVector(0.0f, 1.0f, 0.0f));
         mat.scale(FVector(1.0f, 1.0f, 1.0f));
+        brick.useTexture();
         ms.render(projection, mat, cm);
         
         glUseProgram(0);
@@ -533,13 +545,9 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
     }
     events.callEnd();
 
-    game.detach();
-
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
     ImPlot::DestroyContext();
     currentWindow.destroyWindow();
-
-    
 }

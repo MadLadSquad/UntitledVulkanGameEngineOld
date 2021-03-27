@@ -1,10 +1,6 @@
 // GLRenderer.hpp
-// Last update 3/26/2021 by Madman10K
+// Last update 3/27/2021 by Madman10K
 #pragma once
-
-//#include <GL/glew.h>
-//#include "Components/GLMesh.hpp"
-//#include "Components/GLShader.hpp"
 #include <Core.hpp>
 #include "Engine/Renderer/Window/Window.hpp"
 #include "UVKLog.h"
@@ -53,7 +49,5 @@ namespace UVK
 
         bool bShowCreateFile1 = false;
         short selectedFile = 0;
-
-        std::thread game;
     };
 }
