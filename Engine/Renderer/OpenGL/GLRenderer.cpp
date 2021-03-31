@@ -374,6 +374,7 @@ void UVK::GLRenderer::initEditor() const
     }
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_MULTISAMPLE);
+    glEnable(GL_STENCIL_TEST);
     glCullFace(GL_BACK);
     glFrontFace(GL_CCW);
 }
@@ -514,7 +515,7 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
         cm.moveMouse(deltaTime, UVK::Input::getMousePositionChange());
 
         glClearColor(colour.x, colour.y, colour.z, colour.w);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
         if (bEditor)
         {
