@@ -15,10 +15,10 @@ echo "Creating project file with default settings ..."
 
 touch uvproj.yaml && echo "\
 name: Game
-renderer-subsystem: Legacy
+startup-level: \"lvl.yaml\"
+startup-level-exists: false
 version: 1.0.0
-engine-version: 1.0.0
-production: false" > uvproj.yaml
+engine-version: 1.0.0" > uvproj.yaml
 
 echo "Compiling build tool and generating files ..."
 
