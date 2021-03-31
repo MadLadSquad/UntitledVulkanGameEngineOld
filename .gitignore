@@ -3,7 +3,7 @@ cmake-build-debug/
 cmake-build-release/
 .vs/
 .vs-code/
-Source/Game.hpp
+Source/
 main.cpp
 build/
 CMakeLists.txt
