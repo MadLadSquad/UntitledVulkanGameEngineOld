@@ -34,3 +34,6 @@
 [submodule "Engine/ThirdParty/imguiex/imguizmo"]
 	path = Engine/ThirdParty/imguiex/imguizmo
 	url = https://github.com/MadLadSquad/ImGuizmo.git
+[submodule "UVKShaderCompiler"]
+	path = UVKShaderCompiler
+	url = https://github.com/MadLadSquad/UVKShaderCompiler.git

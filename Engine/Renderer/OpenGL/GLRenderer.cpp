@@ -481,7 +481,7 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
 #endif
 
     MeshComponentRaw ms;
-    ms.createMesh(vertices, indices, 20, 12, "../Content/Engine/defaultvshader.gl", "../Content/Engine/defaultfshader.gl", SHADER_IMPORT_TYPE_FILE);
+    ms.createMesh(vertices, indices, 20, 12, "../Content/Engine/vert.spv", "../Content/Engine/frag.spv", SHADER_IMPORT_TYPE_FILE);
 
     // Will soon be removed because uniforms bad
     //GLuint uniformProjection = 0, uniformModel = 0, uniformView = 0;

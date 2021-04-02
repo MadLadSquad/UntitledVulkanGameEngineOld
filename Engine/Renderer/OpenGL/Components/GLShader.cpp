@@ -127,3 +127,86 @@ void UVK::GLShader::addShader(GLuint program, std::string shader, GLenum shaderT
 
 	glAttachShader(program, theShader);
 }
+
+void UVK::GLShaderSPV::readFile(const char* vertexLocation, const char* fragmentLocation)
+{
+    std::ifstream vertexInput(vertexLocation, std::ios::binary);
+    std::ifstream fragmentInput(fragmentLocation, std::ios::binary);
+
+    vShader = std::vector<unsigned char>(std::istreambuf_iterator<char>(vertexInput), {});
+    fShader = std::vector<unsigned char>(std::istreambuf_iterator<char>(fragmentInput), {});
+}
+
+void UVK::GLShaderSPV::compileShader()
+{
+    readFile("../Content/Engine/vShader.spv", "../Content/Engine/fShader.spv");
+
+    GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
+    GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+
+    glShaderBinary(1, &vertexShader, GL_SHADER_BINARY_FORMAT_SPIR_V, vShader.data(), vShader.size());
+    glShaderBinary(1, &fragmentShader, GL_SHADER_BINARY_FORMAT_SPIR_V, fShader.data(), fShader.size());
+
+    glSpecializeShader(vertexShader, "main", 0, nullptr, nullptr);
+    glSpecializeShader(fragmentShader, "main", 0, nullptr, nullptr);
+
+    GLint vertexResult = 0;
+    GLint fragmentResult = 0;
+
+    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &vertexResult);
+    glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &fragmentResult);
+    if (vertexResult == GL_FALSE && fragmentResult == GL_FALSE)
+    {
+        GLint maxLength = 0;
+        glGetShaderiv(vertexShader, GL_INFO_LOG_LENGTH, &maxLength);
+
+        std::vector<GLchar> infoLog(maxLength);
+        glGetShaderInfoLog(vertexShader, maxLength, &maxLength, &infoLog[0]);
+        logger.consoleLog("Error in compiling vertex shader! Log: ", UVK_LOG_TYPE_ERROR, infoLog.data());
+        glDeleteShader(vertexShader);
+
+        GLint maxLengthF = 0;
+        glGetShaderiv(vertexShader, GL_INFO_LOG_LENGTH, &maxLength);
+
+        std::vector<GLchar> infoLogF(maxLengthF);
+        glGetShaderInfoLog(vertexShader, maxLength, &maxLength, &infoLog[0]);
+
+        logger.consoleLog("Error in compiling fragment shader! Log: ", UVK_LOG_TYPE_ERROR, infoLogF.data());
+
+        glDeleteShader(fragmentShader);
+        return;
+    }
+
+    shaderID = glCreateProgram();
+
+    glAttachShader(shaderID, vertexShader);
+    glAttachShader(shaderID, fragmentShader);
+
+    glLinkProgram(shaderID);
+
+    GLint isLinked = 0;
+    glGetProgramiv(shaderID, GL_LINK_STATUS, &isLinked);
+    if (isLinked == GL_FALSE)
+    {
+        GLint maxLength = 0;
+        glGetProgramiv(shaderID, GL_INFO_LOG_LENGTH, &maxLength);
+
+        std::vector<GLchar> infoLog(maxLength);
+        glGetProgramInfoLog(shaderID, maxLength, &maxLength, &infoLog[0]);
+
+        logger.consoleLog("Could not link program, Error: ", UVK_LOG_TYPE_ERROR, infoLog.data());
+
+        glDeleteProgram(shaderID);
+        glDeleteShader(vertexShader);
+        glDeleteShader(fragmentShader);
+        return;
+    }
+
+    glDetachShader(shaderID, vertexShader);
+    glDetachShader(shaderID, fragmentShader);
+}
+
+void UVK::GLShaderSPV::useShader() const
+{
+    glUseProgram(shaderID);
+}

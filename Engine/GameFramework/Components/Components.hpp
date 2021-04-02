@@ -20,17 +20,17 @@ namespace UVK
         void createMesh(GLfloat* vertices, uint32_t* indices, uint32_t vertexNum, uint32_t indexNum, const char* vertexShader, const char* fragmentShader, ShaderImportType type)
         {
             mesh = new GLMesh();
-            shader = new GLShader();
+            shader = new GLShaderSPV();
 
             mesh->createMesh(vertices, indices, vertexNum, indexNum);
 
             switch (type)
             {
             case SHADER_IMPORT_TYPE_FILE:
-                shader->createFromFile(vertexShader, fragmentShader);
+                //shader->createFromFile(vertexShader, fragmentShader);
                 break;
             case SHADER_IMPORT_TYPE_STRING:
-                shader->createFromString(vertexShader, fragmentShader);
+                //shader->createFromString(vertexShader, fragmentShader);
                 break;
             case SHADER_IMPORT_TYPE_SPIR:
                 logger.consoleLog("SPIR-V in OpenGL not implemented yet!", UVK_LOG_TYPE_ERROR);
@@ -41,20 +41,20 @@ namespace UVK
         void render(glm::mat4 projection, Model& mat, GLCamera& camera)
         {   
             shader->useShader();
-            uniformModel = shader->getModelLocation();
-            uniformProjection = shader->getProjectionLocation();
-            uniformView = shader->getViewLocation();
+            //uniformModel = shader->getModelLocation();
+            //uniformProjection = shader->getProjectionLocation();
+            //uniformView = shader->getViewLocation();
 
-            glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(mat.getModel()));
-            glUniformMatrix4fv(uniformProjection, 1, GL_FALSE, glm::value_ptr(projection));
-            glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(camera.calculateViewMatrix()));
+            //glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(mat.getModel()));
+            //glUniformMatrix4fv(uniformProjection, 1, GL_FALSE, glm::value_ptr(projection));
+            //glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(camera.calculateViewMatrix()));
             mesh->render();
         }
 
         void clearMesh()
         {
             mesh->clear();
-            shader->clearShader();
+            //shader->clearShader();
             
             delete mesh;
             delete shader;
@@ -68,7 +68,7 @@ namespace UVK
         GLuint uniformView = 0;
 
         GLMesh* mesh = nullptr;
-        GLShader* shader = nullptr;
+        GLShaderSPV* shader = nullptr;
     };
 
     UVK_API struct PointLightComponent

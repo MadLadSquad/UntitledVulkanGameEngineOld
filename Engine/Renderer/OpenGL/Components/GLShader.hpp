@@ -40,6 +40,27 @@ namespace UVK
 		void compileShader(const char* vertex, const char* fragment);
 		static void addShader(GLuint program, std::string shader, GLenum shaderType);
     };
+
+	class GLShaderSPV
+    {
+    public:
+        GLShaderSPV() = default;
+        GLShaderSPV(const char* vLoc, const char* fLoc)
+        {
+            readFile(vLoc, fLoc);
+        }
+
+        void useShader() const;
+
+    private:
+        GLuint shaderID = 0;
+        std::vector<unsigned char> vShader{};
+        std::vector<unsigned char> fShader{};
+
+        void compileShader();
+
+        void readFile(const char* vertexLocation, const char* fragmentLocation);
+    };
 }
 
 
