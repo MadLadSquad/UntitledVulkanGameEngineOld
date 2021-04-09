@@ -9,3 +9,4 @@ build/
 CMakeLists.txt
 uvproj.yaml
 Content/Engine/brick.jpg
+*.spv
