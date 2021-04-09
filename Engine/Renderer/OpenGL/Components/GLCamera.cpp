@@ -42,11 +42,11 @@ void UVK::GLCamera::move(float deltaTime)
         }
         if (UVK::Input::getKeyPressed(Keys::Q))
         {
-            position -= up * moveSpeed * deltaTime;
+            position -= worldUp * moveSpeed * deltaTime;
         }
         if (UVK::Input::getKeyPressed(Keys::E))
         {
-            position += up * moveSpeed * deltaTime;
+            position += worldUp * moveSpeed * deltaTime;
         }
 
     }

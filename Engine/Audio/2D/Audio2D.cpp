@@ -184,4 +184,25 @@ void UVK::SoundSource2D::play(ALuint buff)
         alGetSourcei(source, AL_SOURCE_STATE, &state);
     }
 }
+
+void UVK::SoundSource3D::play(ALuint buff)
+{
+    if (buff != buffer)
+    {
+        buffer = buff;
+
+        alSourcei(source, AL_BUFFER, (ALint)buffer);
+    }
+
+    alSourcePlay(source);
+
+    ALint state = AL_PLAYING;
+
+    while (state == AL_PLAYING && alGetError() == AL_NO_ERROR)
+    {
+        alGetSourcei(source, AL_SOURCE_STATE, &state);
+    }
+}
 #endif
+
+

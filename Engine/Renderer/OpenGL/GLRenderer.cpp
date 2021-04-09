@@ -11,6 +11,7 @@
 #include "../EditorUI/DetailsPanel.hpp"
 #include "../EditorUI/SaveLevel.hpp"
 //#include "../EditorUI/Filesystem.hpp"
+#include "../imguiex/imguizmo/ImGuizmo.h"
 #include "../EditorUI/Statistics.hpp"
 #include "../EditorUI/WorldSettings.hpp"
 #include "../imguiex/memory_editor/imgui_memory_editor.h"
@@ -272,6 +273,27 @@ void UVK::GLRenderer::renderEditor(Texture& play)
     }
 
     {
+        ImGui::Begin("Viewport##1");
+
+        //float width = ImGui::GetWindowWidth();
+        //float height = ImGui::GetWindowHeight();
+
+        if (wWidth != (int)ImGui::GetWindowWidth() || wHeight != (int)ImGui::GetWindowHeight())
+        {
+            glBindFramebuffer(GL_FRAMEBUFFER, 0);
+            glDeleteFramebuffers(1, &fb.FBO);
+            fb.init((int)ImGui::GetWindowWidth(), (int)ImGui::GetWindowHeight());
+            wWidth = (int)ImGui::GetWindowWidth();
+            wHeight = (int)ImGui::GetWindowHeight();
+        }
+
+        ImGui::Image((void*)(intptr_t)fb.texColourBuffer, ImVec2((float)wWidth, (float)wHeight), ImVec2(0, 1), ImVec2(1, 0));
+
+
+        ImGui::End();
+    }
+
+    {
         DetailsPanel::display(selectedEntity);
     }
     
@@ -331,7 +353,7 @@ void UVK::GLRenderer::renderEditor(Texture& play)
     {
         WorldSettings::display(colour, FVector4(1.0f, 1.0f, 1.0f, 1.0f), levelName);
     }
-    
+
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
     
@@ -356,12 +378,11 @@ void UVK::GLRenderer::initEditor() const
         io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
         io.ConfigViewportsNoTaskBarIcon = true;
 
-
         ImGui::StyleColorsDark();
         ImGui::StyleColorsClassic();
 
-
         ImGuiStyle& style = ImGui::GetStyle();
+        style.WindowPadding = ImVec2(0.0f, 0.0f);
         if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
         {
             style.WindowRounding = 0.0f;
@@ -375,50 +396,48 @@ void UVK::GLRenderer::initEditor() const
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_MULTISAMPLE);
     glEnable(GL_STENCIL_TEST);
-    glCullFace(GL_BACK);
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_FRONT);
     glFrontFace(GL_CCW);
 }
 
 void UVK::GLRenderer::loadResources()
 {
-
 }
 
 void UVK::GLRenderer::setDarkTheme()
 {
     auto& colours = ImGui::GetStyle().Colors;
 
-    colours[ImGuiCol_WindowBg] = ImVec4{ 0.1f, 0.1f, 0.1f, 0.85f };
+    colours[ImGuiCol_WindowBg] = ImVec4{ 0.1f, 0.1f, 0.1f, 1.0f };
 
-    colours[ImGuiCol_Header] = ImVec4{ 0.2f, 0.2f, 0.2f, 0.85f };
-    colours[ImGuiCol_HeaderHovered] = ImVec4{ 0.3f, 0.3f, 0.3f, 0.85f };
-    colours[ImGuiCol_HeaderActive] = ImVec4{ 0.15f, 0.15f, 0.15f, 0.85f };
+    colours[ImGuiCol_Header] = ImVec4{ 0.2f, 0.2f, 0.2f, 1.0f };
+    colours[ImGuiCol_HeaderHovered] = ImVec4{ 0.3f, 0.3f, 0.3f, 1.0f };
+    colours[ImGuiCol_HeaderActive] = ImVec4{ 0.15f, 0.15f, 0.15f, 1.0f };
 
-    colours[ImGuiCol_Button] = ImVec4{ 0.2f, 0.2f, 0.2f, 0.85f };
-    colours[ImGuiCol_ButtonHovered] = ImVec4{ 0.3f, 0.3f, 0.3f, 0.85f };
-    colours[ImGuiCol_ButtonActive] = ImVec4{ 0.15f, 0.15f, 0.15f, 0.85f };
+    colours[ImGuiCol_Button] = ImVec4{ 0.2f, 0.2f, 0.2f, 1.0f };
+    colours[ImGuiCol_ButtonHovered] = ImVec4{ 0.3f, 0.3f, 0.3f, 1.0f };
+    colours[ImGuiCol_ButtonActive] = ImVec4{ 0.15f, 0.15f, 0.15f, 1.0f };
 
-    colours[ImGuiCol_FrameBg] = ImVec4{ 0.2f, 0.2f, 0.2f, 0.85f };
-    colours[ImGuiCol_FrameBgHovered] = ImVec4{ 0.3f, 0.3f, 0.3f, 0.85f };
-    colours[ImGuiCol_FrameBgActive] = ImVec4{ 0.15f, 0.15f, 0.15f, 0.85f };
+    colours[ImGuiCol_FrameBg] = ImVec4{ 0.2f, 0.2f, 0.2f, 1.0f };
+    colours[ImGuiCol_FrameBgHovered] = ImVec4{ 0.3f, 0.3f, 0.3f, 1.0f };
+    colours[ImGuiCol_FrameBgActive] = ImVec4{ 0.15f, 0.15f, 0.15f, 1.0f };
 
-    colours[ImGuiCol_Tab] = ImVec4{ 0.15f, 0.15f, 0.15f, 0.85f };
-    colours[ImGuiCol_TabHovered] = ImVec4{ 0.4f, 0.4f, 0.4f, 0.85f };
-    colours[ImGuiCol_TabActive] = ImVec4{ 0.3f, 0.3f, 0.3f, 0.85f };
-    colours[ImGuiCol_TabUnfocused] = ImVec4{ 0.15f, 0.15f, 0.15f, 0.85f };
-    colours[ImGuiCol_TabUnfocusedActive] = ImVec4{ 0.2f, 0.2f, 0.2f, 0.85f };
+    colours[ImGuiCol_Tab] = ImVec4{ 0.15f, 0.15f, 0.15f, 1.0f };
+    colours[ImGuiCol_TabHovered] = ImVec4{ 0.4f, 0.4f, 0.4f, 1.0f };
+    colours[ImGuiCol_TabActive] = ImVec4{ 0.3f, 0.3f, 0.3f, 1.0f };
+    colours[ImGuiCol_TabUnfocused] = ImVec4{ 0.15f, 0.15f, 0.15f, 1.0f };
+    colours[ImGuiCol_TabUnfocusedActive] = ImVec4{ 0.2f, 0.2f, 0.2f, 1.0f };
 
-    colours[ImGuiCol_TitleBg] = ImVec4{ 0.15f, 0.15f, 0.15f, 0.85f };
-    colours[ImGuiCol_TitleBgActive] = ImVec4{ 0.15f, 0.15f, 0.15f, 0.85f };
-    colours[ImGuiCol_TitleBgCollapsed] = ImVec4{ 0.95f, 0.15f, 0.95f, 0.85f };
+    colours[ImGuiCol_TitleBg] = ImVec4{ 0.15f, 0.15f, 0.15f, 1.0f };
+    colours[ImGuiCol_TitleBgActive] = ImVec4{ 0.15f, 0.15f, 0.15f, 1.0f };
+    colours[ImGuiCol_TitleBgCollapsed] = ImVec4{ 0.95f, 0.15f, 0.95f, 1.0f };
 
-    colours[ImGuiCol_MenuBarBg] = ImVec4{ 0.01, 0.01, 0.01, 0.85f };
+    colours[ImGuiCol_MenuBarBg] = ImVec4{ 0.01, 0.01, 0.01, 1.0f };
 }
 
 void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
 {
-
-    
     GLCamera cm = GLCamera(FVector(0.0f, 0.0f, 0.0f), FVector(0.0f, 1.0f, 0.0f), -90.0f, 0.0f, 5.0f, 750.0f);
     
     unsigned int indices[] = {
@@ -480,13 +499,23 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
     sh->createFromFile("../Content/Engine/defaultvshader.gl", "../Content/Engine/defaultfshader.gl");
 #endif
 
-    MeshComponentRaw ms;
-    ms.createMesh(vertices, indices, 20, 12, "../Content/Engine/vert.spv", "../Content/Engine/frag.spv", SHADER_IMPORT_TYPE_FILE);
+    registry.createActor("Maikati");
+    pool.each([&](entt::entity ent){
+        if (registry.getComponent<CoreComponent>(ent).name == "Maikati")
+        {
+            auto& a = registry.addComponent<MeshComponentRaw>(ent);
+            a.createMesh(vertices, indices, 20, 12, "../Content/Engine/defaultvshader.gl", "../Content/Engine/defaultfshader.gl", SHADER_IMPORT_TYPE_FILE);
+        }
+    });
+
+
+    //MeshComponentRaw ms;
+    //ms.createMesh(vertices, indices, 20, 12, "../Content/Engine/defaultvshader.gl", "../Content/Engine/defaultfshader.gl", SHADER_IMPORT_TYPE_FILE);
 
     // Will soon be removed because uniforms bad
     //GLuint uniformProjection = 0, uniformModel = 0, uniformView = 0;
 
-    glm::mat4 projection = glm::perspective(glm::radians(90.0f), (GLfloat)currentWindow.getBufferWidth() / (GLfloat)currentWindow.getBufferHeight(), 0.1f, 100.0f);
+    projection = glm::perspective(glm::radians(90.0f), (GLfloat)currentWindow.getBufferWidth() / (GLfloat)currentWindow.getBufferHeight(), 0.1f, 100.0f);
     logger.consoleLog("Compiled Shaders", UVK_LOG_TYPE_SUCCESS);
 
 
@@ -514,6 +543,8 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
         cm.move(deltaTime);
         cm.moveMouse(deltaTime, UVK::Input::getMousePositionChange());
 
+        glBindFramebuffer(GL_FRAMEBUFFER, fb.FBO);
+        glEnable(GL_DEPTH_TEST);
         glClearColor(colour.x, colour.y, colour.z, colour.w);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
@@ -522,30 +553,38 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
             ImGui_ImplOpenGL3_NewFrame();
             ImGui_ImplGlfw_NewFrame();
             ImGui::NewFrame();
+            ImGuizmo::BeginFrame();
 
             events.callTick(deltaTime);
         }
-        
-        Model mat = Model();
 
-        mat.translate(FVector(0.0f, 2.0f, -2.5f));
-        mat.rotate(90.0f, FVector(0.0f, 1.0f, 0.0f));
-        mat.scale(FVector(1.0f, 1.0f, 1.0f));
-        brick.useTexture();
-        ms.render(projection, mat, cm);
-        
+        pool.each([&](entt::entity ent){
+
+            if (registry.getComponent<CoreComponent>(ent).name == "Maikati")
+            {
+
+                auto& a = registry.getComponent<MeshComponentRaw>(ent);
+
+                brick.useTexture();
+                a.render(projection, cm);
+            }
+        });
         glUseProgram(0);
+
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        glDisable(GL_DEPTH_TEST);
+        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+
 
         if (bEditor)
         {
             level->tick(deltaTime);
             renderEditor(play);
         }
-
         glfwSwapBuffers(currentWindow.getWindow());
     }
     events.callEnd();
-
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();

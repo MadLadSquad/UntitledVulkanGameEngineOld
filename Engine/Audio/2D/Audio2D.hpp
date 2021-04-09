@@ -112,6 +112,59 @@ namespace UVK
         // The buffer
         ALuint buffer = 0;
     };
+
+    class SoundSource3D
+    {
+    public:
+        SoundSource3D() = delete;
+
+        /**
+         * @brief This constructor creates the audio source
+         * @param bLoop true if the sound loops
+         * @param nPitch the pitch
+         * @param nGain the gain
+         */
+        SoundSource3D(bool bLoop, float nPitch, float nGain)
+        {
+            bSoundLoop = bLoop;
+            pitch = nPitch;
+            gain = nGain;
+
+            alGenSources(1, &source);
+            alSourcef(source, AL_PITCH, pitch);
+            alSourcef(source, AL_GAIN, gain);
+            alSource3f(source, AL_POSITION, position.x, position.y, position.z);
+            alSource3f(source, AL_VELOCITY, velocity[0], velocity[1], velocity[2]);
+            alSourcei(source, AL_LOOPING, bSoundLoop);
+            alSourcei(source, AL_BUFFER, buffer);
+        }
+
+        // Frees up memory
+        ~SoundSource3D()
+        {
+            alDeleteSources(1, &source);
+        }
+
+        /**
+         * @brief plays a sound from a buffer of type ALuint
+         * @param buff the buffer of type ALuint
+         */
+        void play(ALuint buff);
+
+
+        FVector position;
+    private:
+        ALuint source = 0;
+        float pitch = 1.0f;
+        float gain = 1.0f;
+
+        // Velocity
+        float velocity[3] = { 0, 0, 0 };
+        bool bSoundLoop = true;
+
+        // The buffer
+        ALuint buffer = 0;
+    };
 }
 
 inline UVK::Audio audio;
