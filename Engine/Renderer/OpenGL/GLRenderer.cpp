@@ -110,7 +110,6 @@ void UVK::GLRenderer::renderEditor(Texture& play)
             if (ImGui::Button("Exit"))
             {
                 glfwSetWindowShouldClose(currentWindow.getWindow(), GL_TRUE);
-                std::terminate();
             }
             ImGui::EndMenu();
         }
@@ -275,20 +274,16 @@ void UVK::GLRenderer::renderEditor(Texture& play)
     {
         ImGui::Begin("Viewport##1");
 
-        //float width = ImGui::GetWindowWidth();
-        //float height = ImGui::GetWindowHeight();
-
         if (wWidth != (int)ImGui::GetWindowWidth() || wHeight != (int)ImGui::GetWindowHeight())
         {
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
             glDeleteFramebuffers(1, &fb.FBO);
+            glViewport(0, 0, ImGui::GetWindowWidth(), ImGui::GetWindowHeight());
             fb.init((int)ImGui::GetWindowWidth(), (int)ImGui::GetWindowHeight());
             wWidth = (int)ImGui::GetWindowWidth();
             wHeight = (int)ImGui::GetWindowHeight();
         }
-
         ImGui::Image((void*)(intptr_t)fb.texColourBuffer, ImVec2((float)wWidth, (float)wHeight), ImVec2(0, 1), ImVec2(1, 0));
-
 
         ImGui::End();
     }
@@ -505,19 +500,13 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
         {
             auto& a = registry.addComponent<MeshComponentRaw>(ent);
             a.createMesh(vertices, indices, 20, 12, "../Content/Engine/defaultvshader.gl", "../Content/Engine/defaultfshader.gl", SHADER_IMPORT_TYPE_FILE);
+
+            auto& b = registry.addComponent<AudioComponent3D>(ent);
+            b.play("FellasInParis.wav", true, 1.0f, 1.0f, FVector(5.0f, 5.0f, 5.0f));
         }
     });
-
-
-    //MeshComponentRaw ms;
-    //ms.createMesh(vertices, indices, 20, 12, "../Content/Engine/defaultvshader.gl", "../Content/Engine/defaultfshader.gl", SHADER_IMPORT_TYPE_FILE);
-
-    // Will soon be removed because uniforms bad
-    //GLuint uniformProjection = 0, uniformModel = 0, uniformView = 0;
-
     projection = glm::perspective(glm::radians(90.0f), (GLfloat)currentWindow.getBufferWidth() / (GLfloat)currentWindow.getBufferHeight(), 0.1f, 100.0f);
     logger.consoleLog("Compiled Shaders", UVK_LOG_TYPE_SUCCESS);
-
 
     initEditor();
 
@@ -590,4 +579,27 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
     ImGui::DestroyContext();
     ImPlot::DestroyContext();
     currentWindow.destroyWindow();
+    pool.each([&](entt::entity ent)
+    {
+        if (registry.hasComponent<AudioComponent2D>(ent))
+        {
+            auto& a = registry.getComponent<AudioComponent2D>(ent);
+
+            a.stopAudio();
+        }
+
+        if (registry.hasComponent<AudioComponent3D>(ent))
+        {
+            auto& a = registry.getComponent<AudioComponent3D>(ent);
+
+            a.stopAudio();
+        }
+
+        if (registry.hasComponent<MeshComponentRaw>(ent))
+        {
+            auto& a = registry.getComponent<MeshComponentRaw>(ent);
+
+            a.clearMesh();
+        }
+    });
 }

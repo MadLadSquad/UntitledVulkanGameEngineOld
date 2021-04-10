@@ -124,11 +124,12 @@ namespace UVK
          * @param nPitch the pitch
          * @param nGain the gain
          */
-        SoundSource3D(bool bLoop, float nPitch, float nGain)
+        SoundSource3D(bool bLoop, float nPitch, float nGain, FVector pos)
         {
             bSoundLoop = bLoop;
             pitch = nPitch;
             gain = nGain;
+            position = pos;
 
             alGenSources(1, &source);
             alSourcef(source, AL_PITCH, pitch);

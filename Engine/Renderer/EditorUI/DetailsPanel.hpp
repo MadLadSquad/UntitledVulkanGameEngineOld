@@ -184,53 +184,38 @@ namespace DetailsPanel
             ImGui::InputText("id##inputactoridentifier", &id);
         }
 
+        if (registry.hasComponent<UVK::MeshComponentRaw>(ent))
+        {
+            auto& a = registry.getComponent<UVK::MeshComponentRaw>(ent);
+
+            DrawVec3Control("Translation", a.translation, 0.0f, 100.0f);
+            glm::vec3 rotation = glm::degrees(a.rotation);
+            DrawVec3Control("Rotation", rotation, 0.0f, 100.0f);
+            a.rotation = glm::radians(rotation);
+            DrawVec3Control("Scale", a.scale, 1.0f, 100.0f);
+        }
+
         if (registry.hasComponent<UVK::AudioComponent2D>(ent))
         {
             auto& a = registry.getComponent<UVK::AudioComponent2D>(ent);
 
-            auto rep = a.getRepeat();
-            auto pitch = a.getPitch();
-            auto gain = a.getGain();
-            std::string loc = a.getLocation();
-
-            ImGui::Checkbox("Repeat audio?##a", &rep);
-            ImGui::SliderFloat("Pitch##2d", &pitch, 0.5f, 2.0f);
-            ImGui::SliderFloat("Gain##2d", &gain, 0.0f, 10.0f);
-            ImGui::InputText("Audio location##2d", &loc);
+            ImGui::Checkbox("Repeat audio?##a", &a.bAudioRepeat);
+            ImGui::SliderFloat("Pitch##2d", &a.pitch, 0.5f, 2.0f);
+            ImGui::SliderFloat("Gain##2d", &a.gain, 0.0f, 10.0f);
+            ImGui::InputText("Audio location##2d", &a.loc);
         }
 
-        if (registry.hasComponent<UVK::MeshComponentRaw>(ent))
+        if (registry.hasComponent<UVK::AudioComponent3D>(ent))
         {
+            auto& a = registry.getComponent<UVK::AudioComponent3D>(ent);
 
-            ImGui::BeginTabBar("");
-
-            auto& a = registry.getComponent<UVK::MeshComponentRaw>(ent);
-
-            DrawVec3Control("Translation", a.translation, 0.0f, 100.0f);
-
-            glm::vec3 rotation = glm::degrees(a.rotation);
-
-            DrawVec3Control("Rotation", rotation, 0.0f, 100.0f);
-
-            a.rotation = glm::radians(rotation);
-
-            DrawVec3Control("Scale", a.scale, 1.0f, 100.0f);
-            /*float translation[3] = { a.translation.x, a.translation.y, a.translation.z };
-            float rotation[4] = { a.rotation.x, a.rotation.y, a.rotation.z, a.rotation.w };
-            float scale[3] = { a.scale.x, a.scale.y, a.scale.z };
-
-            ImGui::DragFloat3("Translation##drag", translation, 0.01f);
-            ImGui::DragFloat4("Rotation##drag", rotation, 0.01f);
-            ImGui::DragFloat3("Scale##drag", scale, 0.01f);
-
-            a.translation = glm::vec3(translation[0], translation[1], translation[2]);
-            a.rotation = glm::vec4(rotation[0], rotation[1], rotation[2], rotation[3]);
-            a.scale = glm::vec3(scale[0], scale[1], scale[2]);
-             */
+            ImGui::Checkbox("Repeat audio?##a", &a.bAudioRepeat);
+            ImGui::SliderFloat("Pitch##2d", &a.pitch, 0.5f, 2.0f);
+            ImGui::SliderFloat("Gain##2d", &a.gain, 0.0f, 10.0f);
+            ImGui::InputText("Audio location##2d", &a.loc);
+            DrawVec3Control("Translation", a.trs);
         }
 
         ImGui::End();
     }
-
-
 }
