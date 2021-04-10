@@ -156,7 +156,7 @@ namespace UVK
     struct AudioComponent2D
     {
         char foo;
-        const char* loc;
+        std::string loc;
         bool bAudioRepeat = false;
         float pitch = 1.0f;
         float gain = 1.0f;
@@ -226,9 +226,9 @@ namespace UVK
         {
 
         }
-
+        FVector trs;
         std::string loc;
-        bool bRepeat = false;
+        bool bAudioRepeat = false;
         float pitch = 1.0f;
         float gain = 1.0f;
     };

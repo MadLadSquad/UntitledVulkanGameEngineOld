@@ -97,6 +97,11 @@ void UVK::Level::saveEntity(YAML::Emitter& out, Actor act)
     if (pool.has<MeshComponentRaw>(act))
     {
         auto& a = pool.get<MeshComponentRaw>(act);
+
+        out << YAML::Key << "mcr-translation" << YAML::Value << a.translation;
+        out << YAML::Key << "mcr-rotation" << YAML::Value << a.rotation;
+        out << YAML::Key << "mcr-scale" << YAML::Value << a.scale;
+        out << YAML::Key << "mcr-vertices" <<
     }
 
     out << YAML::EndMap;
