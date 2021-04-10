@@ -163,27 +163,10 @@ namespace UVK
 
         void stopAudio()
         {
-            //thread.join();
         }
 
-        const char* getLocation()
+        void play(const char* location, bool bRepeat, float pitchArg, float gainArg)
         {
-            return loc;
-        }
-
-        bool getRepeat()
-        {
-            return bAudioRepeat;
-        }
-
-        float getPitch()
-        {
-            return pitch;
-        }
-
-        float getGain()
-        {
-            return gain;
         }
     };
 #endif
@@ -234,6 +217,16 @@ namespace UVK
 #else
     struct AudioComponent3D
     {
+        void stopAudio()
+        {
+
+        }
+
+        void play(const char* location, bool bRepeat, float pitchArg, float gainArg, FVector translation)
+        {
+
+        }
+
         std::string loc;
         bool bRepeat = false;
         float pitch = 1.0f;
