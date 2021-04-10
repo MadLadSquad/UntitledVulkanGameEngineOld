@@ -101,7 +101,8 @@ void UVK::Level::saveEntity(YAML::Emitter& out, Actor act)
         out << YAML::Key << "mcr-translation" << YAML::Value << a.translation;
         out << YAML::Key << "mcr-rotation" << YAML::Value << a.rotation;
         out << YAML::Key << "mcr-scale" << YAML::Value << a.scale;
-        out << YAML::Key << "mcr-vertices" <<
+        out << YAML::Key << "mcr-vertices" << YAML::Value << a.vertex;
+        out << YAML::Key << "mcr-indices" << YAML::Value << a.index;
     }
 
     out << YAML::EndMap;

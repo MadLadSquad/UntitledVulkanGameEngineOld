@@ -19,8 +19,15 @@ namespace UVK
     {    
         void createMesh(GLfloat* vertices, uint32_t* indices, uint32_t vertexNum, uint32_t indexNum, const char* vertexShader, const char* fragmentShader, ShaderImportType type)
         {
-            //mesh = new GLMesh();
-            //shader = new GLShader();
+            for (int i = 0; i < indexNum; i++)
+            {
+                index.push_back(indices[i]);
+            }
+
+            for (int i = 0; i < vertexNum; i++)
+            {
+                vertex.push_back(vertices[i]);
+            }
 
             mesh.createMesh(vertices, indices, vertexNum, indexNum);
 
@@ -77,9 +84,9 @@ namespace UVK
         FVector rotation;
         FVector translation;
         FVector scale;
-
+        std::vector<uint32_t> index;
+        std::vector<float> vertex;
     private:
-
 
 
         GLuint uniformModel = 0;
