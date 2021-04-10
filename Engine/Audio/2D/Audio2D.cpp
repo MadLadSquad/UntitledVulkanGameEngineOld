@@ -43,7 +43,7 @@ void UVK::Audio::cleanup()
     destroySoundBuffers();
 }
 
-ALuint UVK::Audio::addSoundEffect(const char *filename)
+ALuint UVK::Audio::addSoundEffect(const char* filename)
 {
     // All the variables we need
     ALenum err, format;

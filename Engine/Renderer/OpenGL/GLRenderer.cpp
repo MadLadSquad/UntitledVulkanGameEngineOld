@@ -493,7 +493,7 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
 
     sh->createFromFile("../Content/Engine/defaultvshader.gl", "../Content/Engine/defaultfshader.gl");
 #endif
-
+/*
     registry.createActor("Maikati");
     pool.each([&](entt::entity ent){
         if (registry.getComponent<CoreComponent>(ent).name == "Maikati")
@@ -502,9 +502,10 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
             a.createMesh(vertices, indices, 20, 12, "../Content/Engine/defaultvshader.gl", "../Content/Engine/defaultfshader.gl", SHADER_IMPORT_TYPE_FILE);
 
             auto& b = registry.addComponent<AudioComponent3D>(ent);
-            b.play("FellasInParis.wav", true, 1.0f, 1.0f, FVector(5.0f, 5.0f, 5.0f));
+            b.play("and.wav", true, 1.0f, 1.0f, FVector(15.0f, 0.0f, 0.0f));
         }
     });
+    */
     projection = glm::perspective(glm::radians(90.0f), (GLfloat)currentWindow.getBufferWidth() / (GLfloat)currentWindow.getBufferHeight(), 0.1f, 100.0f);
     logger.consoleLog("Compiled Shaders", UVK_LOG_TYPE_SUCCESS);
 

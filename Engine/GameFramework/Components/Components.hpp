@@ -19,6 +19,9 @@ namespace UVK
     {    
         void createMesh(GLfloat* vertices, uint32_t* indices, uint32_t vertexNum, uint32_t indexNum, const char* vertexShader, const char* fragmentShader, ShaderImportType type)
         {
+            fShader = fragmentShader;
+            vShader = vertexShader;
+            impType = type;
             for (int i = 0; i < indexNum; i++)
             {
                 index.push_back(indices[i]);
@@ -86,6 +89,10 @@ namespace UVK
         FVector scale;
         std::vector<uint32_t> index;
         std::vector<float> vertex;
+        std::string fShader;
+        std::string vShader;
+
+        ShaderImportType impType;
     private:
 
 
@@ -195,6 +202,7 @@ namespace UVK
                 logger.consoleLog("Initialised audio system", UVK_LOG_TYPE_SUCCESS);
 
                 buffer = audio.addSoundEffect(loc.c_str());
+
                 logger.consoleLog("Added sound effect", UVK_LOG_TYPE_SUCCESS);
 
                 UVK::SoundSource3D src(bRepeat, pitch, gain, trs);
