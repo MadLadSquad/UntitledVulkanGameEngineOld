@@ -2,7 +2,7 @@
 This document defines the code style guidelines everyone needs to follow.
 ## For the engine developer
 ### For everyone
-1. Variable and function names look like this
+1.  Variable and function names look like this
 ```cpp
 int iAmNumber = 0;
 
