@@ -93,7 +93,7 @@ namespace UVK
 
         [[nodiscard]] double getXMousePositionChange()
         {
-            GLfloat a = offsetX;
+            auto a = (float)offsetX;
             offsetX = 0.0f;
 
             return a;
@@ -101,18 +101,17 @@ namespace UVK
 
         [[nodiscard]] double getYMousePositionChange()
         {
-            GLfloat a = offsetY;
+            auto a = (float)offsetY;
             offsetY = 0.0f;
 
             return a;
         }
 
-        std::string image = "icon.png";
+        std::string image = "../Content/Engine/icon.png";
         int width = 800;
         int height = 600;
         bool bIsFullScreen = false;
-
-        std::string name = "Editor";
+        std::string name = "Untitled Vulkan Game Engine Editor";
 
         GLFWwindow* windowMain = nullptr;
 

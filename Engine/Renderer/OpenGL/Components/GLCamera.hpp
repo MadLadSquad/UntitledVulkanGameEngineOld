@@ -1,5 +1,5 @@
 // GLCamera.hpp
-// Last update 3/26/2021 by Madman10K
+// Last update 4/12/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 

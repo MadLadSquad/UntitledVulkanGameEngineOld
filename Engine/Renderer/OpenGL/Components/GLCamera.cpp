@@ -1,5 +1,5 @@
 // GLCamera.cpp
-// Last update 3/27/2021 by Madman10K
+// Last update 4/12/2021 by Madman10K
 #include "../../Window/Window.hpp"
 #include "GLCamera.hpp"
 

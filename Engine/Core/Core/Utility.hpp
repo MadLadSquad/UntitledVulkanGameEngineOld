@@ -1,5 +1,5 @@
 // Utility.hpp
-// Last update 3/17/2021 by Madman10K
+// Last update 4/13/2021 by Madman10K
 #pragma once
 #include <iostream>
 

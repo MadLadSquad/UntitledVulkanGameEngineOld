@@ -28,6 +28,7 @@ namespace UVK
             out << YAML::BeginMap;
 
             out << YAML::Key << "vulkan" << YAML::Value << bIsVulkan;
+            out << YAML::Key << "theme" << YAML::Value << theme;
 
             out << YAML::EndMap;
 
@@ -39,11 +40,35 @@ namespace UVK
 
         void loadSettings()
         {
-            auto a = YAML::LoadFile("Config/Settings/Renderer.yaml");
+            YAML::Node a;
+            bool bUsesConf = true;
 
-            if (a["vulkan"])
+            try
             {
-                bIsVulkan = a["vulkan"].as<bool>();
+                a = YAML::LoadFile("Config/Settings/Renderer.yaml");
+            }
+            catch (YAML::BadFile&)
+            {
+                bUsesConf = false;
+
+                logger.consoleLog("Invalid renderer file defaulting to OpenGL with default theme if the editor is in use!", UVK_LOG_TYPE_ERROR);
+            }
+
+            if (bUsesConf)
+            {
+                if (a["vulkan"])
+                {
+                    bIsVulkan = a["vulkan"].as<bool>();
+                }
+
+                if (a["theme"])
+                {
+                    theme = a["theme"].as<std::string>();
+                }
+            }
+            else
+            {
+                bIsVulkan = false;
             }
         }
 
@@ -59,11 +84,11 @@ namespace UVK
             }
             else
             {
-                GLRenderer renderer(lvl, bUsesEditor);
+                GLRenderer renderer(lvl, bUsesEditor, theme);
             }
         }
 
         bool bIsVulkan = false;
-
+        std::string theme;
     };
 }

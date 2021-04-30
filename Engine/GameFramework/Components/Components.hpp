@@ -1,21 +1,44 @@
 // Components.hpp
-// Last update 3/26/2021 by Madman10K
+// Last update 4/20/2021 by Madman10K
 #pragma once
 #include <GL/glew.h>
 #include <glm/gtx/quaternion.hpp>
 #include <../Renderer/OpenGL/Components/GLMesh.hpp>
 #include <../Renderer/OpenGL/Components/GLCamera.hpp>
-#include <Audio/2D/Audio2D.hpp>
+#include <Audio/Audio2D.hpp>
+#include <Audio/Audio3D.hpp>
+
 
 namespace UVK
 {
+    /**
+     * @brief A mesh component flag states they given object's light rendering properties (Not yet implemented)
+     * @param MESH_FLAG_STATIC - A static object that never moves, always receives baked lighting
+     * @param MESH_FLAG_STATIONARY - A stationary object is rendered with baked lighting and moves to dynamic lighting after movement
+     * @param MESH_FLAG_DYNAMIC - A dynamic object that always moves which makes it always render with dynamic lighting
+     */
+    enum MeshComponentFlags
+    {
+        MESH_FLAG_STATIC,
+        MESH_FLAG_STATIONARY,
+        MESH_FLAG_DYNAMIC
+    };
+
+    /**
+     * @brief The base component every entity has
+     * @param name - the name of the entity
+     * @param id - the universal unique identifier(UUID) of an entity (Not yet implemented)
+     */
     UVK_API struct CoreComponent
     {
         std::string name;
         uint64_t id;
     };
 
-    UVK_API struct MeshComponentRaw
+    /**
+     * @brief A mesh component used for debugging. It takes an array of vertices and indices instead of a mesh filename
+     */
+    struct MeshComponentRaw
     {    
         void createMesh(GLfloat* vertices, uint32_t* indices, uint32_t vertexNum, uint32_t indexNum, const char* vertexShader, const char* fragmentShader, ShaderImportType type)
         {
@@ -67,9 +90,9 @@ namespace UVK
             mat = mat * rot;
             mat = glm::scale(mat, scale);
 
-            glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(mat));
-            glUniformMatrix4fv(uniformProjection, 1, GL_FALSE, glm::value_ptr(projection));
-            glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(camera.calculateViewMatrix()));
+            glUniformMatrix4fv((int)uniformModel, 1, GL_FALSE, glm::value_ptr(mat));
+            glUniformMatrix4fv((int)uniformProjection, 1, GL_FALSE, glm::value_ptr(projection));
+            glUniformMatrix4fv((int)uniformView, 1, GL_FALSE, glm::value_ptr(camera.calculateViewMatrix()));
 
             mesh.render();
         }
@@ -78,9 +101,9 @@ namespace UVK
         {
             mesh.clear();
             shader.clearShader();
-            
-            //delete mesh;
-            //delete shader;
+
+            index.clear();
+            vertex.clear();
         }
 
         glm::mat4 mat;
@@ -124,68 +147,75 @@ namespace UVK
 
     };
 
-#ifndef __MINGW32__
-    struct AudioComponent2D
-    {
-    public:
-        void play(const char* location, bool bRepeat, float pitchArg, float gainArg)
-        {
-            loc = location;
-            bAudioRepeat = bRepeat;
-            pitch = pitchArg;
-            gain = gainArg;
+//#ifndef __MINGW32__
+    /**
+     * @brief An audio source without distance attenuation
+     */
+    /*
+   struct AudioComponent2D
+   {
+   public:
+       void play(const char* location, bool bRepeat, float pitchArg, float gainArg)
+       {
+           loc = location;
+           bAudioRepeat = bRepeat;
+           pitch = pitchArg;
+           gain = gainArg;
 
-            thread = std::thread([&]()
-            {
-                logger.consoleLog("Initialised audio system", UVK_LOG_TYPE_SUCCESS);
+           thread = std::thread([&]()
+           {
+               logger.consoleLog("Initialised audio system", UVK_LOG_TYPE_SUCCESS);
 
-                buffer = audio.addSoundEffect(loc.c_str());
-                logger.consoleLog("Added sound effect", UVK_LOG_TYPE_SUCCESS);
+               buffer = audio.addSoundEffect(loc.c_str());
+               logger.consoleLog("Added sound effect", UVK_LOG_TYPE_SUCCESS);
 
-                UVK::SoundSource2D src(bRepeat, pitch, gain);
+               UVK::SoundSource2D src(bRepeat, pitch, gain);
 
-                logger.consoleLog("Playing audio", UVK_LOG_TYPE_SUCCESS);
-                src.play(buffer);
-            });
-        }
+               logger.consoleLog("Playing audio", UVK_LOG_TYPE_SUCCESS);
+               src.play(buffer);
+           });
+       }
 
-        void stopAudio()
-        {
-            thread.detach();
-            thread.~thread();
-        }
+       void stopAudio()
+       {
+           thread.detach();
+           thread.~thread();
+       }
 
-        std::string loc;
-        bool bAudioRepeat;
-        float pitch;
-        float gain;
+       std::string loc;
+       bool bAudioRepeat;
+       float pitch;
+       float gain;
 
-        ALuint buffer;
-        std::thread thread;
-    private:
+       ALuint buffer;
+       std::thread thread;
+   private:
 
-    };
+   };
 
 #else
-    struct AudioComponent2D
-    {
-        char foo;
-        std::string loc;
-        bool bAudioRepeat = false;
-        float pitch = 1.0f;
-        float gain = 1.0f;
+   struct AudioComponent2D
+   {
+       char foo;
+       std::string loc;
+       bool bAudioRepeat = false;
+       float pitch = 1.0f;
+       float gain = 1.0f;
 
-        void stopAudio()
-        {
-        }
+       void stopAudio()
+       {
+       }
 
-        void play(const char* location, bool bRepeat, float pitchArg, float gainArg)
-        {
-        }
-    };
+       void play(const char* location, bool bRepeat, float pitchArg, float gainArg)
+       {
+       }
+   };
 #endif
 
 #ifndef __MINGW32__
+    /**
+     * @brief An audio component with a location and distance audio attenuation
+     *//*
     struct AudioComponent3D
     {
     public:
@@ -248,4 +278,5 @@ namespace UVK
         float gain = 1.0f;
     };
 #endif
+    */
 }

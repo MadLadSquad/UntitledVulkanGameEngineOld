@@ -1,7 +1,9 @@
 // Level.cpp
-// Last update 3/17/2021 by Madman10K
-
+// Last update 4/12/2021 by Madman10K
+#include "../../Components/Components.hpp"
+#include "Engine/Core/Core/Registry.hpp"
 #include "Level.hpp"
+
 
 // Creates bindings for a FVector
 namespace YAML {
@@ -84,26 +86,24 @@ void UVK::Level::saveEntity(YAML::Emitter& out, Actor act)
         out << YAML::Key << "id" << YAML::Value << a.id;
     }
 
-    if (pool.has<AudioComponent2D>(act))
-    {
-        auto& a = pool.get<AudioComponent2D>(act);
+    //if (pool.has<AudioComponent2D>(act))
+    //{
+    //    auto& a = pool.get<AudioComponent2D>(act);
+    //    out << YAML::Key << "audio2d-location" << YAML::Value << a.loc;
+    //    out << YAML::Key << "audio2d-pitch" << YAML::Value << a.pitch;
+    //    out << YAML::Key << "audio2d-gain" << YAML::Value << a.gain;
+    //    out << YAML::Key << "audio2d-repeat" << YAML::Value << a.bAudioRepeat;
+    //}
 
-        out << YAML::Key << "audio2d-location" << YAML::Value << a.loc;
-        out << YAML::Key << "audio2d-pitch" << YAML::Value << a.pitch;
-        out << YAML::Key << "audio2d-gain" << YAML::Value << a.gain;
-        out << YAML::Key << "audio2d-repeat" << YAML::Value << a.bAudioRepeat;
-    }
-
-    if (pool.has<AudioComponent3D>(act))
-    {
-        auto& a = pool.get<AudioComponent3D>(act);
-
-        out << YAML::Key << "audio3d-location" << YAML::Value << a.loc;
-        out << YAML::Key << "audio3d-pitch" << YAML::Value << a.pitch;
-        out << YAML::Key << "audio3d-gain" << YAML::Value << a.gain;
-        out << YAML::Key << "audio3d-repeat" << YAML::Value << a.bAudioRepeat;
-        out << YAML::Key << "audio3d-translation" << YAML::Value << a.trs;
-    }
+    //if (pool.has<AudioComponent3D>(act))
+    //{
+    //    auto& a = pool.get<AudioComponent3D>(act);
+    //    out << YAML::Key << "audio3d-location" << YAML::Value << a.loc;
+    //    out << YAML::Key << "audio3d-pitch" << YAML::Value << a.pitch;
+    //    out << YAML::Key << "audio3d-gain" << YAML::Value << a.gain;
+    //    out << YAML::Key << "audio3d-repeat" << YAML::Value << a.bAudioRepeat;
+    //    out << YAML::Key << "audio3d-translation" << YAML::Value << a.trs;
+    //}
 
     if (pool.has<MeshComponentRaw>(act))
     {
@@ -156,56 +156,73 @@ void UVK::Level::open(String location) noexcept
 {
     pool.clear();
     id = 0;
-    logger.consoleLog("Opening file", UVK_LOG_TYPE_NOTE);
-    auto out = YAML::LoadFile(location);
-    logger.consoleLog("Opened file with name:", UVK_LOG_TYPE_SUCCESS, out["name"].as<std::string>());
-    auto entities = out["actors"];
-    if (entities)
+
+    logger.consoleLog("Opening level with location: ", UVK_LOG_TYPE_NOTE, location);
+
+    YAML::Node out;
+    bool bValid = true;
+
+    try
     {
-        logger.consoleLog("Iterating entities", UVK_LOG_TYPE_NOTE);
-        for (auto entity : entities)
+        out = YAML::LoadFile(location);
+    }
+    catch (YAML::BadFile&)
+    {
+        bValid = false;
+        logger.consoleLog("Invalid level file location of file!", UVK_LOG_TYPE_ERROR);
+    }
+
+    if (bValid)
+    {
+        logger.consoleLog("Opened file with name:", UVK_LOG_TYPE_SUCCESS, out["name"].as<std::string>());
+
+        auto entities = out["actors"];
+        if (entities)
         {
-            auto name = entity["actor"].as<std::string>();
-
-            auto act = pool.create();
-
-
-            if (entity["audio3d-location"])
+            logger.consoleLog("Iterating entities", UVK_LOG_TYPE_NOTE);
+            for (auto entity : entities)
             {
-                auto& a = registry.addComponent<AudioComponent3D>(act);
+                auto name = entity["actor"].as<std::string>();
 
-                a.play(entity["audio3d-location"].as<std::string>().c_str(), entity["audio3d-repeat"].as<bool>(), entity["audio3d-gain"].as<float>(), entity["audio3d-pitch"].as<float>(), entity["audio3d-translation"].as<FVector>());
-            }
+                auto act = pool.create();
+                auto& core = registry.addComponent<UVK::CoreComponent>(act);
+                core.name = name;
 
-            if (entity["audio2d-location"])
-            {
-                auto& a = registry.addComponent<AudioComponent2D>(act);
+                //if (entity["audio3d-location"])
+                //{
+                //    auto& a = registry.addComponent<AudioComponent3D>(act);
+                //    a.play(entity["audio3d-location"].as<std::string>().c_str(), entity["audio3d-repeat"].as<bool>(), entity["audio3d-gain"].as<float>(), entity["audio3d-pitch"].as<float>(), entity["audio3d-translation"].as<FVector>());
+                //}
 
-                a.play(entity["audio2d-location"].as<std::string>().c_str(), entity["audio2d-repeat"].as<bool>(), entity["audio2d-gain"].as<float>(), entity["audio2d-pitch"].as<float>());
-            }
+                //if (entity["audio2d-location"])
+                //{
+                //    auto& a = registry.addComponent<AudioComponent2D>(act);
+                //    a.play(entity["audio2d-location"].as<std::string>().c_str(), entity["audio2d-repeat"].as<bool>(), entity["audio2d-gain"].as<float>(), entity["audio2d-pitch"].as<float>());
+                //}
 
-            if (entity["mcr-translation"])
-            {
-                auto& a = registry.addComponent<MeshComponentRaw>(act);
-
-                ShaderImportType type;
-
-                if (entity["mcr-simport"].as<int>() == 0)
+                if (entity["mcr-translation"])
                 {
-                    type = SHADER_IMPORT_TYPE_FILE;
-                }
-                else if (entity["mcr-simport"].as<int>() == 1)
-                {
-                    type = SHADER_IMPORT_TYPE_STRING;
-                }
-                else
-                {
-                    type = SHADER_IMPORT_TYPE_SPIR;
-                }
+                    auto& a = registry.addComponent<MeshComponentRaw>(act);
 
-                a.createMesh(entity["mcr-vertices"].as<std::vector<float>>().data(), entity["mcr-indices"].as<std::vector<uint32_t>>().data(), entity["mcr-vertices"].as<std::vector<float>>().size(), entity["mcr-indices"].as<std::vector<int>>().size(), entity["mcr-vshader"].as<std::string>().c_str(), entity["mcr-fshader"].as<std::string>().c_str(), type);
+                    ShaderImportType type;
+
+                    if (entity["mcr-simport"].as<int>() == 0)
+                    {
+                        type = SHADER_IMPORT_TYPE_FILE;
+                    }
+                    else if (entity["mcr-simport"].as<int>() == 1)
+                    {
+                        type = SHADER_IMPORT_TYPE_STRING;
+                    }
+                    else
+                    {
+                        type = SHADER_IMPORT_TYPE_SPIR;
+                    }
+
+                    a.createMesh(entity["mcr-vertices"].as<std::vector<float>>().data(), entity["mcr-indices"].as<std::vector<uint32_t>>().data(), entity["mcr-vertices"].as<std::vector<float>>().size(), entity["mcr-indices"].as<std::vector<int>>().size(), entity["mcr-vshader"].as<std::string>().c_str(), entity["mcr-fshader"].as<std::string>().c_str(), type);
+                }
             }
+            logger.consoleLog("Iterated entities", UVK_LOG_TYPE_SUCCESS);
         }
-        logger.consoleLog("Iterated entities", UVK_LOG_TYPE_SUCCESS);
     }
 }

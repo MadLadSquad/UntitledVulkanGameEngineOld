@@ -1,7 +1,5 @@
 // Level.hpp
-// Last update 3/17/2021 by Madman10K
-#include "../../Components/Components.hpp"
-#include "Engine/Core/Core/Registry.hpp"
+// Last update 4/24/2021 by Madman10K
 #include <Core.hpp>
 #include "../GameMode.hpp"
 #include "../GameInstance.hpp"

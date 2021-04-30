@@ -177,20 +177,19 @@ private:
     {
         auto now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
 
-        // This temporary is required
-        std::string realTime = std::ctime(&now);
+        // Bad
+        char* realTime = std::ctime(&now);
 
-        // You may ask why do I even do this and the answer is we want to remove the \n that the ctime function appends
-        // to the end of the string and we also don't want to add a space because I don't like unnecessary spaces so
-        // here we are removing the 25th character of the string and replacing it with null
+        // Bad
         realTime[24] = '\0';
 
-        return realTime;
+        // Bad
+        std::string a = realTime;
+
+        return a;
     }
 
     std::ofstream fileout;
-
-
 };
 
 // Yes I know global variables are bad but singletons are worse so I will not even bother

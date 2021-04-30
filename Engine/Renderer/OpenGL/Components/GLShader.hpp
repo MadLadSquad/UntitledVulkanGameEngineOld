@@ -1,5 +1,5 @@
 // GLShader.hpp
-// Last update 3/26/2021 by Madman10K
+// Last update 4/20/2021 by Madman10K
 #pragma once
 #include <GL/glew.h>
 #include <iostream>

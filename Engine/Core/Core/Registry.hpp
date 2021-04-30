@@ -79,7 +79,7 @@ namespace UVK
          * @param Actor that needs to be destroyed
          * @return void
          */
-        void destroyActor(Actor& act)
+        static void destroyActor(Actor& act)
         {
             pool.destroy(act);
         }

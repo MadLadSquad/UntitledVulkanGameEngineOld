@@ -1,5 +1,5 @@
 // Window.cpp
-// Last update 3/27/2021 by Madman10K
+// Last update 4/12/2021 by Madman10K
 #include "Window.hpp"
 
 
@@ -32,8 +32,8 @@ void UVK::Window::createWindow()
     glewExperimental = GL_TRUE;
     
     //glEnable(GL_DEPTH_TEST); 
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_SAMPLES, 16);
@@ -105,27 +105,40 @@ void UVK::Window::dumpConfig()
 
 void UVK::Window::openConfig()
 {
-    auto out = YAML::LoadFile("Config/Settings/Window.yaml");
+    YAML::Node out;
+    bool bValid = true;
 
-    if (out["image"])
+    try
     {
-        image = out["image"].as<std::string>();
+        out = YAML::LoadFile("Config/Settings/Window.yaml");
+    }
+    catch (YAML::BadFile&)
+    {
+        bValid = false;
     }
 
-    if (out["width"] && out["height"])
+    if (bValid)
     {
-        width = out["width"].as<int>();
-        height = out["height"].as<int>();
-    }
+        if (out["image"])
+        {
+            image = out["image"].as<std::string>();
+        }
 
-    if (out["fullscreen"])
-    {
-        bIsFullScreen = out["fullscreen"].as<bool>();
-    }
+        if (out["width"] && out["height"])
+        {
+            width = out["width"].as<int>();
+            height = out["height"].as<int>();
+        }
 
-    if (out["window-name"])
-    {
-        name = out["window-name"].as<std::string>();
+        if (out["fullscreen"])
+        {
+            bIsFullScreen = out["fullscreen"].as<bool>();
+        }
+
+        if (out["window-name"])
+        {
+            name = out["window-name"].as<std::string>();
+        }
     }
 }
 

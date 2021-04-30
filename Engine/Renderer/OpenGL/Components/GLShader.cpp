@@ -1,5 +1,5 @@
 // GLShader.cpp
-// Last update 3/26/2021 by Madman10K
+// Last update 4/20/2021 by Madman10K
 #include "GLShader.hpp"
 
 void UVK::GLShader::createFromString(const char* vertex, const char* fragment)

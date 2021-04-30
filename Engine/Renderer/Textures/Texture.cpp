@@ -1,5 +1,5 @@
 // Texture.cpp
-// Last update 3/26/2021 by Madman10K
+// Last update 4/28/2021 by Madman10K
 #define STB_IMAGE_IMPLEMENTATION
 #include "GL/glew.h"
 #include "Texture.hpp"
@@ -24,6 +24,7 @@ void UVK::Texture::load()
     glGenerateMipmap(GL_TEXTURE_2D);
 
     glBindTexture(GL_TEXTURE_2D, 0);
+    stbi_image_free(img);
 }
 
 void UVK::Texture::loadImgui()
@@ -49,8 +50,6 @@ void UVK::Texture::loadImgui()
 
 void UVK::Texture::destroy()
 {
-    stbi_image_free(&image);
-
     glDeleteTextures(1, &image);
     
     image = 0;

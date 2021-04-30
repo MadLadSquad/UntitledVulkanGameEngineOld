@@ -1,3 +1,5 @@
+// GLFrameBuffer.hpp
+// Last update 4/13/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 
@@ -12,11 +14,37 @@ namespace UVK
         {
             init(width, height);
         }
-        unsigned int texColourBuffer = 0;
+
+
+        void useFramebuffer() const
+        {
+            glBindFramebuffer(GL_FRAMEBUFFER, FBO);
+        }
+
+        static void unbindFramebuffer()
+        {
+            glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        }
+
+        void destroyFramebuffer()
+        {
+            glDeleteFramebuffers(1, &FBO);
+        }
+
+        [[nodiscard]] uint32_t getFramebuffer() const
+        {
+            return FBO;
+        }
+
+        [[nodiscard]] uint32_t getFramebufferTexture() const
+        {
+            return framebufferTexture;
+        }
 
         void init(int width, int height);
-        uint32_t FBO = 0;
-    private:
 
+    private:
+        uint32_t FBO = 0;
+        uint32_t framebufferTexture = 0;
     };
 }

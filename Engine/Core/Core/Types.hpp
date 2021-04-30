@@ -27,36 +27,4 @@ namespace UVK
 	typedef entt::entity Actor;
 	// String
 	using String = const char*;
-
-	// This class is here because yes
-	class Model
-	{
-	public:
-		Model()
-		{
-			mat = glm::mat4(1.0f);
-		}
-		
-		void scale(FVector vec3)
-		{
-			mat = glm::scale(mat, vec3);
-		}
-	
-		void rotate(float degrees, FVector rotation)
-		{
-			mat = glm::rotate(mat, glm::radians(degrees), rotation);
-		}
-
-		void translate(FVector vec3)
-		{
-			mat = glm::translate(mat, vec3);
-		}
-
-		glm::mat4& getModel()
-		{
-			return mat;
-		}
-	private:
-		glm::mat4 mat{};
-	};
 }
