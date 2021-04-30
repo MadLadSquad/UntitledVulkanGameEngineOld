@@ -90,6 +90,15 @@ namespace ImTTY
             std::pair<std::string, int> result;
 #ifndef _WIN32
             result.second = read(fd, buffer, sizeof(buffer));
+
+            if (result.second == -1)
+            {
+                logger.consoleLog("Failed to read file descriptor for ImTTY", UVK_LOG_TYPE_ERROR);
+            }
+            else if (result.second != sizeof(buffer))
+            {
+                logger.consoleLog("Did not recieve as much data as expected! Wanted: ", UVK_LOG_TYPE_ERROR, sizeof(buffer), ", recieved: ", result.second);
+            }
 #else
 
 #endif

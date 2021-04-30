@@ -68,7 +68,7 @@ namespace Statistics
             ImPlot::PlotLine("##Frametime", &rdata2.Data[0].x, &rdata2.Data[0].y, rdata2.Data.size(), 0, 2 * sizeof(float));
             ImPlot::EndPlot();
         }
-        
+
         ImGui::Text("Execution time: ");
 
         ImPlot::SetNextPlotLimits(0,1,0,1,ImGuiCond_Always);
