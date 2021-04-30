@@ -1,7 +1,7 @@
 // Audio.cpp
 // Last update 4/13/2021 by Madman10K
 #include "Audio.hpp"
-
+#ifndef __MINGW32__
 void UVK::Audio::createDevice()
 {
     device = alcOpenDevice(nullptr);
@@ -43,3 +43,4 @@ void UVK::Audio::destroyDevice()
     alcDestroyContext(context);
     alcCloseDevice(device);
 }
+#endif

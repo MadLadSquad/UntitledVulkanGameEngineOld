@@ -3,6 +3,7 @@
 #pragma once
 #include <Audio/AudioSource.hpp>
 
+#ifndef __MINGW32__
 namespace UVK
 {
     class Audio
@@ -21,5 +22,5 @@ namespace UVK
         ALCcontext* context = nullptr;
     };
 }
-
 inline UVK::Audio audio;
+#endif
