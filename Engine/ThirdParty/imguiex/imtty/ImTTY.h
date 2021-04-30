@@ -137,8 +137,9 @@ namespace ImTTY
         int master = 0;
         int pid = 0;
         int child = 0;
-
+#ifndef _WIN32
         winsize ws{};
+#endif
     };
 
     inline Term Terminal;
