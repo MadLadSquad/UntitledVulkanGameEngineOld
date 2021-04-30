@@ -18,33 +18,33 @@ namespace Filesystem
 
         for (const auto& entry : std_filesystem::directory_iterator(pt))
         {
-            bool directory = false;
+            ///bool directory = false;
             std::string path = entry.path().filename().string();
-            utility.sanitiseFilepath(path, true);
-            ImTextureID txt = 0;
+            Utility::sanitiseFilepath(path, true);
+            ImTextureID txt = nullptr;
             ImVec2 dm;
 
             ImGui::BeginGroup();
             if (entry.is_directory())
             {
-                directory = true;
+                //directory = true;
                 txt = (void*)(intptr_t)folder.getImage();
-                dm = ImVec2(folder.getWidth() - 1500, folder.getHeight() - 1500);
+                dm = ImVec2((float)folder.getWidth() - 1500, (float)folder.getHeight() - 1500);
             }
             else if (entry.path().extension() == ".wav")
             {
                 txt = (void*)(intptr_t)audio.getImage();
-                dm = ImVec2(audio.getWidth() - 410, audio.getHeight() - 410);
+                dm = ImVec2((float)audio.getWidth() - 410, (float)audio.getHeight() - 410);
             }
             else if (entry.path().extension() == ".obj" || entry.path().extension() == ".fbx")
             {
                 txt = (void*)(intptr_t)model.getImage(); 
-                dm = ImVec2(model.getWidth() - 410, model.getHeight() - 410);
+                dm = ImVec2((float)model.getWidth() - 410, (float)model.getHeight() - 410);
             }
             else
             {
-                txt = (void*)(intptr_t)model.getImage();
-                dm = ImVec2(model.getWidth() - 410, model.getHeight() - 410);
+                //txt = (void*)(intptr_t)model.getImage();
+                //dm = ImVec2((float)model.getWidth() - 410, (float)model.getHeight() - 410);
             }
             if (ImGui::ImageButton(txt, dm))
             {

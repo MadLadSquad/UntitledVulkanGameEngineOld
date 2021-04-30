@@ -68,20 +68,18 @@ namespace Statistics
             ImPlot::PlotLine("##Frametime", &rdata2.Data[0].x, &rdata2.Data[0].y, rdata2.Data.size(), 0, 2 * sizeof(float));
             ImPlot::EndPlot();
         }
-
-        static const char* labels[] = { "Start", "Level", "Renderer", "Editor UI", "Audio" };
-        static float data[] = { 0.15f, 0.30f, 0.2f, 0.05f, 0.15f };
-
+        
         ImGui::Text("Execution time: ");
 
         ImPlot::SetNextPlotLimits(0,1,0,1,ImGuiCond_Always);
         if (ImPlot::BeginPlot("##Pie1", nullptr, nullptr, ImVec2(350,350), ImPlotFlags_Equal | ImPlotFlags_NoMousePos, ImPlotAxisFlags_NoDecorations, ImPlotAxisFlags_NoDecorations))
         {
+            static const char* labels[] = { "Start", "Level", "Renderer", "Editor UI", "Audio" };
+            static float data[] = { 0.15f, 0.30f, 0.2f, 0.05f, 0.15f };
             ImPlot::SetLegendLocation(ImPlotLocation_North | ImPlotLocation_West, ImPlotOrientation_Horizontal);
             ImPlot::PlotPieChart(labels, data, 5, 0.5, 0.5, 0.4, true, "%.2f");
             ImPlot::EndPlot();
         }
-
 
         ImGui::End();
     }
