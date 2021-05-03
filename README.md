@@ -16,9 +16,9 @@
 ## Information
 The UntitledVulkanGameEngine is a 3D game engine written in C++. It uses Vulkan and Modern OpenGL as graphics APIs and has a simple and easy to use C++ scripting API. The engine follows the Gentoo philosophy which means that everything is compiled by the user, no binaries needed. We also support multiple platforms like Linux, MacOS and BSD. For patchnotes, announcements and development logs join our [discord server](https://discord.gg/4TAwNSx) and subscribe to our [youtube channel](https://www.youtube.com/channel/UCWKEvueStyfeMGnkvVJuGxQ)
 ## Learning
-You can start learning the engine from the source code or you can go to the [wiki](https://github.com/MadLadSquad/UntitledVulkanGameEngine/wiki) where you can go through a tutorial and after that look at the documentation
+Go to the [wiki](https://github.com/MadLadSquad/UntitledVulkanGameEngine/wiki).
 ## Development
-Follow [the trello](https://trello.com/b/0upjsxT0/untitledvukangameengine2) for a board detailing which parts of the engine I am currently working on.
+Follow [the trello](https://trello.com/b/0upjsxT0/untitledvukangameengine2).
 Modules development status:
 -   OpenGL rendered: :construction: 
 -   Vulkan renderer: :construction: 
