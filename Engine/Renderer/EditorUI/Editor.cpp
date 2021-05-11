@@ -24,9 +24,9 @@ void UVK::Editor::initEditor()
 {
     Timer tm;
     tm.startRecording();
-
+#ifndef __MINGW32__
     pt = std_filesystem::absolute(std_filesystem::current_path());
-
+#endif
     YAML::Node file;
 
     try
