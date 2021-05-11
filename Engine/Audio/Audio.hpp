@@ -12,6 +12,11 @@ namespace UVK
         UVK_AUDIO_STATE_RESUME,
         UVK_AUDIO_STATE_STOPPED
     };
+
+    class AudioManager;
+    class AudioBuffer;
+    struct AudioSourceData;
+    class AudioSource;
 }
 
 #ifndef __MINGW32__
@@ -99,5 +104,4 @@ namespace UVK
         AudioState state{};
     };
 }
-inline UVK::AudioManager audio;
 #endif

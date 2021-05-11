@@ -14,8 +14,10 @@ namespace UVK
         void pause();
         void resume();
 
+#ifndef __MINGW32__
         AudioSourceData data;
         AudioSource src;
+#endif
     private:
     };
 }

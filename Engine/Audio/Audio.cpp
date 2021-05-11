@@ -37,11 +37,6 @@ void UVK::AudioManager::createDevice()
 
     logger.consoleLog("Loaded sound device:", UVK_LOG_TYPE_SUCCESS, name);
     logger.consoleLog("Successfully opened a sound device", UVK_LOG_TYPE_SUCCESS);
-
-    //float arr[] = { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f };
-    //alListeneri(AL_DISTANCE_MODEL, AL_INVERSE_DISTANCE_CLAMPED);
-    //alListenerfv(AL_ORIENTATION, arr);
-
 }
 
 void UVK::AudioManager::destroyDevice()
@@ -50,7 +45,7 @@ void UVK::AudioManager::destroyDevice()
     alcDestroyContext(context);
     alcCloseDevice(device);
 }
-#endif
+
 
 UVK::AudioBuffer::AudioBuffer(const char* loc)
 {
@@ -181,3 +176,4 @@ void UVK::AudioSource::play()
     }
      */
 }
+#endif
