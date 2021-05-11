@@ -2,11 +2,12 @@
 // Last update 7/5/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
+
+#ifndef __MINGW32__
 #include "AL/al.h"
 #include "AL/alc.h"
 #include "AL/alext.h"
 
-#ifndef __MINGW32__
 namespace UVK
 {
     enum AudioState
