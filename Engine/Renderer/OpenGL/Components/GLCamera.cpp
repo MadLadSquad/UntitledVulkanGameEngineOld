@@ -1,5 +1,5 @@
 // GLCamera.cpp
-// Last update 4/12/2021 by Madman10K
+// Last update 7/5/2021 by Madman10K
 #include "../../Window/Window.hpp"
 #include "GLCamera.hpp"
 
@@ -20,7 +20,7 @@ UVK::GLCamera::GLCamera(FVector position, FVector up, GLfloat yaw, GLfloat pitch
 
 void UVK::GLCamera::move(float deltaTime)
 {
-    if (UVK::Input::getMouseKeyPressed(Keys::MouseButtonRight))
+    if (UVK::Input::getMouseKeyPressed(Keys::MouseButtonRight) && UVK::Input::getKeyPressed(Keys::LeftControl))
     {
         currentWindow.setCursorVisibility(false);
 

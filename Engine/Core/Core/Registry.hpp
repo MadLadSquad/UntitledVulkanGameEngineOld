@@ -1,5 +1,5 @@
 // Registry.hpp
-// Last update 2/7/2021 by Madman10K
+// Last update 6/5/2021 by Madman10K
 #include "Engine/GameFramework/Components/Components.hpp"
 
 inline UVK::EntityPool pool;
@@ -27,16 +27,7 @@ namespace UVK
         * @param Name for the actor
         * @return Actor reference
         */
-        void createActor(const std::string& name)
-        {
-            Actor act = pool.create();
-
-            auto& a = addComponent<UVK::CoreComponent>(act);
-            a.name = name;
-            a.id = id;
-
-            id = id++;
-        }
+        void createActor(const std::string& name);
 
         /**
         * @brief Gets a component from an actor
@@ -79,10 +70,7 @@ namespace UVK
          * @param Actor that needs to be destroyed
          * @return void
          */
-        static void destroyActor(Actor& act)
-        {
-            pool.destroy(act);
-        }
+        static void destroyActor(Actor& act);
 
         /**
         * @brief Iterates the registry and returns actor with a given id

@@ -41,6 +41,7 @@ namespace ImTTY
             pid = forkpty(&fd, nullptr, nullptr, &ws);
             if(!pid)
             {
+                setsid();
                 putenv((char*)"TERM=xterm");
                 execl(std::getenv("SHELL"), std::getenv("SHELL"), "-l", "-i", nullptr);
             }
@@ -93,12 +94,14 @@ namespace ImTTY
 
             if (result.second == -1)
             {
-                logger.consoleLog("Failed to read file descriptor for ImTTY", UVK_LOG_TYPE_ERROR);
+                //logger.consoleLog("Failed to read file descriptor for ImTTY", UVK_LOG_TYPE_ERROR);
             }
-            else if (result.second != sizeof(buffer))
+            else
             {
-                logger.consoleLog("Did not recieve as much data as expected! Wanted: ", UVK_LOG_TYPE_ERROR, sizeof(buffer), ", recieved: ", result.second);
+                //logger.consoleLog("Did not receive as much data as expected! Wanted: ", UVK_LOG_TYPE_ERROR, sizeof(buffer), ", recieved: ", result.second);
             }
+
+
 #else
 
 #endif
@@ -130,7 +133,13 @@ namespace ImTTY
                     logger.consoleLog("Error with getting data from tty", UVK_LOG_TYPE_ERROR);
                 }
 
+
+
                 std::cout << input.first << std::flush;
+
+
+                if (fd == 0)
+                    execlp(command.c_str(), command.c_str(), nullptr);
 
                 command.clear();
 

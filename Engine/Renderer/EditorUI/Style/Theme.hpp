@@ -1,5 +1,5 @@
 // Theme.hpp
-// Last update 4/24/2021 by Madman10K
+// Last update 5/04/2021 by Madman10K
 #pragma once
 #include <iostream>
 #include <imgui.h>
@@ -12,7 +12,6 @@ namespace UVK
         explicit EditorTheme(const std::string& theme)
         {
             setTheme(theme);
-            useTheme();
         }
 
         void setTheme(const std::string& theme);
@@ -23,7 +22,14 @@ namespace UVK
         {
             return std::make_pair(fontLoc, fontSize);
         }
+
+        [[nodiscard]] float getWindowRounding() const
+        {
+            return windowRounding;
+        }
     private:
+        ImVec4 textCol = ImVec4(1.0, 1.0, 1.0, 1.0);
+
         ImVec4 windowBg = ImVec4(0.1, 0.1, 0.1, 1.0);
 
         ImVec4 header = ImVec4(0.2, 0.2, 0.2, 1.0);

@@ -1,11 +1,12 @@
 // Editor.hpp
-// Last update 4/28/2021 by Madman10K
+// Last update 7/5/2021 by Madman10K
 #pragma once
 #include <iostream>
 #include <utility>
 #include <Core.hpp>
 #include "Widgets/EditorViewport.hpp"
 #include "../Textures/Texture.hpp"
+#include <Audio/Audio.hpp>
 
 namespace UVK
 {
@@ -23,13 +24,15 @@ namespace UVK
         {
             colTheme = std::move(theme);
         }
+
+        double* getFrameTimeData()
+        {
+            return frameTimeData;
+        }
     private:
-        Texture folder;
-        Texture audioImg;
-        Texture model;
         Texture play;
-        Texture brick;
         Texture logoTxt;
+        Texture insert;
 
         int entNum = 0;
         int viewportWidth = 0, viewportHeight = 0;
@@ -57,5 +60,10 @@ namespace UVK
         std::string projectVersion;
         std::string projectName;
         std::string colTheme;
+        std::string cpFileLoc;
+
+        double frameTimeData[2] = { 0.0, 0.0 };
+
+        std_filesystem::path pt;
     };
 }

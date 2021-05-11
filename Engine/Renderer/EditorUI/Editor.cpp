@@ -1,5 +1,5 @@
 // Editor.cpp
-// Last update 4/28/2021 by Madman10K
+// Last update 7/05/2021 by Madman10K
 #include <GL/glew.h>
 #include "../../GameFramework/GameplayClasses/Level/Level.hpp"
 #include "Widgets/SceneHierarchy.hpp"
@@ -9,7 +9,7 @@
 #include "Widgets/TopToolbar.hpp"
 #include "Widgets/TerminalEmulator.hpp"
 #include "Style/Theme.hpp"
-//#include "../EditorUI/Filesystem.hpp"
+#include "Widgets/Filesystem.hpp"
 #include <imguiex/imguizmo/ImGuizmo.h>
 #include "Widgets/Statistics.hpp"
 #include "Widgets/WorldSettings.hpp"
@@ -20,11 +20,12 @@
 #include "Widgets/NewLevel.hpp"
 #include "../Window/Window.hpp"
 
-#include "../../Core/Events/Events.hpp"
-
-
 void UVK::Editor::initEditor()
 {
+    Timer tm;
+    tm.startRecording();
+
+    pt = std_filesystem::absolute(std_filesystem::current_path());
 
     YAML::Node file;
 
@@ -46,58 +47,34 @@ void UVK::Editor::initEditor()
 
     auto* sh = new GLShader();
 #ifndef __MINGW32__
-    std_filesystem::path res("../Content/Engine/");
-    std_filesystem::path pt("../Content/");
 
-    folder = Texture(static_cast<std::string>(res.string() + "folder.png"));
-    folder.loadImgui();
-
-
-    audioImg = Texture(static_cast<std::string>(res.string() + "audio.png"));
-    audioImg.loadImgui();
-
-    model = Texture(static_cast<std::string>(res.string() + "model.png"));
-    model.loadImgui();
-
-    play = Texture(static_cast<std::string>(res.string() + "Play.png"));
+    play = Texture(static_cast<std::string>(pt.string() + "/../Content/Engine/Play.png"));
     play.loadImgui();
 
-    brick = Texture(static_cast<std::string>(res.string() + "brick.jpg"));
-    brick.load();
-
-    logoTxt = Texture(static_cast<std::string>(res.string() + "logo.png"));
+    logoTxt = Texture(static_cast<std::string>(pt.string() + "/../Content/Engine/logo.png"));
     logoTxt.loadImgui();
 
-    sh->createFromFile(static_cast<std::string>(res.string() + "defaultvshader.gl").c_str(), static_cast<std::string>(res.string() + "defaultfshader.gl").c_str());
+    insert = Texture(static_cast<std::string>(pt.string() + "/../Content/Engine/insert.png"));
+    insert.loadImgui();
+
+    sh->createFromFile(static_cast<std::string>(pt.string() + "/../Content/Engine/defaultvshader.gl").c_str(), static_cast<std::string>(pt.string() + "/../Content/Engine/defaultfshader.gl").c_str());
 #else
-    folder = Texture(static_cast<std::string>("../Content/Engine/folder.png"));
-    folder.loadImgui();
-
-    audioImg = Texture(static_cast<std::string>("../Content/Engine/audio.png"));
-    audioImg.loadImgui();
-
-    model = Texture(static_cast<std::string>("../Content/Engine/model.png"));
-    model.loadImgui();
-
     play = Texture(static_cast<std::string>("../Content/Engine/Play.png"));
     play.loadImgui();
-
-    brick = Texture(static_cast<std::string>("../Content/Engine/brick.jpg"));
-    brick.load();
 
     logoTxt = Texture(static_cast<std::string>("../Content/Engine/logo.png"));
     logoTxt.loadImgui();
 
+    insert = Texture(static_cast<std::string>("../Content/Engine/insert.png"));
+    insert.loadImgui();
+
     sh->createFromFile("../Content/Engine/defaultvshader.gl", "../Content/Engine/defaultfshader.gl");
 #endif
-
-    IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImPlot::CreateContext();
     ImTTY::Terminal.CreateContext();
-    //ImTTY::Terminal.SendTTY((std::string &) "tty");
     ImGuiIO& io = ImGui::GetIO(); (void)io;
-    //io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
     io.ConfigViewportsNoTaskBarIcon = true;
 
@@ -105,18 +82,34 @@ void UVK::Editor::initEditor()
     ImGui::StyleColorsClassic();
 
     ImGuiStyle& style = ImGui::GetStyle();
-    style.WindowPadding = ImVec2(0.0f, 0.0f);
+    EditorTheme theme(colTheme);
+    //style.WindowPadding = ImVec2(0.0f, 0.0f);
+
     if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
     {
-        style.WindowRounding = 0.0f;
+        style.WindowRounding = theme.getWindowRounding();
         style.Colors[ImGuiCol_WindowBg].w = 1.0f;
     }
+    theme.useTheme();
 
-    EditorTheme theme(colTheme);
-    io.Fonts->AddFontFromFileTTF(theme.getFont().first.c_str(), (float)theme.getFont().second);
+#ifndef __MINGW32__
+    if (std_filesystem::exists(theme.getFont().first))
+    {
+        ImFontConfig config;
+        io.Fonts->AddFontFromFileTTF(theme.getFont().first.c_str(), (float)theme.getFont().second, &config, io.Fonts->GetGlyphRangesCyrillic());
+        io.Fonts->AddFontFromFileTTF(theme.getFont().first.c_str(), (float)theme.getFont().second, &config, io.Fonts->GetGlyphRangesThai());
+        io.Fonts->AddFontFromFileTTF(theme.getFont().first.c_str(), (float)theme.getFont().second, &config, io.Fonts->GetGlyphRangesVietnamese());
 
+        io.Fonts->Build();
+    }
+#endif
     ImGui_ImplGlfw_InitForOpenGL(currentWindow.getWindow(), true);
-    ImGui_ImplOpenGL3_Init("#version 330");
+    ImGui_ImplOpenGL3_Init("#version 450");
+
+    tm.stopRecording();
+    frameTimeData[0] = tm.getDuration();
+
+    logger.consoleLog("Starting the renderer took: ", UVK_LOG_TYPE_NOTE, tm.getDuration(), "ms!");
 }
 
 void UVK::Editor::runEditor(FVector4& colour, GLFrameBuffer& fb)
@@ -125,7 +118,7 @@ void UVK::Editor::runEditor(FVector4& colour, GLFrameBuffer& fb)
     static bool opt_padding = false;
     static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
 
-    ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
+    ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoCollapse;
     window_flags |= ImGuiTreeNodeFlags_SpanAvailWidth;
     if (opt_fullscreen)
     {
@@ -153,7 +146,7 @@ void UVK::Editor::runEditor(FVector4& colour, GLFrameBuffer& fb)
     bool bIsOpen = true;
 
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
-    ImGui::Begin("DockSpace Demo", &bIsOpen, window_flags);
+    ImGui::Begin("DockSpace Demo", &bIsOpen, window_flags | ImGuiWindowFlags_NoCollapse);
 
     ImGui::PopStyleVar();
 
@@ -184,6 +177,8 @@ void UVK::Editor::runEditor(FVector4& colour, GLFrameBuffer& fb)
 
 void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb)
 {
+    ImGuiStyle& style = ImGui::GetStyle();
+
     if (ImGui::BeginMenuBar())
     {
         if (ImGui::BeginMenu("File"))
@@ -274,7 +269,7 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb)
 
     if (bShowOpenLevelWidget)
     {
-        OpenLevelWidget::display(openLevel, bShowOpenLevelWidget);
+        OpenLevelWidget::display(openLevel, bShowOpenLevelWidget, frameTimeData[1]);
     }
 
     if (bShowCreateFile1)
@@ -287,7 +282,11 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb)
     }
 
     {
+        style.WindowPadding = ImVec2(0.0f, 0.0f);
+
         EditorViewport::display(fb, viewportWidth, viewportHeight);
+
+        style.WindowPadding = ImVec2(8.0f, 8.0f);
     }
 
     {
@@ -296,16 +295,20 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb)
 
 #ifndef __MINGW32__
     {
-        //Filesystem::display(folder, audio, model, pt);
+        Filesystem::display(pt, cpFileLoc);
     }
 #endif
 
     {
+        style.WindowPadding = ImVec2(0.0f, 0.0f);
+
         TopToolbar::display(play);
+
+        style.WindowPadding = ImVec2(8.0f, 8.0f);
     }
 
     {
-        ImGui::Begin("Tools");
+        ImGui::Begin("Tools", nullptr);
         ImGui::Text("Coming soon!");
         ImGui::End();
     }
@@ -319,7 +322,7 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb)
     }
 
     {
-        Statistics::display();
+        Statistics::display(frameTimeData);
     }
 
     {
@@ -343,9 +346,6 @@ void UVK::Editor::beginFrame()
 void UVK::Editor::destroyContext()
 {
     play.destroy();
-    folder.destroy();
-    audioImg.destroy();
-    model.destroy();
     logoTxt.destroy();
 
     ImGui_ImplOpenGL3_Shutdown();

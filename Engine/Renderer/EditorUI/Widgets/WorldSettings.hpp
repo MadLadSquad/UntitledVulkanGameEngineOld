@@ -1,5 +1,5 @@
 // WorldSettings.hpp
-// Last update 4/12/2021 by Madman10K
+// Last update 5/5/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 #include <imgui.h>
@@ -9,16 +9,5 @@
 
 namespace WorldSettings
 {
-    // Displays the world setting widget
-    static void display(UVK::FVector4& colour, UVK::FVector4 ambientLight, std::string& name)
-    {
-        ImGui::Begin("World Settings");
-
-        ImGui::InputText("Level Name", &name);
-
-        ImGui::ColorEdit4("Colour background", (float*)&colour);
-        ImGui::ColorEdit4("Ambient Light", (float*)&ambientLight); // W is for ambient light intensity
-
-        ImGui::End();
-    }
+    void display(UVK::FVector4& colour, UVK::FVector4 ambientLight, std::string& name);
 }

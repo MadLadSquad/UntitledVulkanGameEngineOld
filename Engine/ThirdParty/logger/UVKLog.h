@@ -15,6 +15,7 @@
 #define LogColRed "\x1B[31m"
 #define LogColWhite "\x1B[37m"
 #define LogColBlue "\x1B[34m"
+#define LogColNull "\033[0m"
 
 enum LogType
 {
@@ -23,6 +24,40 @@ enum LogType
     UVK_LOG_TYPE_NOTE,
     UVK_LOG_TYPE_SUCCESS,
     UVK_LOG_TYPE_MESSAGE
+};
+
+class Timer
+{
+public:
+    void startRecording()
+    {
+        start = std::chrono::high_resolution_clock::now();
+    }
+
+    void stopRecording()
+    {
+        auto endTime = std::chrono::high_resolution_clock::now();
+        auto st = std::chrono::time_point_cast<std::chrono::microseconds>(start).time_since_epoch().count();
+        auto end = std::chrono::time_point_cast<std::chrono::microseconds>(endTime).time_since_epoch().count();
+
+        auto dt = end - st;
+
+        duration = (double)dt * 0.001;
+    }
+
+    ~Timer()
+    {
+        stopRecording();
+    }
+
+    [[nodiscard]] double getDuration() const
+    {
+        return duration;
+    }
+private:
+    double duration = 0;
+
+    std::chrono::time_point<std::chrono::high_resolution_clock> start;
 };
 
 class UVKLog
@@ -44,7 +79,7 @@ public:
         case UVK_LOG_TYPE_WARNING:
             std::cout << LogColYellow << "[" << getCurrentTime() << "] Warning: " << message;
             (std::cout << ... << argv);
-            std::cout << "\033[0m" << std::endl;
+            std::cout << LogColNull << std::endl;
 
             fileout << "[" << getCurrentTime() << "] Warning: " << message;
             (fileout << ... << argv);
@@ -54,7 +89,7 @@ public:
         case UVK_LOG_TYPE_ERROR:
             std::cout << LogColRed << "[" << getCurrentTime() << "] Error: " << message;
             (std::cout << ... << argv);
-            std::cout << "\033[0m" << std::endl;
+            std::cout << LogColNull << std::endl;
 
             fileout << "[" << getCurrentTime() << "] Error: " << message;
             (fileout << ... << argv);
@@ -63,7 +98,7 @@ public:
         case UVK_LOG_TYPE_NOTE:
             std::cout << LogColBlue << "[" << getCurrentTime() << "] Note: " << message;
             (std::cout << ... << argv);
-            std::cout << "\033[0m" << std::endl;
+            std::cout << LogColNull << std::endl;
 
             fileout << "[" << getCurrentTime() << "] Note: " << message;
             (fileout << ... << argv);
@@ -72,7 +107,7 @@ public:
         case UVK_LOG_TYPE_SUCCESS:
             std::cout << LogColGreen << "[" << getCurrentTime() << "] Success: " << message;
             (std::cout << ... << argv);
-            std::cout << "\033[0m" << std::endl;
+            std::cout << LogColNull << std::endl;
 
             fileout << "[" << getCurrentTime() << "] Success: " << message;
             (fileout << ... << argv);
@@ -81,7 +116,7 @@ public:
         case UVK_LOG_TYPE_MESSAGE:
             std::cout << LogColWhite << "[" << getCurrentTime() << "] Message: " << message;
             (std::cout << ... << argv);
-            std::cout << "\033[0m" << std::endl;
+            std::cout << LogColNull << std::endl;
 
             fileout << "[" << getCurrentTime() << "] Message: " << message;
             (fileout << ... << argv);
@@ -99,31 +134,31 @@ public:
         case UVK_LOG_TYPE_WARNING:
             std::cout << LogColYellow << "[" << getCurrentTime() << "] Warning: " << message;
             (std::cout << ... << argv);
-            std::cout << "\033[0m" << std::endl;
+            std::cout << LogColNull << std::endl;
 
             break;
         case UVK_LOG_TYPE_ERROR:
             std::cout << LogColRed << "[" << getCurrentTime() << "] Error: " << message;
             (std::cout << ... << argv);
-            std::cout << "\033[0m" << std::endl;
+            std::cout << LogColNull << std::endl;
 
             break;
         case UVK_LOG_TYPE_NOTE:
             std::cout << LogColBlue << "[" << getCurrentTime() << "] Note: " << message;
             (std::cout << ... << argv);
-            std::cout << "\033[0m" << std::endl;
+            std::cout << LogColNull << std::endl;
 
             break;
         case UVK_LOG_TYPE_SUCCESS:
             std::cout << LogColGreen << "[" << getCurrentTime() << "] Success: " << message;
             (std::cout << ... << argv);
-            std::cout << "\033[0m" << std::endl;
+            std::cout << LogColNull << std::endl;
 
             break;
         case UVK_LOG_TYPE_MESSAGE:
             std::cout << LogColWhite << "[" << getCurrentTime() << "] Message: " << message;
             (std::cout << ... << argv);
-            std::cout << "\033[0m" << std::endl;
+            std::cout << LogColNull << std::endl;
 
             break;
         }
@@ -177,16 +212,10 @@ private:
     {
         auto now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
 
-        // Bad
-        char* realTime = std::ctime(&now);
+        std::string realTime = std::ctime(&now);
+        realTime.erase(24);
 
-        // Bad
-        realTime[24] = '\0';
-
-        // Bad
-        std::string a = realTime;
-
-        return a;
+        return realTime;
     }
 
     std::ofstream fileout;

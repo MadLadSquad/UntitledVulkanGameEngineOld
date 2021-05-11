@@ -1,5 +1,5 @@
 // GLRenderer.cpp
-// Last update 4/15/2021 by Madman10K
+// Last update 7/55/2021 by Madman10K
 #include <GL/glew.h>
 #include "GLRenderer.hpp"
 #include "../OpenGL/Components/GLMesh.hpp"
@@ -79,8 +79,9 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
     GLfloat lastTime = 0;
     
     colour = FVector4(1.0f, 1.0f, 1.0f, 1.0f);
+
     while (!glfwWindowShouldClose(currentWindow.getWindow()))
-    {        
+    {
         glfwPollEvents();
 
         auto now = (float)glfwGetTime();
@@ -100,18 +101,45 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
 
         if (bEditor)
         {
-            ed.beginFrame();
+            UVK::Editor::beginFrame();
         }
 
-        pool.each([&](entt::entity ent){
-
-            if (registry.getComponent<CoreComponent>(ent).name == "Maikati")
+        pool.each([&](entt::entity ent)
+        {
+            if (registry.hasComponent<AudioComponent>(ent))
             {
+                bool bRemove = false;
 
+                {
+                    auto& audiocmp = registry.getComponent<AudioComponent>(ent);
+
+                    auto& state = audiocmp.src.getState();
+
+                    if (state == UVK_AUDIO_STATE_RESUME)
+                    {
+                        audiocmp.src.play();
+                    }
+                    else if (state == UVK_AUDIO_STATE_PAUSED)
+                    {
+                        alSourcePause(audiocmp.src.getBuffer().getBuffer());
+                    }
+                    else if (state == UVK_AUDIO_STATE_STOPPED)
+                    {
+                        audiocmp.src.getBuffer().removeSound();
+                        bRemove = true;
+                    }
+                }
+                if (bRemove)
+                {
+                    registry.removeComponent<AudioComponent>(ent);
+                }
+            }
+
+            if (registry.hasComponent<MeshComponentRaw>(ent))
+            {
                 auto& a = registry.getComponent<MeshComponentRaw>(ent);
-
-                //ed.getResources().brick.useTexture();
                 a.render(projection, cm);
+
             }
         });
         glUseProgram(0);
@@ -135,23 +163,20 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
 
     pool.each([&](entt::entity ent)
     {
-        //if (registry.hasComponent<AudioComponent2D>(ent))
-        //{
-        //    auto& a = registry.getComponent<AudioComponent2D>(ent);
-        //    a.stopAudio();
-        //}
-
-        //if (registry.hasComponent<AudioComponent3D>(ent))
-        //{
-        //    auto& a = registry.getComponent<AudioComponent3D>(ent);
-        //    a.stopAudio();
-        //}
-
         if (registry.hasComponent<MeshComponentRaw>(ent))
         {
             auto& a = registry.getComponent<MeshComponentRaw>(ent);
 
             a.clearMesh();
         }
+
+        if (registry.hasComponent<AudioComponent>(ent))
+        {
+            auto& a = registry.getComponent<AudioComponent>(ent);
+
+            a.src.getBuffer().removeSound();
+        }
     });
+
+    pool.clear();
 }

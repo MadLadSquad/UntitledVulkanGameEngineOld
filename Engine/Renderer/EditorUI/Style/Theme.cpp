@@ -1,5 +1,5 @@
 // Theme.cpp
-// Last update 4/28/2021 by Madman10K
+// Last update 5/04/2021 by Madman10K
 #include <Core.hpp>
 #include "Theme.hpp"
 #include <yaml.h>
@@ -61,8 +61,9 @@ void UVK::EditorTheme::setTheme(const std::string& theme)
 
     if (bUseCustomTheme)
     {
-        if (out["windowBg"] && out["header"] && out["headerHovered"] && out["headerActive"] && out["button"] && out["buttonHovered"] && out["buttonActive"] && out["frame"] && out["frameHovered"] && out["frameActive"] && out["tab"] && out["tabHovered"] && out["tabActive"] && out["tabUnfocused"] && out["tabUnfocusedActive"] && out["titleBg"] && out["titleBgCollapsed"] && out["titleBgActive"] && out["menubarBg"] && out["font"] && out["font-size"] && out["window-rounding"])
+        if (out["windowBg"] && out["header"] && out["headerHovered"] && out["headerActive"] && out["button"] && out["buttonHovered"] && out["buttonActive"] && out["frame"] && out["frameHovered"] && out["frameActive"] && out["tab"] && out["tabHovered"] && out["tabActive"] && out["tabUnfocused"] && out["tabUnfocusedActive"] && out["titleBg"] && out["titleBgCollapsed"] && out["titleBgActive"] && out["menubarBg"])
         {
+            textCol = out["textCol"].as<ImVec4>();
             windowBg = out["windowBg"].as<ImVec4>();
             header = out["header"].as<ImVec4>();
             headerHovered = out["headerHovered"].as<ImVec4>();
@@ -92,8 +93,8 @@ void UVK::EditorTheme::setTheme(const std::string& theme)
 void UVK::EditorTheme::useTheme()
 {
     auto& colours = ImGui::GetStyle().Colors;
-    auto& style = ImGui::GetStyle();
 
+    colours[ImGuiCol_Text] = textCol;
     colours[ImGuiCol_WindowBg] = windowBg;
 
     colours[ImGuiCol_Header] = header;
@@ -119,6 +120,4 @@ void UVK::EditorTheme::useTheme()
     colours[ImGuiCol_TitleBgCollapsed] = titleBgCollapsed;
 
     colours[ImGuiCol_MenuBarBg] = menubarBG;
-
-    style.WindowRounding = windowRounding;
 }
