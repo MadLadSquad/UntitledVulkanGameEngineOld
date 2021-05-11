@@ -108,6 +108,7 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
         {
             if (registry.hasComponent<AudioComponent>(ent))
             {
+#ifndef __MINGW32__
                 bool bRemove = false;
 
                 {
@@ -133,6 +134,7 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
                 {
                     registry.removeComponent<AudioComponent>(ent);
                 }
+#endif
             }
 
             if (registry.hasComponent<MeshComponentRaw>(ent))
@@ -172,9 +174,11 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
 
         if (registry.hasComponent<AudioComponent>(ent))
         {
+#ifndef __MINGW32__
             auto& a = registry.getComponent<AudioComponent>(ent);
 
             a.src.getBuffer().removeSound();
+#endif
         }
     });
 
