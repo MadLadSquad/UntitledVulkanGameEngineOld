@@ -63,7 +63,8 @@ namespace UVK
         std::string cpFileLoc;
 
         double frameTimeData[2] = { 0.0, 0.0 };
-
+#ifndef __MINGW32__
         std_filesystem::path pt;
+#endif
     };
 }
