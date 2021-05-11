@@ -3,11 +3,6 @@
 #pragma once
 #include <Core.hpp>
 
-#ifndef __MINGW32__
-#include "AL/al.h"
-#include "AL/alc.h"
-#include "AL/alext.h"
-
 namespace UVK
 {
     enum AudioState
@@ -17,6 +12,16 @@ namespace UVK
         UVK_AUDIO_STATE_RESUME,
         UVK_AUDIO_STATE_STOPPED
     };
+}
+
+#ifndef __MINGW32__
+#include "AL/al.h"
+#include "AL/alc.h"
+#include "AL/alext.h"
+
+namespace UVK
+{
+
     class AudioManager
     {
     public:
