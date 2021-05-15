@@ -8,7 +8,7 @@ int iAmNumber = 0;
 
 void iPrintANumber(int thisArgIsANumber);
 ```
-2.  Bools start with lower case 'b'
+2.  Booleans start with lower case 'b'
 3.  Types are named like this
 ```cpp
 ThisIsAType
@@ -35,8 +35,8 @@ enum MyEnum
 2.  Classes should always have some type of constructor
 3.  Classes can be global variables only if and when there needs to be 1 instance of them
 ## UI
-1.  Editor UI should be label on the right, content on the left
-2.  An editor UI widget can be contained in the GLRenderer.cpp or in a seperate file in a namespace with the name of the widget
+1.  Editor UI should be labeled on the right, content on the left
+2.  An editor UI widget can be contained in the GLRenderer.cpp or in a separate file in a namespace with the name of the widget
 3.  The render function for UI is a static function that is always called display
 ## For the game developer
 Coming soon
