@@ -1,10 +1,10 @@
 // WorldSettings.cpp
-// Last update 5/5/2021 by Madman10K
+// Last update 15/5/2021 by Madman10K
 #include "WorldSettings.hpp"
 
-void WorldSettings::display(UVK::FVector4& colour, UVK::FVector4 ambientLight, std::string& name)
+void WorldSettings::display(UVK::FVector4& colour, UVK::FVector4 ambientLight, std::string& name, bool& bShow)
 {
-    ImGui::Begin("World Settings", nullptr);
+    ImGui::Begin("World Settings", &bShow);
 
     ImGui::InputText("Level Name", &name);
 

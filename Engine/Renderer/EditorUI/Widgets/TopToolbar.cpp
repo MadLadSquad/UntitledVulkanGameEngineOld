@@ -1,13 +1,13 @@
 // TopToolbar.cpp
-// Last update 5/5/2021 by Madman10K
+// Last update 15/5/2021 by Madman10K
 #include "TopToolbar.hpp"
 #include <imgui.h>
 
-void TopToolbar::display(UVK::Texture &play)
+void TopToolbar::display(UVK::Texture &play, bool& bShow)
 {
     int lnt = 0;
 
-    ImGui::Begin("Toolbar", nullptr);
+    ImGui::Begin("Toolbar", &bShow);
 
     if (ImGui::ImageButton((void*)(intptr_t)play.getImage(), ImVec2((float)play.getWidth(), (float)play.getHeight())))
     {

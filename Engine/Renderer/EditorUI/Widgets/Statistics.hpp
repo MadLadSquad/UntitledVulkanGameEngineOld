@@ -1,5 +1,5 @@
 // Statistics.hpp
-// Last update 5/5/2021 by Madman10K
+// Last update 15/5/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 #include <imgui.h>
@@ -19,5 +19,5 @@ namespace Statistics
         void AddPoint(float x, float y);
     };
 
-    void display(double* data);
+    void display(double* data, bool& bShow);
 }

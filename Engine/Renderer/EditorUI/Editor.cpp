@@ -1,5 +1,5 @@
 // Editor.cpp
-// Last update 7/05/2021 by Madman10K
+// Last update 15/5/2021 by Madman10K
 #include <GL/glew.h>
 #include "../../GameFramework/GameplayClasses/Level/Level.hpp"
 #include "Widgets/SceneHierarchy.hpp"
@@ -18,6 +18,7 @@
 #include "Widgets/OpenLevelWidget.hpp"
 #include "Widgets/About.hpp"
 #include "Widgets/NewLevel.hpp"
+#include "Widgets/Help.hpp"
 #include "../Window/Window.hpp"
 
 void UVK::Editor::initEditor()
@@ -244,12 +245,34 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb)
             ImGui::EndMenu();
         }
 
+        if (ImGui::BeginMenu("View"))
+        {
+            ImGui::Checkbox("Filesystem", &bShowFilesystem);
+            ImGui::Checkbox("Statistics", &bShowStatistics);
+            ImGui::Checkbox("Viewport", &bShowViewport);
+            ImGui::Checkbox("Details Panel", &bShowDetailsPanel);
+            ImGui::Checkbox("Terminal Emulator", &bShowTerminalEmulator);
+            ImGui::Checkbox("Scene Hierarchy", &bShowSceneHierarchy);
+            ImGui::Checkbox("World Settings", &bShowWorldSettings);
+            ImGui::Checkbox("Toolbar", &bShowToolbar);
+            ImGui::Checkbox("Tools", &bShowTools);
+            ImGui::Checkbox("Memory Editor", &bShowMemoryEditor);
+
+            ImGui::EndMenu();
+        }
+
         if (ImGui::BeginMenu("More"))
         {
             if (ImGui::Button("About us"))
             {
                 bShowAboutUs = true;
             }
+
+            if (ImGui::Button("Help"))
+            {
+                bShowHelp = true;
+            }
+
             ImGui::EndMenu();
         }
         ImGui::EndMenuBar();
@@ -277,61 +300,76 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb)
         CreateFile::display(selectedFile, fileOutLocation, bShowCreateFile1);
     }
 
+    if (bShowSceneHierarchy)
     {
-        SceneHierarchy::display(selectedEntity, entAppend, entNum);
+        SceneHierarchy::display(selectedEntity, entAppend, entNum, bShowSceneHierarchy);
     }
 
+    if (bShowViewport)
     {
         style.WindowPadding = ImVec2(0.0f, 0.0f);
 
-        EditorViewport::display(fb, viewportWidth, viewportHeight);
+        EditorViewport::display(fb, viewportWidth, viewportHeight, bShowViewport);
 
         style.WindowPadding = ImVec2(8.0f, 8.0f);
     }
 
+    if (bShowDetailsPanel)
     {
-        DetailsPanel::display(selectedEntity);
+        DetailsPanel::display(selectedEntity, bShowDetailsPanel);
     }
 
 #ifndef __MINGW32__
+    if (bShowFilesystem)
     {
-        Filesystem::display(pt, cpFileLoc);
+        Filesystem::display(pt, cpFileLoc, bShowFilesystem);
     }
 #endif
 
+    if (bShowToolbar)
     {
         style.WindowPadding = ImVec2(0.0f, 0.0f);
 
-        TopToolbar::display(play);
+        TopToolbar::display(play, bShowToolbar);
 
         style.WindowPadding = ImVec2(8.0f, 8.0f);
     }
 
+    if (bShowTools)
     {
-        ImGui::Begin("Tools", nullptr);
+        ImGui::Begin("Tools", &bShowTools);
         ImGui::Text("Coming soon!");
         ImGui::End();
     }
 
+    if (bShowTerminalEmulator)
     {
-        TerminalEmulator::display(terminalCommand, bFinalisedCommand);
+        TerminalEmulator::display(terminalCommand, bFinalisedCommand, bShowTerminalEmulator);
     }
 
+    if (bShowMemoryEditor)
     {
-        ImGuiMemoryEditor::display();
+        ImGuiMemoryEditor::display(bShowMemoryEditor);
     }
 
+    if (bShowStatistics)
     {
-        Statistics::display(frameTimeData);
+        Statistics::display(frameTimeData, bShowStatistics);
     }
 
+    if (bShowWorldSettings)
     {
-        WorldSettings::display(colour, FVector4(1.0f, 1.0f, 1.0f, 1.0f), levelName);
+        WorldSettings::display(colour, FVector4(1.0f, 1.0f, 1.0f, 1.0f), levelName, bShowWorldSettings);
     }
 
     if (bShowAboutUs)
     {
         About::display(engineVersion, projectName, projectVersion, logoTxt, bShowAboutUs);
+    }
+
+    if (bShowHelp)
+    {
+        Help::display(bShowHelp);
     }
 }
 

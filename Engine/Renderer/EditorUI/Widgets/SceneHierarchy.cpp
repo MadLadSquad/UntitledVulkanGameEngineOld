@@ -1,5 +1,5 @@
 // SceneHierarchy.cpp
-// Last update 5/5/2021 by Madman10K
+// Last update 15/5/2021 by Madman10K
 #include "SceneHierarchy.hpp"
 
 void SceneHierarchy::destroyEntity(entt::entity &selectedEntity)
@@ -26,11 +26,11 @@ void SceneHierarchy::destroyEntity(entt::entity &selectedEntity)
     UVK::Registry::destroyActor(selectedEntity);
 }
 
-void SceneHierarchy::display(entt::entity &selectedEntity, std::string &entAppend, int &entNum)
+void SceneHierarchy::display(entt::entity &selectedEntity, std::string &entAppend, int &entNum, bool& bShow)
 {
     bool bDestroy = false;
 
-    ImGui::Begin("Scene Hierarchy");
+    ImGui::Begin("Scene Hierarchy", &bShow);
 
     if (ImGui::Button("+##add entity"))
     {

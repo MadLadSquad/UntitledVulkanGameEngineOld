@@ -1,5 +1,5 @@
 // Statistics.hpp
-// Last update 5/5/2021 by Madman10K
+// Last update 15/5/2021 by Madman10K
 #include "Statistics.hpp"
 
 Statistics::RollingBuffer::RollingBuffer()
@@ -16,9 +16,9 @@ void Statistics::RollingBuffer::AddPoint(float x, float y)
     Data.push_back(ImVec2(xmod, y));
 }
 
-void Statistics::display(double* data)
+void Statistics::display(double* data, bool& bShow)
 {
-    ImGui::Begin("Statistics", nullptr);
+    ImGui::Begin("Statistics", &bShow);
 
     ImGui::Text("Performance: %.3f ms(%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 

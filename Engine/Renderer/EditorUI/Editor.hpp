@@ -1,5 +1,5 @@
 // Editor.hpp
-// Last update 7/5/2021 by Madman10K
+// Last update 15/5/2021 by Madman10K
 #pragma once
 #include <iostream>
 #include <utility>
@@ -46,6 +46,19 @@ namespace UVK
         bool bShowCreateFile1 = false;
         bool bShowAboutUs = false;
         bool bShowSaveWarning = false;
+        bool bShowHelp = false;
+
+        bool bShowFilesystem = true;
+        bool bShowStatistics = true;
+        bool bShowViewport = true;
+        bool bShowDetailsPanel = true;
+        bool bShowTerminalEmulator = true;
+        bool bShowSceneHierarchy = true;
+        bool bShowWorldSettings = true;
+        bool bShowToolbar = true;
+        bool bShowTools = true;
+        bool bShowMemoryEditor = true;
+
 
         void displayEditor(FVector4& colour, GLFrameBuffer& fb);
 

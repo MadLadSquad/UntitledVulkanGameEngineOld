@@ -1,5 +1,5 @@
 // SceneHierarchy.hpp
-// Last update 5/5/2021 by Madman10K
+// Last update 15/5/2021 by Madman10K
 #pragma once
 #include <imgui.h>
 //#include "../../../GameFramework/Components/Components.hpp"
@@ -9,5 +9,5 @@ namespace SceneHierarchy
 {
     void destroyEntity(entt::entity& selectedEntity);
 
-    void display(entt::entity& selectedEntity, std::string& entAppend, int& entNum);
+    void display(entt::entity& selectedEntity, std::string& entAppend, int& entNum, bool& bShow);
 }

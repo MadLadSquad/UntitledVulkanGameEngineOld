@@ -1,12 +1,12 @@
 // EditorViewport.cpp
-// Last update 5/5/2021 by Madman10K
+// Last update 15/5/2021 by Madman10K
 #include <GL/glew.h>
 #include "EditorViewport.hpp"
 #include <imgui.h>
 
-void EditorViewport::display(UVK::GLFrameBuffer& fb, int& viewportWidth, int& viewportHeight)
+void EditorViewport::display(UVK::GLFrameBuffer& fb, int& viewportWidth, int& viewportHeight, bool& bShow)
 {
-    ImGui::Begin("Viewport##1");
+    ImGui::Begin("Viewport##1", &bShow);
 
     if (viewportWidth != (int)ImGui::GetWindowWidth() || viewportHeight != (int)ImGui::GetWindowHeight())
     {

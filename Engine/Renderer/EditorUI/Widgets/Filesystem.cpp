@@ -1,11 +1,11 @@
 // Filesystem.cpp
-// Last update 5/04/2021 by Madman10K
+// Last update 15/04/2021 by Madman10K
 #include "Filesystem.hpp"
 
 #ifndef __MINGW32__
-void Filesystem::display(std_filesystem::path& pt, std::string& cpLoc)
+void Filesystem::display(std_filesystem::path& pt, std::string& cpLoc, bool& bShow)
 {
-    ImGui::Begin("Filesystem##Widget", nullptr);
+    ImGui::Begin("Filesystem##Widget", &bShow);
     std::string fileType;
     auto temp = absolute(pt).string();
     Utility::sanitiseFilepath(temp, true);

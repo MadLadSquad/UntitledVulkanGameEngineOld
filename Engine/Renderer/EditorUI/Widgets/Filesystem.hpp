@@ -1,5 +1,5 @@
 // Filesystem.hpp
-// Last update 5/04/2021 by Madman10K
+// Last update 15/04/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 #include "Engine/Renderer/Textures/Texture.hpp"
@@ -11,6 +11,6 @@
 
 namespace Filesystem
 {
-    void display(std_filesystem::path& pt, std::string& cpLoc);
+    void display(std_filesystem::path& pt, std::string& cpLoc, bool& bShow);
 }
 #endif

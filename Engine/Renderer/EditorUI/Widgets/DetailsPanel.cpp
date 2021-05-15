@@ -1,5 +1,5 @@
 // DetailsPanel.cpp
-// Last update 5/5/2021 by Madman10K
+// Last update 15/5/2021 by Madman10K
 #include <Core/Registry.hpp>
 #include <imgui.h>
 #include <cpp/imgui_stdlib.h>
@@ -73,9 +73,9 @@ void DetailsPanel::DrawVec3Control(const std::string &label, glm::vec3 &values, 
     ImGui::PopID();
 }
 
-void DetailsPanel::display(entt::entity ent)
+void DetailsPanel::display(entt::entity ent, bool& bShow)
 {
-    ImGui::Begin("Details", nullptr);
+    ImGui::Begin("Details", &bShow);
 
     ImGui::Button("+##ADDCMP");
 
