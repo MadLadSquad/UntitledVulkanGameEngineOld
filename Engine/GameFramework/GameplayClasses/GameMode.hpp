@@ -1,5 +1,5 @@
 // GameMode.hpp
-// Last update 2/24/2021 by Madman10K
+// Last update 18/5/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 #include "GameState.hpp"
@@ -9,7 +9,7 @@
 
 namespace UVK
 {
-    UVK_API class GameMode
+    class GameMode
     {
     public:
         GameMode() = default;

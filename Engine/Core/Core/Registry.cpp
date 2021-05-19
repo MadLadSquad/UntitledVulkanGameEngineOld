@@ -8,9 +8,9 @@ void UVK::Registry::createActor(const std::string &name)
 
     auto& a = addComponent<UVK::CoreComponent>(act);
     a.name = name;
-    a.id = id;
 
-    id = id++;
+    // IDs should be used by the user for special scriptable objects
+    a.id = 0;
 }
 
 void UVK::Registry::destroyActor(Actor &act)

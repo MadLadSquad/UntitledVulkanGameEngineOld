@@ -1,5 +1,5 @@
 // Components.hpp
-// Last update 7/5/2021 by Madman10K
+// Last update 18/5/2021 by Madman10K
 #pragma once
 #include <GL/glew.h>
 
@@ -28,11 +28,14 @@ namespace UVK
     /**
      * @brief The base component every entity has
      * @param name - the name of the entity
-     * @param id - the universal unique identifier(UUID) of an entity (Not yet implemented)
+     * @param id - user defined integer for id
      */
-    UVK_API struct CoreComponent
+    struct CoreComponent
     {
         std::string name;
         uint64_t id;
+    private:
+        // In order for the program to not crash when there is no data in id or name
+        static constexpr char a = 'a';
     };
 }

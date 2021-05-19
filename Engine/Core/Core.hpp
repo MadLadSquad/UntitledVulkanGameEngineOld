@@ -14,6 +14,7 @@
 #include <chrono>
 #include <stack>
 #include <future>
+#include <mutex>
 #include <yaml-cpp/yaml.h>
 #include <UVKLog.h>
 #include "Engine/Core/Core/Utility.hpp"

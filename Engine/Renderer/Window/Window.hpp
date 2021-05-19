@@ -1,5 +1,5 @@
 // Window.hpp
-// Last update 3/27/2021 by Madman10K
+// Last update 18/5/2021 by Madman10K
 #pragma once
 #include <GL/glew.h>
 #include "../Textures/Texture.hpp"
@@ -13,56 +13,21 @@ namespace UVK
     class Window
     {
     public:
-        Window()
-        {
-            for (auto& a : keysArr)
-            {
-                a = false;
-            }
+        Window();
 
-            for (auto& b : mouseArr)
-            {
-                b = false;
-            }
-        }
 
         void createWindow();
-
         void dumpConfig();
-
         void destroyWindow();
 
-        void setTitle(const std::string& newTitle) const
-        {
-            glfwSetWindowTitle(windowMain, newTitle.c_str());
-        }
+        void setTitle(const std::string& newTitle) const;
+        [[nodiscard]] GLFWwindow* getWindow() const;
+        [[nodiscard]] FVector2 getLastMousePosition() const;
+        [[nodiscard]] FVector2 getCurrentMousePosition() const;
 
-        [[nodiscard]] GLFWwindow* getWindow() const
-        {
-            return windowMain;
-        }
 
-        [[maybe_unused]] [[nodiscard]] FVector2 getLastMousePosition() const
-        {
-            return FVector2(lastPosX, lastPosY);
-        }
+        void setCursorVisibility(bool bIsVisible);
 
-        [[maybe_unused]] [[nodiscard]] FVector2 getCurrentMousePosition() const
-        {
-            return FVector2(posX, posY);
-        }
-
-        [[maybe_unused]] void setCursorVisibility(bool bIsVisible)
-        {
-            if (bIsVisible)
-            {
-                glfwSetInputMode(windowMain, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-            }
-            else
-            {
-                glfwSetInputMode(windowMain, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-            }
-        }
 
         [[nodiscard]] int getBufferWidth() const
         {
@@ -78,9 +43,15 @@ namespace UVK
         {
             return bufferHeight;
         }
-        std::array<bool, 142> keysArr{};
-        std::array<bool, 20> mouseArr{};
+
+        const std::array<bool, 349>& getKeys();
+        const std::array<bool, 20>& getMouseKeys();
+        FVector2 getScroll();
     private:
+        std::array<bool, 349> keysArr{};
+        std::array<bool, 20> mouseArr{};
+
+        FVector2 scroll{};
 
         void openConfig();
         void doCallBacks();
@@ -91,21 +62,8 @@ namespace UVK
         static void mouseCursorPositionCallback(GLFWwindow* window, double xpos, double ypos);
         static void scrollInputCallback(GLFWwindow* window, double xoffset, double yoffset);
 
-        [[nodiscard]] double getXMousePositionChange()
-        {
-            auto a = (float)offsetX;
-            offsetX = 0.0f;
-
-            return a;
-        }
-
-        [[nodiscard]] double getYMousePositionChange()
-        {
-            auto a = (float)offsetY;
-            offsetY = 0.0f;
-
-            return a;
-        }
+        [[nodiscard]] double getXMousePositionChange();
+        [[nodiscard]] double getYMousePositionChange();
 
         std::string image = "../Content/Engine/icon.png";
         int width = 800;
@@ -136,44 +94,14 @@ namespace UVK
     class Input
     {
     public:
-        Input() = default;
+        static bool getKeyPressed(int key);
+        static bool getMouseKeyPressed(int key);
 
-        static bool getKeyPressed(const int key)
-        {
-            if (currentWindow.keysArr[key])
-            {
-                return true;
-            }
+        static FVector2 getMousePositionChange();
+        static FVector2 getCurrentMousePosition();
+        static FVector2 getLastMousePosition();
 
-            return false;
-        }
-
-        static bool getMouseKeyPressed(const int key)
-        {
-            if (currentWindow.mouseArr[key])
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        static FVector2 getMousePositionChange()
-        {
-            return currentWindow.getMousePositionChange();
-        }
-
-        static FVector2 getCurrentMousePosition()
-        {
-            return currentWindow.getCurrentMousePosition();
-        }
-
-        static FVector2 getLastMousePosition()
-        {
-            return currentWindow.getLastMousePosition();
-        }
+        static FVector2 getScroll();
     private:
     };
 }
-
-inline UVK::Input input;

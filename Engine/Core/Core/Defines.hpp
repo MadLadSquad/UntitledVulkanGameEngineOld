@@ -1,9 +1,7 @@
 // Defines.hpp
-// Last update 3/26/2021 by Madman10K
+// Last update 18/5/2021 by Madman10K
 #pragma once
 #include <any>
-// Defines
-#define UVK_API
 
 // This is for MinGW32 because it is retarded
 #ifndef __MINGW32__

@@ -1,5 +1,5 @@
 // Level.cpp
-// Last update 4/12/2021 by Madman10K
+// Last update 18/5/2021 by Madman10K
 #include "../../Components/Components.hpp"
 #include "Engine/Core/Core/Registry.hpp"
 #include "Level.hpp"
@@ -155,7 +155,6 @@ void UVK::Level::save(String location, String name)
 void UVK::Level::open(String location) noexcept
 {
     pool.clear();
-    id = 0;
 
     logger.consoleLog("Opening level with location: ", UVK_LOG_TYPE_NOTE, location);
 
@@ -180,47 +179,32 @@ void UVK::Level::open(String location) noexcept
         if (entities)
         {
             logger.consoleLog("Iterating entities", UVK_LOG_TYPE_NOTE);
-            for (auto entity : entities)
-            {
-                auto name = entity["actor"].as<std::string>();
+#if 0
+            std::mutex mutex;
+            std::vector<std::future<void>> vect;
 
+            constexpr auto func = [](std::mutex* mx, const YAML::Node* ent)
+            {
+                auto name = (*ent)["actor"].as<std::string>();
+
+                mx->lock();
+                auto act = pool.create();
+                auto& core = registry.addComponent<UVK::CoreComponent>(act);
+                mx->unlock();
+
+                core.name = name;
+            };
+#endif
+            for (const YAML::Node& entity : entities)
+            {
+#if 0
+                vect.push_back(std::async(std::launch::async, func, &mutex, &entity));
+#else
+                auto name = entity["actor"].as<std::string>();
                 auto act = pool.create();
                 auto& core = registry.addComponent<UVK::CoreComponent>(act);
                 core.name = name;
-
-                //if (entity["audio3d-location"])
-                //{
-                //    auto& a = registry.addComponent<AudioComponent3D>(act);
-                //    a.play(entity["audio3d-location"].as<std::string>().c_str(), entity["audio3d-repeat"].as<bool>(), entity["audio3d-gain"].as<float>(), entity["audio3d-pitch"].as<float>(), entity["audio3d-translation"].as<FVector>());
-                //}
-
-                //if (entity["audio2d-location"])
-                //{
-                //    auto& a = registry.addComponent<AudioComponent2D>(act);
-                //    a.play(entity["audio2d-location"].as<std::string>().c_str(), entity["audio2d-repeat"].as<bool>(), entity["audio2d-gain"].as<float>(), entity["audio2d-pitch"].as<float>());
-                //}
-
-                if (entity["mcr-translation"])
-                {
-                    auto& a = registry.addComponent<MeshComponentRaw>(act);
-
-                    ShaderImportType type;
-
-                    if (entity["mcr-simport"].as<int>() == 0)
-                    {
-                        type = SHADER_IMPORT_TYPE_FILE;
-                    }
-                    else if (entity["mcr-simport"].as<int>() == 1)
-                    {
-                        type = SHADER_IMPORT_TYPE_STRING;
-                    }
-                    else
-                    {
-                        type = SHADER_IMPORT_TYPE_SPIR;
-                    }
-
-                    a.createMesh(entity["mcr-vertices"].as<std::vector<float>>().data(), entity["mcr-indices"].as<std::vector<uint32_t>>().data(), entity["mcr-vertices"].as<std::vector<float>>().size(), entity["mcr-indices"].as<std::vector<int>>().size(), entity["mcr-vshader"].as<std::string>().c_str(), entity["mcr-fshader"].as<std::string>().c_str(), type);
-                }
+#endif
             }
             logger.consoleLog("Iterated entities", UVK_LOG_TYPE_SUCCESS);
         }

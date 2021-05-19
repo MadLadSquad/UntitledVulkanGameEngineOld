@@ -1,5 +1,5 @@
 // Level.hpp
-// Last update 4/24/2021 by Madman10K
+// Last update 18/5/2021 by Madman10K
 #include <Core.hpp>
 #include "../GameMode.hpp"
 #include "../GameInstance.hpp"
@@ -7,7 +7,7 @@
 namespace UVK
 {
 
-    class UVK_API Level
+    class Level
     {
     public:
         //Level(const char* name) { open(name); }

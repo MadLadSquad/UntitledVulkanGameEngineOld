@@ -3,8 +3,7 @@
 #pragma once
 #include <iostream>
 #include <Core.hpp>
-#include <imguiex/imtty/ImTTY.h>
-#include <cpp/imgui_stdlib.h>
+
 
 namespace TerminalEmulator
 {

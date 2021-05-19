@@ -1,5 +1,5 @@
 // Audio.cpp
-// Last update 7/5/2021 by Madman10K
+// Last update 18/5/2021 by Madman10K
 #include "Audio.hpp"
 #include <sndfile.h>
 
@@ -36,7 +36,6 @@ void UVK::AudioManager::createDevice()
     }
 
     logger.consoleLog("Loaded sound device:", UVK_LOG_TYPE_SUCCESS, name);
-    logger.consoleLog("Successfully opened a sound device", UVK_LOG_TYPE_SUCCESS);
 }
 
 void UVK::AudioManager::destroyDevice()

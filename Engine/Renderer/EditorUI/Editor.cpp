@@ -73,9 +73,9 @@ void UVK::Editor::initEditor()
 #endif
     ImGui::CreateContext();
     ImPlot::CreateContext();
-    ImTTY::Terminal.CreateContext();
+    //ImTTY::Terminal.CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+    //io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
     io.ConfigViewportsNoTaskBarIcon = true;
 
@@ -390,6 +390,6 @@ void UVK::Editor::destroyContext()
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
     ImPlot::DestroyContext();
-    ImTTY::Terminal.DestroyContext();
+    //ImTTY::Terminal.DestroyContext();
     currentWindow.destroyWindow();
 }

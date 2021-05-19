@@ -85,7 +85,7 @@ void DetailsPanel::display(entt::entity ent, bool& bShow)
         auto& a = registry.getComponent<UVK::CoreComponent>(ent);
 
         std::string id = std::to_string(a.id);
-        ImGui::InputText("name##inputname", &a.name);
+        ImGui::InputText("name##inputactorname", &a.name);
 
         ImGui::InputText("id##inputactoridentifier", &id);
     }

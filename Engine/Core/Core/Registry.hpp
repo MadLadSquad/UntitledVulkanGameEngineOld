@@ -1,9 +1,8 @@
 // Registry.hpp
-// Last update 6/5/2021 by Madman10K
+// Last update 18/5/2021 by Madman10K
 #include "Engine/GameFramework/Components/Components.hpp"
 
 inline UVK::EntityPool pool;
-inline uint64_t id = 0;
 
 namespace UVK
 {
@@ -71,75 +70,6 @@ namespace UVK
          * @return void
          */
         static void destroyActor(Actor& act);
-
-        /**
-        * @brief Iterates the registry and returns actor with a given id
-        * @param The id needed for comparison
-        * @return An the actor from the registry if found or an empty actor identifier
-
-        Actor& searchByID(uint64_t idNum)
-        {
-            pool.each([&](Actor act)
-            {
-                if (pool.has<UVK::CoreComponent>(act))
-                {
-                    auto& a = pool.get<UVK::CoreComponent>(act);
-
-                    if (a.id == idNum)
-                    {
-                        return act;
-                    }
-                }
-            });
-            Actor act;
-
-            return act;
-        };
-
-        /**
-        * @brief Iterates the registry and finds an actor with a given name
-        * @param The name needed for comparison
-        * @return The actor from the registry if found or an empty actor identifier
-
-        Actor& searchByName(std::string name)
-        {
-            pool.each([&](Actor& act)
-            {
-                if (pool.has<UVK::CoreComponent>(act))
-                {
-                    auto& a = pool.get<UVK::CoreComponent>(act);
-
-                    if (a.name == name)
-                    {
-                        return act;
-                    }
-                }
-            });
-
-            Actor act;
-            return act;
-        };
-
-        /**
-         * @brief Iterates the registry and returns an array of actors that contain a given component
-         * @tparam The component needed for comparison
-         * @return An array of actor pointers containing the given component
-
-        template<typename T>
-        std::vector<Actor*> getAllWithComponent()
-        {
-            std::vector<Actor*> arr;
-            pool.each([&](Actor& act)
-            {
-                if (pool.has<T>(act))
-                {
-                    arr.push_back(&act);
-                }
-            });
-
-            return arr;
-        };
-        */
     };
 }
 

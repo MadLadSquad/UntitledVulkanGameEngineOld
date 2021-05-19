@@ -1,12 +1,12 @@
 // PlayerController.hpp
-// Last update 2/24/2021 by Madman10K
+// Last update 18/5/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 #include "../Actors/APawn.hpp"
 
 namespace UVK
 {
-    UVK_API class PlayerController
+    class PlayerController
     {
     public:
         PlayerController() = default;
@@ -19,7 +19,7 @@ namespace UVK
             currentPawn = pawn;
         }
 
-        APawn* currentPawn;
+        APawn* currentPawn{};
 
         virtual ~PlayerController()
         {

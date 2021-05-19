@@ -10,11 +10,6 @@
 
 namespace UVK
 {
-	// Array
-	template<typename T>
-	using TArray = std::vector<T>;
-	// Model matrix
-	//typedef glm::mat4 Model;
 	// Vector3
 	typedef glm::vec3 FVector;
 	// Vector4

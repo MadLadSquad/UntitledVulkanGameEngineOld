@@ -1,7 +1,42 @@
 // Window.cpp
-// Last update 4/12/2021 by Madman10K
+// Last update 18/5/2021 by Madman10K
 #include "Window.hpp"
 
+double UVK::Window::getYMousePositionChange()
+{
+    auto a = (float)offsetY;
+    offsetY = 0.0f;
+
+    return a;
+}
+
+double UVK::Window::getXMousePositionChange()
+{
+    auto a = (float)offsetX;
+    offsetX = 0.0f;
+
+    return a;
+}
+
+void UVK::Window::setTitle(const std::string& newTitle) const
+{
+    glfwSetWindowTitle(windowMain, newTitle.c_str());
+}
+
+GLFWwindow* UVK::Window::getWindow() const
+{
+    return windowMain;
+}
+
+UVK::FVector2 UVK::Window::getLastMousePosition() const
+{
+    return FVector2(lastPosX, lastPosY);
+}
+
+UVK::FVector2 UVK::Window::getCurrentMousePosition() const
+{
+    return FVector2(posX, posY);
+}
 
 void UVK::Window::doCallBacks()
 {
@@ -32,8 +67,8 @@ void UVK::Window::createWindow()
     glewExperimental = GL_TRUE;
     
     //glEnable(GL_DEPTH_TEST); 
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_SAMPLES, 16);
@@ -183,7 +218,6 @@ void UVK::Window::mouseCursorPositionCallback(GLFWwindow* window, double xpos, d
 
 void UVK::Window::mouseKeyInputCallback(GLFWwindow* window, int button, int action, int mods)
 {
-   // input.callMouseClickEvents(button, action);
     auto* windowInst = static_cast<Window*>(glfwGetWindowUserPointer(window));
     if (action == Keys::KeyPressedEvent || action == Keys::KeyRepeatEvent)
     {
@@ -199,5 +233,77 @@ void UVK::Window::scrollInputCallback(GLFWwindow* window, double xoffset, double
 {
     auto* windowInst = static_cast<Window*>(glfwGetWindowUserPointer(window));
 
+    windowInst->scroll = UVK::FVector2(xoffset, yoffset);
+}
 
+const std::array<bool, 349>& UVK::Window::getKeys()
+{
+    return keysArr;
+}
+
+const std::array<bool, 20> &UVK::Window::getMouseKeys()
+{
+    return mouseArr;
+}
+
+UVK::FVector2 UVK::Window::getScroll()
+{
+    FVector2 ret = scroll;
+    scroll = FVector2(0.0f, 0.0f);
+    return ret;
+}
+
+UVK::Window::Window()
+{
+    for (auto& a : keysArr)
+    {
+        a = false;
+    }
+
+    for (auto& b : mouseArr)
+    {
+        b = false;
+    }
+}
+
+void UVK::Window::setCursorVisibility(bool bIsVisible)
+{
+    if (bIsVisible)
+    {
+        glfwSetInputMode(windowMain, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+    }
+    else
+    {
+        glfwSetInputMode(windowMain, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    }
+}
+
+UVK::FVector2 UVK::Input::getLastMousePosition()
+{
+    return currentWindow.getLastMousePosition();
+}
+
+UVK::FVector2 UVK::Input::getCurrentMousePosition()
+{
+    return currentWindow.getCurrentMousePosition();
+}
+
+UVK::FVector2 UVK::Input::getMousePositionChange()
+{
+    return currentWindow.getMousePositionChange();
+}
+
+bool UVK::Input::getMouseKeyPressed(int key)
+{
+    return currentWindow.getMouseKeys()[key];
+}
+
+bool UVK::Input::getKeyPressed(int key)
+{
+    return currentWindow.getKeys()[key];
+}
+
+UVK::FVector2 UVK::Input::getScroll()
+{
+    return currentWindow.getScroll();
 }
