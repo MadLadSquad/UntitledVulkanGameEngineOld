@@ -1,6 +1,8 @@
 #!/bin/bash
 echo "Compiling GLEW ..."
 
+mkdir Source
+
 cd Engine/ThirdParty/glew/auto
 
 cd ..
@@ -22,7 +24,7 @@ engine-version: 1.0.0" > uvproj.yaml
 
 echo "Compiling build tool and generating files ..."
 
-cd UVKBuildTool/ && mkdir build && mkdir Source && cd build && cmake .. -G "Unix Makefiles" && make && ./UVKBuildTool --generate && cd ../../ && mkdir build && cd build && cmake .. && cd ..
+cd UVKBuildTool/ && mkdir build && cd build && cmake .. -G "Unix Makefiles" && make && ./UVKBuildTool --generate && cd ../../ && mkdir build && cd build && cmake .. && cd ..
 
 echo "\
 name: Game
