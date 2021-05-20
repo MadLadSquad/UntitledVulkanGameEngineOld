@@ -5,6 +5,8 @@
 
 namespace UVK
 {
+    struct AudioSourceData;
+
     struct AudioComponent
     {
         void init(AudioSourceData dt);
@@ -14,8 +16,9 @@ namespace UVK
         void pause();
         void resume();
 
-#ifndef __MINGW32__
+
         AudioSourceData data;
+#ifndef __MINGW32__
         AudioSource src;
 #endif
     private:

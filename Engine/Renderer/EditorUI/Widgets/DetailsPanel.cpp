@@ -172,6 +172,7 @@ void DetailsPanel::display(entt::entity& ent, bool& bShow, bool& destroy)
         DrawVec3Control("Scale", a.scale, 1.0f, 100.0f);
     }
 
+#ifndef __MINGW32__
     if (registry.hasComponent<UVK::AudioComponent>(ent))
     {
         ImGui::Separator();
@@ -185,5 +186,6 @@ void DetailsPanel::display(entt::entity& ent, bool& bShow, bool& destroy)
         DrawVec3Control("Position", a.data.position, 0.0f, 100.0f);
         DrawVec3Control("Velocity", a.data.velocity, 0.0f, 100.0f);
     }
+#endif
     ImGui::End();
 }

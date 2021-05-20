@@ -86,6 +86,7 @@ void UVK::Level::saveEntity(YAML::Emitter& out, Actor act)
         out << YAML::Key << "id" << YAML::Value << a.id;
     }
 
+#ifndef __MINGW32__
     if (registry.hasComponent<UVK::AudioComponent>(act))
     {
         auto& a = registry.getComponent<UVK::AudioComponent>(act);
@@ -96,6 +97,7 @@ void UVK::Level::saveEntity(YAML::Emitter& out, Actor act)
         out << YAML::Key << "audio-velocity" << YAML::Value << a.data.velocity;
         out << YAML::Key << "audio-file" << YAML::Value << a.data.location;
     }
+#endif
     out << YAML::EndMap;
 }
 
