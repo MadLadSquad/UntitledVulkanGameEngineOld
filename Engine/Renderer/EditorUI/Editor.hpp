@@ -1,5 +1,5 @@
 // Editor.hpp
-// Last update 15/5/2021 by Madman10K
+// Last update 20/5/2021 by Madman10K
 #pragma once
 #include <iostream>
 #include <utility>
@@ -49,7 +49,7 @@ namespace UVK
         bool bShowHelp = false;
 
         bool bShowFilesystem = true;
-        bool bShowStatistics = true;
+        bool bShowStatistics = false;
         bool bShowViewport = true;
         bool bShowDetailsPanel = true;
         bool bShowTerminalEmulator = true;

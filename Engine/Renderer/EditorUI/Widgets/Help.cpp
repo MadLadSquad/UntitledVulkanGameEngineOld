@@ -1,9 +1,9 @@
 // Help.cpp
-// Last update 15/5/2021 by Madman10K
+// Last update 20/5/2021 by Madman10K
 #include "Help.hpp"
 #include <imgui.h>
 
-void Help::display(bool &bShow)
+void Help::display(bool& bShow)
 {
     ImGui::Begin("Help", &bShow);
 
@@ -19,6 +19,11 @@ void Help::display(bool &bShow)
 
     ImGui::Text("Discord Server: ");
     ImGui::InputText("##id", link3, strlen(link3),  ImGuiInputTextFlags_ReadOnly);
+
+    if (ImGui::Button("Close##Help"))
+    {
+        bShow = false;
+    }
 
     ImGui::End();
 }

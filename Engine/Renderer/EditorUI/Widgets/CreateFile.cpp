@@ -1,5 +1,5 @@
 // CreateFile.cpp
-// Last update 5/5/2021 by Madman10K
+// Last update 20/5/2021 by Madman10K
 #include "CreateFile.hpp"
 #include <cpp/imgui_stdlib.h>
 #include <Core.hpp>
@@ -11,13 +11,18 @@ void CreateFile::display(short& selectedFile, std::string& fileOutLocation, bool
     // This is so the linter can shut up
     int lnt = 0;
 
-    if (ImGui::Selectable("Game mode")) selectedFile = 1;
-    if (ImGui::Selectable("Game state")) selectedFile = 2;
-    if (ImGui::Selectable("Player state")) selectedFile = 3;
-    if (ImGui::Selectable("Player controller")) selectedFile = 4;
-    if (ImGui::Selectable("Pawn")) selectedFile = 5;
-    if (ImGui::Selectable("Game instance")) selectedFile = 6;
-    if (ImGui::Selectable("Level")) selectedFile = 7;
+    if (ImGui::Button("Game mode")) selectedFile = 1;
+    ImGui::SameLine();
+    if (ImGui::Button("Game state")) selectedFile = 2;
+    ImGui::SameLine();
+    if (ImGui::Button("Player state")) selectedFile = 3;
+    ImGui::SameLine();
+    if (ImGui::Button("Player controller")) selectedFile = 4;
+    if (ImGui::Button("Pawn")) selectedFile = 5;
+    ImGui::SameLine();
+    if (ImGui::Button("Game instance")) selectedFile = 6;
+    ImGui::SameLine();
+    if (ImGui::Button("Level")) selectedFile = 7;
 
     ImGui::InputTextWithHint("Location##genfile", "Location starts from your Source folder!", &fileOutLocation);
 
