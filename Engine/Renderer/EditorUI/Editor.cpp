@@ -316,7 +316,7 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb)
 
     if (bShowDetailsPanel)
     {
-        DetailsPanel::display(selectedEntity, bShowDetailsPanel);
+        DetailsPanel::display(selectedEntity, bShowDetailsPanel, bDestroyEntity);
     }
 
 #ifndef __MINGW32__

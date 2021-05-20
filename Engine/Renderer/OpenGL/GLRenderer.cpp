@@ -1,5 +1,5 @@
 // GLRenderer.cpp
-// Last update 18/5/2021 by Madman10K
+// Last update 20/5/2021 by Madman10K
 #include <GL/glew.h>
 #include "GLRenderer.hpp"
 #include "../OpenGL/Components/GLMesh.hpp"
@@ -90,11 +90,11 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
         deltaTime = now - lastTime;
         lastTime = now;
 
-        cm.move(deltaTime);
-        cm.moveMouse(deltaTime, UVK::Input::getMousePositionChange());
-
         if (bEditor)
         {
+            cm.move(deltaTime);
+            cm.moveMouse(deltaTime, UVK::Input::getMousePositionChange());
+
             fb.useFramebuffer();
             glEnable(GL_DEPTH_TEST);
 

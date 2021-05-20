@@ -73,15 +73,84 @@ void DetailsPanel::DrawVec3Control(const std::string &label, glm::vec3 &values, 
     ImGui::PopID();
 }
 
-void DetailsPanel::display(entt::entity ent, bool& bShow)
+void DetailsPanel::display(entt::entity& ent, bool& bShow, bool& destroy)
 {
-    ImGui::Begin("Details", &bShow);
+    ImGui::Begin("Details", &bShow, ImGuiWindowFlags_MenuBar);
 
-    ImGui::Button("+##ADDCMP");
+    ImGui::BeginMenuBar();
+
+    if (ImGui::BeginMenu("+ Add Component"))
+    {
+        if (ImGui::Button("Raw Mesh"))
+        {
+            if (!registry.hasComponent<UVK::MeshComponentRaw>(ent))
+            {
+                auto& a = registry.addComponent<UVK::MeshComponentRaw>(ent);
+
+            }
+        }
+
+        if (ImGui::Button("Mesh"))
+        {
+            if (!registry.hasComponent<UVK::MeshComponent>(ent))
+            {
+                auto& a = registry.addComponent<UVK::MeshComponent>(ent);
+            }
+        }
+
+        if (ImGui::Button("Audio"))
+        {
+            if (!registry.hasComponent<UVK::AudioComponent>(ent))
+            {
+                auto& a = registry.addComponent<UVK::AudioComponent>(ent);
+
+                UVK::AudioSourceData dt;
+                dt.location = "and.wav";
+                dt.velocity = UVK::FVector(0.0f, 0.0f, 0.0f);
+                dt.position = UVK::FVector(0.0f, 0.0f, 0.0f);
+                dt.bLoop = false;
+                dt.gain = 1.0f;
+                dt.pitch = 1.0f;
+
+                a.init(dt);
+            }
+        }
+
+        ImGui::EndMenu();
+    }
+
+    if (ImGui::BeginMenu("- Remove Component"))
+    {
+        if (ImGui::Button("Raw Mesh##rm"))
+        {
+            if (registry.hasComponent<UVK::MeshComponentRaw>(ent))
+            {
+                registry.removeComponent<UVK::MeshComponentRaw>(ent);
+            }
+        }
+
+        if (ImGui::Button("Mesh##rm"))
+        {
+            if (registry.hasComponent<UVK::MeshComponent>(ent))
+            {
+                registry.removeComponent<UVK::MeshComponent>(ent);
+            }
+        }
+
+        if (ImGui::Button("Audio##rm"))
+        {
+            if (registry.hasComponent<UVK::AudioComponent>(ent))
+            {
+                registry.removeComponent<UVK::AudioComponent>(ent);
+            }
+        }
+
+        ImGui::EndMenu();
+    }
+    ImGui::EndMenuBar();
 
     if (registry.hasComponent<UVK::CoreComponent>(ent))
     {
-
         auto& a = registry.getComponent<UVK::CoreComponent>(ent);
 
         std::string id = std::to_string(a.id);
@@ -92,6 +161,8 @@ void DetailsPanel::display(entt::entity ent, bool& bShow)
 
     if (registry.hasComponent<UVK::MeshComponentRaw>(ent))
     {
+        ImGui::Separator();
+
         auto& a = registry.getComponent<UVK::MeshComponentRaw>(ent);
 
         DrawVec3Control("Translation", a.translation, 0.0f, 100.0f);
@@ -99,6 +170,20 @@ void DetailsPanel::display(entt::entity ent, bool& bShow)
         DrawVec3Control("Rotation", rotation, 0.0f, 100.0f);
         a.rotation = glm::radians(rotation);
         DrawVec3Control("Scale", a.scale, 1.0f, 100.0f);
+    }
+
+    if (registry.hasComponent<UVK::AudioComponent>(ent))
+    {
+        ImGui::Separator();
+        auto& a = registry.getComponent<UVK::AudioComponent>(ent);
+
+        ImGui::SliderFloat("Pitch", &a.data.pitch, 0.5f, 2.0f);
+        ImGui::SliderFloat("Gain", &a.data.gain, 0.0f, 10.0f);
+        ImGui::Checkbox("Repeat", &a.data.bLoop);
+        ImGui::InputText("File Location", &a.data.location);
+
+        DrawVec3Control("Position", a.data.position, 0.0f, 100.0f);
+        DrawVec3Control("Velocity", a.data.velocity, 0.0f, 100.0f);
     }
     ImGui::End();
 }

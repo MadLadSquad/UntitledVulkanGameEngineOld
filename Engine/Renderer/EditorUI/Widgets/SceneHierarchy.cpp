@@ -1,8 +1,8 @@
 // SceneHierarchy.cpp
-// Last update 15/5/2021 by Madman10K
+// Last update 20/5/2021 by Madman10K
 #include "SceneHierarchy.hpp"
 
-void SceneHierarchy::destroyEntity(entt::entity &selectedEntity)
+void SceneHierarchy::destroyEntity(entt::entity& selectedEntity)
 {
     if (registry.hasComponent<UVK::MeshComponentRaw>(selectedEntity))
     {
@@ -30,9 +30,10 @@ void SceneHierarchy::display(entt::entity &selectedEntity, std::string &entAppen
 {
     bool bDestroy = false;
 
-    ImGui::Begin("Scene Hierarchy", &bShow);
+    ImGui::Begin("Scene Hierarchy", &bShow, ImGuiWindowFlags_MenuBar);
+    ImGui::BeginMenuBar();
 
-    if (ImGui::Button("+##add entity"))
+    if (ImGui::MenuItem("+ Add Entity##scn"))
     {
         entAppend = std::to_string(entNum);
 
@@ -40,14 +41,11 @@ void SceneHierarchy::display(entt::entity &selectedEntity, std::string &entAppen
 
         entNum++;
     }
+    if (ImGui::MenuItem("- Destroy Entity##scn")) bDestroy = true;
 
-    ImGui::SameLine();
+    ImGui::EndMenuBar();
 
-    if (ImGui::Button("-##destroy entity"))
-    {
-        bDestroy = true;
-    }
-
+    // to be fixed immediately because it's a big performance drain
     pool.each([&](entt::entity ent)
     {
         auto& a = registry.getComponent<UVK::CoreComponent>(ent);

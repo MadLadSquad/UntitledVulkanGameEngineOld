@@ -86,51 +86,16 @@ void UVK::Level::saveEntity(YAML::Emitter& out, Actor act)
         out << YAML::Key << "id" << YAML::Value << a.id;
     }
 
-    //if (pool.has<AudioComponent2D>(act))
-    //{
-    //    auto& a = pool.get<AudioComponent2D>(act);
-    //    out << YAML::Key << "audio2d-location" << YAML::Value << a.loc;
-    //    out << YAML::Key << "audio2d-pitch" << YAML::Value << a.pitch;
-    //    out << YAML::Key << "audio2d-gain" << YAML::Value << a.gain;
-    //    out << YAML::Key << "audio2d-repeat" << YAML::Value << a.bAudioRepeat;
-    //}
-
-    //if (pool.has<AudioComponent3D>(act))
-    //{
-    //    auto& a = pool.get<AudioComponent3D>(act);
-    //    out << YAML::Key << "audio3d-location" << YAML::Value << a.loc;
-    //    out << YAML::Key << "audio3d-pitch" << YAML::Value << a.pitch;
-    //    out << YAML::Key << "audio3d-gain" << YAML::Value << a.gain;
-    //    out << YAML::Key << "audio3d-repeat" << YAML::Value << a.bAudioRepeat;
-    //    out << YAML::Key << "audio3d-translation" << YAML::Value << a.trs;
-    //}
-
-    if (pool.has<MeshComponentRaw>(act))
+    if (registry.hasComponent<UVK::AudioComponent>(act))
     {
-        auto& a = pool.get<MeshComponentRaw>(act);
-
-        out << YAML::Key << "mcr-translation" << YAML::Value << a.translation;
-        out << YAML::Key << "mcr-rotation" << YAML::Value << a.rotation;
-        out << YAML::Key << "mcr-scale" << YAML::Value << a.scale;
-        out << YAML::Key << "mcr-vertices" << YAML::Value << a.vertex;
-        out << YAML::Key << "mcr-indices" << YAML::Value << a.index;
-        out << YAML::Key << "mcr-fshader" << YAML::Value << a.fShader;
-        out << YAML::Key << "mcr-vshader" << YAML::Value << a.vShader;
-
-        switch (a.impType)
-        {
-        case SHADER_IMPORT_TYPE_SPIR:
-            out << YAML::Key << "mcr-simport" << YAML::Value << 2;
-            break;
-        case SHADER_IMPORT_TYPE_STRING:
-            out << YAML::Key << "mcr-simport" << YAML::Value << 1;
-            break;
-        case SHADER_IMPORT_TYPE_FILE:
-            out << YAML::Key << "mcr-simport" << YAML::Value << 0;
-            break;
-        }
+        auto& a = registry.getComponent<UVK::AudioComponent>(act);
+        out << YAML::Key << "audio-pitch" << YAML::Value << a.data.pitch;
+        out << YAML::Key << "audio-gain" << YAML::Value << a.data.gain;
+        out << YAML::Key << "audio-loop" << YAML::Value << a.data.bLoop;
+        out << YAML::Key << "audio-location" << YAML::Value << a.data.position;
+        out << YAML::Key << "audio-velocity" << YAML::Value << a.data.velocity;
+        out << YAML::Key << "audio-file" << YAML::Value << a.data.location;
     }
-
     out << YAML::EndMap;
 }
 
@@ -204,6 +169,22 @@ void UVK::Level::open(String location) noexcept
                 auto act = pool.create();
                 auto& core = registry.addComponent<UVK::CoreComponent>(act);
                 core.name = name;
+                core.id = entity["id"].as<int>();
+
+                if (entity["audio-pitch"] && entity["audio-gain"] && entity["audio-location"])
+                {
+                    auto& a = registry.addComponent<UVK::AudioComponent>(act);
+
+                    UVK::AudioSourceData data;
+                    data.pitch = entity["audio-pitch"].as<float>();
+                    data.gain = entity["audio-gain"].as<float>();
+                    data.bLoop = entity["audio-loop"].as<bool>();
+                    data.position = entity["audio-location"].as<FVector>();
+                    data.velocity = entity["audio-velocity"].as<FVector>();
+                    data.location = entity["audio-file"].as<std::string>();
+
+                    a.init(data);
+                }
 #endif
             }
             logger.consoleLog("Iterated entities", UVK_LOG_TYPE_SUCCESS);

@@ -18,7 +18,7 @@ namespace UVK
         template<typename T>
         auto& addComponent(Actor& act)
         {
-            return pool.emplace<T>(act);
+            return pool.get_or_emplace<T>(act);
         }
 
         /**

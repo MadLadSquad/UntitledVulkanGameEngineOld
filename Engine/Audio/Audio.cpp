@@ -3,6 +3,8 @@
 #include "Audio.hpp"
 #include <sndfile.h>
 
+#include <utility>
+
 #ifndef __MINGW32__
 void UVK::AudioManager::createDevice()
 {
@@ -147,11 +149,10 @@ void UVK::AudioBuffer::removeSound()
     alDeleteBuffers(1, &buffer);
 }
 
-UVK::AudioSource::AudioSource(const char* loc, AudioSourceData data)
+UVK::AudioSource::AudioSource(AudioSourceData data)
 {
     audioData = data;
-
-    buffer = AudioBuffer(loc);
+    buffer = AudioBuffer(audioData.location.c_str());
 
     alGenSources(1, &audioData.source);
     alSourcef(audioData.source, AL_PITCH, audioData.pitch);

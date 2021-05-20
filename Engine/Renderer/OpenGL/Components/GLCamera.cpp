@@ -1,5 +1,5 @@
 // GLCamera.cpp
-// Last update 18/5/2021 by Madman10K
+// Last update 20/5/2021 by Madman10K
 #include "../../Window/Window.hpp"
 #include "GLCamera.hpp"
 
@@ -48,37 +48,30 @@ void UVK::GLCamera::move(float deltaTime)
         {
             position += worldUp * moveSpeed * deltaTime;
         }
+
+        auto scroll = UVK::Input::getScroll();
+
+        if (scroll.y > 0)
+        {
+            position += front * moveSpeed * deltaTime * 10.0f;
+        }
+        else if (scroll.y < 0)
+        {
+            position -= front * moveSpeed * deltaTime * 10.0f;
+        }
+
+        if (scroll.x > 0)
+        {
+            position += right * moveSpeed * deltaTime * 10.0f;
+        }
+        else if (scroll.x < 0)
+        {
+            position -= right * moveSpeed * deltaTime * 10.0f;
+        }
     }
     else
     {
-        if (UVK::Input::getKeyPressed(Keys::LeftControl))
-        {
-            currentWindow.setCursorVisibility(false);
-
-            auto scroll = UVK::Input::getScroll();
-
-            if (scroll.y > 0)
-            {
-                position += front * moveSpeed * deltaTime * 10.0f;
-            }
-            else if (scroll.y < 0)
-            {
-                position -= front * moveSpeed * deltaTime * 10.0f;
-            }
-
-            if (scroll.x > 0)
-            {
-                position += right * moveSpeed * deltaTime * 10.0f;
-            }
-            else if (scroll.x < 0)
-            {
-                position -= right * moveSpeed * deltaTime * 10.0f;
-            }
-        }
-        else
-        {
-            currentWindow.setCursorVisibility(true);
-        }
+        currentWindow.setCursorVisibility(true);
     }
 }
 

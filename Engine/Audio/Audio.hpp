@@ -68,6 +68,7 @@ namespace UVK
 
     struct AudioSourceData
     {
+        std::string location;
         ALuint source;
         float pitch = 1.0f;
         float gain = 1.0f;
@@ -80,7 +81,7 @@ namespace UVK
     {
     public:
         AudioSource() = default;
-        AudioSource(const char* loc, AudioSourceData data);
+        explicit AudioSource(AudioSourceData data);
 
         void play();
 

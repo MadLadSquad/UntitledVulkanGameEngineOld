@@ -1,24 +1,15 @@
 // Utility.hpp
-// Last update 18/5/2021 by Madman10K
+// Last update 20/5/2021 by Madman10K
 #pragma once
 #include <iostream>
 
-class Utility
+namespace Utility
 {
-public:
-    /**
-     * @brief converts string to lower case
-     * @param str string to be converted
-     */
     static void toLower(std::string& str)
     {
         std::transform(str.begin(), str.end(), str.begin(), ::tolower);
     }
 
-    /**
-     * @brief converts string to upper case
-     * @param str string to be converted
-     */
     static void toUpper(std::string& str)
     {
         std::transform(str.begin(), str.end(), str.begin(), ::toupper);
@@ -35,10 +26,6 @@ public:
         return str.c_str();
     }
 
-    /**
-     * @brief converts string to upper case
-     * @param str string to be converted
-     */
     static const char* toUpperC_Str(std::string& str)
     {
         std::transform(str.begin(), str.end(), str.begin(), ::toupper);
@@ -67,6 +54,4 @@ public:
             }
         }
     }
-};
-
-inline Utility utility;
+}

@@ -47,7 +47,7 @@ namespace UVK
         bool bShowAboutUs = false;
         bool bShowSaveWarning = false;
         bool bShowHelp = false;
-
+        bool bDestroyEntity = false;
         bool bShowFilesystem = true;
         bool bShowStatistics = false;
         bool bShowViewport = true;
@@ -58,7 +58,6 @@ namespace UVK
         bool bShowToolbar = true;
         bool bShowTools = true;
         bool bShowMemoryEditor = true;
-
 
         void displayEditor(FVector4& colour, GLFrameBuffer& fb);
 

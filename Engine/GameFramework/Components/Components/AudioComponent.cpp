@@ -2,11 +2,10 @@
 // Last update 7/5/2021 by Madman10K
 #include "AudioComponent.hpp"
 
-
-void UVK::AudioComponent::play(const char* audioLoc)
+void UVK::AudioComponent::play()
 {
 #ifndef __MINGW32__
-    src = AudioSource(audioLoc, data);
+    src = AudioSource(data);
 
     src.play();
 #endif
@@ -39,13 +38,11 @@ void UVK::AudioComponent::resume()
 #endif
 }
 
-void UVK::AudioComponent::init(FVector position, FVector velocity, float pitch, float gain, bool bLoop)
+void UVK::AudioComponent::init(AudioSourceData dt)
 {
+    data = dt;
+
 #ifndef __MINGW32__
-    data.position = position;
-    data.velocity = velocity;
-    data.pitch = pitch;
-    data.gain = gain;
-    data.bLoop = bLoop;
+
 #endif
 }

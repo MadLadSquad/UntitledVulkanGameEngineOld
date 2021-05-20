@@ -7,9 +7,9 @@ namespace UVK
 {
     struct AudioComponent
     {
-        void init(FVector position, FVector velocity, float pitch, float gain, bool bLoop);
+        void init(AudioSourceData dt);
 
-        void play(const char* audioLoc);
+        void play();
         void stop();
         void pause();
         void resume();
