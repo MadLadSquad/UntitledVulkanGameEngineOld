@@ -17,6 +17,17 @@ namespace UVK
     class AudioBuffer;
     struct AudioSourceData;
     class AudioSource;
+
+    struct AudioSourceData
+    {
+        std::string location;
+        uint32_t source;
+        float pitch = 1.0f;
+        float gain = 1.0f;
+        FVector position = FVector(0.0f, 0.0f, 0.0f);
+        FVector velocity = FVector(0.0f, 0.0f, 0.0f);
+        bool bLoop = false;
+    };
 }
 
 #ifndef __MINGW32__
@@ -66,16 +77,7 @@ namespace UVK
         ALuint buffer = 0;
     };
 
-    struct AudioSourceData
-    {
-        std::string location;
-        ALuint source;
-        float pitch = 1.0f;
-        float gain = 1.0f;
-        FVector position = FVector(0.0f, 0.0f, 0.0f);
-        FVector velocity = FVector(0.0f, 0.0f, 0.0f);
-        bool bLoop = false;
-    };
+
 
     class AudioSource
     {
