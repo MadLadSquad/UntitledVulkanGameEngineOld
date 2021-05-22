@@ -6,6 +6,7 @@
 #include <Core.hpp>
 #include "Widgets/EditorViewport.hpp"
 #include "../Textures/Texture.hpp"
+#include "../OpenGL/Components/GLCamera.hpp"
 #include <Audio/Audio.hpp>
 
 namespace UVK
@@ -16,7 +17,7 @@ namespace UVK
         Editor() = default;
 
         void initEditor();
-        void runEditor(FVector4& colour, GLFrameBuffer& fb);
+        void runEditor(FVector4& colour, GLFrameBuffer& fb, GLCamera& camera, glm::mat4& projection);
         static void beginFrame();
         void destroyContext();
 
@@ -59,7 +60,7 @@ namespace UVK
         bool bShowTools = true;
         bool bShowMemoryEditor = true;
 
-        void displayEditor(FVector4& colour, GLFrameBuffer& fb);
+        void displayEditor(FVector4& colour, GLFrameBuffer& fb, GLCamera& camera, glm::mat4& projection);
 
         std::string levelName;
         std::string openLevel;

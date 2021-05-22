@@ -113,7 +113,7 @@ void UVK::Editor::initEditor()
     logger.consoleLog("Starting the renderer took: ", UVK_LOG_TYPE_NOTE, tm.getDuration(), "ms!");
 }
 
-void UVK::Editor::runEditor(FVector4& colour, GLFrameBuffer& fb)
+void UVK::Editor::runEditor(FVector4& colour, GLFrameBuffer& fb, GLCamera& camera, glm::mat4& projection)
 {
     static bool opt_fullscreen = true;
     static bool opt_padding = false;
@@ -162,7 +162,7 @@ void UVK::Editor::runEditor(FVector4& colour, GLFrameBuffer& fb)
         ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
     }
 
-    displayEditor(colour, fb);
+    displayEditor(colour, fb, camera, projection);
 
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -176,7 +176,7 @@ void UVK::Editor::runEditor(FVector4& colour, GLFrameBuffer& fb)
     }
 }
 
-void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb)
+void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, GLCamera& camera, glm::mat4& projection)
 {
     ImGuiStyle& style = ImGui::GetStyle();
 
@@ -309,7 +309,7 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb)
     {
         style.WindowPadding = ImVec2(0.0f, 0.0f);
 
-        EditorViewport::display(fb, viewportWidth, viewportHeight, bShowViewport);
+        EditorViewport::display(fb, viewportWidth, viewportHeight, bShowViewport, camera, selectedEntity, projection);
 
         style.WindowPadding = ImVec2(8.0f, 8.0f);
     }

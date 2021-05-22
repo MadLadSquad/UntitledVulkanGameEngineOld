@@ -10,7 +10,7 @@
 
 void UVK::GLRenderer::renderEditor()
 {
-    ed.runEditor(colour, fb);
+
 }
 
 void UVK::GLRenderer::initEditor() {
@@ -57,7 +57,7 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
         {
             auto& a = registry.addComponent<MeshComponentRaw>(ent);
             a.createMesh(vertices, indices, 20, 12, "../Content/Engine/defaultvshader.gl", "../Content/Engine/defaultfshader.gl", SHADER_IMPORT_TYPE_FILE);
-
+            a.rotation = FVector(0.0f, 0.0f, 0.0f);
             //auto& b = registry.addComponent<AudioComponent3D>(ent);
             //b.play("and.wav", true, 1.0f, 1.0f, FVector(15.0f, 0.0f, 0.0f));
         }
@@ -159,7 +159,7 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
             glClear(GL_COLOR_BUFFER_BIT);
 
             level->tick(deltaTime);
-            renderEditor();
+            ed.runEditor(colour, fb, cm, projection);
         }
 
 
