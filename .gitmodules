@@ -37,3 +37,6 @@
 [submodule "UVKShaderCompiler"]
 	path = UVKShaderCompiler
 	url = https://github.com/MadLadSquad/UVKShaderCompiler.git
+[submodule "Engine/ThirdParty/assimp"]
+	path = Engine/ThirdParty/assimp
+	url = https://github.com/MadLadSquad/assimp.git

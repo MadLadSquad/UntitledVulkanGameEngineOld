@@ -79,20 +79,20 @@ void UVK::GLCamera::moveMouse(float deltaTime, FVector2 change)
 {
     if (UVK::Input::getMouseKeyPressed(Keys::MouseButtonRight))
     {
-        change.x *= turnSpeed * deltaTime;
-        change.y *= turnSpeed * deltaTime;
+        change.x *= turnSpeed; //* deltaTime;
+        change.y *= turnSpeed; //* deltaTime;
 
         yaw += change.x;
         pitch += change.y;
 
-        if (pitch > 89.0f)
+        if (pitch > 89.9f)
         {
-            pitch = 89.0f;
+            pitch = 89.9f;
         }
 
-        if (pitch < -89.0f)
+        if (pitch < -89.9f)
         {
-            pitch = -89.0f;
+            pitch = -89.9f;
         }
     }
     

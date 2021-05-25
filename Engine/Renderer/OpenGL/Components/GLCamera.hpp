@@ -8,7 +8,7 @@ namespace UVK
 	class GLCamera
 	{
 	public:
-		GLCamera() = delete;
+		GLCamera() = default;
 		GLCamera(FVector position, FVector up, GLfloat yaw, GLfloat pitch, GLfloat movementSpeed, GLfloat turnSpeed);
 	
 	

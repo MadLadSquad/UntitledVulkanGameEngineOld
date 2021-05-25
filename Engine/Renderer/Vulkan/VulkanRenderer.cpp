@@ -1,6 +1,10 @@
 // VulkanRenderer.cpp
-// Last update 1/20/2021 by Madman10K
+// Last update 25/5/2021 by Madman10K
 #include "VulkanRenderer.hpp"
+#include "Components/VKCamera.hpp"
+#include "Components/VKFramebuffer.hpp"
+#include "Components/VKMesh.hpp"
+#include "Components/VKShader.hpp"
 
 void VulkanRenderer::start()
 {
@@ -68,7 +72,7 @@ bool VulkanRenderer::checkExtensionSupport(std::vector<const char *> *extensions
     std::vector<VkExtensionProperties>extensionsList(extensionCount);
     vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, extensionsList.data());
 
-    // Why quadratic idk but yeah
+    // idk
     for(const auto& extensionCheck : *extensions)
     {
         bool hasExtension = false;

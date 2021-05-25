@@ -29,8 +29,14 @@ void UVK::GLRenderer::initEditor() {
 
 void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
 {
-    GLCamera cm = GLCamera(FVector(0.0f, 0.0f, 0.0f), FVector(0.0f, 1.0f, 0.0f), -90.0f, 0.0f, 5.0f, 750.0f);
-    
+    // if the editor is running we will assign this pointer to an editor camera otherwise
+    // it will point to the active pawn's camera
+    GLCamera* cm = nullptr;
+    if (bEditor)
+    {
+        cm = new GLCamera(FVector(-10.0f, 0.0f, 15.0f), FVector(0.0f, 1.0f, 0.0f), -90.0f, 0.0f, 5.0f, 0.5f);
+    }
+
     unsigned int indices[] = {
         0, 3, 1,
         1, 3, 2,
@@ -92,8 +98,8 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
 
         if (bEditor)
         {
-            cm.move(deltaTime);
-            cm.moveMouse(deltaTime, UVK::Input::getMousePositionChange());
+            cm->move(deltaTime);
+            cm->moveMouse(deltaTime, UVK::Input::getMousePositionChange());
 
             fb.useFramebuffer();
             glEnable(GL_DEPTH_TEST);
@@ -146,7 +152,7 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
             {
                 auto& a = registry.getComponent<MeshComponentRaw>(ent);
                 tx.useTexture();
-                a.render(projection, cm);
+                a.render(projection, *cm);
             }
         });
         glUseProgram(0);
@@ -159,7 +165,7 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
             glClear(GL_COLOR_BUFFER_BIT);
 
             level->tick(deltaTime);
-            ed.runEditor(colour, fb, cm, projection);
+            ed.runEditor(colour, fb, *cm, projection);
         }
 
 

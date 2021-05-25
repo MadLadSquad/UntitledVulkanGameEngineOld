@@ -65,15 +65,12 @@ void UVK::Window::createWindow()
     logger.consoleLog("Setting up the window", UVK_LOG_TYPE_NOTE);
 
     glewExperimental = GL_TRUE;
-    
-    //glEnable(GL_DEPTH_TEST); 
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_SAMPLES, 16);
-    //glCullFace(GL_BACK);
-    //glFrontFace(GL_CCW);
 
     logger.consoleLog("Window settings configured", UVK_LOG_TYPE_NOTE);
     if (bIsFullScreen)
@@ -100,11 +97,10 @@ void UVK::Window::createWindow()
     }
     logger.consoleLog("Window was created successfully", UVK_LOG_TYPE_SUCCESS);
 
-    
     glfwGetFramebufferSize(windowMain, &bufferWidth, &bufferHeight);
     glfwMakeContextCurrent(windowMain);
     glfwSwapInterval(0);
-    //glfwSetInputMode(windowMain, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
     doCallBacks();
 
     if (glewInit() != GLEW_OK)
