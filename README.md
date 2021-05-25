@@ -6,7 +6,7 @@
 
 > Last stable release: 0.7.2.5
 
-> Current code version: 0.7.2.5
+> Current code version: 0.7.3.0
 
 > Currently stable on: Linux, MacOS, BSD, Windows
 
