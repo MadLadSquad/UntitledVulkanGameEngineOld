@@ -48,7 +48,7 @@ void EditorViewport::display(UVK::GLFrameBuffer& fb, int& viewportWidth, int& vi
 
     if (operationType == ImGuizmo::ROTATE) snapVal = 10.0f;
 
-    float snapValues[] = { snapVal, snapVal, snapVal };
+    float snapValues[3] = { snapVal, snapVal, snapVal };
 
     if (registry.hasComponent<UVK::MeshComponentRaw>(entity) && operationType != -1)
     {

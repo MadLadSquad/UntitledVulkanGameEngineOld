@@ -13,7 +13,14 @@ namespace UVK
         UVK_AUDIO_STATE_STOPPED
     };
 
-    class AudioManager;
+#ifdef __MINGW32__
+    class AudioManager
+    {
+    public:
+        char a = 'a';
+    private:
+    };
+#endif
     class AudioBuffer;
     struct AudioSourceData;
     class AudioSource;
