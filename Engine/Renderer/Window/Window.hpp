@@ -58,7 +58,7 @@ namespace UVK
         void openConfig();
         void doCallBacks();
 
-        bool bVulkan;
+        bool bVulkan{};
 
         static void framebufferSizeCallback(GLFWwindow* window, int width, int height);
         static void keyboardInputCallback(GLFWwindow* window, int key, int scanCode, int action, int mods);
