@@ -2,21 +2,38 @@
 // Last update 3/2/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
+#include "Components/VKStructs.hpp"
 #include <vulkan/vulkan.h>
 #include <glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-class VulkanRenderer
+namespace UVK
 {
-public:
-    VulkanRenderer() = default;
+    class VulkanRenderer
+    {
+    public:
+        VulkanRenderer() = default;
 
-    void start();
+        void run();
+    private:
+        void start();
+        void render();
+        void cleanup();
 
-private:
+        VkInstance instance;
+        void createInstance();
+        void destroyInstance();
 
-    VkInstance instance;
-    void createInstance();
-    static bool checkExtensionSupport(std::vector<const char*>* extensions);
-};
+        VKDevice device;
+        void getPhysicalDevice();
+        void createLogicalDevice();
+        void destroyLogicalDevice() const;
+
+        VkQueue queue;
+
+        static bool checkExtensionSupport(std::vector<const char*>* extensions);
+        bool checkDeviceSuitability(VkPhysicalDevice physicalDevice);
+        [[nodiscard]] VKQueueFamilyLocation getQueueFamilies() const;
+    };
+}

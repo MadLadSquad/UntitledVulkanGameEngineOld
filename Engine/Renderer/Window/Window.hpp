@@ -1,5 +1,5 @@
 // Window.hpp
-// Last update 18/5/2021 by Madman10K
+// Last update 27/5/2021 by Madman10K
 #pragma once
 #include <GL/glew.h>
 #include "../Textures/Texture.hpp"
@@ -15,7 +15,6 @@ namespace UVK
     public:
         Window();
 
-
         void createWindow();
         void dumpConfig();
         void destroyWindow();
@@ -25,9 +24,7 @@ namespace UVK
         [[nodiscard]] FVector2 getLastMousePosition() const;
         [[nodiscard]] FVector2 getCurrentMousePosition() const;
 
-
         void setCursorVisibility(bool bIsVisible);
-
 
         [[nodiscard]] int getBufferWidth() const
         {
@@ -47,6 +44,11 @@ namespace UVK
         const std::array<bool, 349>& getKeys();
         const std::array<bool, 20>& getMouseKeys();
         FVector2 getScroll();
+
+        bool& getVulkan()
+        {
+            return bVulkan;
+        }
     private:
         std::array<bool, 349> keysArr{};
         std::array<bool, 20> mouseArr{};
@@ -55,6 +57,8 @@ namespace UVK
 
         void openConfig();
         void doCallBacks();
+
+        bool bVulkan;
 
         static void framebufferSizeCallback(GLFWwindow* window, int width, int height);
         static void keyboardInputCallback(GLFWwindow* window, int key, int scanCode, int action, int mods);

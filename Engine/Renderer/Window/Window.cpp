@@ -1,5 +1,5 @@
 // Window.cpp
-// Last update 18/5/2021 by Madman10K
+// Last update 27/5/2021 by Madman10K
 #include "Window.hpp"
 
 double UVK::Window::getYMousePositionChange()
@@ -64,13 +64,22 @@ void UVK::Window::createWindow()
     }
     logger.consoleLog("Setting up the window", UVK_LOG_TYPE_NOTE);
 
-    glewExperimental = GL_TRUE;
-
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-    glfwWindowHint(GLFW_SAMPLES, 16);
+    if (!bVulkan)
+    {
+        glewExperimental = GL_TRUE;
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+        glfwWindowHint(GLFW_SAMPLES, 16);
+    }
+    else
+    {
+        // because it's vulkan
+        glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
+        // Vulkan framebuffer resizing is not done
+        glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+    }
 
     logger.consoleLog("Window settings configured", UVK_LOG_TYPE_NOTE);
     if (bIsFullScreen)
@@ -103,16 +112,20 @@ void UVK::Window::createWindow()
 
     doCallBacks();
 
-    if (glewInit() != GLEW_OK)
+    if (!bVulkan)
     {
-        logger.consoleLog("GLEW initialisation failed!", UVK_LOG_TYPE_ERROR);
+        if (glewInit() != GLEW_OK)
+        {
+            logger.consoleLog("GLEW initialisation failed!", UVK_LOG_TYPE_ERROR);
 
-        glfwDestroyWindow(windowMain);
-        glfwTerminate();
-        return;
+            glfwDestroyWindow(windowMain);
+            glfwTerminate();
+            return;
+        }
+
+        glViewport(0, 0, bufferWidth, bufferHeight);
     }
 
-    glViewport(0, 0, bufferWidth, bufferHeight);
     glfwSetWindowUserPointer(windowMain, this);
 }
 

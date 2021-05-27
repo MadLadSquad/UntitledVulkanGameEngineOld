@@ -1,9 +1,9 @@
 // Renderer.cpp
-// Last update 6/5/2021 by Madman10K
+// Last update 27/5/2021 by Madman10K
 #include <GL/glew.h>
 #include "Renderer.hpp"
 
-UVK::Renderer::Renderer(UVK::Level *lvl, bool bUsesEditor)
+UVK::Renderer::Renderer(UVK::Level* lvl, bool bUsesEditor)
 {
     startRenderer(lvl, bUsesEditor);
 }
@@ -34,12 +34,13 @@ void UVK::Renderer::startRenderer(UVK::Level *lvl, bool bUsesEditor)
 
     if (bIsVulkan)
     {
+        currentWindow.getVulkan() = true;
         VulkanRenderer renderer{};
-
-        renderer.start();
+        renderer.run();
     }
     else
     {
+        currentWindow.getVulkan() = false;
         GLRenderer renderer(lvl, bUsesEditor, theme);
     }
 }

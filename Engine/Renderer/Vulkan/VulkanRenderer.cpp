@@ -1,17 +1,19 @@
 // VulkanRenderer.cpp
-// Last update 25/5/2021 by Madman10K
+// Last update 27/5/2021 by Madman10K
+#include <Renderer/Window/Window.hpp>
 #include "VulkanRenderer.hpp"
+// BAD BAD BAD!!!!!!!!!!!!
+#include <stdexcept>
+
+
 #include "Components/VKCamera.hpp"
 #include "Components/VKFramebuffer.hpp"
 #include "Components/VKMesh.hpp"
 #include "Components/VKShader.hpp"
 
-void VulkanRenderer::start()
-{
-    createInstance();
-}
 
-void VulkanRenderer::createInstance()
+
+void UVK::VulkanRenderer::createInstance()
 {
     // Setup versions, name, etc
     VkApplicationInfo appInfo = {};
@@ -63,7 +65,7 @@ void VulkanRenderer::createInstance()
     }
 }
 
-bool VulkanRenderer::checkExtensionSupport(std::vector<const char *> *extensions)
+bool UVK::VulkanRenderer::checkExtensionSupport(std::vector<const char *> *extensions)
 {
     uint32_t extensionCount = 0;
     vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, nullptr);
@@ -72,7 +74,7 @@ bool VulkanRenderer::checkExtensionSupport(std::vector<const char *> *extensions
     std::vector<VkExtensionProperties>extensionsList(extensionCount);
     vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, extensionsList.data());
 
-    // idk
+    // Extension checking
     for(const auto& extensionCheck : *extensions)
     {
         bool hasExtension = false;
@@ -92,4 +94,152 @@ bool VulkanRenderer::checkExtensionSupport(std::vector<const char *> *extensions
         }
     }
     return true;
+}
+
+void UVK::VulkanRenderer::start()
+{
+    currentWindow.createWindow();
+    createInstance();
+    getPhysicalDevice();
+    createLogicalDevice();
+}
+
+void UVK::VulkanRenderer::render()
+{
+
+}
+
+void UVK::VulkanRenderer::cleanup()
+{
+    destroyLogicalDevice();
+    destroyInstance();
+}
+
+void UVK::VulkanRenderer::run()
+{
+    start();
+
+    GLfloat deltaTime;
+    GLfloat lastTime = 0;
+
+    while (!glfwWindowShouldClose(currentWindow.getWindow()))
+    {
+        glfwPollEvents();
+
+        auto now = (float)glfwGetTime();
+        deltaTime = now - lastTime;
+        lastTime = now;
+
+        render();
+    }
+
+    cleanup();
+}
+
+void UVK::VulkanRenderer::destroyInstance()
+{
+    vkDestroyInstance(instance, nullptr);
+}
+
+void UVK::VulkanRenderer::getPhysicalDevice()
+{
+    uint32_t deviceCount = 0;
+
+    vkEnumeratePhysicalDevices(instance, &deviceCount, nullptr);
+
+    // if doesn't support vulkan or no devices
+    if (deviceCount == 0)
+    {
+        logger.consoleLog("Couldn't find any devices or any that support Vulkan", UVK_LOG_TYPE_ERROR);
+    }
+
+    std::vector<VkPhysicalDevice> deviceList(deviceCount);
+    vkEnumeratePhysicalDevices(instance, &deviceCount, deviceList.data());
+
+    device.physicalDevice = deviceList[0];
+
+    for (const auto& device1 : deviceList)
+    {
+        if (checkDeviceSuitability(device1))
+        {
+            device.physicalDevice = device1;
+            break;
+        }
+    }
+}
+
+bool UVK::VulkanRenderer::checkDeviceSuitability(VkPhysicalDevice physicalDevice)
+{
+    // Check for properties
+    VkPhysicalDeviceProperties deviceProperties;
+    vkGetPhysicalDeviceProperties(physicalDevice, &deviceProperties);
+
+    // Check for features
+    VkPhysicalDeviceFeatures deviceFeatures;
+    vkGetPhysicalDeviceFeatures(physicalDevice, &deviceFeatures);
+
+    VKQueueFamilyLocation location = getQueueFamilies();
+
+    return location.isValid();
+}
+
+UVK::VKQueueFamilyLocation UVK::VulkanRenderer::getQueueFamilies() const
+{
+    VKQueueFamilyLocation familyLocation;
+
+    uint32_t queueFamilyCount = 0;
+    vkGetPhysicalDeviceQueueFamilyProperties(device.physicalDevice, &queueFamilyCount, nullptr);
+
+    std::vector<VkQueueFamilyProperties> queueFamilyPropertyList(queueFamilyCount);
+    vkGetPhysicalDeviceQueueFamilyProperties(device.physicalDevice, &queueFamilyCount, queueFamilyPropertyList.data());
+
+    // check for required type of queue
+    for (int i = 0; i < queueFamilyPropertyList.size(); i++)
+    {
+        if (queueFamilyPropertyList[i].queueCount > 0 && queueFamilyPropertyList[i].queueFlags & VK_QUEUE_GRAPHICS_BIT)
+        {
+            familyLocation.graphicsFamily = i;
+        }
+
+        if (familyLocation.isValid())
+        {
+            break;
+        }
+    }
+    return familyLocation;
+}
+
+void UVK::VulkanRenderer::createLogicalDevice()
+{
+    float priority = 1.0f;
+    VKQueueFamilyLocation location = getQueueFamilies();
+
+    VkDeviceQueueCreateInfo queueCreateInfo = {};
+    queueCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
+    queueCreateInfo.queueFamilyIndex = location.graphicsFamily;
+    queueCreateInfo.queueCount = 1;
+    queueCreateInfo.pQueuePriorities = &priority; // highest priority
+
+    VkPhysicalDeviceFeatures deviceFeatures = {};
+    VkDeviceCreateInfo deviceCreateInfo = {};
+    deviceCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
+    deviceCreateInfo.queueCreateInfoCount = 1;
+    deviceCreateInfo.pQueueCreateInfos = &queueCreateInfo;
+    deviceCreateInfo.enabledExtensionCount = 0;
+    deviceCreateInfo.ppEnabledExtensionNames = nullptr;
+    deviceCreateInfo.pEnabledFeatures = &deviceFeatures;
+
+    VkResult result = vkCreateDevice(device.physicalDevice, &deviceCreateInfo, nullptr, &device.logicalDevice);
+    if (result != VK_SUCCESS)
+    {
+        logger.consoleLog("Failed to create a Vulkan logical device", UVK_LOG_TYPE_ERROR);
+    }
+
+    // get global class access to queue
+    vkGetDeviceQueue(device.logicalDevice, location.graphicsFamily, 0, &queue);
+}
+
+void UVK::VulkanRenderer::destroyLogicalDevice() const
+{
+    vkDestroyDevice(device.logicalDevice, nullptr);
 }
