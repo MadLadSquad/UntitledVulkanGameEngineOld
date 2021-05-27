@@ -264,6 +264,7 @@ UVK::FVector2 UVK::Window::getScroll()
 
 UVK::Window::Window()
 {
+    bVulkan = false;
     for (auto& a : keysArr)
     {
         a = false;
