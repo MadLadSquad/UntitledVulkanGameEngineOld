@@ -2,6 +2,7 @@
 // Last update 27/5/2021 by Madman10K
 #pragma once
 #include <vulkan/vulkan.h>
+#include <Core.hpp>
 
 namespace UVK
 {
