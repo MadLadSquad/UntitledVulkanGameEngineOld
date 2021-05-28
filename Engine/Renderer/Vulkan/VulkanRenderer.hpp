@@ -31,9 +31,17 @@ namespace UVK
         void destroyLogicalDevice() const;
 
         VkQueue queue;
+        VkQueue presentationQueue;
+
+        VkSurfaceKHR surface;
+        void createSurface();
+        void destroySurface();
+
 
         static bool checkExtensionSupport(std::vector<const char*>* extensions);
         bool checkDeviceSuitability(VkPhysicalDevice physicalDevice);
         [[nodiscard]] VKQueueFamilyLocation getQueueFamilies() const;
+        bool checkDeviceExtensionSupport() const;
+        VKSwapchainSettings getSwapchainSettings();
     };
 }

@@ -5,6 +5,7 @@
 
 namespace UVK
 {
+    constexpr std::array<const char*, 1> deviceExtensions = { VK_KHR_SWAPCHAIN_EXTENSION_NAME };
     struct VKDevice
     {
         VkPhysicalDevice physicalDevice;
@@ -14,10 +15,18 @@ namespace UVK
     struct VKQueueFamilyLocation
     {
         int graphicsFamily = -1;
+        int presentationFamily = -1;
 
         [[nodiscard]] bool isValid() const
         {
-            return graphicsFamily >= 0;
+            return graphicsFamily >= 0 && presentationFamily >= 0;
         }
+    };
+
+    struct VKSwapchainSettings
+    {
+        VkSurfaceCapabilitiesKHR surfaceCapabilities{};
+        std::vector<VkSurfaceFormatKHR> formats{};
+        std::vector<VkPresentModeKHR> presentationModes{};
     };
 }
