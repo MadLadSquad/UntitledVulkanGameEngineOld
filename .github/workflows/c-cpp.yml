@@ -30,7 +30,7 @@ jobs:
       run: ./autosetup.sh
     - name: Make build directory and cmake
       shell: bash
-      run: ls && cd build && cmake .. -G "Unix Makefiles" && make
+      run: ls Engine/ThirdParty/glew/include && cd build && cmake .. -G "Unix Makefiles" && make
   Windows:
     runs-on: windows-latest
     steps:
