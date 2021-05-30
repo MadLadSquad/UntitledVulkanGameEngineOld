@@ -10,8 +10,6 @@
 
 > Currently stable on: Linux, MacOS, BSD, Windows
 
-> NOTE: The project passes CI checks on all platforms. The Github actions servers have old packages which makes MacOS and Linux fail
-
 > Development status: Under heavy construction, we commit directly to master so there will be and possibly are countless bugs in the current master branch
 ## Information
 The UntitledVulkanGameEngine is a 3D game engine written in C++. It uses Vulkan and Modern OpenGL as graphics APIs and has a simple and easy to use C++ scripting API. The engine follows the Gentoo philosophy which means that everything is compiled by the user, no binaries needed. We also support multiple platforms like Linux, MacOS and BSD. For patchnotes, announcements and development logs join our [discord server](https://discord.gg/4TAwNSx) and subscribe to our [youtube channel](https://www.youtube.com/channel/UCWKEvueStyfeMGnkvVJuGxQ)
