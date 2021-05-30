@@ -3,7 +3,7 @@ echo "Compiling GLEW ..."
 
 mkdir Source
 
-cd Engine/ThirdParty/glew/auto
+cd Engine/ThirdParty/glew/auto && make
 
 cd ..
 
