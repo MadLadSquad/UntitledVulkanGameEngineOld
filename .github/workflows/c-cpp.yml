@@ -27,7 +27,7 @@ jobs:
           git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
     - name: Generated generated files
       shell: bash
-      run: cd UVKBuildTool/ && mkdir build && cd build && cmake -G "Unix Makefiles" .. && make && ./UVKBuildTool --generate
+      run: cd UVKBuildTool/ && mkdir build && cd build && cmake -G "Unix Makefiles" .. && make && ./UVKBuildTool --generate && cd ../../
     - name: Make build directory and cmake
       shell: bash
       run: ls && mkdir build && cd build && cmake .. -G "Unix Makefiles" && make
