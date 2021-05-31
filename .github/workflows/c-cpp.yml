@@ -54,7 +54,7 @@ jobs:
     - uses: actions/checkout@v2
     - name: Check GCC version
       shell: bash
-      run: ls /usr/local/Cellar/libsndfile/*/lib/ && cp /usr/local/Cellar/libsndfile/*/include/sndfile.h Engine/ThirdParty/ && sudo cp /usr/local/Cellar/libsndfile/*/lib/libsndfile.1.dylib /usr/local/Cellar/libsndfile/*/lib/libsndfile.a /usr/local/Cellar/libsndfile/*/lib/libsndfile.dylib Engine/ThirdParty/glew/lib/
+      run: ls /usr/local/Cellar/libsndfile/*/lib/ && cp /usr/local/Cellar/libsndfile/*/include/sndfile.h Engine/ThirdParty/ && cp /usr/local/Cellar/libsndfile/*/lib/libsndfile.a /usr/local/Cellar/libsndfile/*/lib/libsndfile.dylib Engine/ThirdParty/glew/lib/
     - name: Get dependencies
       shell: bash
       run: brew install glfw glew gcc libsndfile
