@@ -1,6 +1,14 @@
 // VKStructs.hpp
 // Last update 27/5/2021 by Madman10K
 #pragma once
+namespace UVK
+{
+    constexpr std::array<const char*, 1> deviceExtensions;
+    struct VKDevice;
+    struct VKQueueFamilyLcation;
+    struct VKSwapchainSettings;
+}
+#ifndef __APPLE__
 #include <vulkan/vulkan.h>
 #include <Core.hpp>
 
@@ -31,3 +39,4 @@ namespace UVK
         std::vector<VkPresentModeKHR> presentationModes{};
     };
 }
+#endif
