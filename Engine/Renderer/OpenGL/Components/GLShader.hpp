@@ -6,6 +6,7 @@
 #include <fstream>
 #include <UVKLog.h>
 #include <string>
+#include <vector>
 //#include <Core.hpp>
 
 namespace UVK
