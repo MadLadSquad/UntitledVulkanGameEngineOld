@@ -2,6 +2,7 @@
 // Last update 27/5/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
+#ifndef __APPLE__
 #include <vulkan/vulkan.h>
 
 namespace UVK
@@ -24,3 +25,4 @@ namespace UVK
         VkInstance instance;
     };
 }
+#endif
