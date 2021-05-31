@@ -2,7 +2,9 @@
 // Last update 25/5/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
-#include <vulkan/vulkan.h>
+#ifndef __APPLE__
+    #include <vulkan/vulkan.h>
+#endif
 
 namespace UVK
 {
