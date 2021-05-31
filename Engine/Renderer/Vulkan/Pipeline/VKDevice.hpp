@@ -1,7 +1,8 @@
 // VKDevice.hpp
 // Last update 28/5/2021 by Madman10K
 #pragma once
-#include <vulkan/vulkan.h>
+#ifndef __APPLE__
+    #include <vulkan/vulkan.h>
 #include "../Components/VKStructs.hpp"
 #include "VKSwapchain.hpp"
 
@@ -32,3 +33,4 @@ namespace UVK
         VkQueue presentationQueue;
     };
 }
+#endif
