@@ -22,11 +22,13 @@ namespace UVK
         void tick();
         void end();
     private:
+#ifndef __APPLE__
         VKInstance instance;
         Device device;
         VKGraphicsPipeline graphicsPipeline;
 
         VKPushConstant pushConstant;
         VKSwapchain swapchain;
+#endif
     };
 }
