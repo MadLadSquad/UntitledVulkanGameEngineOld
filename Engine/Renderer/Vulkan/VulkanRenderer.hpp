@@ -4,7 +4,9 @@
 #include <Core.hpp>
 #include "Components/VKStructs.hpp"
 #include "Pipeline/VKPipeline.hpp"
-#include <vulkan/vulkan.h>
+#ifndef __APPLE__
+    #include <vulkan/vulkan.h>
+#endif
 #include <glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
