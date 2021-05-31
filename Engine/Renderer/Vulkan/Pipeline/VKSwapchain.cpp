@@ -1,5 +1,6 @@
 // VKSwapchain.cpp
 // Last update 28/5/2021 by Madman10K
+#ifndef __APPLE__
 #include <GL/glew.h>
 #define GLFW_INCLUDE_VULKAN
 #include <Core.hpp>
@@ -66,3 +67,4 @@ void UVK::VKSwapchain::set(UVK::VKInstance* inst, UVK::Device* dev)
     instance = inst;
     device = dev;
 }
+#endif
