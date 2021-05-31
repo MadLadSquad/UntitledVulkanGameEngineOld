@@ -2,7 +2,7 @@
 // Last update 28/5/2021 by Madman10K
 #include "VKDevice.hpp"
 #include <Core.hpp>
-
+#ifndef __APPLE__
 void UVK::Device::getPhysicalDevice()
 {
     uint32_t deviceCount = 0;
@@ -176,3 +176,4 @@ bool UVK::Device::checkDeviceExtensionSupport() const
 
     return true;
 }
+#endif
