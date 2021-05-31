@@ -1,7 +1,7 @@
 // VKInstance.cpp
 // Last update 28/5/2021 by Madman10K
 #include "VKInstance.hpp"
-
+#ifndef __APPLE__
 void UVK::VKInstance::create()
 {
     // Setup versions, name, etc
@@ -89,3 +89,4 @@ bool UVK::VKInstance::checkExtensionSupport(std::vector<const char*>* extensions
     }
     return true;
 }
+#endif
