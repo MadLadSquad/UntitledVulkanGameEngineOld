@@ -4,7 +4,7 @@
 #ifdef __APPLE__
 namespace UVK
 {
-    constexpr std::array<const char*, 1> deviceExtensions;
+    constexpr std::array<const char*, 1> deviceExtensions = { "Apple" };
     struct VKDevice;
     struct VKQueueFamilyLcation;
     struct VKSwapchainSettings;
