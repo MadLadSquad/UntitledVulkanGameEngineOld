@@ -1,6 +1,7 @@
 // VKStructs.hpp
 // Last update 27/5/2021 by Madman10K
 #pragma once
+#ifdef __APPLE__
 namespace UVK
 {
     constexpr std::array<const char*, 1> deviceExtensions;
@@ -8,7 +9,7 @@ namespace UVK
     struct VKQueueFamilyLcation;
     struct VKSwapchainSettings;
 }
-#ifndef __APPLE__
+#else
 #include <vulkan/vulkan.h>
 #include <Core.hpp>
 
