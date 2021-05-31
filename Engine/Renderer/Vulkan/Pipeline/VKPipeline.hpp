@@ -9,6 +9,7 @@
 #include "VKGraphicsPipeline.hpp"
 #include "VKPushConstant.hpp"
 #include "VKSwapchain.hpp"
+#include "../Components/VKStructs.hpp"
 
 namespace UVK
 {
