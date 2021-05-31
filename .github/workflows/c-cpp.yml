@@ -57,7 +57,7 @@ jobs:
       run: gcc --version
     - name: Get dependencies
       shell: bash
-      run: brew install glfw glew gcc
+      run: brew install glfw glew gcc libsndfile
     - name: Checkout submodules
       shell: bash
       run: |
