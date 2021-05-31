@@ -57,7 +57,7 @@ jobs:
       run: gcc --version
     - name: Get dependencies
       shell: bash
-      run: sudo installer -pkg /Library/Developer/CommandLineTools/Packages/macOS_SDK_headers_for_macOS_10.14.pkg -target / && brew install glfw glew gcc libsndfile
+      run: brew install glfw glew gcc libsndfile && ln -s ~/.development/homebrew/opt/libsndfile/include/ /usr/local/include
     - name: Checkout submodules
       shell: bash
       run: |
