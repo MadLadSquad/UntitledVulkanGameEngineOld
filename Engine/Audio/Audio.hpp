@@ -1,10 +1,13 @@
 // Audio.hpp
-// Last update 7/5/2021 by Madman10K
+// Last update 3/6/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 
 namespace UVK
 {
+    /**
+     * @brief States are paused, running, resume, stopped
+     */
     enum AudioState
     {
         UVK_AUDIO_STATE_PAUSED,
@@ -25,6 +28,9 @@ namespace UVK
     struct AudioSourceData;
     class AudioSource;
 
+    /**
+     * @brief All the data that the audio source will ever need
+     */
     struct AudioSourceData
     {
         std::string location;
@@ -44,7 +50,9 @@ namespace UVK
 
 namespace UVK
 {
-
+    /**
+     * @brief Creates and Destroys an audio device and context
+     */
     class AudioManager
     {
     public:
@@ -66,6 +74,9 @@ namespace UVK
         ALCcontext* context = nullptr;
     };
 
+    /**
+     * @brief Just a buffer for audio
+     */
     class AudioBuffer
     {
     public:
@@ -84,8 +95,9 @@ namespace UVK
         ALuint buffer = 0;
     };
 
-
-
+    /**
+     * @brief The physical audio source in the scene
+     */
     class AudioSource
     {
     public:

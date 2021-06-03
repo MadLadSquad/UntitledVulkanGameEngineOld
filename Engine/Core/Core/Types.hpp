@@ -1,5 +1,5 @@
 // Types.hpp
-// Last update 3/26/2021 by Madman10K
+// Last update 3/6/2021 by Madman10K
 #include <vector>
 #include <glm/glm.hpp>
 #include <glm/mat3x4.hpp>

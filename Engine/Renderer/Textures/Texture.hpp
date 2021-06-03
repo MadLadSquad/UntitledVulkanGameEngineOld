@@ -1,11 +1,14 @@
 // Texture.hpp
-// Last update 4/12/2021 by Madman10K
+// Last update 3/6/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 #include <stb/stb_image.h>
 
 namespace UVK
 {
+    /**
+     * @brief Texture for multiple targets including imgui, opengl and vulkan
+     */
     class Texture
     {
     public:

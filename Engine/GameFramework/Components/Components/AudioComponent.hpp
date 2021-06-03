@@ -1,5 +1,5 @@
 // AudioComponent.hpp
-// Last update 7/5/2021 by Madman10K
+// Last update 3/6/2021 by Madman10K
 #include <Core.hpp>
 #include <Audio/Audio.hpp>
 
@@ -7,6 +7,9 @@ namespace UVK
 {
     struct AudioSourceData;
 
+    /**
+     * @brief A simple audio component
+     */
     struct AudioComponent
     {
         void init(AudioSourceData dt);

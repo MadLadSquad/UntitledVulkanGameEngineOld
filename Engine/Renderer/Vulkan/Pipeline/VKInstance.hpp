@@ -1,5 +1,5 @@
 // VulkanRenderer.cpp
-// Last update 27/5/2021 by Madman10K
+// Last update 3/6/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 #ifndef __APPLE__
@@ -7,6 +7,9 @@
 
 namespace UVK
 {
+    /**
+     * @brief Manages a vulkan instance
+     */
     class VKInstance
     {
     public:

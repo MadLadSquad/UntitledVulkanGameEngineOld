@@ -1,8 +1,11 @@
 // DetailsPanel.hpp
-// Last update 15/5/2021 by Madman10K
+// Last update 3/6/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 
+/**
+ * @brief Displays the Details Panel which is used to add, manipulate and remove components from selected entities
+ */
 namespace DetailsPanel
 {
     // All of this is copied from the Cherno because his styling looks great

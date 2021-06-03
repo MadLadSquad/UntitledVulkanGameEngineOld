@@ -1,10 +1,13 @@
 // GameInstance.hpp
-// Last update 18/5/2021 by Madman10K
+// Last update 3/6/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 
 namespace UVK
 {
+    /**
+     * @brief The instance of the application
+     */
     class GameInstance
     {
     public:

@@ -1,5 +1,5 @@
 // VKStructs.hpp
-// Last update 27/5/2021 by Madman10K
+// Last update 3/6/2021 by Madman10K
 #pragma once
 #ifdef __APPLE__
 namespace UVK
@@ -15,13 +15,21 @@ namespace UVK
 
 namespace UVK
 {
+    // array of extensions for the gpu
     constexpr std::array<const char*, 1> deviceExtensions = { VK_KHR_SWAPCHAIN_EXTENSION_NAME };
+
+    /**
+     * @brief A GPU device struct
+     */
     struct VKDevice
     {
         VkPhysicalDevice physicalDevice;
         VkDevice logicalDevice;
     };
 
+    /**
+     * @brief Vulkan queue family indices/locations
+     */
     struct VKQueueFamilyLocation
     {
         int graphicsFamily = -1;
@@ -33,6 +41,9 @@ namespace UVK
         }
     };
 
+    /**
+     * @brief Settings about the swapchain
+     */
     struct VKSwapchainSettings
     {
         VkSurfaceCapabilitiesKHR surfaceCapabilities{};

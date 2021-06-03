@@ -1,5 +1,5 @@
 // Editor.hpp
-// Last update 20/5/2021 by Madman10K
+// Last update 3/6/2021 by Madman10K
 #pragma once
 #include <iostream>
 #include <utility>
@@ -11,6 +11,9 @@
 
 namespace UVK
 {
+    /**
+     * @brief Controls the whole editor and related operations
+     */
     class Editor
     {
     public:

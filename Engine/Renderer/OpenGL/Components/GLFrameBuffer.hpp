@@ -1,10 +1,13 @@
 // GLFrameBuffer.hpp
-// Last update 4/13/2021 by Madman10K
+// Last update 3/6/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 
 namespace UVK
 {
+    /**
+     * @brief OpenGL specific framebuffer class
+     */
     class GLFrameBuffer
     {
     public:

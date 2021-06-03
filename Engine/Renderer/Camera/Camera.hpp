@@ -6,6 +6,9 @@
 
 namespace UVK
 {
+    /**
+     * @brief A cross-renderer camera abstraction
+     */
     class Camera
     {
     public:

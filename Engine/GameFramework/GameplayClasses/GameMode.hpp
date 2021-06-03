@@ -1,5 +1,5 @@
 // GameMode.hpp
-// Last update 18/5/2021 by Madman10K
+// Last update 3/6/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 #include "GameState.hpp"
@@ -9,6 +9,9 @@
 
 namespace UVK
 {
+    /**
+     * @brief A game mode contains pointers to a GameState, PlayerState, PlayerController and a Pawn
+     */
     class GameMode
     {
     public:
@@ -31,6 +34,33 @@ namespace UVK
             delete pawn;
         }
     private:
+        void beginAutohandle() const
+        {
+            gs->beginPlay();
+            ps->beginPlay();
+            pc->beginPlay();
+            pawn->beginPlay();
+        }
+        /**
+         * @brief Tick event autohandler handles all events from the GameInstance and GameMode
+         */
+        void tickAutohandle(float deltaTime) const
+        {
+            gs->tick(deltaTime);
+            ps->tick(deltaTime);
+            pc->tick(deltaTime);
+            pawn->tick(deltaTime);
+        }
 
+        /**
+         * @brief End event autohandler handles all events from the GameInstance and GameMode
+         */
+        void endAutohandle() const
+        {
+            gs->endPlay();
+            ps->endPlay();
+            pc->endPlay();
+            pawn->endPlay();
+        }
     };
 }

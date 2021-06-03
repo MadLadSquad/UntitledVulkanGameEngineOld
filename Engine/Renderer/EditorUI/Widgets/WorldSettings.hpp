@@ -1,5 +1,5 @@
 // WorldSettings.hpp
-// Last update 15/5/2021 by Madman10K
+// Last update 3/6/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 #include <imgui.h>
@@ -7,6 +7,9 @@
 #include <imgui_impl_glfw.h>
 #include <cpp/imgui_stdlib.h>
 
+/**
+ * @brief Displays the world settings which manages all data that is specific to a given level
+ */
 namespace WorldSettings
 {
     void display(UVK::FVector4& colour, UVK::FVector4 ambientLight, std::string& name, bool& bShow);

@@ -1,5 +1,5 @@
 // GLMesh.hpp
-// Last update 3/26/2021 by Madman10K
+// Last update 3/6/2021 by Madman10K
 #pragma once
 #include "GLShader.hpp"
 //#include <Core.hpp>
@@ -7,6 +7,9 @@
 
 namespace UVK
 {
+    /**
+     * @brief OpenGL specific mesh class
+     */
     class GLMesh
     {
     public:

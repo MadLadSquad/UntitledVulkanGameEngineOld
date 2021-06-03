@@ -1,5 +1,5 @@
 // MeshComponentRaw.hpp
-// Last update 7/5/2021 by Madman10K
+// Last update 3/6/2021 by Madman10K
 #pragma once
 #include <glm/gtx/quaternion.hpp>
 #include <../Renderer/OpenGL/Components/GLMesh.hpp>
@@ -8,7 +8,7 @@
 namespace UVK
 {
     /**
-     * @brief A mesh component used for debugging.
+     * @brief A mesh component used for debugging
      */
     struct MeshComponentRaw
     {

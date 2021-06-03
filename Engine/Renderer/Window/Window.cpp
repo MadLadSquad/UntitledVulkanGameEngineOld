@@ -1,5 +1,5 @@
 // Window.cpp
-// Last update 27/5/2021 by Madman10K
+// Last update 3/6/2021 by Madman10K
 #include "Window.hpp"
 
 double UVK::Window::getYMousePositionChange()
@@ -194,11 +194,25 @@ void UVK::Window::keyboardInputCallback(GLFWwindow* window, int key, int scanCod
 
     if (action == Keys::KeyPressedEvent || action == Keys::KeyRepeatEvent)
     {
-        windowInst->keysArr[key] = true;
+        if (key != -1)
+        {
+            windowInst->keysArr[key] = true;
+        }
+        else
+        {
+            windowInst->keysArr[349] = true;
+        }
     }
     else
     {
-        windowInst->keysArr[key] = false;
+        if (key != -1)
+        {
+            windowInst->keysArr[key] = false;
+        }
+        else
+        {
+            windowInst->keysArr[349] = false;
+        }
     }
 }
 
@@ -245,7 +259,7 @@ void UVK::Window::scrollInputCallback(GLFWwindow* window, double xoffset, double
     windowInst->scroll = UVK::FVector2(xoffset, yoffset);
 }
 
-const std::array<bool, 349>& UVK::Window::getKeys()
+const std::array<bool, 350>& UVK::Window::getKeys()
 {
     return keysArr;
 }

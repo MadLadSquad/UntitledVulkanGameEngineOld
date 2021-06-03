@@ -1,5 +1,5 @@
 // VKFramebuffer.hpp
-// Last update 25/5/2021 by Madman10K
+// Last update 3/6/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 #ifndef __APPLE__
@@ -9,6 +9,9 @@
 
 namespace UVK
 {
+    /**
+     * @brief Vulkan specific framebuffer class
+     */
     class VKFramebuffer
     {
     public:

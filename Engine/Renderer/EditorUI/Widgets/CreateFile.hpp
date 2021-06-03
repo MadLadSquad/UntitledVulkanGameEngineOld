@@ -6,5 +6,6 @@
 
 namespace CreateFile
 {
+    // Creates a file
     void display(short& selectedFile, std::string& fileOutLocation, bool& bShowCreateFile1);
 }

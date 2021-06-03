@@ -1,5 +1,5 @@
 // VulkanRenderer.hpp
-// Last update 3/2/2021 by Madman10K
+// Last update 3/6/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 #include "Components/VKStructs.hpp"
@@ -13,6 +13,9 @@
 
 namespace UVK
 {
+    /**
+     * @brief The vulkan specific renderer class
+     */
     class VulkanRenderer
     {
     public:

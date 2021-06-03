@@ -1,11 +1,14 @@
 // MeshComponent.hpp
-// Last update 7/5/2021 by Madman10K
+// Last update 3/6/2021 by Madman10K
 #include <glm/gtx/quaternion.hpp>
 #include <../Renderer/OpenGL/Components/GLMesh.hpp>
 #include <../Renderer/OpenGL/Components/GLCamera.hpp>
 
 namespace UVK
 {
+    /**
+     * @brief A simple mesh component
+     */
     struct MeshComponent
     {
         void createMesh(const char* modelLocation, const char* vertexShader, const char* fragmentShader, ShaderImportType type);

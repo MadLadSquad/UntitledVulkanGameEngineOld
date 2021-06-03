@@ -1,5 +1,5 @@
 // VKSwapchain.hpp
-// Last update 28/5/2021 by Madman10K
+// Last update 3/6/2021 by Madman10K
 #pragma once
 #ifndef __APPLE__
     #include <vulkan/vulkan.h>
@@ -11,6 +11,9 @@ namespace UVK
 {
     class Device;
 
+    /**
+     * @brief Manages a Vulkan swapchain
+     */
     class VKSwapchain
     {
     public:

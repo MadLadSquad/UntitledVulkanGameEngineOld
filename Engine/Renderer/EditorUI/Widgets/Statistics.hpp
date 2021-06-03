@@ -1,5 +1,5 @@
 // Statistics.hpp
-// Last update 15/5/2021 by Madman10K
+// Last update 3/6/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 #include <imgui.h>
@@ -8,6 +8,9 @@
 #include <imgui_impl_glfw.h>
 #include <cpp/imgui_stdlib.h>
 
+/**
+ * @brief Displays a statistics widget used for showcasing framerates, frametimes and load times among other things
+ */
 namespace Statistics
 {
     // This is from the implot demo

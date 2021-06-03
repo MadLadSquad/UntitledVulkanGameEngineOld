@@ -6,6 +6,9 @@
 
 namespace UVK
 {
+    /**
+     * @brief A player state is a simple class that semantically should be used to track the state of the player
+     */
     class PlayerState
     {
     public:

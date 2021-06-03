@@ -1,5 +1,5 @@
 // GLRenderer.hpp
-// Last update 4/15/2021 by Madman10K
+// Last update 3/6/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 #include <utility>
@@ -12,6 +12,9 @@ namespace UVK
 {
     class Level;
 
+    /**
+     * @brief The OpenGL renderer
+     */
     class GLRenderer
     {
     public:

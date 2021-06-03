@@ -1,5 +1,5 @@
 // Editor.cpp
-// Last update 15/5/2021 by Madman10K
+// Last update 1/6/2021 by Madman10K
 #include <GL/glew.h>
 #include "../../GameFramework/GameplayClasses/Level/Level.hpp"
 #include "Widgets/SceneHierarchy.hpp"
@@ -287,7 +287,7 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, GLCamera& c
 
     if (bShowSaveLevelWidget)
     {
-        SaveLevel::display(bShowSaveLevelWidget, location, name);
+        SaveLevel::display(bShowSaveLevelWidget, location, levelName);
     }
 
     if (bShowOpenLevelWidget)

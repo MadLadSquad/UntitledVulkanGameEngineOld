@@ -1,12 +1,15 @@
 // Level.hpp
-// Last update 18/5/2021 by Madman10K
+// Last update 3/6/2021 by Madman10K
 #include <Core.hpp>
 #include "../GameMode.hpp"
 #include "../GameInstance.hpp"
 
 namespace UVK
 {
-
+    /**
+     * @brief A level class can have it's own scripted events but it has the functionality of opening and saving level
+     * files
+     */
     class Level
     {
     public:
@@ -37,9 +40,18 @@ namespace UVK
          */
         static void open(String file) noexcept;
 
+        GameInstance* getGameInstance()
+        {
+            return gameInstance;
+        }
+
+        GameMode* getGameMode()
+        {
+            return gameMode;
+        }
+    private:
         GameInstance* gameInstance = nullptr;
         GameMode* gameMode = nullptr;
-
 
         /**
          * @brief Begin event autohandler handles all events from the GameInstance and GameMode
@@ -66,7 +78,5 @@ namespace UVK
             gameInstance->endPlay();
             gameMode->endPlay();
         }
-    private:
-
     };
 }

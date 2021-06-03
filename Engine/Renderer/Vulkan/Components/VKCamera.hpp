@@ -1,5 +1,5 @@
 // VKCamera.hpp
-// Last update 25/5/2021 by Madman10K
+// Last update 3/6/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 #ifndef __APPLE__
@@ -7,6 +7,9 @@
 #endif
 namespace UVK
 {
+    /**
+     * @brief Vulkan specific camera class
+     */
     class VKCamera
     {
     public:

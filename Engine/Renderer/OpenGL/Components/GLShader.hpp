@@ -1,5 +1,5 @@
 // GLShader.hpp
-// Last update 4/20/2021 by Madman10K
+// Last update 3/6/2021 by Madman10K
 #pragma once
 #include <GL/glew.h>
 #include <iostream>
@@ -11,13 +11,18 @@
 
 namespace UVK
 {
+    /**
+     * @brief Shader impost types are file, string, spir
+     */
 	enum ShaderImportType
 	{
 		SHADER_IMPORT_TYPE_FILE,
 		SHADER_IMPORT_TYPE_STRING,
 		SHADER_IMPORT_TYPE_SPIR
 	};
-	
+    /**
+     * @brief OpenGL specific text shader class
+     */
 	class GLShader
     {
     public:
@@ -42,6 +47,9 @@ namespace UVK
 		static void addShader(GLuint program, std::string shader, GLenum shaderType);
     };
 
+    /**
+     * @brief OpenGL specific spirv shader class
+     */
 	class GLShaderSPV
     {
     public:

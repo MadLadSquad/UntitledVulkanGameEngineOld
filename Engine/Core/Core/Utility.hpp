@@ -1,8 +1,11 @@
 // Utility.hpp
-// Last update 20/5/2021 by Madman10K
+// Last update 3/6/2021 by Madman10K
 #pragma once
 #include <iostream>
 
+/**
+ * @brief A namespace of useful utility functions
+ */
 namespace Utility
 {
     static void toLower(std::string& str)

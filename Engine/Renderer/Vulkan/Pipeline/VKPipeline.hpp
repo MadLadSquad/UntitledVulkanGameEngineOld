@@ -1,5 +1,5 @@
 // VKPipeline.hpp
-// Last update 28/5/2021 by Madman10K
+// Last update 3/6/2021 by Madman10K
 #pragma once
 #ifndef __APPLE__
     #include <vulkan/vulkan.h>
@@ -13,6 +13,10 @@
 
 namespace UVK
 {
+    /**
+     * @brief Manages the whole renderer pipeline, not to be confused with VKGraphicsPipeline which is the actual
+     * graphics pipeline, this is merely a manager
+     */
     class VKPipeline
     {
     public:

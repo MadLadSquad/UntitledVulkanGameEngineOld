@@ -1,5 +1,5 @@
 // Window.hpp
-// Last update 27/5/2021 by Madman10K
+// Last update 3/6/2021 by Madman10K
 #pragma once
 #include <GL/glew.h>
 #include "../Textures/Texture.hpp"
@@ -7,9 +7,11 @@
 #include <yaml.h>
 #include "UVKLog.h"
 
-
 namespace UVK
 {
+    /**
+     * @brief A standard cross-renderer window abstraction
+     */
     class Window
     {
     public:
@@ -41,7 +43,7 @@ namespace UVK
             return bufferHeight;
         }
 
-        const std::array<bool, 349>& getKeys();
+        const std::array<bool, 350>& getKeys();
         const std::array<bool, 20>& getMouseKeys();
         FVector2 getScroll();
 
@@ -50,7 +52,7 @@ namespace UVK
             return bVulkan;
         }
     private:
-        std::array<bool, 349> keysArr{};
+        std::array<bool, 350> keysArr{};
         std::array<bool, 20> mouseArr{};
 
         FVector2 scroll{};
@@ -95,10 +97,16 @@ inline UVK::Window currentWindow;
 
 namespace UVK
 {
+    /**
+     * @brief A standard cross-renderer input abstraction
+     */
     class Input
     {
     public:
+        // Given a valid keyboard key from the Keys namespace it will return weather the key was pressed
         static bool getKeyPressed(int key);
+
+        // Given a valid mouse key from the Keys namespace it will return weather the key was pressed
         static bool getMouseKeyPressed(int key);
 
         static FVector2 getMousePositionChange();

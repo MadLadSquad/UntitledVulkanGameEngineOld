@@ -1,5 +1,5 @@
 // DetailsPanel.cpp
-// Last update 15/5/2021 by Madman10K
+// Last update 3/6/2021 by Madman10K
 #include <Core/Registry.hpp>
 #include <imgui.h>
 #include <cpp/imgui_stdlib.h>
@@ -157,6 +157,7 @@ void DetailsPanel::display(entt::entity& ent, bool& bShow, bool& destroy)
         ImGui::InputText("name##inputactorname", &a.name);
 
         ImGui::InputText("id##inputactoridentifier", &id);
+        ImGui::InputText("development name##devname", &a.devName);
     }
 
     if (registry.hasComponent<UVK::MeshComponentRaw>(ent))

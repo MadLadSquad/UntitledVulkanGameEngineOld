@@ -5,6 +5,9 @@
 //#include "../../../GameFramework/Components/Components.hpp"
 #include "Engine/Core/Core/Registry.hpp"
 
+/**
+ * @brief The scene hierarchy widget creates, manages, destroys entities
+ */
 namespace SceneHierarchy
 {
     void destroyEntity(entt::entity& selectedEntity);

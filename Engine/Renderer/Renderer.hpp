@@ -7,6 +7,9 @@
 
 namespace UVK
 {
+    /**
+     * @brief Manages the currently used renderer and can switch renderers
+     */
     class Renderer
     {
     public:
