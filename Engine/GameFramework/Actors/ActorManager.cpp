@@ -1,9 +1,18 @@
 // ActorManager.cpp
-// Last update 3/6/2021 by Madman10K
+// Last update 5/6/2021 by Madman10K
+#include <GL/glew.h>
 #include "ActorManager.hpp"
-#include "../../../Source/ActorSet.hpp"
+#include "../../../Source/ActorList.hpp"
 
 void UVK::ActorManager::init()
 {
+    ACTOR_SET_DEPLOY
+}
 
+void UVK::ActorManager::destroy()
+{
+    for (auto& b : a)
+    {
+        delete b;
+    }
 }

@@ -15,3 +15,4 @@
 #include "GameFramework/GameplayClasses/Level/Level.hpp"
 #include "Engine/Audio/Audio.hpp"
 #include "Core/Events/Events.hpp"
+#include "GameFramework/Actors/ActorManager.hpp"

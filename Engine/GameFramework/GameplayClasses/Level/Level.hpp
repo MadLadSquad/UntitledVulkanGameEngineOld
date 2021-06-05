@@ -19,7 +19,7 @@ namespace UVK
         virtual void tick(float deltaTime) = 0;
         virtual void beginPlay() = 0;
         virtual void endPlay() = 0;
-
+        virtual ~Level() = default;
         /**
          * @brief Utility function to save an entity
          * @param out a YAML::Emitter reference to the emitter

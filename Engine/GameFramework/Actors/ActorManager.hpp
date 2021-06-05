@@ -1,5 +1,5 @@
 // ActorManager.hpp
-// Last update 1/6/2021 by Madman10K
+// Last update 5/6/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 #include "ScriptableObject.hpp"
@@ -16,6 +16,7 @@ namespace UVK
         ActorManager() = default;
 
         void init();
+        void destroy();
     private:
         std::set<ScriptableObject*> a;
     };

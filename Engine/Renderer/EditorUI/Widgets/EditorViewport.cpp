@@ -1,5 +1,5 @@
 // EditorViewport.cpp
-// Last update 15/5/2021 by Madman10K
+// Last update 4/6/2021 by Madman10K
 #include <GL/glew.h>
 #include <Renderer/Window/Window.hpp>
 #include "EditorViewport.hpp"
@@ -48,11 +48,11 @@ void EditorViewport::display(UVK::GLFrameBuffer& fb, int& viewportWidth, int& vi
 
     if (operationType == ImGuizmo::ROTATE) snapVal = 10.0f;
 
-    float snapValues[3] = { snapVal, snapVal, snapVal };
-
     if (registry.hasComponent<UVK::MeshComponentRaw>(entity) && operationType != -1)
     {
         auto& a = registry.getComponent<UVK::MeshComponentRaw>(entity);
+
+        const float snapValues[3] = { snapVal, snapVal, snapVal };
 
         ImGuizmo::SetOrthographic(false);
         ImGuizmo::SetDrawlist();
