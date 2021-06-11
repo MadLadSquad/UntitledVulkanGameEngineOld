@@ -30,12 +30,6 @@ jobs:
     - name: Make build directory and cmake
       shell: bash
       run: ls Engine/ThirdParty/glew/include && cd build && cmake .. -G "Unix Makefiles" && make
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v1
-      with:
-        languages: 'cpp'
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v1
   Windows:
     runs-on: windows-latest
     steps:
