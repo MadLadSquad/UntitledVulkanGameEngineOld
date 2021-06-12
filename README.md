@@ -38,17 +38,17 @@ Q: It's called the UntitledVulkanEngine but where is the Vulkan renderer
 
 A: The vulkan renderer is going to be built in the future because we are first trying to lay out solid foundations so we can add it without serious problems
 ## Open-source libraries and SDKs we use
--   GLFW - https://github.com/glfw/glfw
--   GLEW - https://github.com/nigels-com/glew
--   GLM - https://github.com/g-truc/glm
--   EnTT - https://github.com/skypjack/entt
--   Dear imgui - https://github.com/ocornut/imgui
--   yaml-cpp - https://github.com/jbeder/yaml-cpp
--   stb - https://github.com/nothings/stb
--   VulkanSDK - https://vulkan.lunarg.com/
--   OpenAL - https://www.openal.org/
--   zlib - https://github.com/madler/zlib
--   imguizmo - https://github.com/CedricGuillemet/ImGuizmo
--   implot - https://github.com/epezent/implot
--   sndfile - http://www.mega-nerd.com/libsndfile/
--   imgui memory editor - https://github.com/ocornut/imgui_club
+-   GLFW - <https://github.com/glfw/glfw>
+-   GLEW - <https://github.com/nigels-com/glew>
+-   GLM - <https://github.com/g-truc/glm>
+-   EnTT - <https://github.com/skypjack/entt>
+-   Dear imgui - <https://github.com/ocornut/imgui>
+-   yaml-cpp - <https://github.com/jbeder/yaml-cpp>
+-   stb - <https://github.com/nothings/stb>
+-   VulkanSDK - <https://vulkan.lunarg.com/>
+-   OpenAL - <https://www.openal.org/>
+-   zlib - <https://github.com/madler/zlib>
+-   imguizmo - <https://github.com/CedricGuillemet/ImGuizmo>
+-   implot - <https://github.com/epezent/implot>
+-   sndfile - <http://www.mega-nerd.com/libsndfile/>
+-   imgui memory editor - <https://github.com/ocornut/imgui_club>
