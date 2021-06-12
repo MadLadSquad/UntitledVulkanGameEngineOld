@@ -184,8 +184,6 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, GLCamera& c
     {
         if (ImGui::BeginMenu("File"))
         {
-            int lnt;
-
             if (ImGui::Button("Save Level"))
             {
                 bShowSaveLevelWidget = true;
@@ -213,6 +211,7 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, GLCamera& c
 
             if (ImGui::Button("Regenerate files"))
             {
+                int lnt;
 #ifdef _WIN32
                 lnt = system("cd ../UVKBuildTool/build/ && UVKBuildTool.exe --generate && cd ../../");
 #else

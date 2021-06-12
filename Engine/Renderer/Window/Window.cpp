@@ -264,11 +264,6 @@ const std::array<bool, 350>& UVK::Window::getKeys()
     return keysArr;
 }
 
-const std::array<bool, 20> &UVK::Window::getMouseKeys()
-{
-    return mouseArr;
-}
-
 UVK::FVector2 UVK::Window::getScroll()
 {
     FVector2 ret = scroll;
@@ -279,15 +274,7 @@ UVK::FVector2 UVK::Window::getScroll()
 UVK::Window::Window()
 {
     bVulkan = false;
-    for (auto& a : keysArr)
-    {
-        a = false;
-    }
-
-    for (auto& b : mouseArr)
-    {
-        b = false;
-    }
+    std::fill(keysArr.begin(), keysArr.end(), false);
 }
 
 void UVK::Window::setCursorVisibility(bool bIsVisible)

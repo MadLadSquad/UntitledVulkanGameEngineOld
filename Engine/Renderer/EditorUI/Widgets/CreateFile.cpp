@@ -8,8 +8,7 @@ void CreateFile::display(short& selectedFile, std::string& fileOutLocation, bool
 {
     ImGui::Begin("Create a file");
 
-    // This is so the linter can shut up
-    int lnt;
+
 
     static std::string str;
 
@@ -75,6 +74,8 @@ void CreateFile::display(short& selectedFile, std::string& fileOutLocation, bool
 
     if (ImGui::Button("Create"))
     {
+        // This is so the linter can shut up
+        int lnt;
         switch (selectedFile)
         {
 #ifdef _WIN32
@@ -129,6 +130,7 @@ void CreateFile::display(short& selectedFile, std::string& fileOutLocation, bool
                 break;
 #endif
             default:
+                lnt = 15;
                 break;
         }
 

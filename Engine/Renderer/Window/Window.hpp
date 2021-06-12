@@ -35,7 +35,6 @@ namespace UVK
         FVector2 getMousePositionChange();
 
         const std::array<bool, 350>& getKeys();
-        const std::array<bool, 20>& getMouseKeys();
         FVector2 getScroll();
 
         bool& getVulkan()
@@ -44,7 +43,6 @@ namespace UVK
         }
     private:
         std::array<bool, 350> keysArr{};
-        std::array<bool, 20> mouseArr{};
 
         FVector2 scroll{};
 

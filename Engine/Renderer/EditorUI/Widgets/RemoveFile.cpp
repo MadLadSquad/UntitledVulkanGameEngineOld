@@ -7,7 +7,6 @@
 
 void RemoveFile::display(bool& bShow)
 {
-    static int lnt = 0;
     ImGui::Begin("RemoveFile", &bShow);
 
     static std::string in;
@@ -26,9 +25,10 @@ void RemoveFile::display(bool& bShow)
 
     if (ImGui::Button("Delete##delete"))
     {
-
+        static int lnt = 0;
         if (bSO)
         {
+
 #ifndef __MINGW32__
             try
             {
@@ -72,11 +72,12 @@ void RemoveFile::display(bool& bShow)
             }
 #endif
         }
+        if (lnt)
+        {
+
+        }
     }
 
-    if (lnt)
-    {
 
-    }
     ImGui::End();
 }

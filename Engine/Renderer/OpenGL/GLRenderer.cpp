@@ -41,30 +41,28 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
         cm = new GLCamera(FVector(-10.0f, 0.0f, 15.0f), FVector(0.0f, 1.0f, 0.0f), -90.0f, 0.0f, 5.0f, 0.5f);
     }
 
-    unsigned int indices[] = {
-        0, 3, 1,
-        1, 3, 2,
-        2, 3, 0,
-        0, 1, 2
-    };
-
-    GLfloat vertices[] = {
-        -1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
-        0.0f, -1.0f, 1.0f, 0.5f, 0.0f,
-        1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
-        0.0f, 1.0f, 0.0f, 0.5f, 1.0f
-    };
-
     currentWindow.createWindow();
 
     logger.consoleLog("Creating geometry", UVK_LOG_TYPE_NOTE);
-    
-
 
     registry.createActor("Maikati");
     pool.each([&](entt::entity ent){
         if (registry.getComponent<CoreComponent>(ent).name == "Maikati")
         {
+            unsigned int indices[] = {
+                    0, 3, 1,
+                    1, 3, 2,
+                    2, 3, 0,
+                    0, 1, 2
+            };
+
+            GLfloat vertices[] = {
+                    -1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
+                    0.0f, -1.0f, 1.0f, 0.5f, 0.0f,
+                    1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
+                    0.0f, 1.0f, 0.0f, 0.5f, 1.0f
+            };
+
             registry.getComponent<CoreComponent>(ent).devName = "a";
             auto& a = registry.addComponent<MeshComponentRaw>(ent);
             a.createMesh(vertices, indices, 20, 12, "../Content/Engine/defaultvshader.gl", "../Content/Engine/defaultfshader.gl", SHADER_IMPORT_TYPE_FILE);
