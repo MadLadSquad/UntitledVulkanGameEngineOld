@@ -6,12 +6,17 @@
 [![Discord](https://img.shields.io/discord/717037253292982315.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/4wgH8ZE)
 
 >> Last stable release: 0.7.2.5
-> 
+>>
+>
 >> Current code version: 0.7.3.0
+>>
 >
 >> Currently, stable on: Linux, BSD and Windows
+>> 
 >
 >> Development status: Under heavy construction, we commit directly to master so there will be and possibly are countless bugs in the current master branch
+>>
+>
 ## Information
 The UntitledVulkanGameEngine is a 3D game engine written in C++. It uses Vulkan and Modern OpenGL as graphics APIs and has a simple and easy to use C++ scripting API. The engine follows the Gentoo philosophy which means that everything is compiled by the user, no binaries needed. We also support multiple platforms like Linux, MacOS and BSD. For patch notes, announcements and development logs join our [discord server](https://discord.gg/4TAwNSx) and subscribe to our [youtube channel](https://www.youtube.com/channel/UCWKEvueStyfeMGnkvVJuGxQ)
 ## Learning
