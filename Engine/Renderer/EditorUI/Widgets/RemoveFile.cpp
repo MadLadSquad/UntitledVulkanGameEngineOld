@@ -10,8 +10,8 @@ void RemoveFile::display(bool& bShow)
     ImGui::Begin("RemoveFile", &bShow);
 
     static std::string in;
-    static bool bSO = false;
-    static bool error = false;
+    bool bSO = false;
+    bool error = false;
 
     ImGui::Checkbox("Scriptable Object?", &bSO);
     ImGui::InputTextWithHint("File to delete", "Location starts from the source folder, do not specify the file's extension, only the name", &in);
@@ -25,7 +25,7 @@ void RemoveFile::display(bool& bShow)
 
     if (ImGui::Button("Delete##delete"))
     {
-        static int lnt = 0;
+        int lnt = 0;
         if (bSO)
         {
 
