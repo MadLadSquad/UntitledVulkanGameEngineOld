@@ -1,5 +1,5 @@
 // Editor.cpp
-// Last update 1/6/2021 by Madman10K
+// Last update 9/6/2021 by Madman10K
 #include <GL/glew.h>
 #include "../../GameFramework/GameplayClasses/Level/Level.hpp"
 #include "Widgets/SceneHierarchy.hpp"
@@ -19,6 +19,7 @@
 #include "Widgets/About.hpp"
 #include "Widgets/NewLevel.hpp"
 #include "Widgets/Help.hpp"
+#include "Widgets/RemoveFile.hpp"
 #include "../Window/Window.hpp"
 
 void UVK::Editor::initEditor()
@@ -116,7 +117,6 @@ void UVK::Editor::initEditor()
 void UVK::Editor::runEditor(FVector4& colour, GLFrameBuffer& fb, GLCamera& camera, glm::mat4& projection)
 {
     static bool opt_fullscreen = true;
-    static bool opt_padding = false;
     static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
 
     ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoCollapse;
@@ -186,17 +186,17 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, GLCamera& c
         {
             int lnt;
 
-            if (ImGui::Button("Save level"))
+            if (ImGui::Button("Save Level"))
             {
                 bShowSaveLevelWidget = true;
             }
 
-            if (ImGui::Button("New level"))
+            if (ImGui::Button("New Level"))
             {
                 bShowSaveWarning = true;
             }
 
-            if (ImGui::Button("Open level"))
+            if (ImGui::Button("Open Level"))
             {
                 bShowOpenLevelWidget = true;
             }
@@ -204,6 +204,11 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, GLCamera& c
             if (ImGui::Button("New File"))
             {
                 bShowCreateFile1 = true;
+            }
+
+            if (ImGui::Button("Remove File"))
+            {
+                bShowRemoveFile = true;
             }
 
             if (ImGui::Button("Regenerate files"))
@@ -370,6 +375,11 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, GLCamera& c
     if (bShowHelp)
     {
         Help::display(bShowHelp);
+    }
+
+    if (bShowRemoveFile)
+    {
+        RemoveFile::display(bShowRemoveFile);
     }
 }
 

@@ -20,7 +20,7 @@ namespace UVK
     public:
         GLRenderer() = delete;
 
-        explicit GLRenderer(Level* level, bool& bUsesEditor, std::string theme)
+        explicit GLRenderer(Level* level, const bool& bUsesEditor, std::string theme)
         {
             bEditor = bUsesEditor;
             colTheme = std::move(theme);

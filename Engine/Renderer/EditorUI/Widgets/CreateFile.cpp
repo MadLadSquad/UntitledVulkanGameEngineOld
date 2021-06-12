@@ -1,5 +1,5 @@
 // CreateFile.cpp
-// Last update 20/5/2021 by Madman10K
+// Last update 9/6/2021 by Madman10K
 #include "CreateFile.hpp"
 #include <cpp/imgui_stdlib.h>
 #include <Core.hpp>
@@ -9,7 +9,7 @@ void CreateFile::display(short& selectedFile, std::string& fileOutLocation, bool
     ImGui::Begin("Create a file");
 
     // This is so the linter can shut up
-    int lnt = 0;
+    int lnt;
 
     static std::string str;
 
@@ -53,10 +53,25 @@ void CreateFile::display(short& selectedFile, std::string& fileOutLocation, bool
         selectedFile = 7;
         str = "Level";
     }
+    ImGui::SameLine();
+    if (ImGui::Button("Scriptable object"))
+    {
+        selectedFile = 8;
+        str = "Scriptable object";
+    }
 
     ImGui::Text("Selected file type: %s", str.c_str());
 
     ImGui::InputTextWithHint("Location##genfile", "Location starts from your Source folder!", &fileOutLocation);
+
+    if (ImGui::Button("Cancel"))
+    {
+        selectedFile = 0;
+        bShowCreateFile1 = false;
+        fileOutLocation = "";
+    }
+
+    ImGui::SameLine();
 
     if (ImGui::Button("Create"))
     {
@@ -84,6 +99,9 @@ void CreateFile::display(short& selectedFile, std::string& fileOutLocation, bool
             case 7:
                 lnt = system(static_cast<std::string>("cd ../UVKBuildTool/build && UVKBuildTool.exe --level " + fileOutLocation + " && cd ../../").c_str());
                 break;
+            case 8:
+                lnt = system(static_cast<std::string>("cd ../UVKBuildTool/build && UVKBuildTool.exe --actor " + fileOutLocation + " --add && cd ../../").c_str());
+                break;
 #else
             case 1:
                 lnt = system(static_cast<std::string>("cd ../UVKBuildTool/build && ./UVKBuildTool --game-mode " + fileOutLocation + " && cd ../../").c_str());
@@ -106,6 +124,9 @@ void CreateFile::display(short& selectedFile, std::string& fileOutLocation, bool
             case 7:
                 lnt = system(static_cast<std::string>("cd ../UVKBuildTool/build && ./UVKBuildTool --level " + fileOutLocation + " && cd ../../").c_str());
                 break;
+            case 8:
+                lnt = system(static_cast<std::string>("cd ../UVKBuildTool/build && ./UVKBuildTool --actor " + fileOutLocation + " --add && cd ../../").c_str());
+                break;
 #endif
             default:
                 break;
@@ -116,15 +137,6 @@ void CreateFile::display(short& selectedFile, std::string& fileOutLocation, bool
             logger.consoleLog("Error when generating files!", UVK_LOG_TYPE_ERROR);
         }
 
-        selectedFile = 0;
-        bShowCreateFile1 = false;
-        fileOutLocation = "";
-    }
-
-    ImGui::SameLine();
-
-    if (ImGui::Button("Cancel"))
-    {
         selectedFile = 0;
         bShowCreateFile1 = false;
         fileOutLocation = "";

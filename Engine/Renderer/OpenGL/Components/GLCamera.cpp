@@ -20,7 +20,7 @@ UVK::GLCamera::GLCamera(FVector position, FVector up, GLfloat yaw, GLfloat pitch
 
 void UVK::GLCamera::move(float deltaTime)
 {
-    if (UVK::Input::getMouseKeyPressed(Keys::MouseButtonRight))
+    if (UVK::Input::getKeyPressed(Keys::MouseButtonRight))
     {
         currentWindow.setCursorVisibility(false);
 
@@ -77,7 +77,7 @@ void UVK::GLCamera::move(float deltaTime)
 
 void UVK::GLCamera::moveMouse(float deltaTime, FVector2 change)
 {
-    if (UVK::Input::getMouseKeyPressed(Keys::MouseButtonRight))
+    if (UVK::Input::getKeyPressed(Keys::MouseButtonRight))
     {
         change.x *= turnSpeed; //* deltaTime;
         change.y *= turnSpeed; //* deltaTime;

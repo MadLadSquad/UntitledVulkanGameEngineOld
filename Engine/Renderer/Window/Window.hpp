@@ -1,5 +1,5 @@
 // Window.hpp
-// Last update 3/6/2021 by Madman10K
+// Last update 11/6/2021 by Madman10K
 #pragma once
 #include <GL/glew.h>
 #include "../Textures/Texture.hpp"
@@ -23,25 +23,16 @@ namespace UVK
 
         void setTitle(const std::string& newTitle) const;
         [[nodiscard]] GLFWwindow* getWindow() const;
+
         [[nodiscard]] FVector2 getLastMousePosition() const;
         [[nodiscard]] FVector2 getCurrentMousePosition() const;
 
         void setCursorVisibility(bool bIsVisible);
 
-        [[nodiscard]] int getBufferWidth() const
-        {
-            return bufferWidth;
-        }
-        
-        FVector2 getMousePositionChange()
-        {
-            return FVector2(getXMousePositionChange(), getYMousePositionChange());
-        }
+        [[nodiscard]] int getBufferWidth() const;
+        [[nodiscard]] int getBufferHeight() const;
 
-        [[nodiscard]] int getBufferHeight() const
-        {
-            return bufferHeight;
-        }
+        FVector2 getMousePositionChange();
 
         const std::array<bool, 350>& getKeys();
         const std::array<bool, 20>& getMouseKeys();
@@ -104,10 +95,7 @@ namespace UVK
     {
     public:
         // Given a valid keyboard key from the Keys namespace it will return weather the key was pressed
-        static bool getKeyPressed(int key);
-
-        // Given a valid mouse key from the Keys namespace it will return weather the key was pressed
-        static bool getMouseKeyPressed(int key);
+        static bool getKeyPressed(uint16_t key);
 
         static FVector2 getMousePositionChange();
         static FVector2 getCurrentMousePosition();

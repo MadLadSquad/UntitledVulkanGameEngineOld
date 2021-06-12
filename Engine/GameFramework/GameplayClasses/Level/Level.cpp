@@ -1,9 +1,10 @@
 // Level.cpp
-// Last update 18/5/2021 by Madman10K
+// Last update 9/6/2021 by Madman10K
 #include "../../Components/Components.hpp"
 #include "Engine/Core/Core/Registry.hpp"
 #include "Level.hpp"
-
+#include "../../Actors/ActorManager.hpp"
+#include <Events/Events.hpp>
 
 // Creates bindings for a FVector
 namespace YAML {
@@ -84,6 +85,7 @@ void UVK::Level::saveEntity(YAML::Emitter& out, Actor act)
         auto& a = pool.get<CoreComponent>(act);
         out << YAML::Key << "actor" << YAML::Value << a.name;
         out << YAML::Key << "id" << YAML::Value << a.id;
+        out << YAML::Key << "dev-name" << YAML::Value << a.devName;
     }
 
 #ifndef __MINGW32__
@@ -122,6 +124,7 @@ void UVK::Level::save(String location, String name)
 void UVK::Level::open(String location) noexcept
 {
     pool.clear();
+    events.clear();
 
     logger.consoleLog("Opening level with location: ", UVK_LOG_TYPE_NOTE, location);
 
@@ -140,38 +143,24 @@ void UVK::Level::open(String location) noexcept
 
     if (bValid)
     {
-        logger.consoleLog("Opened file with name:", UVK_LOG_TYPE_SUCCESS, out["name"].as<std::string>());
+        logger.consoleLog("Opened file with name: ", UVK_LOG_TYPE_SUCCESS, out["name"].as<std::string>());
 
         auto entities = out["actors"];
         if (entities)
         {
             logger.consoleLog("Iterating entities", UVK_LOG_TYPE_NOTE);
-#if 0
-            std::mutex mutex;
-            std::vector<std::future<void>> vect;
 
-            constexpr auto func = [](std::mutex* mx, const YAML::Node* ent)
-            {
-                auto name = (*ent)["actor"].as<std::string>();
-
-                mx->lock();
-                auto act = pool.create();
-                auto& core = registry.addComponent<UVK::CoreComponent>(act);
-                mx->unlock();
-
-                core.name = name;
-            };
-#endif
             for (const YAML::Node& entity : entities)
             {
-#if 0
-                vect.push_back(std::async(std::launch::async, func, &mutex, &entity));
-#else
                 auto name = entity["actor"].as<std::string>();
+                auto id = entity["id"].as<int>();
+                auto devName = entity["dev-name"].as<std::string>();
+
                 auto act = pool.create();
                 auto& core = registry.addComponent<UVK::CoreComponent>(act);
                 core.name = name;
-                core.id = entity["id"].as<int>();
+                core.id = id;
+                core.devName = devName;
 
                 if (entity["audio-pitch"] && entity["audio-gain"] && entity["audio-location"])
                 {
@@ -187,7 +176,15 @@ void UVK::Level::open(String location) noexcept
 
                     a.init(data);
                 }
-#endif
+
+                for (auto& it : actorManager.data())
+                {
+                    if (it->name == name && it->id == id && it->devname == devName)
+                    {
+                        it->entities.push_back(&act);
+                        events.add(it);
+                    }
+                }
             }
             logger.consoleLog("Iterated entities", UVK_LOG_TYPE_SUCCESS);
         }

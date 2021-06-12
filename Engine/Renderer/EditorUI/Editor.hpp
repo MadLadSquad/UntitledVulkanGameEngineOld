@@ -62,6 +62,7 @@ namespace UVK
         bool bShowToolbar = true;
         bool bShowTools = true;
         bool bShowMemoryEditor = true;
+        bool bShowRemoveFile = false;
 
         void displayEditor(FVector4& colour, GLFrameBuffer& fb, GLCamera& camera, glm::mat4& projection);
 

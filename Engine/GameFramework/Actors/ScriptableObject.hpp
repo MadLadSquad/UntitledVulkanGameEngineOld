@@ -15,5 +15,11 @@ namespace UVK
         virtual void beginPlay() = 0;
         virtual void endPlay() = 0;
         virtual ~ScriptableObject() = default;
+
+        std::string name;
+        std::string devname;
+        // ids are not universal
+        uint64_t id;
+        std::vector<Actor*> entities;
     };
 }

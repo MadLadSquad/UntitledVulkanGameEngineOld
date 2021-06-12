@@ -36,6 +36,10 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
     {
         cm = new GLCamera(FVector(-10.0f, 0.0f, 15.0f), FVector(0.0f, 1.0f, 0.0f), -90.0f, 0.0f, 5.0f, 0.5f);
     }
+    else
+    {
+        cm = new GLCamera(FVector(-10.0f, 0.0f, 15.0f), FVector(0.0f, 1.0f, 0.0f), -90.0f, 0.0f, 5.0f, 0.5f);
+    }
 
     unsigned int indices[] = {
         0, 3, 1,
@@ -61,6 +65,7 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
     pool.each([&](entt::entity ent){
         if (registry.getComponent<CoreComponent>(ent).name == "Maikati")
         {
+            registry.getComponent<CoreComponent>(ent).devName = "a";
             auto& a = registry.addComponent<MeshComponentRaw>(ent);
             a.createMesh(vertices, indices, 20, 12, "../Content/Engine/defaultvshader.gl", "../Content/Engine/defaultfshader.gl", SHADER_IMPORT_TYPE_FILE);
             a.rotation = FVector(0.0f, 0.0f, 0.0f);
@@ -69,7 +74,7 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
         }
     });
 
-    projection = glm::perspective(glm::radians(90.0f), (GLfloat)currentWindow.getBufferWidth() / (GLfloat)currentWindow.getBufferHeight(), 0.1f, 100.0f);
+    projection = glm::perspective(glm::radians(120.0f), (GLfloat)currentWindow.getBufferWidth() / (GLfloat)currentWindow.getBufferHeight(), 0.1f, 100.0f);
 
     initEditor();
 
@@ -164,18 +169,24 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
             glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT);
 
-            level->tick(deltaTime);
             ed.runEditor(colour, fb, *cm, projection);
         }
-
+        else
+        {
+            level->tick(deltaTime);
+            events.callTick(deltaTime);
+        }
 
         glfwSwapBuffers(currentWindow.getWindow());
     }
-    events.callEnd();
 
     if (bEditor)
     {
         ed.destroyContext();
+    }
+    else
+    {
+        events.callEnd();
     }
 
     pool.each([&](entt::entity ent)

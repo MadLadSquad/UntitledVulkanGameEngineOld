@@ -1,5 +1,5 @@
 // Window.cpp
-// Last update 3/6/2021 by Madman10K
+// Last update 11/6/2021 by Madman10K
 #include "Window.hpp"
 
 double UVK::Window::getYMousePositionChange()
@@ -192,7 +192,7 @@ void UVK::Window::keyboardInputCallback(GLFWwindow* window, int key, int scanCod
     
     //input.callKeyEvents(key, action);
 
-    if (action == Keys::KeyPressedEvent || action == Keys::KeyRepeatEvent)
+    if (action == Keys::KeyPressed || action == Keys::KeyRepeat)
     {
         if (key != -1)
         {
@@ -242,13 +242,13 @@ void UVK::Window::mouseCursorPositionCallback(GLFWwindow* window, double xpos, d
 void UVK::Window::mouseKeyInputCallback(GLFWwindow* window, int button, int action, int mods)
 {
     auto* windowInst = static_cast<Window*>(glfwGetWindowUserPointer(window));
-    if (action == Keys::KeyPressedEvent || action == Keys::KeyRepeatEvent)
+    if (action == Keys::KeyPressed || action == Keys::KeyRepeat)
     {
-        windowInst->mouseArr[button] = true;
+        windowInst->keysArr[button] = true;
     }
     else
     {
-        windowInst->mouseArr[button] = false;
+        windowInst->keysArr[button] = false;
     }
 }
 
@@ -302,6 +302,21 @@ void UVK::Window::setCursorVisibility(bool bIsVisible)
     }
 }
 
+int UVK::Window::getBufferWidth() const
+{
+    return bufferWidth;
+}
+
+UVK::FVector2 UVK::Window::getMousePositionChange()
+{
+    return FVector2(getXMousePositionChange(), getYMousePositionChange());
+}
+
+int UVK::Window::getBufferHeight() const
+{
+    return bufferHeight;
+}
+
 UVK::FVector2 UVK::Input::getLastMousePosition()
 {
     return currentWindow.getLastMousePosition();
@@ -317,12 +332,7 @@ UVK::FVector2 UVK::Input::getMousePositionChange()
     return currentWindow.getMousePositionChange();
 }
 
-bool UVK::Input::getMouseKeyPressed(int key)
-{
-    return currentWindow.getMouseKeys()[key];
-}
-
-bool UVK::Input::getKeyPressed(int key)
+bool UVK::Input::getKeyPressed(uint16_t key)
 {
     return currentWindow.getKeys()[key];
 }

@@ -1,5 +1,5 @@
 // SaveLevel.cpp
-// Last update 3/6/2021 by Madman10K
+// Last update 9/6/2021 by Madman10K
 #include "SaveLevel.hpp"
 #include "../../GameFramework/GameplayClasses/Level/Level.hpp"
 
@@ -10,16 +10,16 @@ void SaveLevel::display(bool &bOpen, std::string &location, std::string &name)
     ImGui::InputText("location##inputlocationsave", &location);
     ImGui::InputText("name##inputnamesave", &name);
 
-    if (ImGui::Button("Submit##submitbuttononsave"))
+    if (ImGui::Button("Cancel##cancelbuttononsave"))
     {
-        UVK::Level::save(location.c_str(), name.c_str());
         bOpen = false;
     }
 
     ImGui::SameLine();
 
-    if (ImGui::Button("Cancel##cancelbuttononsave"))
+    if (ImGui::Button("Submit##submitbuttononsave"))
     {
+        UVK::Level::save(location.c_str(), name.c_str());
         bOpen = false;
     }
 

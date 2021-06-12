@@ -17,6 +17,7 @@ namespace UVK
 
         void init();
         void destroy();
+        std::set<ScriptableObject*>& data();
     private:
         std::set<ScriptableObject*> a;
     };
