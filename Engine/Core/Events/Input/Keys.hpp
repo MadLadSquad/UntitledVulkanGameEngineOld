@@ -153,4 +153,3 @@ namespace Keys
     [[maybe_unused]] constexpr uint16_t KeyRepeat = 2;
     [[maybe_unused]] constexpr uint16_t KeyAny = 3;
 }
-

@@ -1,8 +1,9 @@
 // APawn.hpp
-// Last update 18/5/2021 by Madman10K
+// Last update 13/6/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 #include "ScriptableObject.hpp"
+#include <Renderer/Camera/Camera.hpp>
 
 namespace UVK
 {
@@ -17,5 +18,12 @@ namespace UVK
         virtual void endPlay() = 0;
 
         virtual ~APawn() = default;
+        GLCamera camera;
+
+        std::string name;
+        int64_t id;
+        std::string devName;
+    private:
+
     };
 }

@@ -15,5 +15,5 @@ namespace UVK
 namespace SaveLevel
 {
     // Displays the SaveLevel widget
-    void display(bool& bOpen, std::string& location, std::string& name);
+    void display(bool& bOpen, std::string& location, std::string& name, UVK::FVector4& colour);
 }

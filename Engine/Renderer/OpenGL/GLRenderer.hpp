@@ -24,13 +24,10 @@ namespace UVK
         {
             bEditor = bUsesEditor;
             colTheme = std::move(theme);
-            createWindow(level);
+            start(level);
         }
-
-        void createWindow(Level* level) noexcept;
     private:
-        void renderEditor();
-        void initEditor();
+        void start(Level* level) noexcept;
 
         FVector4 colour{};
         glm::mat4 projection{};

@@ -2,6 +2,7 @@
 // Last update 27/5/2021 by Madman10K
 #include <GL/glew.h>
 #include "Renderer.hpp"
+#include <Renderer/RendererResources.hpp>
 
 UVK::Renderer::Renderer(UVK::Level* lvl, bool bUsesEditor)
 {

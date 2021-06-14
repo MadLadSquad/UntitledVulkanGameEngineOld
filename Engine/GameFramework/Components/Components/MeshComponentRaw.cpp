@@ -1,5 +1,6 @@
 // MeshComponentRaw.cpp
 // Last update 7/5/2021 by Madman10K
+#include <GL/glew.h>
 #include "MeshComponentRaw.hpp"
 
 void UVK::MeshComponentRaw::createMesh(GLfloat* vertices, uint32_t* indices, uint32_t vertexNum, uint32_t indexNum, const char* vertexShader, const char* fragmentShader, ShaderImportType type)
@@ -37,7 +38,7 @@ void UVK::MeshComponentRaw::createMesh(GLfloat* vertices, uint32_t* indices, uin
     scale = FVector(1.0f, 1.0f, 1.0f);
 }
 
-void UVK::MeshComponentRaw::render(glm::mat4 projection, GLCamera &camera)
+void UVK::MeshComponentRaw::render(glm::mat4& projection, GLCamera &camera)
 {
     mat = glm::mat4(1.0f);
     shader.useShader();

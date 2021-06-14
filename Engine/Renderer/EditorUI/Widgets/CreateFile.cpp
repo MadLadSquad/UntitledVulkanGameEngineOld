@@ -3,6 +3,7 @@
 #include "CreateFile.hpp"
 #include <cpp/imgui_stdlib.h>
 #include <Core.hpp>
+#include <stb/exec/uexec.h>
 
 void CreateFile::display(short& selectedFile, std::string& fileOutLocation, bool& bShowCreateFile1)
 {
@@ -71,7 +72,7 @@ void CreateFile::display(short& selectedFile, std::string& fileOutLocation, bool
     }
 
     ImGui::SameLine();
-
+    static int pid;
     if (ImGui::Button("Create"))
     {
         // This is so the linter can shut up

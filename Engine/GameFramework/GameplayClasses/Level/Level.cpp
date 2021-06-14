@@ -5,6 +5,7 @@
 #include "Level.hpp"
 #include "../../Actors/ActorManager.hpp"
 #include <Events/Events.hpp>
+#include <Renderer/RendererResources.hpp>
 
 // Creates bindings for a FVector
 namespace YAML {
@@ -103,12 +104,14 @@ void UVK::Level::saveEntity(YAML::Emitter& out, Actor act)
     out << YAML::EndMap;
 }
 
-void UVK::Level::save(String location, String name)
+void UVK::Level::save(String location)
 {
     YAML::Emitter out;
     out << YAML::BeginMap;
 
-    out << YAML::Key << "name" << YAML::Value << name;
+    out << YAML::Key << "name" << YAML::Value << rendererResources.levelName;
+    out << YAML::Key << "background-colour" << YAML::Value << rendererResources.colour;
+    out << YAML::Key << "ambient-light" << YAML::Value << rendererResources.ambientLight;
     out << YAML::Key << "actors" << YAML::Value << YAML::BeginSeq;
     pool.each([&](auto entityID)
     {
@@ -124,6 +127,11 @@ void UVK::Level::save(String location, String name)
 void UVK::Level::open(String location) noexcept
 {
     pool.clear();
+    if (!rendererResources.bEditor)
+    {
+        events.callEnd();
+    }
+
     events.clear();
 
     logger.consoleLog("Opening level with location: ", UVK_LOG_TYPE_NOTE, location);
@@ -143,8 +151,10 @@ void UVK::Level::open(String location) noexcept
 
     if (bValid)
     {
-        logger.consoleLog("Opened file with name: ", UVK_LOG_TYPE_SUCCESS, out["name"].as<std::string>());
-
+        rendererResources.levelName = out["name"].as<std::string>();
+        logger.consoleLog("Opened file with name: ", UVK_LOG_TYPE_SUCCESS, rendererResources.levelName);
+        rendererResources.colour = out["background-colour"].as<FVector4>();
+        rendererResources.ambientLight = out["ambient-light"].as<FVector4>();
         auto entities = out["actors"];
         if (entities)
         {
@@ -187,6 +197,11 @@ void UVK::Level::open(String location) noexcept
                 }
             }
             logger.consoleLog("Iterated entities", UVK_LOG_TYPE_SUCCESS);
+        }
+
+        if (!rendererResources.bEditor)
+        {
+            events.callBegin();
         }
     }
 }

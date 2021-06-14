@@ -3,7 +3,7 @@
 #include "SaveLevel.hpp"
 #include "../../GameFramework/GameplayClasses/Level/Level.hpp"
 
-void SaveLevel::display(bool &bOpen, std::string &location, std::string &name)
+void SaveLevel::display(bool &bOpen, std::string &location, std::string &name, UVK::FVector4& colour)
 {
     ImGui::Begin("Save level");
 
@@ -19,7 +19,7 @@ void SaveLevel::display(bool &bOpen, std::string &location, std::string &name)
 
     if (ImGui::Button("Submit##submitbuttononsave"))
     {
-        UVK::Level::save(location.c_str(), name.c_str());
+        UVK::Level::save(location.c_str());
         bOpen = false;
     }
 

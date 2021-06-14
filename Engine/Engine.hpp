@@ -17,3 +17,4 @@
 #include "Core/Events/Events.hpp"
 #include "GameFramework/Actors/ActorManager.hpp"
 #include "Core/Core/Registry.hpp"
+#include "Renderer/RendererResources.hpp"

@@ -2,6 +2,7 @@
 // Last update 3/6/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
+#include <Renderer/Camera/Projection.hpp>
 
 namespace UVK
 {
@@ -44,7 +45,13 @@ namespace UVK
 		{
 			return position;
 		}
+
+        Projection& getProjection()
+        {
+            return projection;
+        }
 	private:
+        Projection projection;
 
 		bool holdingRight = false;
 

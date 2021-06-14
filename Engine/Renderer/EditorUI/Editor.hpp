@@ -11,6 +11,8 @@
 
 namespace UVK
 {
+    class Level;
+
     /**
      * @brief Controls the whole editor and related operations
      */
@@ -20,7 +22,7 @@ namespace UVK
         Editor() = default;
 
         void initEditor();
-        void runEditor(FVector4& colour, GLFrameBuffer& fb, GLCamera& camera, glm::mat4& projection);
+        void runEditor(FVector4& colour, GLFrameBuffer& fb, GLCamera& camera, UVK::Level* lvl);
         static void beginFrame();
         void destroyContext();
 
@@ -64,7 +66,7 @@ namespace UVK
         bool bShowMemoryEditor = true;
         bool bShowRemoveFile = false;
 
-        void displayEditor(FVector4& colour, GLFrameBuffer& fb, GLCamera& camera, glm::mat4& projection);
+        void displayEditor(FVector4& colour, GLFrameBuffer& fb, GLCamera& camera, UVK::Level* lvl);
 
         std::string levelName;
         std::string openLevel;

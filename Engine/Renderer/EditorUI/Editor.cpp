@@ -21,6 +21,7 @@
 #include "Widgets/Help.hpp"
 #include "Widgets/RemoveFile.hpp"
 #include "../Window/Window.hpp"
+#include <Renderer/RendererResources.hpp>
 
 void UVK::Editor::initEditor()
 {
@@ -114,7 +115,7 @@ void UVK::Editor::initEditor()
     logger.consoleLog("Starting the renderer took: ", UVK_LOG_TYPE_NOTE, tm.getDuration(), "ms!");
 }
 
-void UVK::Editor::runEditor(FVector4& colour, GLFrameBuffer& fb, GLCamera& camera, glm::mat4& projection)
+void UVK::Editor::runEditor(FVector4& colour, GLFrameBuffer& fb, GLCamera& camera, UVK::Level* lvl)
 {
     static bool opt_fullscreen = true;
     static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
@@ -162,7 +163,7 @@ void UVK::Editor::runEditor(FVector4& colour, GLFrameBuffer& fb, GLCamera& camer
         ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
     }
 
-    displayEditor(colour, fb, camera, projection);
+    displayEditor(colour, fb, camera, lvl);
 
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -176,7 +177,7 @@ void UVK::Editor::runEditor(FVector4& colour, GLFrameBuffer& fb, GLCamera& camer
     }
 }
 
-void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, GLCamera& camera, glm::mat4& projection)
+void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, GLCamera& camera, UVK::Level* lvl)
 {
     ImGuiStyle& style = ImGui::GetStyle();
 
@@ -291,12 +292,12 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, GLCamera& c
 
     if (bShowSaveLevelWidget)
     {
-        SaveLevel::display(bShowSaveLevelWidget, location, levelName);
+        SaveLevel::display(bShowSaveLevelWidget, location, levelName, colour);
     }
 
     if (bShowOpenLevelWidget)
     {
-        OpenLevelWidget::display(openLevel, bShowOpenLevelWidget, frameTimeData[1]);
+        OpenLevelWidget::display(openLevel, bShowOpenLevelWidget, frameTimeData[1], colour, levelName);
     }
 
     if (bShowCreateFile1)
@@ -313,14 +314,14 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, GLCamera& c
     {
         style.WindowPadding = ImVec2(0.0f, 0.0f);
 
-        EditorViewport::display(fb, viewportWidth, viewportHeight, bShowViewport, camera, selectedEntity, projection);
+        EditorViewport::display(fb, viewportWidth, viewportHeight, bShowViewport, camera, selectedEntity, lvl->gameMode->pawn->camera.getProjection().data());
 
         style.WindowPadding = ImVec2(8.0f, 8.0f);
     }
 
     if (bShowDetailsPanel)
     {
-        DetailsPanel::display(selectedEntity, bShowDetailsPanel, bDestroyEntity);
+        DetailsPanel::display(selectedEntity, lvl, bShowDetailsPanel, bDestroyEntity);
     }
 
 #ifndef __MINGW32__
@@ -363,7 +364,7 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, GLCamera& c
 
     if (bShowWorldSettings)
     {
-        WorldSettings::display(colour, FVector4(1.0f, 1.0f, 1.0f, 1.0f), levelName, bShowWorldSettings);
+        WorldSettings::display(colour, rendererResources.ambientLight, levelName, bShowWorldSettings);
     }
 
     if (bShowAboutUs)

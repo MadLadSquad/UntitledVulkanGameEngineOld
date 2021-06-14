@@ -1,9 +1,11 @@
 // DetailsPanel.cpp
 // Last update 3/6/2021 by Madman10K
+#include <GL/glew.h>
 #include <Core/Registry.hpp>
 #include <imgui.h>
 #include <cpp/imgui_stdlib.h>
 #include "DetailsPanel.hpp"
+#include <GameFramework/GameplayClasses/Level/Level.hpp>
 
 void DetailsPanel::DrawVec3Control(const std::string &label, glm::vec3 &values, float resetValue, float columnWidth)
 {
@@ -73,7 +75,7 @@ void DetailsPanel::DrawVec3Control(const std::string &label, glm::vec3 &values, 
     ImGui::PopID();
 }
 
-void DetailsPanel::display(entt::entity& ent, bool& bShow, bool& destroy)
+void DetailsPanel::display(entt::entity& ent, UVK::Level* lvl, bool& bShow, bool& destroy)
 {
     ImGui::Begin("Details", &bShow, ImGuiWindowFlags_MenuBar);
 
@@ -154,10 +156,34 @@ void DetailsPanel::display(entt::entity& ent, bool& bShow, bool& destroy)
         auto& a = registry.getComponent<UVK::CoreComponent>(ent);
 
         std::string id = std::to_string(a.id);
-        ImGui::InputText("name##inputactorname", &a.name);
+        ImGui::InputText("Name##inputactorname", &a.name);
 
-        ImGui::InputText("id##inputactoridentifier", &id);
-        ImGui::InputText("development name##devname", &a.devName);
+        ImGui::InputText("ID##inputactoridentifier", &id);
+        ImGui::InputText("Development Name##devname", &a.devName);
+
+        if (a.name == lvl->gameMode->pawn->name && a.id == lvl->gameMode->pawn->id && a.devName == lvl->gameMode->pawn->devName)
+        {
+            ImGui::Separator();
+
+            static float FOV = lvl->gameMode->pawn->camera.getProjection().getFOV();
+            static UVK::FVector2 planes = lvl->gameMode->pawn->camera.getProjection().getPlanes();
+            ImGui::SliderFloat("Camera FOV", &FOV, 1.0f, 180.0f);
+            ImGui::SliderFloat("Near Plane", &planes.x, 0.01f, 10000);
+            ImGui::SliderFloat("Far Plane", &planes.y, 0.01f, 10000);
+
+            float& ar = lvl->gameMode->pawn->camera.getProjection().getAspectRatio();
+            static UVK::FVector2 aspect = UVK::FVector2(ImGui::GetWindowWidth(), ImGui::GetWindowHeight());
+
+            ImGui::DragFloat2("Aspect Ratio", glm::value_ptr(aspect), 1.0f, 0.01f);
+
+            if ((aspect.x / aspect.y) != ar || FOV != lvl->gameMode->pawn->camera.getProjection().getFOV() || planes != lvl->gameMode->pawn->camera.getProjection().getPlanes())
+            {
+                lvl->gameMode->pawn->camera.getProjection().getFOV() = FOV;
+                lvl->gameMode->pawn->camera.getProjection().getPlanes() = planes;
+                ar = aspect.x / aspect.y;
+                lvl->gameMode->pawn->camera.getProjection().recalculate();
+            }
+        }
     }
 
     if (registry.hasComponent<UVK::MeshComponentRaw>(ent))

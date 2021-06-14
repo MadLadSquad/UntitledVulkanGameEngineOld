@@ -5,7 +5,7 @@
 #include <imgui.h>
 #include <cpp/imgui_stdlib.h>
 
-void OpenLevelWidget::display(std::string &openLevel, bool &bShowOpenLevelWidget, double& dr)
+void OpenLevelWidget::display(std::string &openLevel, bool &bShowOpenLevelWidget, double& dr, UVK::FVector4& colour, std::string& name)
 {
     ImGui::Begin("Open Level");
 

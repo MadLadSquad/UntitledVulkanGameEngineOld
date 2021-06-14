@@ -50,6 +50,7 @@ void UVK::Window::doCallBacks()
 void UVK::Window::framebufferSizeCallback(GLFWwindow* window, int width, int height)
 {
     glViewport(0, 0, width, height);
+
 }
 
 void UVK::Window::createWindow()

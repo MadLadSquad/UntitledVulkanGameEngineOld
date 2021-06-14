@@ -17,7 +17,7 @@ void UVK::ActorManager::destroy()
     }
 }
 
-std::set<UVK::ScriptableObject*> &UVK::ActorManager::data()
+std::set<UVK::ScriptableObject*>& UVK::ActorManager::data()
 {
     return a;
 }

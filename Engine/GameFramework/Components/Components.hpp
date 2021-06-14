@@ -27,9 +27,7 @@ namespace UVK
 
     /**
      * @brief The base component every entity has
-     * @param name - the name of the entity
-     * @param id - user defined integer for id
-     * @param devName - to sort by name when developing
+     * @param name, id, devName - used for identification of entities
      */
     struct CoreComponent
     {

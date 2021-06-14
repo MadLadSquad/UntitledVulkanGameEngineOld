@@ -3,6 +3,11 @@
 #pragma once
 #include <Core.hpp>
 
+namespace UVK
+{
+    class Level;
+}
+
 /**
  * @brief Displays the Details Panel which is used to add, manipulate and remove components from selected entities
  */
@@ -11,5 +16,5 @@ namespace DetailsPanel
     // All of this is copied from the Cherno because his styling looks great
     void DrawVec3Control(const std::string& label, glm::vec3& values, float resetValue = 0.0f, float columnWidth = 100.0f);
 
-    void display(entt::entity& ent, bool& bShow, bool& destroy);
+    void display(entt::entity& ent, UVK::Level* lvl, bool& bShow, bool& destroy);
 }

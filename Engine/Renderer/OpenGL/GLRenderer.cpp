@@ -2,18 +2,17 @@
 // Last update 20/5/2021 by Madman10K
 #include <GL/glew.h>
 #include "GLRenderer.hpp"
-#include "../OpenGL/Components/GLMesh.hpp"
-#include "../OpenGL/Components/GLCamera.hpp"
 #include "../../Core/Events/Events.hpp"
-#include "../../GameFramework/GameplayClasses/Level/Level.hpp"
-#include "Engine/Core/Core/Registry.hpp"
-
+#include <Renderer/OpenGL/Pipeline/GLPipeline.hpp>
+/*
 void UVK::GLRenderer::renderEditor()
 {
 
 }
 
-void UVK::GLRenderer::initEditor() {
+void UVK::GLRenderer::initEditor()
+{
+
     if (bEditor)
     {
         ed.setTheme(colTheme);
@@ -26,9 +25,19 @@ void UVK::GLRenderer::initEditor() {
     glCullFace(GL_FRONT);
     glFrontFace(GL_CCW);
 }
+*/
 
-void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
+void UVK::GLRenderer::start(UVK::Level* level) noexcept
 {
+    GLPipeline pipeline(bEditor, level);
+
+    while (!glfwWindowShouldClose(currentWindow.getWindow()))
+    {
+        pipeline.tick();
+    }
+
+    pipeline.end();
+    /*
     // if the editor is running we will assign this pointer to an editor camera otherwise
     // it will point to the active pawn's camera
     GLCamera* cm = nullptr;
@@ -206,5 +215,5 @@ void UVK::GLRenderer::createWindow(UVK::Level* level) noexcept
         }
     });
 
-    pool.clear();
+    pool.clear();*/
 }
