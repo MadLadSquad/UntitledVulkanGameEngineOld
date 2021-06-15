@@ -3,7 +3,6 @@
 #include "CreateFile.hpp"
 #include <cpp/imgui_stdlib.h>
 #include <Core.hpp>
-#include <stb/exec/uexec.h>
 
 void CreateFile::display(short& selectedFile, std::string& fileOutLocation, bool& bShowCreateFile1)
 {
