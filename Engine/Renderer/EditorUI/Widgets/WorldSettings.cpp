@@ -1,7 +1,8 @@
 // WorldSettings.cpp
-// Last update 15/5/2021 by Madman10K
+// Last update 15/6/2021 by Madman10K
 #include "WorldSettings.hpp"
 
+#ifndef PRODUCTION
 void WorldSettings::display(UVK::FVector4& colour, UVK::FVector4& ambientLight, std::string& name, bool& bShow)
 {
     ImGui::Begin("World Settings", &bShow);
@@ -13,3 +14,4 @@ void WorldSettings::display(UVK::FVector4& colour, UVK::FVector4& ambientLight, 
 
     ImGui::End();
 }
+#endif

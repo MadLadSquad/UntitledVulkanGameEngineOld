@@ -21,8 +21,7 @@ echo engine-version: 1.0.0 >> "uvproj.yaml"
 echo startup-level-exists: false >> "uvproj.yaml"
 
 echo Compiling build tool and generating files ...
-mkdir Source
-
+mkdir Source && mkdir Generated && mkdir Exported
 cd UVKBuildTool/ && mkdir build && cd build/ 
 cmake .. -G "Unix Makefiles" && make && UVKBuildTool --generate 
 cd ../../ && mkdir build && cd build && cmake .. && cd ..

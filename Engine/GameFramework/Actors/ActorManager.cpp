@@ -2,7 +2,7 @@
 // Last update 5/6/2021 by Madman10K
 #include <GL/glew.h>
 #include "ActorManager.hpp"
-#include "../../../Source/ActorList.hpp"
+#include "Generated/ActorList.hpp"
 
 void UVK::ActorManager::init()
 {

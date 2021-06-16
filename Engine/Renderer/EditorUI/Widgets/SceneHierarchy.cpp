@@ -1,7 +1,8 @@
 // SceneHierarchy.cpp
-// Last update 20/5/2021 by Madman10K
+// Last update 15/6/2021 by Madman10K
 #include "SceneHierarchy.hpp"
 
+#ifndef PRODUCTION
 void SceneHierarchy::destroyEntity(entt::entity& selectedEntity)
 {
     if (registry.hasComponent<UVK::MeshComponentRaw>(selectedEntity))
@@ -66,3 +67,4 @@ void SceneHierarchy::display(entt::entity &selectedEntity, std::string &entAppen
 
     ImGui::End();
 }
+#endif

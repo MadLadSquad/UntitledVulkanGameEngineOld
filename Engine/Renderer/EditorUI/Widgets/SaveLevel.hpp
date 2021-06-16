@@ -1,5 +1,5 @@
 // SaveLevel.hpp
-// Last update 3/6/2021 by Madman10K
+// Last update 15/6/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 #include <imgui.h>
@@ -11,9 +11,10 @@ namespace UVK
 {
     class Level;
 }
-
+#ifndef PRODUCTION
 namespace SaveLevel
 {
     // Displays the SaveLevel widget
     void display(bool& bOpen, std::string& location, std::string& name, UVK::FVector4& colour);
 }
+#endif

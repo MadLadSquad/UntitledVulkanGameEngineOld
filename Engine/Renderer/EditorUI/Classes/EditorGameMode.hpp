@@ -1,10 +1,11 @@
 // EditorGameMode.hpp
-// Last update 14/6/2021 by Madman10K
+// Last update 15/6/2021 by Madman10K
 #pragma once
 #include <GL/glew.h>
 #include <GameFramework/GameplayClasses/GameMode.hpp>
 #include "EditorPawn.hpp"
 
+#ifndef PRODUCTION
 namespace UVK
 {
     class EditorGameMode : public GameMode
@@ -26,3 +27,4 @@ namespace UVK
         }
     };
 }
+#endif

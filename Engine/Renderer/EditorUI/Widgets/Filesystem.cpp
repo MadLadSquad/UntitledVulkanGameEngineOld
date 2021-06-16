@@ -1,7 +1,8 @@
 // Filesystem.cpp
-// Last update 15/04/2021 by Madman10K
+// Last update 15/6/2021 by Madman10K
 #include "Filesystem.hpp"
 
+#ifndef PRODUCTION
 #ifndef __MINGW32__
 void Filesystem::display(std_filesystem::path& pt, std::string& cpLoc, bool& bShow)
 {
@@ -81,4 +82,5 @@ void Filesystem::display(std_filesystem::path& pt, std::string& cpLoc, bool& bSh
     }
     ImGui::End();
 }
+#endif
 #endif

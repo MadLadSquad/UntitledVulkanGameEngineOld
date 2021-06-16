@@ -1,12 +1,12 @@
 // EditorViewport.cpp
-// Last update 4/6/2021 by Madman10K
+// Last update 15/6/2021 by Madman10K
 #include <GL/glew.h>
 #include <Renderer/Window/Window.hpp>
 #include "EditorViewport.hpp"
 #include <imgui.h>
 #include <imguiex/imguizmo/ImGuizmo.h>
 #include <Core/Registry.hpp>
-
+#ifndef PRODUCTION
 void EditorViewport::display(UVK::GLFrameBuffer& fb, int& viewportWidth, int& viewportHeight, bool& bShow, UVK::GLCamera& camera, UVK::Actor& entity, glm::mat4& projection)
 {
     ImGui::Begin("Viewport##1", &bShow);
@@ -91,12 +91,6 @@ void EditorViewport::display(UVK::GLFrameBuffer& fb, int& viewportWidth, int& vi
 
         }
     }
-
-
-
-
-
-
-
     ImGui::End();
 }
+#endif

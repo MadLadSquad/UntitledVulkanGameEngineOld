@@ -33,7 +33,7 @@ namespace UVK
             delete pc;
             delete pawn;
         }
-    private:
+
         void beginAutohandle() const
         {
             gs->beginPlay();
@@ -41,9 +41,7 @@ namespace UVK
             pc->beginPlay();
             pawn->beginPlay();
         }
-        /**
-         * @brief Tick event autohandler handles all events from the GameInstance and GameMode
-         */
+
         void tickAutohandle(float deltaTime) const
         {
             gs->tick(deltaTime);
@@ -52,9 +50,6 @@ namespace UVK
             pawn->tick(deltaTime);
         }
 
-        /**
-         * @brief End event autohandler handles all events from the GameInstance and GameMode
-         */
         void endAutohandle() const
         {
             gs->endPlay();
@@ -62,5 +57,6 @@ namespace UVK
             pc->endPlay();
             pawn->endPlay();
         }
+    private:
     };
 }

@@ -2,6 +2,7 @@
 echo "Compiling GLEW ..."
 
 mkdir Source || exit
+mkdir Generated || exit
 
 cd Engine/ThirdParty/glew/auto || exit 
 make || exit
@@ -33,6 +34,7 @@ make || exit
 ./UVKBuildTool --generate || exit
 cd ../../ || exit
 mkdir build || exit
+mkdir Exported  || exit
 cd build || exit
 cmake .. || exit
 cd .. || exit

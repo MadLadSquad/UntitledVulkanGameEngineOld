@@ -1,8 +1,8 @@
 // Help.cpp
-// Last update 20/5/2021 by Madman10K
+// Last update 15/6/2021 by Madman10K
 #include "Help.hpp"
 #include <imgui.h>
-
+#ifndef PRODUCTION
 void Help::display(bool& bShow)
 {
     ImGui::Begin("Help", &bShow);
@@ -27,3 +27,4 @@ void Help::display(bool& bShow)
 
     ImGui::End();
 }
+#endif

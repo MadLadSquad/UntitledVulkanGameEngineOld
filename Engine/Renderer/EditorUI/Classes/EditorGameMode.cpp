@@ -1,7 +1,7 @@
 // EditorGameMode.cpp
-// Last update 14/6/2021 by Madman10K
+// Last update 15/6/2021 by Madman10K
 #include "EditorGameMode.hpp"
-
+#ifndef PRODUCTION
 void UVK::EditorGameMode::beginPlay()
 {
 
@@ -16,3 +16,4 @@ void UVK::EditorGameMode::endPlay()
 {
 
 }
+#endif

@@ -1,8 +1,9 @@
 // TopToolbar.cpp
-// Last update 15/5/2021 by Madman10K
+// Last update 15/6/2021 by Madman10K
 #include "TopToolbar.hpp"
 #include <imgui.h>
 
+#ifndef PRODUCTION
 void TopToolbar::display(UVK::Texture &play, bool& bShow)
 {
     int lnt = 0;
@@ -25,3 +26,4 @@ void TopToolbar::display(UVK::Texture &play, bool& bShow)
 
     ImGui::End();
 }
+#endif

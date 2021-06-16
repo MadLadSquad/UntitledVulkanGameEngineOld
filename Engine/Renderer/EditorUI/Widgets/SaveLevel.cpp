@@ -1,8 +1,9 @@
 // SaveLevel.cpp
-// Last update 9/6/2021 by Madman10K
+// Last update 15/6/2021 by Madman10K
 #include "SaveLevel.hpp"
 #include "../../GameFramework/GameplayClasses/Level/Level.hpp"
 
+#ifndef PRODUCTION
 void SaveLevel::display(bool &bOpen, std::string &location, std::string &name, UVK::FVector4& colour)
 {
     ImGui::Begin("Save level");
@@ -25,3 +26,4 @@ void SaveLevel::display(bool &bOpen, std::string &location, std::string &name, U
 
     ImGui::End();
 }
+#endif

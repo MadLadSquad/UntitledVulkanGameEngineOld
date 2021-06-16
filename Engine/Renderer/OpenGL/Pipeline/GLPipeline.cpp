@@ -1,5 +1,5 @@
 // GLPipeline.cpp
-// Last update 13/6/2021 by Madman10K
+// Last update 15/6/2021 by Madman10K
 #include <GL/glew.h>
 #include <Events/Events.hpp>
 #include <Renderer/EditorUI/Classes/EditorLevel.hpp>
@@ -24,6 +24,7 @@ void UVK::GLPipeline::begin(bool bHasEditor, Level* lvl)
     }
     else
     {
+#ifndef PRODUCTION
         auto* lv = new UVK::EditorLevel;
         level = lv;
 
@@ -34,6 +35,7 @@ void UVK::GLPipeline::begin(bool bHasEditor, Level* lvl)
         cmp.devName = "EditorPawn";
 
         camera = &level->gameMode->pawn->camera;
+#endif
     }
     initEditor();
     enableFeatures();
@@ -69,12 +71,14 @@ void UVK::GLPipeline::tick()
 
     if (bEditor)
     {
+#ifndef PRODUCTION
         UVK::GLFrameBuffer::unbindFramebuffer();
         glDisable(GL_DEPTH_TEST);
         glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
         ed.runEditor(rendererResources.colour, fb, *camera, level);
+#endif
     }
     else
     {
@@ -89,7 +93,9 @@ void UVK::GLPipeline::end()
 {
     if (bEditor)
     {
+#ifndef PRODUCTION
         ed.destroyContext();
+#endif
     }
     else
     {
@@ -114,8 +120,10 @@ void UVK::GLPipeline::initEditor()
 {
     if (bEditor)
     {
+#ifndef PRODUCTION
         ed.setTheme(colTheme);
         ed.initEditor();
+#endif
     }
 }
 

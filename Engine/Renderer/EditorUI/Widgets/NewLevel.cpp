@@ -1,8 +1,9 @@
 // NewLevel.cpp
-// Last update 9/6/2021 by Madman10K
+// Last update 15/6/2021 by Madman10K
 #include "NewLevel.hpp"
 #include "Core/Registry.hpp"
 
+#ifndef PRODUCTION
 void NewLevel::display(bool &bShow)
 {
     ImGui::Begin("WARNING##new level");
@@ -24,3 +25,4 @@ void NewLevel::display(bool &bShow)
     }
     ImGui::End();
 }
+#endif

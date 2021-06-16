@@ -4,7 +4,8 @@ cmake-build-release/
 .vs/
 .vs-code/
 Source/
-main.cpp
+Generated/
+Exported/
 build/
 CMakeLists.txt
 uvproj.yaml

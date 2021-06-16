@@ -1,17 +1,18 @@
 // RemoveFile.cpp
-// Last update 9/6/2021 by Madman10K
+// Last update 15/6/2021 by Madman10K
 #include "RemoveFile.hpp"
 #include <Core.hpp>
 #include <imgui.h>
 #include <cpp/imgui_stdlib.h>
 
+#ifndef PRODUCTION
 void RemoveFile::display(bool& bShow)
 {
     ImGui::Begin("RemoveFile", &bShow);
 
     static std::string in;
     bool bSO = false;
-    bool error = false;
+
 
     ImGui::Checkbox("Scriptable Object?", &bSO);
     ImGui::InputTextWithHint("File to delete", "Location starts from the source folder, do not specify the file's extension, only the name", &in);
@@ -26,10 +27,12 @@ void RemoveFile::display(bool& bShow)
     if (ImGui::Button("Delete##delete"))
     {
         int lnt = 0;
+        bool error = false;
         if (bSO)
         {
 
 #ifndef __MINGW32__
+
             try
             {
 #ifndef _WIN32
@@ -81,3 +84,4 @@ void RemoveFile::display(bool& bShow)
 
     ImGui::End();
 }
+#endif

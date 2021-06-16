@@ -1,12 +1,12 @@
 // DetailsPanel.cpp
-// Last update 3/6/2021 by Madman10K
+// Last update 15/6/2021 by Madman10K
 #include <GL/glew.h>
 #include <Core/Registry.hpp>
 #include <imgui.h>
 #include <cpp/imgui_stdlib.h>
 #include "DetailsPanel.hpp"
 #include <GameFramework/GameplayClasses/Level/Level.hpp>
-
+#ifndef PRODUCTION
 void DetailsPanel::DrawVec3Control(const std::string &label, glm::vec3 &values, float resetValue, float columnWidth)
 {
     const ImGuiIO& io = ImGui::GetIO();
@@ -216,3 +216,4 @@ void DetailsPanel::display(entt::entity& ent, UVK::Level* lvl, bool& bShow, bool
 #endif
     ImGui::End();
 }
+#endif

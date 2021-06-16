@@ -1,9 +1,10 @@
 // EditorLevel.hpp
-// Last update 14/6/2021 by Madman10K
+// Last update 15/6/2021 by Madman10K
 #pragma once
 #include "EditorGameMode.hpp"
 #include <GameFramework/GameplayClasses/Level/Level.hpp>
 
+#ifndef PRODUCTION
 namespace UVK
 {
     //class Level;
@@ -27,3 +28,4 @@ namespace UVK
         }
     };
 }
+#endif

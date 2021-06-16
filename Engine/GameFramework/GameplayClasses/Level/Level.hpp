@@ -41,8 +41,6 @@ namespace UVK
 
         GameInstance* gameInstance = nullptr;
         GameMode* gameMode = nullptr;
-    private:
-
 
         /**
          * @brief Begin event autohandler handles all events from the GameInstance and GameMode
@@ -69,7 +67,7 @@ namespace UVK
             gameInstance->endPlay();
             gameMode->endPlay();
         }
-
+    private:
         /**
          * @brief Utility function to save an entity
          * @param out a YAML::Emitter reference to the emitter

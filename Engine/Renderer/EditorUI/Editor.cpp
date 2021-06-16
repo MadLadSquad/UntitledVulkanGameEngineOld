@@ -1,5 +1,5 @@
 // Editor.cpp
-// Last update 9/6/2021 by Madman10K
+// Last update 15/6/2021 by Madman10K
 #include <GL/glew.h>
 #include "../../GameFramework/GameplayClasses/Level/Level.hpp"
 #include "Widgets/SceneHierarchy.hpp"
@@ -20,12 +20,14 @@
 #include "Widgets/NewLevel.hpp"
 #include "Widgets/Help.hpp"
 #include "Widgets/RemoveFile.hpp"
+#include "Widgets/Ship.hpp"
 #include "../Window/Window.hpp"
 #include <Renderer/RendererResources.hpp>
 
 void UVK::Editor::initEditor()
 {
     Timer tm;
+#ifndef PRODUCTION
     tm.startRecording();
 #ifndef __MINGW32__
     pt = std_filesystem::absolute(std_filesystem::current_path());
@@ -108,7 +110,7 @@ void UVK::Editor::initEditor()
 #endif
     ImGui_ImplGlfw_InitForOpenGL(currentWindow.getWindow(), true);
     ImGui_ImplOpenGL3_Init("#version 450");
-
+#endif
     tm.stopRecording();
     frameTimeData[0] = tm.getDuration();
 
@@ -117,6 +119,7 @@ void UVK::Editor::initEditor()
 
 void UVK::Editor::runEditor(FVector4& colour, GLFrameBuffer& fb, GLCamera& camera, UVK::Level* lvl)
 {
+#ifndef PRODUCTION
     static bool opt_fullscreen = true;
     static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
 
@@ -219,10 +222,15 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, GLCamera& c
                 lnt = system("cd ../UVKBuildTool/build/ && ./UVKBuildTool --generate && cd ../../");
 #endif
 
-                if (!lnt)
+                if (lnt)
                 {
                     logger.consoleLog("Error when regenerating files!", UVK_LOG_TYPE_ERROR, lnt);
                 }
+            }
+
+            if (ImGui::Button("Ship Project"))
+            {
+                bShowShip = true;
             }
 
             if (ImGui::Button("Exit"))
@@ -381,6 +389,12 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, GLCamera& c
     {
         RemoveFile::display(bShowRemoveFile);
     }
+
+    if (bShowShip)
+    {
+        Shipping::display(bShowShip);
+    }
+#endif
 }
 
 void UVK::Editor::beginFrame()
@@ -399,7 +413,9 @@ void UVK::Editor::destroyContext()
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
+#ifndef PRODUCTION
     ImPlot::DestroyContext();
+#endif
     //ImTTY::Terminal.DestroyContext();
     currentWindow.destroyWindow();
 }

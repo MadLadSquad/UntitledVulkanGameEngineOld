@@ -1,7 +1,7 @@
 // About.cpp
-// Last update 5/5/2021 by Madman10K
+// Last update 15/6/2021 by Madman10K
 #include "About.hpp"
-
+#ifndef PRODUCTION
 void About::display(std::string& engineVersion, std::string& projectName, std::string& projectVersion, UVK::Texture& logo, bool& bShow)
 {
     ImGui::Begin("About us", &bShow);
@@ -19,3 +19,4 @@ void About::display(std::string& engineVersion, std::string& projectName, std::s
     }
     ImGui::End();
 }
+#endif

@@ -1,7 +1,8 @@
 // Statistics.hpp
-// Last update 15/5/2021 by Madman10K
+// Last update 15/6/2021 by Madman10K
 #include "Statistics.hpp"
 
+#ifndef PRODUCTION
 Statistics::RollingBuffer::RollingBuffer()
 {
     Span = 1.0f;
@@ -70,3 +71,4 @@ void Statistics::display(double* data, bool& bShow)
 
     ImGui::End();
 }
+#endif

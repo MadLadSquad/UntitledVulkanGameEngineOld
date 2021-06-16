@@ -1,7 +1,8 @@
 // MemoryEditor.cpp
-// Last update 15/5/2021 by Madman10K
+// Last update 15/6/2021 by Madman10K
 #include "MemoryEditor.hpp"
 
+#ifndef PRODUCTION
 void ImGuiMemoryEditor::display(bool& bShow)
 {
     ImGui::Begin("Memory Editor", &bShow);
@@ -13,3 +14,4 @@ void ImGuiMemoryEditor::display(bool& bShow)
 
     ImGui::End();
 }
+#endif

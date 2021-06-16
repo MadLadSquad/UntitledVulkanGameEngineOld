@@ -1,5 +1,5 @@
 // DetailsPanel.hpp
-// Last update 3/6/2021 by Madman10K
+// Last update 15/6/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 
@@ -7,7 +7,7 @@ namespace UVK
 {
     class Level;
 }
-
+#ifndef PRODUCTION
 /**
  * @brief Displays the Details Panel which is used to add, manipulate and remove components from selected entities
  */
@@ -18,3 +18,4 @@ namespace DetailsPanel
 
     void display(entt::entity& ent, UVK::Level* lvl, bool& bShow, bool& destroy);
 }
+#endif

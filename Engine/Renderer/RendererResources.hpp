@@ -1,3 +1,5 @@
+// RendererResources.hpp
+// Last update 15/6/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 
@@ -13,7 +15,7 @@ namespace UVK
         FVector4 colour{};
         FVector4 ambientLight{};
         std::string levelName;
-        bool bEditor;
+        bool bEditor{};
     };
 
     inline RendererResources rendererResources;

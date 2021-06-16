@@ -1,5 +1,5 @@
 // GLRenderer.hpp
-// Last update 3/6/2021 by Madman10K
+// Last update 15/6/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 #include <utility>
@@ -27,14 +27,9 @@ namespace UVK
             start(level);
         }
     private:
-        void start(Level* level) noexcept;
+        void start(Level* level) const noexcept;
 
-        FVector4 colour{};
-        glm::mat4 projection{};
-        GLFrameBuffer fb;
         bool bEditor;
         std::string colTheme;
-
-        UVK::Editor ed;
     };
 }

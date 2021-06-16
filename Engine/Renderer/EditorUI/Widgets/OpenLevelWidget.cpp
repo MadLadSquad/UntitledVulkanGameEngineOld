@@ -1,10 +1,11 @@
 // OpenLevelWidget.cpp
-// Last update 5/5/2021 by Madman10K
+// Last update 15/6/2021 by Madman10K
 #include "OpenLevelWidget.hpp"
 #include "../../GameFramework/GameplayClasses/Level/Level.hpp"
 #include <imgui.h>
 #include <cpp/imgui_stdlib.h>
 
+#ifndef PRODUCTION
 void OpenLevelWidget::display(std::string &openLevel, bool &bShowOpenLevelWidget, double& dr, UVK::FVector4& colour, std::string& name)
 {
     ImGui::Begin("Open Level");
@@ -33,3 +34,4 @@ void OpenLevelWidget::display(std::string &openLevel, bool &bShowOpenLevelWidget
 
     ImGui::End();
 }
+#endif

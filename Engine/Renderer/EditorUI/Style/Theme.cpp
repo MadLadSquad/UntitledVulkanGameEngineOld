@@ -1,11 +1,12 @@
 // Theme.cpp
-// Last update 5/04/2021 by Madman10K
+// Last update 15/6/2021 by Madman10K
 #include <Core.hpp>
 #include "Theme.hpp"
 #include <yaml.h>
 #include <imgui.h>
 #include <cpp/imgui_stdlib.h>
 
+#ifndef PRODUCTION
 namespace YAML
 {
     template<>
@@ -121,3 +122,4 @@ void UVK::EditorTheme::useTheme()
 
     colours[ImGuiCol_MenuBarBg] = menubarBG;
 }
+#endif

@@ -1,9 +1,9 @@
 // Theme.hpp
-// Last update 3/6/2021 by Madman10K
+// Last update 15/6/2021 by Madman10K
 #pragma once
 #include <iostream>
 #include <imgui.h>
-
+#ifndef PRODUCTION
 namespace UVK
 {
     /**
@@ -65,3 +65,4 @@ namespace UVK
         float windowRounding = 1.0f;
     };
 }
+#endif
