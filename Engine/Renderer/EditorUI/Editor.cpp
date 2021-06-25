@@ -1,5 +1,5 @@
 // Editor.cpp
-// Last update 15/6/2021 by Madman10K
+// Last update 19/6/2021 by Madman10K
 #include <GL/glew.h>
 #include "../../GameFramework/GameplayClasses/Level/Level.hpp"
 #include "Widgets/SceneHierarchy.hpp"
@@ -117,7 +117,7 @@ void UVK::Editor::initEditor()
     logger.consoleLog("Starting the renderer took: ", UVK_LOG_TYPE_NOTE, tm.getDuration(), "ms!");
 }
 
-void UVK::Editor::runEditor(FVector4& colour, GLFrameBuffer& fb, GLCamera& camera, UVK::Level* lvl)
+void UVK::Editor::runEditor(FVector4& colour, GLFrameBuffer& fb, Camera& camera, UVK::Level* lvl)
 {
 #ifndef PRODUCTION
     static bool opt_fullscreen = true;
@@ -180,7 +180,7 @@ void UVK::Editor::runEditor(FVector4& colour, GLFrameBuffer& fb, GLCamera& camer
     }
 }
 
-void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, GLCamera& camera, UVK::Level* lvl)
+void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& camera, UVK::Level* lvl)
 {
     ImGuiStyle& style = ImGui::GetStyle();
 
@@ -321,9 +321,7 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, GLCamera& c
     if (bShowViewport)
     {
         style.WindowPadding = ImVec2(0.0f, 0.0f);
-
         EditorViewport::display(fb, viewportWidth, viewportHeight, bShowViewport, camera, selectedEntity, lvl->gameMode->pawn->camera.getProjection().data());
-
         style.WindowPadding = ImVec2(8.0f, 8.0f);
     }
 

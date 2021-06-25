@@ -2,6 +2,7 @@
 // Last update 7/5/2021 by Madman10K
 #include <GL/glew.h>
 #include "MeshComponentRaw.hpp"
+#include <Renderer/RendererResources.hpp>
 
 void UVK::MeshComponentRaw::createMesh(GLfloat* vertices, uint32_t* indices, uint32_t vertexNum, uint32_t indexNum, const char* vertexShader, const char* fragmentShader, ShaderImportType type)
 {
@@ -33,12 +34,12 @@ void UVK::MeshComponentRaw::createMesh(GLfloat* vertices, uint32_t* indices, uin
             break;
     }
 
-    translation = FVector(1.0f, 1.0f, 1.0f);
-    rotation = FVector4(1.0f, 1.0f, 1.0f, 0.0f);
+    translation = FVector(0.0f, 0.0f, 0.0f);
+    rotation = FVector4(0.0f, 0.0f, 0.0f, 0.0f);
     scale = FVector(1.0f, 1.0f, 1.0f);
 }
 
-void UVK::MeshComponentRaw::render(glm::mat4& projection, GLCamera &camera)
+void UVK::MeshComponentRaw::render(glm::mat4& projection, Camera& camera)
 {
     mat = glm::mat4(1.0f);
     shader.useShader();
@@ -47,17 +48,16 @@ void UVK::MeshComponentRaw::render(glm::mat4& projection, GLCamera &camera)
     uniformProjection = shader.getProjectionLocation();
     uniformView = shader.getViewLocation();
 
-    glm::mat4 rot = glm::toMat4(glm::quat(rotation));
-
-    mat = glm::translate(mat, translation);
-    mat = mat * rot;
-    mat = glm::scale(mat, scale);
-
-    glUniformMatrix4fv((int)uniformModel, 1, GL_FALSE, glm::value_ptr(mat));
-    glUniformMatrix4fv((int)uniformProjection, 1, GL_FALSE, glm::value_ptr(projection));
-    glUniformMatrix4fv((int)uniformView, 1, GL_FALSE, glm::value_ptr(camera.calculateViewMatrix()));
-
-    mesh.render();
+    Math::translate(mat, translation);
+    Math::rotate(mat, rotation);
+    Math::scale(mat, scale);
+    if (!rendererResources.bUsesVulkan)
+    {
+        glUniformMatrix4fv((int)uniformModel, 1, GL_FALSE, glm::value_ptr(mat));
+        glUniformMatrix4fv((int)uniformProjection, 1, GL_FALSE, glm::value_ptr(projection));
+        glUniformMatrix4fv((int)uniformView, 1, GL_FALSE, glm::value_ptr(camera.calculateViewMatrixRH()));
+        mesh.render();
+    }
 }
 
 void UVK::MeshComponentRaw::clearMesh()

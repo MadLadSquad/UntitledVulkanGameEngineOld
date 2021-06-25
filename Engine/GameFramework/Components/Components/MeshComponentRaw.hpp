@@ -3,7 +3,7 @@
 #pragma once
 #include <glm/gtx/quaternion.hpp>
 #include <../Renderer/OpenGL/Components/GLMesh.hpp>
-#include <../Renderer/OpenGL/Components/GLCamera.hpp>
+#include <Renderer/Camera/Camera.hpp>
 
 namespace UVK
 {
@@ -13,7 +13,7 @@ namespace UVK
     struct MeshComponentRaw
     {
         void createMesh(GLfloat* vertices, uint32_t* indices, uint32_t vertexNum, uint32_t indexNum, const char* vertexShader, const char* fragmentShader, ShaderImportType type);
-        void render(glm::mat4& projection, GLCamera& camera);
+        void render(glm::mat4& projection, Camera& camera);
         void clearMesh();
 
         glm::mat4 mat;

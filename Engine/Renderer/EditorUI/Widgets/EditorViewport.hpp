@@ -1,8 +1,8 @@
 // EditorViewport.hpp
-// Last update 15/6/2021 by Madman10K
+// Last update 19/6/2021 by Madman10K
 #pragma once
 #include "Engine/Renderer/OpenGL/Components/GLFrameBuffer.hpp"
-#include "Engine/Renderer/OpenGL/Components/GLCamera.hpp"
+#include "Engine/Renderer/Camera/Camera.hpp"
 
 #ifndef PRODUCTION
 /**
@@ -10,6 +10,6 @@
  */
 namespace EditorViewport
 {
-    void display(UVK::GLFrameBuffer& fb, int& viewportWidth, int& viewportHeight, bool& bShow, UVK::GLCamera& camera, UVK::Actor& entity, glm::mat4& projection);
+    void display(UVK::GLFrameBuffer& fb, int& viewportWidth, int& viewportHeight, bool& bShow, UVK::Camera& camera, UVK::Actor& entity, glm::mat4& projection);
 }
 #endif

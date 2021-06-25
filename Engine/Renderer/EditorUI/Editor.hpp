@@ -1,12 +1,11 @@
 // Editor.hpp
-// Last update 15/6/2021 by Madman10K
+// Last update 19/6/2021 by Madman10K
 #pragma once
 #include <iostream>
 #include <utility>
 #include <Core.hpp>
 #include "Widgets/EditorViewport.hpp"
 #include "../Textures/Texture.hpp"
-#include "../OpenGL/Components/GLCamera.hpp"
 #include <Audio/Audio.hpp>
 
 
@@ -23,7 +22,7 @@ namespace UVK
         Editor() = default;
 
         void initEditor();
-        void runEditor(FVector4& colour, GLFrameBuffer& fb, GLCamera& camera, UVK::Level* lvl);
+        void runEditor(FVector4& colour, GLFrameBuffer& fb, Camera& camera, UVK::Level* lvl);
         static void beginFrame();
         void destroyContext();
 
@@ -68,7 +67,7 @@ namespace UVK
         bool bShowRemoveFile = false;
         bool bShowShip = false;
 
-        void displayEditor(FVector4& colour, GLFrameBuffer& fb, GLCamera& camera, UVK::Level* lvl);
+        void displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& camera, UVK::Level* lvl);
 
         std::string levelName;
         std::string openLevel;

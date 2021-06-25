@@ -143,6 +143,7 @@ void UVK::Window::dumpConfig()
     out << YAML::Key << "width" << YAML::Value << width;
     out << YAML::Key << "height" << YAML::Value << height;
     out << YAML::Key << "fullscreen" << YAML::Value << bIsFullScreen;
+    out << YAML::Key << "window-name" << YAML::Value << name;
 
     std::ofstream fileout("Config/Settings/Window.yaml");
     fileout << out.c_str();
@@ -151,6 +152,7 @@ void UVK::Window::dumpConfig()
 void UVK::Window::openConfig()
 {
     YAML::Node out;
+
     bool bValid = true;
 
     try
@@ -185,36 +187,46 @@ void UVK::Window::openConfig()
             name = out["window-name"].as<std::string>();
         }
     }
+
+    YAML::Node keybinds;
+    try
+    {
+        keybinds = YAML::LoadFile("Config/Settings/Keybinds.yaml");
+    }
+    catch (YAML::BadFile&)
+    {
+        bValid = false;
+    }
+
+    if (bValid)
+    {
+        auto binds = keybinds["bindings"];
+
+        if (binds)
+        {
+            for (const YAML::Node& a : binds)
+            {
+                InputAction action{};
+                action.name = a["key"].as<std::string>();
+                action.keyCode = a["val"].as<uint16_t>();
+                InGlobals::inputActionList.push_back(action);
+            }
+        }
+    }
 }
 
 void UVK::Window::keyboardInputCallback(GLFWwindow* window, int key, int scanCode, int action, int mods)
 {
-    auto* windowInst = static_cast<Window*>(glfwGetWindowUserPointer(window));
-    
-    //input.callKeyEvents(key, action);
+    for (auto& a : InGlobals::inputActionList)
+    {
+        if (a.keyCode == key)
+        {
+            a.state = action;
+        }
+    }
 
-    if (action == Keys::KeyPressed || action == Keys::KeyRepeat)
-    {
-        if (key != -1)
-        {
-            windowInst->keysArr[key] = true;
-        }
-        else
-        {
-            windowInst->keysArr[349] = true;
-        }
-    }
-    else
-    {
-        if (key != -1)
-        {
-            windowInst->keysArr[key] = false;
-        }
-        else
-        {
-            windowInst->keysArr[349] = false;
-        }
-    }
+    auto* wind = (Window*)glfwGetWindowUserPointer(window);
+    wind->keysArr[key] = action;
 }
 
 void UVK::Window::mouseCursorPositionCallback(GLFWwindow* window, double xpos, double ypos)
@@ -242,15 +254,16 @@ void UVK::Window::mouseCursorPositionCallback(GLFWwindow* window, double xpos, d
 
 void UVK::Window::mouseKeyInputCallback(GLFWwindow* window, int button, int action, int mods)
 {
-    auto* windowInst = static_cast<Window*>(glfwGetWindowUserPointer(window));
-    if (action == Keys::KeyPressed || action == Keys::KeyRepeat)
+    for (auto& a : InGlobals::inputActionList)
     {
-        windowInst->keysArr[button] = true;
+        if (a.keyCode == button)
+        {
+            a.state = action;
+        }
     }
-    else
-    {
-        windowInst->keysArr[button] = false;
-    }
+
+    auto* wind = (Window*)glfwGetWindowUserPointer(window);
+    wind->keysArr[button] = action;
 }
 
 void UVK::Window::scrollInputCallback(GLFWwindow* window, double xoffset, double yoffset)
@@ -260,7 +273,7 @@ void UVK::Window::scrollInputCallback(GLFWwindow* window, double xoffset, double
     windowInst->scroll = UVK::FVector2(xoffset, yoffset);
 }
 
-const std::array<bool, 350>& UVK::Window::getKeys()
+const std::array<uint16_t, 350>& UVK::Window::getKeys()
 {
     return keysArr;
 }
@@ -320,12 +333,25 @@ UVK::FVector2 UVK::Input::getMousePositionChange()
     return currentWindow.getMousePositionChange();
 }
 
-bool UVK::Input::getKeyPressed(uint16_t key)
-{
-    return currentWindow.getKeys()[key];
-}
-
 UVK::FVector2 UVK::Input::getScroll()
 {
     return currentWindow.getScroll();
+}
+
+const UVK::InputAction& UVK::Input::getAction(const std::string& name)
+{
+    for (auto& a : InGlobals::inputActionList)
+    {
+        if (a.name == name)
+        {
+            return a;
+        }
+    }
+
+    return *(InputAction*)(nullptr);
+}
+
+uint16_t UVK::Input::getKey(uint16_t key)
+{
+    return currentWindow.getKeys()[key];
 }

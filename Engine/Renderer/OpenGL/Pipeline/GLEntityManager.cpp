@@ -1,9 +1,9 @@
 // GLEntityManager.hpp
-// Last update 13/6/2021 by Madman10K
+// Last update 19/6/2021 by Madman10K
 #include <Core/Registry.hpp>
 #include "GLEntityManager.hpp"
 
-void UVK::GLEntityManager::tick(GLCamera* camera)
+void UVK::GLEntityManager::tick(Camera* camera)
 {
     pool.each([&](entt::entity ent)
     {

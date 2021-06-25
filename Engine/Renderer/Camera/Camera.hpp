@@ -1,37 +1,42 @@
 // Camera.cpp
-// Last update 25/5/2021 by Madman10K
+// Last update 19/6/2021 by Madman10K
 #pragma once
-#include "../OpenGL/Components/GLCamera.hpp"
-#include "../Vulkan/Components/VKCamera.hpp"
+#include "Projection.hpp"
 
 namespace UVK
 {
+    struct CameraResources
+    {
+        Projection projection;
+
+        FVector position{};
+        FVector front{};
+        FVector up{};
+        FVector right{};
+        FVector worldUp{};
+        FVector rotation{};
+    };
+
     /**
      * @brief A cross-renderer camera abstraction
      */
     class Camera
     {
     public:
-        Camera(bool bUsingEditor, bool bUsesVulkan);
+        Camera() = default;
+        Camera(FVector position, FVector up, FVector rot);
 
-        Camera(bool bUsingEditor, bool bUsesVulkan, FVector position, FVector up, GLfloat yaw, GLfloat pitch, GLfloat movementSpeed, GLfloat turnSpeed);
+        void init(FVector position, FVector up, FVector rot);
 
-        void init(FVector position, FVector up, GLfloat yaw, GLfloat pitch, GLfloat movementSpeed, GLfloat turnSpeed);
+        CameraResources& data();
 
-        template<class T>
-        T& getInternal()
-        {
-            if (bVulkan)
-            {
-                return vkCamera;
-            }
-            return camera;
-        }
+        [[nodiscard]] glm::mat4 calculateViewMatrixRH() const;
+        [[nodiscard]] glm::mat4 calculateViewMatrixLH() const;
+
+        void recalculate();
+
+        Projection& getProjection();
     private:
-        bool bEditor{};
-        bool bVulkan{};
-
-        GLCamera camera;
-        VKCamera vkCamera;
+        CameraResources res;
     };
 }

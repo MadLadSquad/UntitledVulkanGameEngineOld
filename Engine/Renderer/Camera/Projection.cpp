@@ -12,8 +12,6 @@ UVK::Projection::Projection(float fov, float ratio, UVK::FVector2 planes)
     FOV = fov;
     aspectRatio = ratio;
     plane = planes;
-
-    projection = glm::perspective(FOV, aspectRatio, plane.x, plane.y);
 }
 
 float& UVK::Projection::getFOV()
@@ -31,7 +29,12 @@ UVK::FVector2& UVK::Projection::getPlanes()
     return plane;
 }
 
-void UVK::Projection::recalculate()
+void UVK::Projection::recalculateLH()
 {
-    projection = glm::perspective(FOV, aspectRatio, plane.x, plane.y);
+    projection = glm::perspectiveLH(FOV, aspectRatio, plane.x, plane.y);
+}
+
+void UVK::Projection::recalculateRH()
+{
+    projection = glm::perspectiveRH(FOV, aspectRatio, plane.x, plane.y);
 }

@@ -1,17 +1,17 @@
 // GLEntityManager.hpp
-// Last update 13/6/2021 by Madman10K
+// Last update 19/6/2021 by Madman10K
 #pragma once
-
+#include <Renderer/Camera/Camera.hpp>
+#include <Renderer/Textures/Texture.hpp>
 
 namespace UVK
 {
-    class GLCamera;
-
     class GLEntityManager
     {
     public:
-        static void tick(GLCamera* camera);
+        static void tick(Camera* camera);
         static void clean();
     private:
+
     };
 }

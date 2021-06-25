@@ -1,5 +1,5 @@
 // GLPipeline.cpp
-// Last update 15/6/2021 by Madman10K
+// Last update 19/6/2021 by Madman10K
 #include <GL/glew.h>
 #include <Events/Events.hpp>
 #include <Renderer/EditorUI/Classes/EditorLevel.hpp>
@@ -19,7 +19,6 @@ void UVK::GLPipeline::begin(bool bHasEditor, Level* lvl)
 
     if (!bEditor)
     {
-        camera = &level->gameMode->pawn->camera;
         events.callBegin();
     }
     else
@@ -33,8 +32,9 @@ void UVK::GLPipeline::begin(bool bHasEditor, Level* lvl)
         cmp.name = "Editor Pawn";
         cmp.id = 330;
         cmp.devName = "EditorPawn";
-
-        camera = &level->gameMode->pawn->camera;
+        level->gameMode->pawn->beginPlay();
+        tx = Texture("../Content/Engine/brick.jpg");
+        tx.load();
 #endif
     }
     initEditor();
@@ -43,7 +43,6 @@ void UVK::GLPipeline::begin(bool bHasEditor, Level* lvl)
 
 void UVK::GLPipeline::tick()
 {
-
     glfwPollEvents();
 
     auto now = (float)glfwGetTime();
@@ -59,13 +58,16 @@ void UVK::GLPipeline::tick()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
         UVK::Editor::beginFrame();
+        level->gameMode->pawn->tick(deltaTime);
+        tx.useTexture();
     }
     else
     {
         glClearColor(rendererResources.colour.x, rendererResources.colour.y, rendererResources.colour.z, rendererResources.colour.w);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     }
-    UVK::GLEntityManager::tick(camera);
+
+    UVK::GLEntityManager::tick(&level->gameMode->pawn->camera);
 
     glUseProgram(0);
 
@@ -77,7 +79,7 @@ void UVK::GLPipeline::tick()
         glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        ed.runEditor(rendererResources.colour, fb, *camera, level);
+        ed.runEditor(rendererResources.colour, fb, level->gameMode->pawn->camera, level);
 #endif
     }
     else
@@ -95,6 +97,7 @@ void UVK::GLPipeline::end()
     {
 #ifndef PRODUCTION
         ed.destroyContext();
+        level->gameMode->pawn->endPlay();
 #endif
     }
     else

@@ -1,5 +1,6 @@
 // Types.hpp
-// Last update 3/6/2021 by Madman10K
+// Last update 21/6/2021 by Madman10K
+#define GLM_FORCE_DEPTH_ZERO_TO_ONE
 #include <vector>
 #include <glm/glm.hpp>
 #include <glm/mat3x4.hpp>
@@ -22,4 +23,6 @@ namespace UVK
 	typedef entt::entity Actor;
 	// String
 	using String = const char*;
+
+    class Math;
 }

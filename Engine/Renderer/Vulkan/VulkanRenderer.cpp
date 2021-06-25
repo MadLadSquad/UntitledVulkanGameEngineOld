@@ -4,7 +4,6 @@
 #define GLFW_INCLUDE_VULKAN
 #include <Renderer/Window/Window.hpp>
 #include "VulkanRenderer.hpp"
-#include "Components/VKCamera.hpp"
 #include "Components/VKFramebuffer.hpp"
 #include "Components/VKMesh.hpp"
 #include "Components/VKShader.hpp"
@@ -30,8 +29,8 @@ void UVK::VulkanRenderer::run()
 {
     start();
 
-    GLfloat deltaTime;
-    GLfloat lastTime = 0;
+    float deltaTime;
+    float lastTime = 0;
 
     while (!glfwWindowShouldClose(currentWindow.getWindow()))
     {

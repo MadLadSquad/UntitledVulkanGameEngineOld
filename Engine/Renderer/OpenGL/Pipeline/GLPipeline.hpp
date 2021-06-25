@@ -1,5 +1,5 @@
 // GLPipeline.hpp
-// Last update 13/6/2021 by Madman10K
+// Last update 19/6/2021 by Madman10K
 #pragma once
 #include <Renderer/OpenGL/Components/GLFrameBuffer.hpp>
 #include <Renderer/EditorUI/Editor.hpp>
@@ -29,8 +29,8 @@ namespace UVK
         Editor ed;
         Level* level{};
 
-        GLCamera* camera{};
-
         std::string colTheme;
+
+        Texture tx;
     };
 }

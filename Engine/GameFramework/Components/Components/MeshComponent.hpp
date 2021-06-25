@@ -2,7 +2,7 @@
 // Last update 3/6/2021 by Madman10K
 #include <glm/gtx/quaternion.hpp>
 #include <../Renderer/OpenGL/Components/GLMesh.hpp>
-#include <../Renderer/OpenGL/Components/GLCamera.hpp>
+#include <Renderer/Camera/Camera.hpp>
 
 namespace UVK
 {
@@ -12,7 +12,7 @@ namespace UVK
     struct MeshComponent
     {
         void createMesh(const char* modelLocation, const char* vertexShader, const char* fragmentShader, ShaderImportType type);
-        void render(glm::mat4 projection, GLCamera& camera);
+        void render(glm::mat4 projection, Camera& camera);
         void clearMesh();
 
         glm::mat4 mat;

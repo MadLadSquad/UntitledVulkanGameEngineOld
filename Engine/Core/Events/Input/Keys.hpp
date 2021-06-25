@@ -1,5 +1,5 @@
 // Keys.hpp
-// Last update 3/6/2021 by Madman10K
+// Last update 19/6/2021 by Madman10K
 #pragma once
 #include <glfw3.h>
 
@@ -67,7 +67,7 @@ namespace Keys
     [[maybe_unused]] constexpr uint16_t Delete = 261;
     [[maybe_unused]] constexpr uint16_t RightArrow = 262;
     [[maybe_unused]] constexpr uint16_t LeftArrow = 263;
-    [[maybe_unused]] constexpr uint16_t DownArror = 264;
+    [[maybe_unused]] constexpr uint16_t DownArrow = 264;
     [[maybe_unused]] constexpr uint16_t UpArrow = 265;
     [[maybe_unused]] constexpr uint16_t PageUp = 266;
     [[maybe_unused]] constexpr uint16_t PageDown = 267;
@@ -76,7 +76,7 @@ namespace Keys
     [[maybe_unused]] constexpr uint16_t CapsLock = 280;
     [[maybe_unused]] constexpr uint16_t ScrollLock = 281;
     [[maybe_unused]] constexpr uint16_t NumLock = 282;
-    [[maybe_unused]] constexpr uint16_t PrintSceen = 283;
+    [[maybe_unused]] constexpr uint16_t PrintScreen = 283;
     [[maybe_unused]] constexpr uint16_t Pause = 284;
     [[maybe_unused]] constexpr uint16_t F1 = 290;
     [[maybe_unused]] constexpr uint16_t F2 = 291;
@@ -116,7 +116,7 @@ namespace Keys
     [[maybe_unused]] constexpr uint16_t NumPadDecimal = 330;
     [[maybe_unused]] constexpr uint16_t NumPadDivide = 331;
     [[maybe_unused]] constexpr uint16_t NumPadMultiply = 332;
-    [[maybe_unused]] constexpr uint16_t NumPadSubstract = 333;
+    [[maybe_unused]] constexpr uint16_t NumPadSubtract = 333;
     [[maybe_unused]] constexpr uint16_t NumPadAdd = 334;
     [[maybe_unused]] constexpr uint16_t NumPadEnter = 335;
     [[maybe_unused]] constexpr uint16_t NumPadEqual = 336;

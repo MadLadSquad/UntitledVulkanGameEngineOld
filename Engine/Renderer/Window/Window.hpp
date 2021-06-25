@@ -9,6 +9,19 @@
 
 namespace UVK
 {
+    struct InputAction
+    {
+        InputAction() = default;
+        std::string name{};
+        uint16_t keyCode{};
+        uint16_t state{};
+    };
+
+    namespace InGlobals
+    {
+        inline std::vector<InputAction> inputActionList;
+    }
+
     /**
      * @brief A standard cross-renderer window abstraction
      */
@@ -34,7 +47,7 @@ namespace UVK
 
         FVector2 getMousePositionChange();
 
-        const std::array<bool, 350>& getKeys();
+        const std::array<uint16_t, 350>& getKeys();
         FVector2 getScroll();
 
         bool& getVulkan()
@@ -42,7 +55,7 @@ namespace UVK
             return bVulkan;
         }
     private:
-        std::array<bool, 350> keysArr{};
+        std::array<uint16_t, 350> keysArr{};
 
         FVector2 scroll{};
 
@@ -82,7 +95,7 @@ namespace UVK
     };
 }
 
-inline UVK::Window currentWindow;
+inline UVK::Window currentWindow{};
 
 namespace UVK
 {
@@ -93,7 +106,9 @@ namespace UVK
     {
     public:
         // Given a valid keyboard key from the Keys namespace it will return weather the key was pressed
-        static bool getKeyPressed(uint16_t key);
+        static uint16_t getKey(uint16_t key);
+
+        static const InputAction& getAction(const std::string& name);
 
         static FVector2 getMousePositionChange();
         static FVector2 getCurrentMousePosition();

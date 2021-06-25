@@ -28,7 +28,7 @@ void UVK::MeshComponent::createMesh(const char* modelLocation, const char* verte
     scale = FVector(1.0f, 1.0f, 1.0f);
 }
 
-void UVK::MeshComponent::render(glm::mat4 projection, GLCamera& camera)
+void UVK::MeshComponent::render(glm::mat4 projection, Camera& camera)
 {
     mat = glm::mat4(1.0f);
     shader.useShader();
@@ -45,7 +45,7 @@ void UVK::MeshComponent::render(glm::mat4 projection, GLCamera& camera)
 
     glUniformMatrix4fv((int)uniformModel, 1, GL_FALSE, glm::value_ptr(mat));
     glUniformMatrix4fv((int)uniformProjection, 1, GL_FALSE, glm::value_ptr(projection));
-    glUniformMatrix4fv((int)uniformView, 1, GL_FALSE, glm::value_ptr(camera.calculateViewMatrix()));
+    glUniformMatrix4fv((int)uniformView, 1, GL_FALSE, glm::value_ptr(camera.calculateViewMatrixLH()));
 
     mesh.render();
 }

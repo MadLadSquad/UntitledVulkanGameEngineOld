@@ -15,6 +15,7 @@
 #include <stack>
 #include <future>
 #include <mutex>
+#include <complex>
 #include <yaml-cpp/yaml.h>
 #include <UVKLog.h>
 #include "Engine/Core/Core/Utility.hpp"

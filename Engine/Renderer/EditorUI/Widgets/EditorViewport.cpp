@@ -1,5 +1,5 @@
 // EditorViewport.cpp
-// Last update 15/6/2021 by Madman10K
+// Last update 19/6/2021 by Madman10K
 #include <GL/glew.h>
 #include <Renderer/Window/Window.hpp>
 #include "EditorViewport.hpp"
@@ -7,7 +7,7 @@
 #include <imguiex/imguizmo/ImGuizmo.h>
 #include <Core/Registry.hpp>
 #ifndef PRODUCTION
-void EditorViewport::display(UVK::GLFrameBuffer& fb, int& viewportWidth, int& viewportHeight, bool& bShow, UVK::GLCamera& camera, UVK::Actor& entity, glm::mat4& projection)
+void EditorViewport::display(UVK::GLFrameBuffer& fb, int& viewportWidth, int& viewportHeight, bool& bShow, UVK::Camera& camera, UVK::Actor& entity, glm::mat4& projection)
 {
     ImGui::Begin("Viewport##1", &bShow);
 
@@ -27,42 +27,59 @@ void EditorViewport::display(UVK::GLFrameBuffer& fb, int& viewportWidth, int& vi
     bool snap;
     float snapVal = 0.05f;
 
-    if (UVK::Input::getKeyPressed(Keys::LeftControl) && UVK::Input::getKeyPressed(Keys::Q))
+    if (UVK::Input::getAction("editor-gizmos").state == Keys::KeyPressed || UVK::Input::getAction("editor-gizmos").state == Keys::KeyRepeat)
     {
-        operationType = -1;
-    }
-    else if (UVK::Input::getKeyPressed(Keys::LeftControl) && UVK::Input::getKeyPressed(Keys::W))
-    {
-        operationType = ImGuizmo::TRANSLATE;
-    }
-    else if (UVK::Input::getKeyPressed(Keys::LeftControl) && UVK::Input::getKeyPressed(Keys::E))
-    {
-        operationType = ImGuizmo::ROTATE;
-    }
-    else if (UVK::Input::getKeyPressed(Keys::LeftControl) && UVK::Input::getKeyPressed(Keys::R))
-    {
-        operationType = ImGuizmo::SCALE;
+        if (UVK::Input::getAction("editor-gizmo-none").state == Keys::KeyPressed || UVK::Input::getAction("editor-gizmo-none").state == Keys::KeyRepeat)
+        {
+            operationType = -1;
+        }
+        else if (UVK::Input::getAction("editor-gizmo-translate").state == Keys::KeyPressed || UVK::Input::getAction("editor-gizmo-translate").state == Keys::KeyRepeat)
+        {
+            operationType = ImGuizmo::TRANSLATE;
+        }
+        else if (UVK::Input::getAction("editor-gizmo-rotate").state == Keys::KeyPressed || UVK::Input::getAction("editor-gizmo-rotate").state == Keys::KeyRepeat)
+        {
+            operationType = ImGuizmo::ROTATE;
+        }
+        else if (UVK::Input::getAction("editor-gizmo-scale").state == Keys::KeyPressed || UVK::Input::getAction("editor-gizmo-scale").state == Keys::KeyRepeat)
+        {
+            operationType = ImGuizmo::SCALE;
+        }
     }
 
-    snap = UVK::Input::getKeyPressed(Keys::LeftControl);
+    snap = UVK::Input::getAction("editor-gizmo-snap").state == Keys::KeyPressed;
 
-    if (operationType == ImGuizmo::ROTATE) snapVal = 10.0f;
+    switch (operationType)
+    {
+    case ImGuizmo::TRANSLATE:
+        snapVal = 0.1f;
+        break;
+    case ImGuizmo::ROTATE:
+        snapVal = 10.0f;
+        break;
+    case ImGuizmo::SCALE:
+        snapVal = 0.05f;
+        break;
+    default:
+        break;
+    }
 
     if (registry.hasComponent<UVK::MeshComponentRaw>(entity) && operationType != -1)
     {
         auto& a = registry.getComponent<UVK::MeshComponentRaw>(entity);
 
         const float snapValues[3] = { snapVal, snapVal, snapVal };
+        UVK::FVector translation, rotation, scale, deltaRotation;
 
         ImGuizmo::SetOrthographic(false);
+        ImGuizmo::AllowAxisFlip(false);
         ImGuizmo::SetDrawlist();
         ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, ImGui::GetWindowWidth(), ImGui::GetWindowHeight());
 
-        ImGuizmo::Manipulate(glm::value_ptr(camera.calculateViewMatrix()), glm::value_ptr(projection), (ImGuizmo::OPERATION)operationType, ImGuizmo::LOCAL, glm::value_ptr(a.mat), nullptr, snap ? snapValues : nullptr);
+        ImGuizmo::Manipulate(glm::value_ptr(camera.calculateViewMatrixRH()), glm::value_ptr(projection), (ImGuizmo::OPERATION)operationType, ImGuizmo::LOCAL, glm::value_ptr(a.mat), nullptr, snap ? snapValues : nullptr);
 
         if (ImGuizmo::IsUsing())
         {
-            UVK::FVector translation, rotation, scale, deltaRotation;
             ImGuizmo::DecomposeMatrixToComponents(glm::value_ptr(a.mat), glm::value_ptr(translation), glm::value_ptr(rotation), glm::value_ptr(scale));
 
             deltaRotation = glm::radians(rotation) - a.rotation;

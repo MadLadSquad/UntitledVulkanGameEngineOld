@@ -181,7 +181,7 @@ void DetailsPanel::display(entt::entity& ent, UVK::Level* lvl, bool& bShow, bool
                 lvl->gameMode->pawn->camera.getProjection().getFOV() = FOV;
                 lvl->gameMode->pawn->camera.getProjection().getPlanes() = planes;
                 ar = aspect.x / aspect.y;
-                lvl->gameMode->pawn->camera.getProjection().recalculate();
+                lvl->gameMode->pawn->camera.getProjection().recalculateRH();
             }
         }
     }

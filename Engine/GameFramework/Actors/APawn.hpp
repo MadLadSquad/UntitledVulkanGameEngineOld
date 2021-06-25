@@ -18,7 +18,7 @@ namespace UVK
         virtual void endPlay() = 0;
 
         virtual ~APawn() = default;
-        GLCamera camera;
+        Camera camera;
 
         std::string name;
         int64_t id;
