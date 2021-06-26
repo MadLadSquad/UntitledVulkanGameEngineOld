@@ -1,5 +1,5 @@
 // Registry.hpp
-// Last update 3/6/2021 by Madman10K
+// Last update 26/6/2021 by Madman10K
 #include "Engine/GameFramework/Components/Components.hpp"
 
 inline UVK::EntityPool pool;
@@ -29,7 +29,7 @@ namespace UVK
         * @param Name for the actor
         * @return Actor reference
         */
-        void createActor(const std::string& name);
+        void createActor(String name);
 
         /**
         * @brief Gets a component from an actor

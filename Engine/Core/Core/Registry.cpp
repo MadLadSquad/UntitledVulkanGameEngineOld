@@ -1,8 +1,9 @@
 // Renderer.cpp
-// Last update 6/5/2021 by Madman10K
+// Last update 26/6/2021 by Madman10K
 #include "Registry.hpp"
+#include <GameFramework/Actors/ActorManager.hpp>
 
-void UVK::Registry::createActor(const std::string &name)
+void UVK::Registry::createActor(String name)
 {
     Actor act = pool.create();
 
@@ -15,5 +16,26 @@ void UVK::Registry::createActor(const std::string &name)
 
 void UVK::Registry::destroyActor(Actor &act)
 {
+    if (registry.hasComponent<UVK::MeshComponentRaw>(act))
+    {
+        auto& a = registry.getComponent<UVK::MeshComponentRaw>(act);
+
+        a.clearMesh();
+
+        pool.remove<UVK::MeshComponentRaw>(act);
+    }
+
+    for (auto& a : actorManager.data())
+    {
+        auto& b = registry.getComponent<UVK::CoreComponent>(act);
+
+        if (a->name == b.name && a->devname == b.devName && a->id == b.id)
+        {
+            a->endPlay();
+            actorManager.data().erase(a);
+            break;
+        }
+    }
+
     pool.destroy(act);
 }

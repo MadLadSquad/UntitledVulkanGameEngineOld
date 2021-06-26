@@ -1,31 +1,23 @@
 // SceneHierarchy.cpp
-// Last update 15/6/2021 by Madman10K
+// Last update 26/6/2021 by Madman10K
 #include "SceneHierarchy.hpp"
+#include <GameFramework/Actors/ActorManager.hpp>
+#include <Core/Events/Events.hpp>
 
-#ifndef PRODUCTION
+
 void SceneHierarchy::destroyEntity(entt::entity& selectedEntity)
 {
-    if (registry.hasComponent<UVK::MeshComponentRaw>(selectedEntity))
-    {
-        auto& a = registry.getComponent<UVK::MeshComponentRaw>(selectedEntity);
-
-        a.clearMesh();
-
-        pool.remove<UVK::MeshComponentRaw>(selectedEntity);
-    }
-
-    if (registry.hasComponent<UVK::CoreComponent>(selectedEntity))
-    {
-        auto& a = registry.getComponent<UVK::CoreComponent>(selectedEntity);
-
-        a.name.clear();
-        a.id = 0;
-
-        pool.remove<UVK::CoreComponent>(selectedEntity);
-    }
-
     UVK::Registry::destroyActor(selectedEntity);
 }
+
+void SceneHierarchy::addEntity(int& entNum)
+{
+    registry.createActor(static_cast<std::string>("NewEntity" + std::to_string(entNum)).c_str());
+
+    entNum++;
+}
+
+#ifndef PRODUCTION
 
 void SceneHierarchy::display(entt::entity &selectedEntity, std::string &entAppend, int &entNum, bool& bShow)
 {
@@ -36,11 +28,7 @@ void SceneHierarchy::display(entt::entity &selectedEntity, std::string &entAppen
 
     if (ImGui::MenuItem("+ Add Entity##scn"))
     {
-        entAppend = std::to_string(entNum);
-
-        registry.createActor("NewEntity" + entAppend);
-
-        entNum++;
+        addEntity(entNum);
     }
     if (ImGui::MenuItem("- Destroy Entity##scn")) bDestroy = true;
 
@@ -51,15 +39,15 @@ void SceneHierarchy::display(entt::entity &selectedEntity, std::string &entAppen
     {
         auto& a = registry.getComponent<UVK::CoreComponent>(ent);
 
-        if (ImGui::Selectable(a.name.c_str()))
+        if (ImGui::Selectable(static_cast<std::string>(a.name + ", " + std::to_string(a.id)).c_str()))
         {
             selectedEntity = ent;
         }
     });
 
-    if (pool.valid(selectedEntity))
+    if (bDestroy)
     {
-        if (bDestroy)
+        if (pool.valid(selectedEntity))
         {
             destroyEntity(selectedEntity);
         }

@@ -1,5 +1,5 @@
 // Theme.cpp
-// Last update 15/6/2021 by Madman10K
+// Last update 26/6/2021 by Madman10K
 #include <Core.hpp>
 #include "Theme.hpp"
 #include <yaml.h>
@@ -44,7 +44,7 @@ YAML::Emitter& operator<<(YAML::Emitter& out, const ImVec4& vect)
     return out;
 }
 
-void UVK::EditorTheme::setTheme(const std::string& theme)
+void UVK::EditorTheme::setTheme(UVK::String theme)
 {
     YAML::Node out;
     bool bUseCustomTheme = true;

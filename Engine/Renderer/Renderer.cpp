@@ -42,7 +42,7 @@ void UVK::Renderer::startRenderer(UVK::Level *lvl, bool bUsesEditor)
     else
     {
         currentWindow.getVulkan() = false;
-        GLRenderer renderer(lvl, bUsesEditor, theme);
+        GLRenderer renderer(lvl, bUsesEditor, theme.c_str());
     }
 }
 

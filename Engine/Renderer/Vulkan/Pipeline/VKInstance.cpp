@@ -1,5 +1,5 @@
 // VKInstance.cpp
-// Last update 28/5/2021 by Madman10K
+// Last update 26/6/2021 by Madman10K
 #include "VKInstance.hpp"
 #ifndef __APPLE__
 void UVK::VKInstance::create()
@@ -24,7 +24,7 @@ void UVK::VKInstance::create()
 
     // Extensions, number of extensions and array of extension names
     uint32_t extensionCount = 0;
-    const char** extensions;
+    UVK::String* extensions;
 
     // Get all of the extensions
     extensions = glfwGetRequiredInstanceExtensions(&extensionCount);
@@ -59,7 +59,7 @@ void UVK::VKInstance::destroy()
     vkDestroyInstance(instance, nullptr);
 }
 
-bool UVK::VKInstance::checkExtensionSupport(std::vector<const char*>* extensions)
+bool UVK::VKInstance::checkExtensionSupport(std::vector<UVK::String>* extensions)
 {
     uint32_t extensionCount = 0;
     vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, nullptr);

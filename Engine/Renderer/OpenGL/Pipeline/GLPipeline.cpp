@@ -1,5 +1,5 @@
 // GLPipeline.cpp
-// Last update 19/6/2021 by Madman10K
+// Last update 26/6/2021 by Madman10K
 #include <GL/glew.h>
 #include <Events/Events.hpp>
 #include <Renderer/EditorUI/Classes/EditorLevel.hpp>
@@ -33,8 +33,10 @@ void UVK::GLPipeline::begin(bool bHasEditor, Level* lvl)
         cmp.id = 330;
         cmp.devName = "EditorPawn";
         level->gameMode->pawn->beginPlay();
+#ifdef DEVELOPMENT
         tx = Texture("../Content/Engine/brick.jpg");
         tx.load();
+#endif
 #endif
     }
     initEditor();
@@ -59,7 +61,9 @@ void UVK::GLPipeline::tick()
 
         UVK::Editor::beginFrame();
         level->gameMode->pawn->tick(deltaTime);
+#ifdef DEVELOPMENT
         tx.useTexture();
+#endif
     }
     else
     {

@@ -1,5 +1,5 @@
 // GLShader.hpp
-// Last update 3/6/2021 by Madman10K
+// Last update 26/6/2021 by Madman10K
 #pragma once
 #include <GL/glew.h>
 #include <iostream>
@@ -7,6 +7,7 @@
 #include <UVKLog.h>
 #include <string>
 #include <vector>
+#include <Core/Types.hpp>
 //#include <Core.hpp>
 
 namespace UVK
@@ -28,8 +29,8 @@ namespace UVK
     public:
 		GLShader() = default;
 
-		void createFromString(const char* vertex, const char* fragment);
-		void createFromFile(const char* vLocation, const char* fLocation);
+		void createFromString(UVK::String vertex, UVK::String fragment);
+		void createFromFile(UVK::String vLocation, UVK::String fLocation);
 
 		[[nodiscard]] GLuint getProjectionLocation() const;
 		[[nodiscard]] GLuint getModelLocation() const;
@@ -41,10 +42,10 @@ namespace UVK
 	private:
 		GLuint shaderID, uniformProjection, uniformModel, uniformView;
 		
-		static std::string readFile(const char* location);
+		static std::string readFile(UVK::String location);
 		
-		void compileShader(const char* vertex, const char* fragment);
-		static void addShader(GLuint program, std::string shader, GLenum shaderType);
+		void compileShader(UVK::String vertex, UVK::String fragment);
+		static void addShader(GLuint program, const std::string& shader, GLenum shaderType);
     };
 
     /**
@@ -54,7 +55,7 @@ namespace UVK
     {
     public:
         GLShaderSPV() = default;
-        GLShaderSPV(const char* vLoc, const char* fLoc)
+        GLShaderSPV(UVK::String vLoc, UVK::String fLoc)
         {
             readFile(vLoc, fLoc);
         }
@@ -68,7 +69,7 @@ namespace UVK
 
         void compileShader();
 
-        void readFile(const char* vertexLocation, const char* fragmentLocation);
+        void readFile(UVK::String vertexLocation, UVK::String fragmentLocation);
     };
 }
 

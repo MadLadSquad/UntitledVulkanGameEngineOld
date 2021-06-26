@@ -1,5 +1,5 @@
 // GLRenderer.cpp
-// Last update 15/6/2021 by Madman10K
+// Last update 26/6/2021 by Madman10K
 #include <GL/glew.h>
 #include "GLRenderer.hpp"
 #include "../../Core/Events/Events.hpp"
@@ -9,6 +9,7 @@
 void UVK::GLRenderer::start(UVK::Level* level) const noexcept
 {
     GLPipeline pipeline(bEditor, level);
+#ifdef DEVELOPMENT
     registry.createActor("Maikati");
     pool.each([&](entt::entity ent){
         if (registry.getComponent<CoreComponent>(ent).name == "Maikati")
@@ -35,6 +36,7 @@ void UVK::GLRenderer::start(UVK::Level* level) const noexcept
             //b.play("and.wav", true, 1.0f, 1.0f, FVector(15.0f, 0.0f, 0.0f));
         }
     });
+#endif
     while (!glfwWindowShouldClose(currentWindow.getWindow()))
     {
         pipeline.tick();

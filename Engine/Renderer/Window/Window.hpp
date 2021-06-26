@@ -1,5 +1,5 @@
 // Window.hpp
-// Last update 11/6/2021 by Madman10K
+// Last update 26/6/2021 by Madman10K
 #pragma once
 #include <GL/glew.h>
 #include "../Textures/Texture.hpp"
@@ -34,7 +34,7 @@ namespace UVK
         void dumpConfig();
         void destroyWindow();
 
-        void setTitle(const std::string& newTitle) const;
+        void setTitle(UVK::String newTitle) const;
         [[nodiscard]] GLFWwindow* getWindow() const;
 
         [[nodiscard]] FVector2 getLastMousePosition() const;

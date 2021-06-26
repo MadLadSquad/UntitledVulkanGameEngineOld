@@ -1,8 +1,8 @@
 // MeshComponent.cpp
-// Last update 7/5/2021 by Madman10K
+// Last update 26/6/2021 by Madman10K
 #include "MeshComponent.hpp"
 
-void UVK::MeshComponent::createMesh(const char* modelLocation, const char* vertexShader, const char* fragmentShader, ShaderImportType type)
+void UVK::MeshComponent::createMesh(UVK::String modelLocation, UVK::String vertexShader, UVK::String fragmentShader, ShaderImportType type)
 {
     fShader = fragmentShader;
     vShader = vertexShader;

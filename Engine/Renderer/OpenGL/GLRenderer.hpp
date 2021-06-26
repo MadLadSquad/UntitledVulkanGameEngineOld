@@ -1,5 +1,5 @@
 // GLRenderer.hpp
-// Last update 15/6/2021 by Madman10K
+// Last update 26/6/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 #include <utility>
@@ -20,7 +20,7 @@ namespace UVK
     public:
         GLRenderer() = delete;
 
-        explicit GLRenderer(Level* level, const bool& bUsesEditor, std::string theme)
+        explicit GLRenderer(Level* level, const bool& bUsesEditor, UVK::String theme)
         {
             bEditor = bUsesEditor;
             colTheme = std::move(theme);
@@ -30,6 +30,6 @@ namespace UVK
         void start(Level* level) const noexcept;
 
         bool bEditor;
-        std::string colTheme;
+        UVK::String colTheme;
     };
 }

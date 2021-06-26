@@ -1,7 +1,8 @@
 // Utility.hpp
-// Last update 3/6/2021 by Madman10K
+// Last update 26/6/2021 by Madman10K
 #pragma once
 #include <iostream>
+#include "Types.hpp"
 
 /**
  * @brief A namespace of useful utility functions
@@ -22,14 +23,14 @@ namespace Utility
      * @brief converts string to lower case
      * @param str string to be converted
      */
-    static const char* toLowerC_Str(std::string& str)
+    static UVK::String toLowerC_Str(std::string& str)
     {
         std::transform(str.begin(), str.end(), str.begin(), ::tolower);
 
         return str.c_str();
     }
 
-    static const char* toUpperC_Str(std::string& str)
+    static UVK::String toUpperC_Str(std::string& str)
     {
         std::transform(str.begin(), str.end(), str.begin(), ::toupper);
 

@@ -1,5 +1,5 @@
 // Window.cpp
-// Last update 11/6/2021 by Madman10K
+// Last update 26/6/2021 by Madman10K
 #include "Window.hpp"
 
 double UVK::Window::getYMousePositionChange()
@@ -18,9 +18,9 @@ double UVK::Window::getXMousePositionChange()
     return a;
 }
 
-void UVK::Window::setTitle(const std::string& newTitle) const
+void UVK::Window::setTitle(UVK::String newTitle) const
 {
-    glfwSetWindowTitle(windowMain, newTitle.c_str());
+    glfwSetWindowTitle(windowMain, newTitle);
 }
 
 GLFWwindow* UVK::Window::getWindow() const

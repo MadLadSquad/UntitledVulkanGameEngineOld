@@ -1,5 +1,5 @@
 // CreateFile.cpp
-// Last update 15/6/2021 by Madman10K
+// Last update 26/6/2021 by Madman10K
 #include "CreateFile.hpp"
 #include <cpp/imgui_stdlib.h>
 #include <Core.hpp>
@@ -7,8 +7,6 @@
 void CreateFile::display(short& selectedFile, std::string& fileOutLocation, bool& bShowCreateFile1)
 {
     ImGui::Begin("Create a file");
-
-
 
     static std::string str;
 

@@ -1,7 +1,8 @@
 // Theme.hpp
-// Last update 15/6/2021 by Madman10K
+// Last update 26/6/2021 by Madman10K
 #pragma once
 #include <iostream>
+#include <utility>
 #include <imgui.h>
 #ifndef PRODUCTION
 namespace UVK
@@ -13,12 +14,12 @@ namespace UVK
     class EditorTheme
     {
     public:
-        explicit EditorTheme(const std::string& theme)
+        explicit EditorTheme(UVK::String theme)
         {
-            setTheme(theme);
+            setTheme(std::move(theme));
         }
 
-        void setTheme(const std::string& theme);
+        void setTheme(UVK::String theme);
 
         void useTheme();
 

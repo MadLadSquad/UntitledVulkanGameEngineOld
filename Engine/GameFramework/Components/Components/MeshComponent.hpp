@@ -1,5 +1,5 @@
 // MeshComponent.hpp
-// Last update 3/6/2021 by Madman10K
+// Last update 26/6/2021 by Madman10K
 #include <glm/gtx/quaternion.hpp>
 #include <../Renderer/OpenGL/Components/GLMesh.hpp>
 #include <Renderer/Camera/Camera.hpp>
@@ -11,7 +11,7 @@ namespace UVK
      */
     struct MeshComponent
     {
-        void createMesh(const char* modelLocation, const char* vertexShader, const char* fragmentShader, ShaderImportType type);
+        void createMesh(UVK::String modelLocation, UVK::String vertexShader, UVK::String fragmentShader, ShaderImportType type);
         void render(glm::mat4 projection, Camera& camera);
         void clearMesh();
 
@@ -21,8 +21,8 @@ namespace UVK
         FVector translation;
         FVector scale;
 
-        std::string fShader;
-        std::string vShader;
+        UVK::String fShader;
+        UVK::String vShader;
 
         ShaderImportType impType;
     private:

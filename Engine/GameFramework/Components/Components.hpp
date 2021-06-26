@@ -1,5 +1,5 @@
 // Components.hpp
-// Last update 3/6/2021 by Madman10K
+// Last update 26/6/2021 by Madman10K
 #pragma once
 #include <GL/glew.h>
 
@@ -33,8 +33,5 @@ namespace UVK
         std::string name;
         uint64_t id;
         std::string devName;
-    private:
-        // In order for the program to not crash when there is no data in id or name
-        static constexpr char a = 'a';
     };
 }

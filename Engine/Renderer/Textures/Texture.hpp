@@ -1,7 +1,8 @@
 // Texture.hpp
-// Last update 3/6/2021 by Madman10K
+// Last update 26/6/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
+#include <utility>
 #include <stb/stb_image.h>
 
 namespace UVK
@@ -13,8 +14,8 @@ namespace UVK
     {
     public:
         Texture() = default;
-        explicit Texture(const std::string& loc)
-                :location(loc)
+        explicit Texture(std::string loc)
+                :location(std::move(loc))
         {
 
         }

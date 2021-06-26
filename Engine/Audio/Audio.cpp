@@ -1,5 +1,5 @@
 // Audio.cpp
-// Last update 18/5/2021 by Madman10K
+// Last update 26/6/2021 by Madman10K
 #include "Audio.hpp"
 #include <sndfile.h>
 
@@ -26,7 +26,7 @@ void UVK::AudioManager::createDevice()
         logger.consoleLog("Failed to use the context", UVK_LOG_TYPE_ERROR);
     }
 
-    const ALchar* name = nullptr;
+    String name = nullptr;
 
     if (alcIsExtensionPresent(device, "ALC_ENUMERATE_ALL_EXT"))
     {
@@ -48,12 +48,12 @@ void UVK::AudioManager::destroyDevice()
 }
 
 
-UVK::AudioBuffer::AudioBuffer(const char* loc)
+UVK::AudioBuffer::AudioBuffer(String loc)
 {
     addSound(loc);
 }
 
-void UVK::AudioBuffer::addSound(const char* loc)
+void UVK::AudioBuffer::addSound(String loc)
 {
     ALenum error;
     ALenum format;

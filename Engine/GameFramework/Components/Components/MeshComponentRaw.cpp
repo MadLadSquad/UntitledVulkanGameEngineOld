@@ -1,10 +1,10 @@
 // MeshComponentRaw.cpp
-// Last update 7/5/2021 by Madman10K
+// Last update 26/6/2021 by Madman10K
 #include <GL/glew.h>
 #include "MeshComponentRaw.hpp"
 #include <Renderer/RendererResources.hpp>
 
-void UVK::MeshComponentRaw::createMesh(GLfloat* vertices, uint32_t* indices, uint32_t vertexNum, uint32_t indexNum, const char* vertexShader, const char* fragmentShader, ShaderImportType type)
+void UVK::MeshComponentRaw::createMesh(GLfloat* vertices, uint32_t* indices, uint32_t vertexNum, uint32_t indexNum, UVK::String vertexShader, UVK::String fragmentShader, ShaderImportType type)
 {
     fShader = fragmentShader;
     vShader = vertexShader;

@@ -1,18 +1,18 @@
 // GLShader.cpp
-// Last update 4/20/2021 by Madman10K
+// Last update 26/6/2021 by Madman10K
 #include "GLShader.hpp"
 
-void UVK::GLShader::createFromString(const char* vertex, const char* fragment)
+void UVK::GLShader::createFromString(UVK::String vertex, UVK::String fragment)
 {
 	compileShader(vertex, fragment);
 }
 
-void UVK::GLShader::createFromFile(const char* vLocation, const char* fLocation)
+void UVK::GLShader::createFromFile(UVK::String vLocation, UVK::String fLocation)
 {
 	compileShader(readFile(vLocation).c_str(), readFile(fLocation).c_str());
 }
 
-std::string UVK::GLShader::readFile(const char* location)
+std::string UVK::GLShader::readFile(UVK::String location)
 {
 	std::string content;
 	std::ifstream fileStream(location, std::ios::in);
@@ -65,7 +65,7 @@ void UVK::GLShader::clearShader()
 	uniformProjection = 0;
 }
 
-void UVK::GLShader::compileShader(const char* vertex, const char* fragment)
+void UVK::GLShader::compileShader(UVK::String vertex, UVK::String fragment)
 {
 	shaderID = glCreateProgram();
 
@@ -104,7 +104,7 @@ void UVK::GLShader::compileShader(const char* vertex, const char* fragment)
 	uniformView = glGetUniformLocation(shaderID, "view");
 }
 
-void UVK::GLShader::addShader(GLuint program, std::string shader, GLenum shaderType)
+void UVK::GLShader::addShader(GLuint program, const std::string& shader, GLenum shaderType)
 {
 	GLuint theShader = glCreateShader(shaderType);
 	
@@ -128,7 +128,7 @@ void UVK::GLShader::addShader(GLuint program, std::string shader, GLenum shaderT
 	glAttachShader(program, theShader);
 }
 
-void UVK::GLShaderSPV::readFile(const char* vertexLocation, const char* fragmentLocation)
+void UVK::GLShaderSPV::readFile(UVK::String vertexLocation, UVK::String fragmentLocation)
 {
     std::ifstream vertexInput(vertexLocation, std::ios::binary);
     std::ifstream fragmentInput(fragmentLocation, std::ios::binary);

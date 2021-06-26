@@ -1,5 +1,5 @@
 // Editor.hpp
-// Last update 19/6/2021 by Madman10K
+// Last update 26/6/2021 by Madman10K
 #pragma once
 #include <iostream>
 #include <utility>
@@ -26,9 +26,9 @@ namespace UVK
         static void beginFrame();
         void destroyContext();
 
-        void setTheme(std::string theme)
+        void setTheme(UVK::String theme)
         {
-            colTheme = std::move(theme);
+            colTheme = theme;
         }
 
         double* getFrameTimeData()
@@ -79,7 +79,7 @@ namespace UVK
         std::string engineVersion;
         std::string projectVersion;
         std::string projectName;
-        std::string colTheme;
+        UVK::String colTheme;
         std::string cpFileLoc;
 
         double frameTimeData[2] = { 0.0, 0.0 };

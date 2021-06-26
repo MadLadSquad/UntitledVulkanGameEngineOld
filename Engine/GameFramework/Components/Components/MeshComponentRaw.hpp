@@ -1,5 +1,5 @@
 // MeshComponentRaw.hpp
-// Last update 3/6/2021 by Madman10K
+// Last update 26/6/2021 by Madman10K
 #pragma once
 #include <glm/gtx/quaternion.hpp>
 #include <../Renderer/OpenGL/Components/GLMesh.hpp>
@@ -12,7 +12,7 @@ namespace UVK
      */
     struct MeshComponentRaw
     {
-        void createMesh(GLfloat* vertices, uint32_t* indices, uint32_t vertexNum, uint32_t indexNum, const char* vertexShader, const char* fragmentShader, ShaderImportType type);
+        void createMesh(GLfloat* vertices, uint32_t* indices, uint32_t vertexNum, uint32_t indexNum, UVK::String vertexShader, UVK::String fragmentShader, ShaderImportType type);
         void render(glm::mat4& projection, Camera& camera);
         void clearMesh();
 
@@ -24,8 +24,8 @@ namespace UVK
 
         std::vector<uint32_t> index;
         std::vector<float> vertex;
-        std::string fShader;
-        std::string vShader;
+        UVK::String fShader;
+        UVK::String vShader;
 
         ShaderImportType impType;
     private:
