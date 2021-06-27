@@ -40,6 +40,9 @@
 [submodule "Engine/ThirdParty/assimp"]
 	path = Engine/ThirdParty/assimp
 	url = https://github.com/MadLadSquad/assimp.git
-[submodule "Engine/ThirdParty/stb/exec"]
-	path = Engine/ThirdParty/stb/exec
-	url = https://github.com/MadLadSquad/UntitledExec.git
+[submodule "Engine/ThirdParty/imguiex/ustd"]
+	path = Engine/ThirdParty/imguiex/ustd
+	url = https://github.com/MadLadSquad/UntitledSTD.git
+[submodule "Engine/ThirdParty/imguiex/umath"]
+	path = Engine/ThirdParty/imguiex/umath
+	url = https://github.com/MadLadSquad/UntitledMath.git
