@@ -21,53 +21,53 @@ void UVK::EditorPawn::endPlay()
 
 void UVK::EditorPawn::move(float deltaTime)
 {
-    if (UVK::Input::getAction("editor-move").state == Keys::KeyPressed || UVK::Input::getAction("editor-move").state == Keys::KeyRepeat)
+    if (UVK::Input::getAction("editor-move") == Keys::KeyPressed || UVK::Input::getAction("editor-move") == Keys::KeyRepeat)
     {
         currentWindow.setCursorVisibility(false);
 
-        if (UVK::Input::getAction("editor-move-forward").state == Keys::KeyPressed || UVK::Input::getAction("editor-move-forward").state == Keys::KeyRepeat)
+        if (UVK::Input::getAction("editor-move-forward") == Keys::KeyPressed || UVK::Input::getAction("editor-move-forward") == Keys::KeyRepeat)
         {
-            camera.data().position += camera.data().front * moveSpeed * deltaTime;
+            camera.position += camera.front * moveSpeed * deltaTime;
         }
-        if (UVK::Input::getAction("editor-move-back").state == Keys::KeyPressed || UVK::Input::getAction("editor-move-back").state == Keys::KeyRepeat)
+        if (UVK::Input::getAction("editor-move-back") == Keys::KeyPressed || UVK::Input::getAction("editor-move-back") == Keys::KeyRepeat)
         {
-            camera.data().position -= camera.data().front * moveSpeed * deltaTime;
+            camera.position -= camera.front * moveSpeed * deltaTime;
         }
-        if (UVK::Input::getAction("editor-move-left").state == Keys::KeyPressed || UVK::Input::getAction("editor-move-left").state == Keys::KeyRepeat)
+        if (UVK::Input::getAction("editor-move-left") == Keys::KeyPressed || UVK::Input::getAction("editor-move-left") == Keys::KeyRepeat)
         {
-            camera.data().position -= camera.data().right * moveSpeed * deltaTime;
+            camera.position -= camera.right * moveSpeed * deltaTime;
         }
-        if (UVK::Input::getAction("editor-move-right").state == Keys::KeyPressed || UVK::Input::getAction("editor-move-right").state == Keys::KeyRepeat)
+        if (UVK::Input::getAction("editor-move-right") == Keys::KeyPressed || UVK::Input::getAction("editor-move-right") == Keys::KeyRepeat)
         {
-            camera.data().position += camera.data().right * moveSpeed * deltaTime;
+            camera.position += camera.right * moveSpeed * deltaTime;
         }
-        if (UVK::Input::getAction("editor-move-down").state == Keys::KeyPressed || UVK::Input::getAction("editor-move-down").state == Keys::KeyRepeat)
+        if (UVK::Input::getAction("editor-move-down") == Keys::KeyPressed || UVK::Input::getAction("editor-move-down") == Keys::KeyRepeat)
         {
-            camera.data().position -= camera.data().worldUp * moveSpeed * deltaTime;
+            camera.position -= camera.worldUp * moveSpeed * deltaTime;
         }
-        if (UVK::Input::getAction("editor-move-up").state == Keys::KeyPressed || UVK::Input::getAction("editor-move-up").state == Keys::KeyRepeat)
+        if (UVK::Input::getAction("editor-move-up") == Keys::KeyPressed || UVK::Input::getAction("editor-move-up") == Keys::KeyRepeat)
         {
-            camera.data().position += camera.data().worldUp * moveSpeed * deltaTime;
+            camera.position += camera.worldUp * moveSpeed * deltaTime;
         }
 
         auto scroll = UVK::Input::getScroll();
 
         if (scroll.y > 0)
         {
-            camera.data().position += camera.data().front * moveSpeed * deltaTime * 10.0f;
+            camera.position += camera.front * moveSpeed * deltaTime * 10.0f;
         }
         else if (scroll.y < 0)
         {
-            camera.data().position -= camera.data().front * moveSpeed * deltaTime * 10.0f;
+            camera.position -= camera.front * moveSpeed * deltaTime * 10.0f;
         }
 
         if (scroll.x > 0)
         {
-            camera.data().position += camera.data().right * moveSpeed * deltaTime * 10.0f;
+            camera.position += camera.right * moveSpeed * deltaTime * 10.0f;
         }
         else if (scroll.x < 0)
         {
-            camera.data().position -= camera.data().right * moveSpeed * deltaTime * 10.0f;
+            camera.position -= camera.right * moveSpeed * deltaTime * 10.0f;
         }
     }
     else
@@ -78,23 +78,23 @@ void UVK::EditorPawn::move(float deltaTime)
 
 void UVK::EditorPawn::moveMouse()
 {
-    if (UVK::Input::getAction("editor-move").state == Keys::KeyPressed || UVK::Input::getAction("editor-move").state == Keys::KeyRepeat)
+    if (UVK::Input::getAction("editor-move") == Keys::KeyPressed || UVK::Input::getAction("editor-move") == Keys::KeyRepeat)
     {
         auto change = Input::getMousePositionChange();
         change.x *= turnSpeed; //* deltaTime;
         change.y *= turnSpeed; //* deltaTime;
 
-        camera.data().rotation.x += change.x;
-        camera.data().rotation.y += change.y;
+        camera.rotation.x += change.x;
+        camera.rotation.y += change.y;
 
-        if (camera.data().rotation.y > 89.9f)
+        if (camera.rotation.y > 89.9f)
         {
-            camera.data().rotation.y = 89.9f;
+            camera.rotation.y = 89.9f;
         }
 
-        if (camera.data().rotation.y < -89.9f)
+        if (camera.rotation.y < -89.9f)
         {
-            camera.data().rotation.y = -89.9f;
+            camera.rotation.y = -89.9f;
         }
     }
 

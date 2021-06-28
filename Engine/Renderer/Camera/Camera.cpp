@@ -10,64 +10,58 @@ UVK::Camera::Camera(UVK::FVector position, UVK::FVector up, UVK::FVector rot)
 
 void UVK::Camera::init(UVK::FVector pos, UVK::FVector upP, UVK::FVector rot)
 {
-    res.position = pos;
-    res.worldUp = upP;
-    res.rotation = rot;
-    res.front = FVector(0.0f, 0.0f, -1.0f);
-
+    position = pos;
+    worldUp = upP;
+    rotation = rot;
+    front = FVector(0.0f, 0.0f, -1.0f);
     recalculate();
-}
-
-UVK::CameraResources& UVK::Camera::data()
-{
-    return res;
 }
 
 glm::mat4 UVK::Camera::calculateViewMatrixRH() const
 {
     if (rendererResources.bUsesVulkan)
     {
-        return glm::lookAtRH(FVector(res.position.x, -res.position.y, res.position.z), FVector(res.position.x, -res.position.y, res.position.z) + FVector(res.front.x, -res.front.y, res.front.z), FVector(res.up.x, -res.up.y, res.up.z));
+        return glm::lookAtRH(FVector(position.x, -position.y, position.z), FVector(position.x, -position.y, position.z) + FVector(front.x, -front.y, front.z), FVector(up.x, -up.y, up.z));
     }
 
-    return glm::lookAtRH(res.position, res.position + res.front, res.up);
+    return glm::lookAtRH(position, position + front, up);
 }
 
 glm::mat4 UVK::Camera::calculateViewMatrixLH() const
 {
     if (rendererResources.bUsesVulkan)
     {
-        return glm::lookAtLH(FVector(res.position.x, -res.position.y, res.position.z), FVector(res.position.x, -res.position.y, res.position.z) + FVector(res.front.x, -res.front.y, res.front.z), FVector(res.up.x, -res.up.y, res.up.z));
+        return glm::lookAtLH(FVector(position.x, -position.y, position.z), FVector(position.x, -position.y, position.z) + FVector(front.x, -front.y, front.z), FVector(up.x, -up.y, up.z));
     }
 
-    return glm::lookAtLH(res.position, res.position + res.front, res.up);
+    return glm::lookAtLH(position, position + front, up);
 }
 
 void UVK::Camera::recalculate()
 {
     if (rendererResources.bUsesVulkan)
     {
-        res.front.x = glm::cos(glm::radians(res.rotation.x)) * glm::cos(glm::radians(-res.rotation.y));
-        res.front.y = glm::sin(glm::radians(-res.rotation.y));
-        res.front.z = glm::sin(glm::radians(res.rotation.x)) * glm::cos(glm::radians(-res.rotation.y));
-        res.front = glm::normalize(FVector(res.front.x, -res.front.y, res.front.z));
+        front.x = glm::cos(glm::radians(rotation.x)) * glm::cos(glm::radians(-rotation.y));
+        front.y = glm::sin(glm::radians(-rotation.y));
+        front.z = glm::sin(glm::radians(rotation.x)) * glm::cos(glm::radians(-rotation.y));
+        front = glm::normalize(FVector(front.x, -front.y, front.z));
 
-        res.right = glm::normalize(glm::cross(FVector(res.front.x, -res.front.y, res.front.z), FVector(res.worldUp.x, -res.worldUp.y, res.worldUp.z)));
-        res.up = glm::normalize(glm::cross(FVector(res.right.x, -res.right.y, res.right.z), FVector(res.front.x, -res.front.y, res.front.z)));
+        right = glm::normalize(glm::cross(FVector(front.x, -front.y, front.z), FVector(worldUp.x, -worldUp.y, worldUp.z)));
+        up = glm::normalize(glm::cross(FVector(right.x, -right.y, right.z), FVector(front.x, -front.y, front.z)));
     }
     else
     {
-        res.front.x = glm::cos(glm::radians(res.rotation.x)) * glm::cos(glm::radians(res.rotation.y));
-        res.front.y = glm::sin(glm::radians(res.rotation.y));
-        res.front.z = glm::sin(glm::radians(res.rotation.x)) * glm::cos(glm::radians(res.rotation.y));
-        res.front = glm::normalize(res.front);
+        front.x = glm::cos(glm::radians(rotation.x)) * glm::cos(glm::radians(rotation.y));
+        front.y = glm::sin(glm::radians(rotation.y));
+        front.z = glm::sin(glm::radians(rotation.x)) * glm::cos(glm::radians(rotation.y));
+        front = glm::normalize(front);
 
-        res.right = glm::normalize(glm::cross(res.front, res.worldUp));
-        res.up = glm::normalize(glm::cross(res.right, res.front));
+        right = glm::normalize(glm::cross(front, worldUp));
+        up = glm::normalize(glm::cross(right, front));
     }
 }
 
 UVK::Projection& UVK::Camera::getProjection()
 {
-    return res.projection;
+    return projection;
 }

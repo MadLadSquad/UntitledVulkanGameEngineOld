@@ -27,27 +27,27 @@ void EditorViewport::display(UVK::GLFrameBuffer& fb, int& viewportWidth, int& vi
     bool snap;
     float snapVal = 0.05f;
 
-    if (UVK::Input::getAction("editor-gizmos").state == Keys::KeyPressed || UVK::Input::getAction("editor-gizmos").state == Keys::KeyRepeat)
+    if (UVK::Input::getAction("editor-gizmos") == Keys::KeyPressed || UVK::Input::getAction("editor-gizmos") == Keys::KeyRepeat)
     {
-        if (UVK::Input::getAction("editor-gizmo-none").state == Keys::KeyPressed || UVK::Input::getAction("editor-gizmo-none").state == Keys::KeyRepeat)
+        if (UVK::Input::getAction("editor-gizmo-none") == Keys::KeyPressed || UVK::Input::getAction("editor-gizmo-none") == Keys::KeyRepeat)
         {
             operationType = -1;
         }
-        else if (UVK::Input::getAction("editor-gizmo-translate").state == Keys::KeyPressed || UVK::Input::getAction("editor-gizmo-translate").state == Keys::KeyRepeat)
+        else if (UVK::Input::getAction("editor-gizmo-translate") == Keys::KeyPressed || UVK::Input::getAction("editor-gizmo-translate") == Keys::KeyRepeat)
         {
             operationType = ImGuizmo::TRANSLATE;
         }
-        else if (UVK::Input::getAction("editor-gizmo-rotate").state == Keys::KeyPressed || UVK::Input::getAction("editor-gizmo-rotate").state == Keys::KeyRepeat)
+        else if (UVK::Input::getAction("editor-gizmo-rotate") == Keys::KeyPressed || UVK::Input::getAction("editor-gizmo-rotate") == Keys::KeyRepeat)
         {
             operationType = ImGuizmo::ROTATE;
         }
-        else if (UVK::Input::getAction("editor-gizmo-scale").state == Keys::KeyPressed || UVK::Input::getAction("editor-gizmo-scale").state == Keys::KeyRepeat)
+        else if (UVK::Input::getAction("editor-gizmo-scale") == Keys::KeyPressed || UVK::Input::getAction("editor-gizmo-scale") == Keys::KeyRepeat)
         {
             operationType = ImGuizmo::SCALE;
         }
     }
 
-    snap = UVK::Input::getAction("editor-gizmo-snap").state == Keys::KeyPressed;
+    snap = UVK::Input::getAction("editor-gizmo-snap") == Keys::KeyPressed;
 
     switch (operationType)
     {

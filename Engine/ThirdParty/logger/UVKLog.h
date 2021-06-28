@@ -65,6 +65,11 @@ class UVKLog
 public:
     UVKLog() = default;
 
+    void setCrashOnError(bool bErr)
+    {
+        bErroring = bErr;
+    }
+
     void setLogFileLocation(const char* file)
     {
         fileout = std::ofstream(file);
@@ -94,6 +99,12 @@ public:
             fileout << "[" << getCurrentTime() << "] Error: " << message;
             (fileout << ... << argv);
             fileout << std::endl;
+
+            if (bErroring)
+            {
+                std::cin.get();
+                throw std::runtime_error(" ");
+            }
             break;
         case UVK_LOG_TYPE_NOTE:
             std::cout << LogColBlue << "[" << getCurrentTime() << "] Note: " << message;
@@ -142,6 +153,11 @@ public:
             (std::cout << ... << argv);
             std::cout << LogColNull << std::endl;
 
+            if (bErroring)
+            {
+                std::cin.get();
+                throw std::runtime_error(" ");
+            }
             break;
         case UVK_LOG_TYPE_NOTE:
             std::cout << LogColBlue << "[" << getCurrentTime() << "] Note: " << message;
@@ -181,6 +197,11 @@ public:
             (fileout << ... << argv);
             fileout << std::endl;
 
+            if (bErroring)
+            {
+                std::cin.get();
+                throw std::runtime_error("[" + getCurrentTime() + "] Error: " + message);
+            }
             break;
         case UVK_LOG_TYPE_NOTE:
             fileout << "[" << getCurrentTime() << "] Note: " << message;
@@ -219,8 +240,8 @@ private:
     }
 
     std::ofstream fileout;
+    bool bErroring = false;
 };
 
 // Yes I know global variables are bad but singletons are worse so I will not even bother
 inline UVKLog logger;
-

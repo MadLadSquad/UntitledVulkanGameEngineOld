@@ -19,8 +19,6 @@ namespace UVK
         {
 
         }
-
-
         void load();
         void loadImgui();
         void destroy();

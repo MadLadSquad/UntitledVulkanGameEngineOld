@@ -3,6 +3,7 @@
 #pragma once
 #include <any>
 #include "Generated/BuildDef.hpp"
+#include <logger/UVKLog.h>
 
 // This is for MinGW32 because it is retarded
 #ifndef __MINGW32__
@@ -17,5 +18,9 @@
 
 #endif
 
-// If this is not set to true iostream will do syncing with stdio which can slow down read speed by a lot
-#define ENABLE_FAST_IO(x) std::ios_base::sync_with_stdio(!x)
+#ifdef PRODUCTION
+    #define ENABLE_FAST_IO(x) std::ios_base::sync_with_stdio(!x); \
+    logger.setCrashOnError(true)
+#else
+    #define ENABLE_FAST_IO(x) std::ios_base::sync_with_stdio(!x)
+#endif

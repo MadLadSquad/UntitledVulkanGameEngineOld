@@ -12,6 +12,11 @@ namespace UVK
     struct InputAction
     {
         InputAction() = default;
+        bool operator==(uint16_t st) const
+        {
+            return state == st;
+        }
+
         std::string name{};
         uint16_t keyCode{};
         uint16_t state{};

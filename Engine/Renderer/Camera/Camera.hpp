@@ -5,18 +5,6 @@
 
 namespace UVK
 {
-    struct CameraResources
-    {
-        Projection projection;
-
-        FVector position{};
-        FVector front{};
-        FVector up{};
-        FVector right{};
-        FVector worldUp{};
-        FVector rotation{};
-    };
-
     /**
      * @brief A cross-renderer camera abstraction
      */
@@ -28,15 +16,20 @@ namespace UVK
 
         void init(FVector position, FVector up, FVector rot);
 
-        CameraResources& data();
-
         [[nodiscard]] glm::mat4 calculateViewMatrixRH() const;
         [[nodiscard]] glm::mat4 calculateViewMatrixLH() const;
 
         void recalculate();
 
         Projection& getProjection();
+
+        FVector position{};
+        FVector front{};
+        FVector up{};
+        FVector right{};
+        FVector worldUp{};
+        FVector rotation{};
     private:
-        CameraResources res;
+        Projection projection;
     };
 }
