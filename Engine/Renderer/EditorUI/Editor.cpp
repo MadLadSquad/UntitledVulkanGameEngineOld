@@ -1,9 +1,9 @@
 // Editor.cpp
-// Last update 19/6/2021 by Madman10K
+// Last update 30/6/2021 by Madman10K
 #include <GL/glew.h>
+#include "Editor.hpp"
 #include "../../GameFramework/GameplayClasses/Level/Level.hpp"
 #include "Widgets/SceneHierarchy.hpp"
-#include "Editor.hpp"
 #include "Widgets/DetailsPanel.hpp"
 #include "Widgets/SaveLevel.hpp"
 #include "Widgets/TopToolbar.hpp"
@@ -22,7 +22,8 @@
 #include "Widgets/RemoveFile.hpp"
 #include "Widgets/Ship.hpp"
 #include "../Window/Window.hpp"
-#include <Renderer/RendererResources.hpp>
+#include <Engine/Core/Core/Global.hpp>
+#include <Renderer/OpenGL/Components/GLShader.hpp>
 
 void UVK::Editor::initEditor()
 {
@@ -108,7 +109,7 @@ void UVK::Editor::initEditor()
         io.Fonts->Build();
     }
 #endif
-    ImGui_ImplGlfw_InitForOpenGL(currentWindow.getWindow(), true);
+    ImGui_ImplGlfw_InitForOpenGL(global.window.getWindow(), true);
     ImGui_ImplOpenGL3_Init("#version 450");
 #endif
     tm.stopRecording();
@@ -235,7 +236,7 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
 
             if (ImGui::Button("Exit"))
             {
-                glfwSetWindowShouldClose(currentWindow.getWindow(), GL_TRUE);
+                glfwSetWindowShouldClose(global.window.getWindow(), GL_TRUE);
             }
             ImGui::EndMenu();
         }
@@ -370,7 +371,7 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
 
     if (bShowWorldSettings)
     {
-        WorldSettings::display(colour, rendererResources.ambientLight, levelName, bShowWorldSettings);
+        WorldSettings::display(colour, global.ambientLight, levelName, bShowWorldSettings);
     }
 
     if (bShowAboutUs)
@@ -415,5 +416,5 @@ void UVK::Editor::destroyContext()
     ImPlot::DestroyContext();
 #endif
     //ImTTY::Terminal.DestroyContext();
-    currentWindow.destroyWindow();
+    global.window.destroyWindow();
 }

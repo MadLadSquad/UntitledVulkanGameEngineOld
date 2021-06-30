@@ -1,5 +1,5 @@
 // Engine.hpp
-// Last update 9/6/2021 by Madman10K
+// Last update 30/6/2021 by Madman10K
 
 // A header file containing every include you would want from the engine
 #pragma once
@@ -16,5 +16,4 @@
 #include "Engine/Audio/Audio.hpp"
 #include "Core/Events/Events.hpp"
 #include "GameFramework/Actors/ActorManager.hpp"
-#include "Core/Core/Registry.hpp"
-#include "Renderer/RendererResources.hpp"
+#include "Engine/Core/Core/Global.hpp"

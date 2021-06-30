@@ -1,10 +1,11 @@
 // ScriptableObject.hpp
-// Last update 3/6/2021 by Madman10K
+// Last update 30/6/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 
 namespace UVK
 {
+    class Actor;
     /**
      * @brief A simple class to add additional functionality based on an actor in the scene
      */

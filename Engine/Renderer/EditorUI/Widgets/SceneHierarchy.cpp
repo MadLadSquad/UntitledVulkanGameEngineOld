@@ -1,25 +1,33 @@
 // SceneHierarchy.cpp
-// Last update 26/6/2021 by Madman10K
+// Last update 30/6/2021 by Madman10K
+#include <GL/glew.h>
 #include "SceneHierarchy.hpp"
+#include <Core/Actor.hpp>
 #include <GameFramework/Actors/ActorManager.hpp>
 #include <Core/Events/Events.hpp>
+#include <GameFramework/Components/Components.hpp>
 
-
-void SceneHierarchy::destroyEntity(entt::entity& selectedEntity)
+void SceneHierarchy::destroyEntity(UVK::Actor& selectedEntity)
 {
-    UVK::Registry::destroyActor(selectedEntity);
+    selectedEntity.destroy();
 }
 
 void SceneHierarchy::addEntity(int& entNum)
 {
-    registry.createActor(static_cast<std::string>("NewEntity" + std::to_string(entNum)).c_str());
+    //registry.createActor(static_cast<std::string>("NewEntity" + std::to_string(entNum)).c_str());
+    //UVK::Actor actor(static_cast<std::string>("NewEntity" + std::to_string(entNum)), 0, "a");
+    auto a = UVK::global.ecs.data().create();
+    auto& b = UVK::global.ecs.data().emplace<UVK::CoreComponent>(a);
+    b.name = "NewEntity" + std::to_string(entNum);
+    b.id = 0;
+    b.devName = "a";
 
     entNum++;
 }
 
 #ifndef PRODUCTION
 
-void SceneHierarchy::display(entt::entity &selectedEntity, std::string &entAppend, int &entNum, bool& bShow)
+void SceneHierarchy::display(UVK::Actor& selectedEntity, std::string &entAppend, int &entNum, bool& bShow)
 {
     bool bDestroy = false;
 
@@ -35,22 +43,19 @@ void SceneHierarchy::display(entt::entity &selectedEntity, std::string &entAppen
     ImGui::EndMenuBar();
 
     // to be fixed immediately because it's a big performance drain
-    pool.each([&](entt::entity ent)
+    UVK::global.ecs.data().each([&](entt::entity ent)
     {
-        auto& a = registry.getComponent<UVK::CoreComponent>(ent);
+        auto& a = UVK::global.ecs.data().get<UVK::CoreComponent>(ent);
 
         if (ImGui::Selectable(static_cast<std::string>(a.name + ", " + std::to_string(a.id)).c_str()))
         {
-            selectedEntity = ent;
+            selectedEntity.data() = ent;
         }
     });
 
-    if (bDestroy)
+    if (bDestroy && UVK::global.ecs.data().valid(selectedEntity.data()))
     {
-        if (pool.valid(selectedEntity))
-        {
-            destroyEntity(selectedEntity);
-        }
+        destroyEntity(selectedEntity);
     }
 
     ImGui::End();

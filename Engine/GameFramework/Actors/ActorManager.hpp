@@ -1,11 +1,12 @@
 // ActorManager.hpp
-// Last update 5/6/2021 by Madman10K
+// Last update 30/6/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
-#include "ScriptableObject.hpp"
 
 namespace UVK
 {
+    class ScriptableObject;
+
     /**
      * @brief The actor manager is a simple data structure holding a set of actors allowing for native
      * scripting. The only member function called `init` is called when the engine starts up
@@ -22,5 +23,3 @@ namespace UVK
         std::set<ScriptableObject*> a;
     };
 }
-
-inline UVK::ActorManager actorManager;

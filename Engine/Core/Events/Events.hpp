@@ -1,11 +1,11 @@
 // Events.hpp
-// Last update 7/6/2021 by Madman10K
+// Last update 30/6/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
-#include "../../GameFramework/Actors/ScriptableObject.hpp"
 
 namespace UVK
 {
+    class ScriptableObject;
     /**
      * @brief A class to handle calling of events of scriptable objects
      */
@@ -18,6 +18,8 @@ namespace UVK
 
         void clear();
         void add(ScriptableObject* sco);
+
+        std::vector<ScriptableObject*>& data();
     private:
         std::vector<ScriptableObject*> objList;
     };

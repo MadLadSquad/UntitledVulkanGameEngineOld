@@ -1,5 +1,5 @@
 // Types.hpp
-// Last update 21/6/2021 by Madman10K
+// Last update 30/6/2021 by Madman10K
 #define GLM_FORCE_DEPTH_ZERO_TO_ONE
 #include <vector>
 #include <glm/glm.hpp>
@@ -19,8 +19,6 @@ namespace UVK
 	typedef glm::vec2 FVector2;
 	// Entity Pool owns and manages all the entities
 	typedef entt::registry EntityPool;
-	// Entity
-	typedef entt::entity Actor;
 	// String
 	using String = const char*;
 

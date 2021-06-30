@@ -1,5 +1,5 @@
 // Window.hpp
-// Last update 26/6/2021 by Madman10K
+// Last update 30/6/2021 by Madman10K
 #pragma once
 #include <GL/glew.h>
 #include "../Textures/Texture.hpp"
@@ -100,7 +100,7 @@ namespace UVK
     };
 }
 
-inline UVK::Window currentWindow{};
+//inline UVK::Window currentWindow{};
 
 namespace UVK
 {

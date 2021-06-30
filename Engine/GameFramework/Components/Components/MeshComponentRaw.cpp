@@ -1,8 +1,8 @@
 // MeshComponentRaw.cpp
-// Last update 26/6/2021 by Madman10K
+// Last update 30/6/2021 by Madman10K
 #include <GL/glew.h>
 #include "MeshComponentRaw.hpp"
-#include <Renderer/RendererResources.hpp>
+#include <Engine/Core/Core/Global.hpp>
 
 void UVK::MeshComponentRaw::createMesh(GLfloat* vertices, uint32_t* indices, uint32_t vertexNum, uint32_t indexNum, UVK::String vertexShader, UVK::String fragmentShader, ShaderImportType type)
 {
@@ -51,7 +51,7 @@ void UVK::MeshComponentRaw::render(glm::mat4& projection, Camera& camera)
     Math::translate(mat, translation);
     Math::rotate(mat, rotation);
     Math::scale(mat, scale);
-    if (!rendererResources.bUsesVulkan)
+    if (!global.bUsesVulkan)
     {
         glUniformMatrix4fv((int)uniformModel, 1, GL_FALSE, glm::value_ptr(mat));
         glUniformMatrix4fv((int)uniformProjection, 1, GL_FALSE, glm::value_ptr(projection));

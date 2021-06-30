@@ -1,5 +1,5 @@
 // EditorPawn.cpp
-// Last update 15/6/2021 by Madman10K
+// Last update 30/6/2021 by Madman10K
 #include "EditorPawn.hpp"
 
 #ifndef PRODUCTION
@@ -23,7 +23,7 @@ void UVK::EditorPawn::move(float deltaTime)
 {
     if (UVK::Input::getAction("editor-move") == Keys::KeyPressed || UVK::Input::getAction("editor-move") == Keys::KeyRepeat)
     {
-        currentWindow.setCursorVisibility(false);
+        global.window.setCursorVisibility(false);
 
         if (UVK::Input::getAction("editor-move-forward") == Keys::KeyPressed || UVK::Input::getAction("editor-move-forward") == Keys::KeyRepeat)
         {
@@ -72,7 +72,7 @@ void UVK::EditorPawn::move(float deltaTime)
     }
     else
     {
-        currentWindow.setCursorVisibility(true);
+        global.window.setCursorVisibility(true);
     }
 }
 

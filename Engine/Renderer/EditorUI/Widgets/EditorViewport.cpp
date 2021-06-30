@@ -1,11 +1,14 @@
 // EditorViewport.cpp
-// Last update 19/6/2021 by Madman10K
+// Last update 30/6/2021 by Madman10K
 #include <GL/glew.h>
+#include <Engine/Core/Core/Global.hpp>
 #include <Renderer/Window/Window.hpp>
 #include "EditorViewport.hpp"
 #include <imgui.h>
 #include <imguiex/imguizmo/ImGuizmo.h>
-#include <Core/Registry.hpp>
+#include <Core/Actor.hpp>
+#include <GameFramework/Components/Components.hpp>
+
 #ifndef PRODUCTION
 void EditorViewport::display(UVK::GLFrameBuffer& fb, int& viewportWidth, int& viewportHeight, bool& bShow, UVK::Camera& camera, UVK::Actor& entity, glm::mat4& projection)
 {
@@ -64,9 +67,9 @@ void EditorViewport::display(UVK::GLFrameBuffer& fb, int& viewportWidth, int& vi
         break;
     }
 
-    if (registry.hasComponent<UVK::MeshComponentRaw>(entity) && operationType != -1)
+    if (entity.has<UVK::MeshComponentRaw>() && operationType != -1)
     {
-        auto& a = registry.getComponent<UVK::MeshComponentRaw>(entity);
+        auto& a = entity.get<UVK::MeshComponentRaw>();
 
         const float snapValues[3] = { snapVal, snapVal, snapVal };
         UVK::FVector translation, rotation, scale, deltaRotation;
@@ -89,13 +92,13 @@ void EditorViewport::display(UVK::GLFrameBuffer& fb, int& viewportWidth, int& vi
             a.scale = scale;
         }
     }
-    else if (registry.hasComponent<UVK::MeshComponent>(entity) && operationType != -1)
+    else if (entity.has<UVK::MeshComponent>() && operationType != -1)
     {
         //todo add the functionality for a regular mesh component
     }
-    else if (registry.hasComponent<UVK::AudioComponent>(entity) && operationType != -1)
+    else if (entity.has<UVK::AudioComponent>() && operationType != -1)
     {
-        auto& a = registry.getComponent<UVK::AudioComponent>(entity);
+        auto& a = entity.get<UVK::AudioComponent>();
 
         ImGuizmo::SetOrthographic(false);
         ImGuizmo::SetDrawlist();

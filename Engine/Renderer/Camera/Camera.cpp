@@ -1,7 +1,8 @@
 // Camera.cpp
-// Last update 19/6/2021 by Madman10K
+// Last update 30/6/2021 by Madman10K
+#include <GL/glew.h>
 #include "Camera.hpp"
-#include <Renderer/RendererResources.hpp>
+#include <Engine/Core/Core/Global.hpp>
 
 UVK::Camera::Camera(UVK::FVector position, UVK::FVector up, UVK::FVector rot)
 {
@@ -19,7 +20,7 @@ void UVK::Camera::init(UVK::FVector pos, UVK::FVector upP, UVK::FVector rot)
 
 glm::mat4 UVK::Camera::calculateViewMatrixRH() const
 {
-    if (rendererResources.bUsesVulkan)
+    if (global.bUsesVulkan)
     {
         return glm::lookAtRH(FVector(position.x, -position.y, position.z), FVector(position.x, -position.y, position.z) + FVector(front.x, -front.y, front.z), FVector(up.x, -up.y, up.z));
     }
@@ -29,7 +30,7 @@ glm::mat4 UVK::Camera::calculateViewMatrixRH() const
 
 glm::mat4 UVK::Camera::calculateViewMatrixLH() const
 {
-    if (rendererResources.bUsesVulkan)
+    if (global.bUsesVulkan)
     {
         return glm::lookAtLH(FVector(position.x, -position.y, position.z), FVector(position.x, -position.y, position.z) + FVector(front.x, -front.y, front.z), FVector(up.x, -up.y, up.z));
     }
@@ -39,7 +40,7 @@ glm::mat4 UVK::Camera::calculateViewMatrixLH() const
 
 void UVK::Camera::recalculate()
 {
-    if (rendererResources.bUsesVulkan)
+    if (global.bUsesVulkan)
     {
         front.x = glm::cos(glm::radians(rotation.x)) * glm::cos(glm::radians(-rotation.y));
         front.y = glm::sin(glm::radians(-rotation.y));

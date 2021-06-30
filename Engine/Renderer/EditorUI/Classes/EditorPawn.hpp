@@ -1,7 +1,8 @@
 // EditorPawn.hpp
-// Last update 15/6/2021 by Madman10K
+// Last update 30/6/2021 by Madman10K
 #pragma once
 #include <GL/glew.h>
+#include <Engine/Core/Core/Global.hpp>
 #include <GameFramework/Actors/APawn.hpp>
 #include <Renderer/Window/Window.hpp>
 
@@ -16,7 +17,7 @@ namespace UVK
             camera = Camera(FVector(0.0f, 0.0f, 0.0f), FVector(0.0f, 1.0f, 0.0f), FVector(0.0f, 0.0f, 0.0f));
             camera.getProjection().getPlanes() = FVector2(0.1f, 100.0f);
             camera.getProjection().getFOV() = 90.0f;
-            camera.getProjection().getAspectRatio() = (GLfloat)currentWindow.getBufferWidth() / (GLfloat)currentWindow.getBufferHeight();
+            camera.getProjection().getAspectRatio() = (GLfloat)global.window.getBufferWidth() / (GLfloat)global.window.getBufferHeight();
             camera.getProjection().recalculateRH();
 
             name = "Editor Pawn";

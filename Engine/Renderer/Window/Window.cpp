@@ -1,6 +1,7 @@
 // Window.cpp
-// Last update 26/6/2021 by Madman10K
+// Last update 30/6/2021 by Madman10K
 #include "Window.hpp"
+#include <Engine/Core/Core/Global.hpp>
 
 double UVK::Window::getYMousePositionChange()
 {
@@ -320,22 +321,22 @@ int UVK::Window::getBufferHeight() const
 
 UVK::FVector2 UVK::Input::getLastMousePosition()
 {
-    return currentWindow.getLastMousePosition();
+    return global.window.getLastMousePosition();
 }
 
 UVK::FVector2 UVK::Input::getCurrentMousePosition()
 {
-    return currentWindow.getCurrentMousePosition();
+    return global.window.getCurrentMousePosition();
 }
 
 UVK::FVector2 UVK::Input::getMousePositionChange()
 {
-    return currentWindow.getMousePositionChange();
+    return global.window.getMousePositionChange();
 }
 
 UVK::FVector2 UVK::Input::getScroll()
 {
-    return currentWindow.getScroll();
+    return global.window.getScroll();
 }
 
 const UVK::InputAction& UVK::Input::getAction(const std::string& name)
@@ -353,5 +354,5 @@ const UVK::InputAction& UVK::Input::getAction(const std::string& name)
 
 uint16_t UVK::Input::getKey(uint16_t key)
 {
-    return currentWindow.getKeys()[key];
+    return global.window.getKeys()[key];
 }

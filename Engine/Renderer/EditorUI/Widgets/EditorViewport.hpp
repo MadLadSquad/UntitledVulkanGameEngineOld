@@ -1,10 +1,15 @@
 // EditorViewport.hpp
-// Last update 19/6/2021 by Madman10K
+// Last update 30/6/2021 by Madman10K
 #pragma once
 #include "Engine/Renderer/OpenGL/Components/GLFrameBuffer.hpp"
 #include "Engine/Renderer/Camera/Camera.hpp"
 
+
 #ifndef PRODUCTION
+namespace UVK
+{
+    class Actor;
+}
 /**
  * @brief Displays the editor viewport is a widget containing a framebuffer
  */

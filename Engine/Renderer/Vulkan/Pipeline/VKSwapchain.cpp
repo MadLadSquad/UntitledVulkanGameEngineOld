@@ -1,8 +1,9 @@
 // VKSwapchain.cpp
-// Last update 28/5/2021 by Madman10K
+// Last update 30/6/2021 by Madman10K
 #ifndef __APPLE__
 #include <GL/glew.h>
 #define GLFW_INCLUDE_VULKAN
+#include <Engine/Core/Core/Global.hpp>
 #include <Core.hpp>
 #include <GLFW/glfw3.h>
 #include "VKSwapchain.hpp"
@@ -12,7 +13,7 @@
 
 void UVK::VKSwapchain::createSurface()
 {
-    auto result = glfwCreateWindowSurface(instance->getData(), currentWindow.getWindow(), nullptr, &surface);
+    auto result = glfwCreateWindowSurface(instance->getData(), global.window.getWindow(), nullptr, &surface);
     if (result != VK_SUCCESS)
     {
         logger.consoleLog("Couldn't create a Vulkan surface!", UVK_LOG_TYPE_ERROR);

@@ -1,19 +1,21 @@
 // GLEntityManager.hpp
-// Last update 19/6/2021 by Madman10K
-#include <Core/Registry.hpp>
+// Last update 30/6/2021 by Madman10K
+#include <GL/glew.h>
+#include <Core/Actor.hpp>
 #include "GLEntityManager.hpp"
+#include <GameFramework/Components/Components.hpp>
 
 void UVK::GLEntityManager::tick(Camera* camera)
 {
-    pool.each([&](entt::entity ent)
+    global.ecs.data().each([&](entt::entity ent)
     {
-        if (registry.hasComponent<AudioComponent>(ent))
+        if (global.ecs.data().has<AudioComponent>(ent))
         {
 #ifndef __MINGW32__
             bool bRemove = false;
 
             {
-                auto& audiocmp = registry.getComponent<AudioComponent>(ent);
+                auto& audiocmp = global.ecs.data().get<AudioComponent>(ent);
 
                 auto& state = audiocmp.src.getState();
 
@@ -34,14 +36,14 @@ void UVK::GLEntityManager::tick(Camera* camera)
 
             if (bRemove)
             {
-                registry.removeComponent<AudioComponent>(ent);
+                global.ecs.data().remove<AudioComponent>(ent);
             }
 #endif
         }
 
-        if (registry.hasComponent<MeshComponentRaw>(ent))
+        if (global.ecs.data().has<MeshComponentRaw>(ent))
         {
-            auto& a = registry.getComponent<MeshComponentRaw>(ent);
+            auto& a = global.ecs.data().get<MeshComponentRaw>(ent);
             a.render(camera->getProjection().data(), *camera);
         }
     });
@@ -49,24 +51,24 @@ void UVK::GLEntityManager::tick(Camera* camera)
 
 void UVK::GLEntityManager::clean()
 {
-    pool.each([&](entt::entity ent)
+    global.ecs.each([&](entt::entity ent)
     {
-        if (registry.hasComponent<MeshComponentRaw>(ent))
+        if (global.ecs.data().has<MeshComponentRaw>(ent))
         {
-            auto& a = registry.getComponent<MeshComponentRaw>(ent);
+            auto& a = global.ecs.data().get<MeshComponentRaw>(ent);
 
             a.clearMesh();
         }
 
-        if (registry.hasComponent<AudioComponent>(ent))
+        if (global.ecs.data().has<AudioComponent>(ent))
         {
 #ifndef __MINGW32__
-            auto& a = registry.getComponent<AudioComponent>(ent);
+            auto& a = global.ecs.data().get<AudioComponent>(ent);
 
             a.src.getBuffer().removeSound();
 #endif
         }
     });
 
-    pool.clear();
+    global.ecs.clear();
 }

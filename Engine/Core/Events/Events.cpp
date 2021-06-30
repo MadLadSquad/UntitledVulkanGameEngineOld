@@ -1,6 +1,8 @@
 // Events.cpp
-// Last update 9/6/2021 by Madman10K
+// Last update 30/6/2021 by Madman10K
+#include <GL/glew.h>
 #include "Events.hpp"
+#include <GameFramework/Actors/ScriptableObject.hpp>
 
 void UVK::Events::add(ScriptableObject* sco)
 {
@@ -34,4 +36,9 @@ void UVK::Events::callEnd()
     {
         a->endPlay();
     }
+}
+
+std::vector<UVK::ScriptableObject*>& UVK::Events::data()
+{
+    return objList;
 }

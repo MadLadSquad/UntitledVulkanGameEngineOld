@@ -1,5 +1,5 @@
 // Level.hpp
-// Last update 13/6/2021 by Madman10K
+// Last update 30/6/2021 by Madman10K
 #include <Core.hpp>
 #include "../GameMode.hpp"
 #include "../GameInstance.hpp"
@@ -73,6 +73,6 @@ namespace UVK
          * @param out a YAML::Emitter reference to the emitter
          * @param act actor to be saved
          */
-        static void saveEntity(YAML::Emitter& out, Actor act);
+        static void saveEntity(YAML::Emitter& out, entt::entity act);
     };
 }

@@ -1,8 +1,9 @@
 // VulkanRenderer.cpp
-// Last update 27/5/2021 by Madman10K
+// Last update 30/6/2021 by Madman10K
 #ifndef __APPLE__
 #define GLFW_INCLUDE_VULKAN
-#include <Renderer/Window/Window.hpp>
+#include <GL/glew.h>
+#include <Engine/Core/Core/Global.hpp>
 #include "VulkanRenderer.hpp"
 #include "Components/VKFramebuffer.hpp"
 #include "Components/VKMesh.hpp"
@@ -10,7 +11,7 @@
 
 void UVK::VulkanRenderer::start()
 {
-    currentWindow.createWindow();
+    global.window.createWindow();
 
     pipeline.begin();
 }
@@ -32,7 +33,7 @@ void UVK::VulkanRenderer::run()
     float deltaTime;
     float lastTime = 0;
 
-    while (!glfwWindowShouldClose(currentWindow.getWindow()))
+    while (!glfwWindowShouldClose(global.window.getWindow()))
     {
         glfwPollEvents();
 

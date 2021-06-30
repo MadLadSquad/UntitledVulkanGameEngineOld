@@ -1,7 +1,8 @@
 // NewLevel.cpp
-// Last update 15/6/2021 by Madman10K
+// Last update 30/6/2021 by Madman10K
+#include <GL/glew.h>
 #include "NewLevel.hpp"
-#include "Core/Registry.hpp"
+#include "Core/Actor.hpp"
 
 #ifndef PRODUCTION
 void NewLevel::display(bool &bShow)
@@ -20,7 +21,7 @@ void NewLevel::display(bool &bShow)
 
     if (ImGui::Button("Create##new level"))
     {
-        pool.clear();
+        UVK::global.ecs.clear();
         bShow = false;
     }
     ImGui::End();

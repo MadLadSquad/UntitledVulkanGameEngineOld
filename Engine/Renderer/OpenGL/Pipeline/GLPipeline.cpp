@@ -1,12 +1,9 @@
 // GLPipeline.cpp
-// Last update 26/6/2021 by Madman10K
+// Last update 30/6/2021 by Madman10K
 #include <GL/glew.h>
 #include <Events/Events.hpp>
 #include <Renderer/EditorUI/Classes/EditorLevel.hpp>
 #include <Renderer/OpenGL/Pipeline/GLEntityManager.hpp>
-#include <Renderer/Window/Window.hpp>
-#include <Renderer/RendererResources.hpp>
-#include <Core/Registry.hpp>
 #include "GLPipeline.hpp"
 
 
@@ -15,7 +12,7 @@ void UVK::GLPipeline::begin(bool bHasEditor, Level* lvl)
     level = lvl;
     bEditor = bHasEditor;
 
-    currentWindow.createWindow();
+    global.window.createWindow();
 
     if (!bEditor)
     {
@@ -27,11 +24,7 @@ void UVK::GLPipeline::begin(bool bHasEditor, Level* lvl)
         auto* lv = new UVK::EditorLevel;
         level = lv;
 
-        auto a = pool.create();
-        auto& cmp = pool.emplace<UVK::CoreComponent>(a);
-        cmp.name = "Editor Pawn";
-        cmp.id = 330;
-        cmp.devName = "EditorPawn";
+        Actor a("Editor Pawn", 330, "EditorPawn");
         level->gameMode->pawn->beginPlay();
 #ifdef DEVELOPMENT
         tx = Texture("../Content/Engine/brick.jpg");
@@ -56,7 +49,7 @@ void UVK::GLPipeline::tick()
         fb.useFramebuffer();
         glEnable(GL_DEPTH_TEST);
 
-        glClearColor(rendererResources.colour.x, rendererResources.colour.y, rendererResources.colour.z, rendererResources.colour.w);
+        glClearColor(global.colour.x, global.colour.y, global.colour.z, global.colour.w);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
         UVK::Editor::beginFrame();
@@ -67,7 +60,7 @@ void UVK::GLPipeline::tick()
     }
     else
     {
-        glClearColor(rendererResources.colour.x, rendererResources.colour.y, rendererResources.colour.z, rendererResources.colour.w);
+        glClearColor(global.colour.x, global.colour.y, global.colour.z, global.colour.w);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     }
 
@@ -83,7 +76,7 @@ void UVK::GLPipeline::tick()
         glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        ed.runEditor(rendererResources.colour, fb, level->gameMode->pawn->camera, level);
+        ed.runEditor(global.colour, fb, level->gameMode->pawn->camera, level);
 #endif
     }
     else
@@ -92,7 +85,7 @@ void UVK::GLPipeline::tick()
         events.callTick(deltaTime);
     }
 
-    glfwSwapBuffers(currentWindow.getWindow());
+    glfwSwapBuffers(global.window.getWindow());
 }
 
 void UVK::GLPipeline::end()

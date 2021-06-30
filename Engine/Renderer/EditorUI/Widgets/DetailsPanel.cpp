@@ -1,11 +1,13 @@
 // DetailsPanel.cpp
-// Last update 15/6/2021 by Madman10K
+// Last update 30/6/2021 by Madman10K
 #include <GL/glew.h>
-#include <Core/Registry.hpp>
+#include <Core/Actor.hpp>
 #include <imgui.h>
 #include <cpp/imgui_stdlib.h>
 #include "DetailsPanel.hpp"
 #include <GameFramework/GameplayClasses/Level/Level.hpp>
+#include <GameFramework/Components/Components.hpp>
+
 #ifndef PRODUCTION
 void DetailsPanel::DrawVec3Control(const std::string &label, glm::vec3 &values, float resetValue, float columnWidth)
 {
@@ -75,7 +77,7 @@ void DetailsPanel::DrawVec3Control(const std::string &label, glm::vec3 &values, 
     ImGui::PopID();
 }
 
-void DetailsPanel::display(entt::entity& ent, UVK::Level* lvl, bool& bShow, bool& destroy)
+void DetailsPanel::display(UVK::Actor& ent, UVK::Level* lvl, bool& bShow, bool& destroy)
 {
     ImGui::Begin("Details", &bShow, ImGuiWindowFlags_MenuBar);
 
@@ -85,26 +87,25 @@ void DetailsPanel::display(entt::entity& ent, UVK::Level* lvl, bool& bShow, bool
     {
         if (ImGui::Button("Raw Mesh"))
         {
-            if (!registry.hasComponent<UVK::MeshComponentRaw>(ent))
+            if (!ent.has<UVK::MeshComponentRaw>())
             {
-                auto& a = registry.addComponent<UVK::MeshComponentRaw>(ent);
-
+                auto& a = ent.add<UVK::MeshComponentRaw>();
             }
         }
 
         if (ImGui::Button("Mesh"))
         {
-            if (!registry.hasComponent<UVK::MeshComponent>(ent))
+            if (!ent.has<UVK::MeshComponent>())
             {
-                auto& a = registry.addComponent<UVK::MeshComponent>(ent);
+                auto& a = ent.add<UVK::MeshComponent>();
             }
         }
 
         if (ImGui::Button("Audio"))
         {
-            if (!registry.hasComponent<UVK::AudioComponent>(ent))
+            if (!ent.has<UVK::AudioComponent>())
             {
-                auto& a = registry.addComponent<UVK::AudioComponent>(ent);
+                auto& a = ent.add<UVK::AudioComponent>();
 
                 UVK::AudioSourceData dt;
                 dt.location = "and.wav";
@@ -125,25 +126,25 @@ void DetailsPanel::display(entt::entity& ent, UVK::Level* lvl, bool& bShow, bool
     {
         if (ImGui::Button("Raw Mesh##rm"))
         {
-            if (registry.hasComponent<UVK::MeshComponentRaw>(ent))
+            if (ent.has<UVK::MeshComponentRaw>())
             {
-                registry.removeComponent<UVK::MeshComponentRaw>(ent);
+                ent.remove<UVK::MeshComponentRaw>();
             }
         }
 
         if (ImGui::Button("Mesh##rm"))
         {
-            if (registry.hasComponent<UVK::MeshComponent>(ent))
+            if (ent.has<UVK::MeshComponent>())
             {
-                registry.removeComponent<UVK::MeshComponent>(ent);
+                ent.remove<UVK::MeshComponent>();
             }
         }
 
         if (ImGui::Button("Audio##rm"))
         {
-            if (registry.hasComponent<UVK::AudioComponent>(ent))
+            if (ent.has<UVK::AudioComponent>())
             {
-                registry.removeComponent<UVK::AudioComponent>(ent);
+                ent.remove<UVK::AudioComponent>();
             }
         }
 
@@ -151,9 +152,9 @@ void DetailsPanel::display(entt::entity& ent, UVK::Level* lvl, bool& bShow, bool
     }
     ImGui::EndMenuBar();
 
-    if (registry.hasComponent<UVK::CoreComponent>(ent))
+    if (ent.has<UVK::CoreComponent>())
     {
-        auto& a = registry.getComponent<UVK::CoreComponent>(ent);
+        auto& a = ent.get<UVK::CoreComponent>();
 
         std::string id = std::to_string(a.id);
         ImGui::InputText("Name##inputactorname", &a.name);
@@ -186,11 +187,11 @@ void DetailsPanel::display(entt::entity& ent, UVK::Level* lvl, bool& bShow, bool
         }
     }
 
-    if (registry.hasComponent<UVK::MeshComponentRaw>(ent))
+    if (ent.has<UVK::MeshComponentRaw>())
     {
         ImGui::Separator();
 
-        auto& a = registry.getComponent<UVK::MeshComponentRaw>(ent);
+        auto& a = ent.get<UVK::MeshComponentRaw>();
 
         DrawVec3Control("Translation", a.translation, 0.0f, 100.0f);
         glm::vec3 rotation = glm::degrees(a.rotation);
@@ -200,10 +201,10 @@ void DetailsPanel::display(entt::entity& ent, UVK::Level* lvl, bool& bShow, bool
     }
 
 #ifndef __MINGW32__
-    if (registry.hasComponent<UVK::AudioComponent>(ent))
+    if (ent.has<UVK::AudioComponent>())
     {
         ImGui::Separator();
-        auto& a = registry.getComponent<UVK::AudioComponent>(ent);
+        auto& a = ent.get<UVK::AudioComponent>();
 
         ImGui::SliderFloat("Pitch", &a.data.pitch, 0.5f, 2.0f);
         ImGui::SliderFloat("Gain", &a.data.gain, 0.0f, 10.0f);
