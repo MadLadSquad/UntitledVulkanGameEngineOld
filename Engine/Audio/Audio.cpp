@@ -3,8 +3,6 @@
 #include "Audio.hpp"
 #include <sndfile.h>
 
-#include <utility>
-
 #ifndef __MINGW32__
 void UVK::AudioManager::createDevice()
 {
@@ -37,7 +35,7 @@ void UVK::AudioManager::createDevice()
         name = alcGetString(device, ALC_DEVICE_SPECIFIER);
     }
 
-    logger.consoleLog("Loaded sound device:", UVK_LOG_TYPE_SUCCESS, name);
+    logger.consoleLog("Loaded sound device \"", UVK_LOG_TYPE_SUCCESS, name, "\"");
 }
 
 void UVK::AudioManager::destroyDevice()
@@ -46,7 +44,6 @@ void UVK::AudioManager::destroyDevice()
     alcDestroyContext(context);
     alcCloseDevice(device);
 }
-
 
 UVK::AudioBuffer::AudioBuffer(String loc)
 {
@@ -149,7 +146,7 @@ void UVK::AudioBuffer::removeSound()
     alDeleteBuffers(1, &buffer);
 }
 
-UVK::AudioSource::AudioSource(AudioSourceData data)
+UVK::AudioSource::AudioSource(const AudioSourceData& data)
 {
     audioData = data;
     buffer = AudioBuffer(audioData.location.c_str());

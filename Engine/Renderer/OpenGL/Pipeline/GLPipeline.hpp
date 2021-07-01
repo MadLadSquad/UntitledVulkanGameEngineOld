@@ -3,6 +3,7 @@
 #pragma once
 #include <Renderer/OpenGL/Components/GLFrameBuffer.hpp>
 #include <Renderer/EditorUI/Editor.hpp>
+#include <Renderer/UI/UI.hpp>
 
 namespace UVK
 {
@@ -25,6 +26,7 @@ namespace UVK
 
         GLFrameBuffer fb;
         Editor ed;
+        UI ui;
         Level* level{};
 
         UVK::String colTheme;

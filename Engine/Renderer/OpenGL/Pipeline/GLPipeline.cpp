@@ -62,6 +62,7 @@ void UVK::GLPipeline::tick()
     {
         glClearColor(global.colour.x, global.colour.y, global.colour.z, global.colour.w);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+        ui.beginFrame();
     }
 
     UVK::GLEntityManager::tick(&level->gameMode->pawn->camera);
@@ -83,6 +84,7 @@ void UVK::GLPipeline::tick()
     {
         level->tick(deltaTime);
         events.callTick(deltaTime);
+        ui.update();
     }
 
     glfwSwapBuffers(global.window.getWindow());
@@ -101,6 +103,7 @@ void UVK::GLPipeline::end()
     {
         level->endPlay();
         events.callEnd();
+        ui.clean();
     }
 
     UVK::GLEntityManager::clean();
@@ -124,6 +127,10 @@ void UVK::GLPipeline::initEditor()
         ed.setTheme(colTheme);
         ed.initEditor();
 #endif
+    }
+    else
+    {
+        ui.init();
     }
 }
 

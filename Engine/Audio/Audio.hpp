@@ -102,7 +102,7 @@ namespace UVK
     {
     public:
         AudioSource() = default;
-        explicit AudioSource(AudioSourceData data);
+        explicit AudioSource(const AudioSourceData& data);
 
         void play();
 
