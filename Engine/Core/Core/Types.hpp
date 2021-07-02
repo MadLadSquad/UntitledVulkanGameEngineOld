@@ -23,4 +23,5 @@ namespace UVK
 	using String = const char*;
 
     class Math;
+    class Level;
 }

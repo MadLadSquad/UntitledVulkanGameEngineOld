@@ -19,6 +19,8 @@ namespace UVK
     {
     public:
         GLRenderer() = delete;
+    private:
+        friend class Renderer;
 
         explicit GLRenderer(Level* level, const bool& bUsesEditor, UVK::String theme)
         {
@@ -26,7 +28,6 @@ namespace UVK
             colTheme = std::move(theme);
             start(level);
         }
-    private:
         void start(Level* level) const noexcept;
 
         bool bEditor;

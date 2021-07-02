@@ -14,6 +14,9 @@ namespace UVK
     {
     public:
         VKInstance() = default;
+    private:
+        friend class VKPipeline;
+        friend class VKSwapchain;
 
         void create();
         void destroy();
@@ -22,7 +25,7 @@ namespace UVK
         {
             return instance;
         }
-    private:
+
         static bool checkExtensionSupport(std::vector<UVK::String>* extensions);
 
         VkInstance instance;

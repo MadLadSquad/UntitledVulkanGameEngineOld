@@ -23,6 +23,10 @@ namespace UVK
      */
     struct VKDevice
     {
+    private:
+        friend class Device;
+        friend class VKSwapchain;
+
         VkPhysicalDevice physicalDevice;
         VkDevice logicalDevice;
     };
@@ -32,6 +36,9 @@ namespace UVK
      */
     struct VKQueueFamilyLocation
     {
+    private:
+        friend class Device;
+
         int graphicsFamily = -1;
         int presentationFamily = -1;
 
@@ -46,6 +53,10 @@ namespace UVK
      */
     struct VKSwapchainSettings
     {
+    private:
+        friend class VKSwapchain;
+        friend class Device;
+
         VkSurfaceCapabilitiesKHR surfaceCapabilities{};
         std::vector<VkSurfaceFormatKHR> formats{};
         std::vector<VkPresentModeKHR> presentationModes{};

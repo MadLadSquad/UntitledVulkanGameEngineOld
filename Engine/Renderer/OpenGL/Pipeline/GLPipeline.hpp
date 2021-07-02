@@ -10,13 +10,15 @@ namespace UVK
     class GLPipeline
     {
     public:
+        GLPipeline() = delete;
+    private:
+        friend class GLRenderer;
         GLPipeline(bool bHasEditor, Level* lvl);
 
         void tick();
         void end();
-    private:
+
         static void enableFeatures();
-        void initEditor();
         void begin(bool bHasEditor, Level* lvl);
 
         bool bEditor{};
@@ -26,8 +28,6 @@ namespace UVK
 
         GLFrameBuffer fb;
         Editor ed;
-        UI ui;
-        Level* level{};
 
         UVK::String colTheme;
 #ifdef DEVELOPMENT

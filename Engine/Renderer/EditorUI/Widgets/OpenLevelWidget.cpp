@@ -7,11 +7,16 @@
 #include <cpp/imgui_stdlib.h>
 
 #ifndef PRODUCTION
-void OpenLevelWidget::display(std::string &openLevel, bool &bShowOpenLevelWidget, double& dr, UVK::FVector4& colour, std::string& name)
+void OpenLevelWidget::display(std::string &openLevel, bool &bShowOpenLevelWidget, double& dr, UVK::FVector4& colour, std::string& name, UVK::Texture& insert, const std::string& cpFileLoc)
 {
-    ImGui::Begin("Open Level");
+    ImGui::Begin("Open Level", &bShowOpenLevelWidget);
 
     ImGui::InputText("File location", &openLevel);
+    ImGui::SameLine();
+    if (ImGui::ImageButton((void*)(intptr_t)insert.getImage(), ImVec2(10.0f, 10.0f)))
+    {
+        openLevel = cpFileLoc;
+    }
 
     ImGui::Text("Keep in mind that clicking Submit WILL NOT SAVE any changes made to the level you are editing");
     if (ImGui::Button("Cancel"))
@@ -27,6 +32,7 @@ void OpenLevelWidget::display(std::string &openLevel, bool &bShowOpenLevelWidget
         tm.startRecording();
 
         UVK::Level::open(openLevel.c_str());
+
         tm.stopRecording();
         dr = tm.getDuration();
 

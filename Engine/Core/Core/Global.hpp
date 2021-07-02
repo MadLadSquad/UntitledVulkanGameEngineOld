@@ -7,6 +7,9 @@
 #include <glm/glm/gtx/quaternion.hpp>
 #include <GameFramework/GameplayClasses/GameInstance.hpp>
 #include <GameFramework/Actors/ActorManager.hpp>
+#include <Renderer/UI/UI.hpp>
+#include <GameFramework/GameplayClasses/Level/Level.hpp>
+#include <Events/Events.hpp>
 
 namespace UVK
 {
@@ -18,19 +21,60 @@ namespace UVK
             actorManager.init();
         }
 
+        template<typename T>
+        void openNewLevel(String name)
+        {
+            func = [=](){
+                const char* loc = name;
+                level->endPlay();
+                delete level;
+
+                T* lvl = new T();
+                level = lvl;
+                T::open(loc);
+                level->beginPlay();
+            };
+        }
+
         ~UVKGlobal()
         {
+            delete level;
             actorManager.destroy();
         }
+
         FVector4 colour{};
         FVector4 ambientLight{};
+
         std::string levelName;
+        std::string levelLocation;
+
         bool bEditor{};
         bool bUsesVulkan{};
-        GameInstance* instance;
+
+        GameInstance* instance{};
         Window window;
         ECSManager ecs;
+
+        UI ui;
+        Level* level = nullptr;
+    private:
+        friend class GLPipeline;
+        friend class Window;
+        friend class Input;
+        friend class Actor;
+        friend class Level;
+
+        UVK::Events events;
         UVK::ActorManager actorManager;
+        std::vector<InputAction> inputActionList;
+        std::function<void(void)> func = [=](){};
+
+        void finalizeOpening()
+        {
+            func();
+
+            func = [=](){};
+        }
     };
 
     inline UVKGlobal global;

@@ -12,7 +12,7 @@
 
 namespace UVK
 {
-    class Level;
+    //class Level;
 
     /**
      * @brief Controls the whole editor and related operations
@@ -21,6 +21,13 @@ namespace UVK
     {
     public:
         Editor() = default;
+    private:
+        friend class GLPipeline;
+
+        double* getFrameTimeData()
+        {
+            return frameTimeData;
+        }
 
         void initEditor();
         void runEditor(FVector4& colour, GLFrameBuffer& fb, Camera& camera, UVK::Level* lvl);
@@ -32,11 +39,6 @@ namespace UVK
             colTheme = theme;
         }
 
-        double* getFrameTimeData()
-        {
-            return frameTimeData;
-        }
-    private:
         Texture play;
         Texture logoTxt;
         Texture insert;

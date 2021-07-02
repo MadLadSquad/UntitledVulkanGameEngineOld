@@ -9,8 +9,10 @@ namespace UVK
     {
     public:
         Actor() = default;
-        Actor(const std::string& nameN, uint64_t idN, const std::string& devNameN);
-        void create(const std::string& nameN, uint64_t idN, const std::string& devNameN);
+
+        Actor(const std::string &nameN, uint64_t idN, const std::string &devNameN, bool bCreatedByLevel = false);
+
+        void create(const std::string &nameN, uint64_t idN, const std::string &devNameN, bool bCreatedByLevel);
 
         template<typename T>
         auto& get()
@@ -37,11 +39,8 @@ namespace UVK
         }
 
         void destroy();
-
         entt::entity& data();
     private:
         entt::entity entity;
     };
-
-
 }

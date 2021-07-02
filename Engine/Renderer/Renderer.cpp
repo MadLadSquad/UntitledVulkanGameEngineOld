@@ -29,19 +29,18 @@ void UVK::Renderer::saveSettings() const
     fileout << out.c_str();
 }
 
-void UVK::Renderer::startRenderer(UVK::Level *lvl, bool bUsesEditor)
+void UVK::Renderer::startRenderer(UVK::Level* lvl, bool bUsesEditor)
 {
     loadSettings();
 
+    global.bUsesVulkan = bIsVulkan;
     if (bIsVulkan)
     {
-        global.window.getVulkan() = true;
         VulkanRenderer renderer{};
         renderer.run();
     }
     else
     {
-        global.window.getVulkan() = false;
         GLRenderer renderer(lvl, bUsesEditor, theme.c_str());
     }
 }

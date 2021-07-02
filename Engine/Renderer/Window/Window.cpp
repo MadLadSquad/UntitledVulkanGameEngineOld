@@ -66,7 +66,7 @@ void UVK::Window::createWindow()
     }
     logger.consoleLog("Setting up the window", UVK_LOG_TYPE_NOTE);
 
-    if (!bVulkan)
+    if (!global.bUsesVulkan)
     {
         glewExperimental = GL_TRUE;
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
@@ -114,7 +114,7 @@ void UVK::Window::createWindow()
 
     doCallBacks();
 
-    if (!bVulkan)
+    if (!global.bUsesVulkan)
     {
         if (glewInit() != GLEW_OK)
         {
@@ -210,7 +210,7 @@ void UVK::Window::openConfig()
                 InputAction action{};
                 action.name = a["key"].as<std::string>();
                 action.keyCode = a["val"].as<uint16_t>();
-                InGlobals::inputActionList.push_back(action);
+                global.inputActionList.push_back(action);
             }
         }
     }
@@ -218,7 +218,7 @@ void UVK::Window::openConfig()
 
 void UVK::Window::keyboardInputCallback(GLFWwindow* window, int key, int scanCode, int action, int mods)
 {
-    for (auto& a : InGlobals::inputActionList)
+    for (auto& a : global.inputActionList)
     {
         if (a.keyCode == key)
         {
@@ -255,7 +255,7 @@ void UVK::Window::mouseCursorPositionCallback(GLFWwindow* window, double xpos, d
 
 void UVK::Window::mouseKeyInputCallback(GLFWwindow* window, int button, int action, int mods)
 {
-    for (auto& a : InGlobals::inputActionList)
+    for (auto& a : global.inputActionList)
     {
         if (a.keyCode == button)
         {
@@ -288,7 +288,6 @@ UVK::FVector2 UVK::Window::getScroll()
 
 UVK::Window::Window()
 {
-    bVulkan = false;
     std::fill(keysArr.begin(), keysArr.end(), false);
 }
 
@@ -341,7 +340,7 @@ UVK::FVector2 UVK::Input::getScroll()
 
 const UVK::InputAction& UVK::Input::getAction(const std::string& name)
 {
-    for (auto& a : InGlobals::inputActionList)
+    for (auto& a : global.inputActionList)
     {
         if (a.name == name)
         {

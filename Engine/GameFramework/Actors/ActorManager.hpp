@@ -16,10 +16,11 @@ namespace UVK
     public:
         ActorManager() = default;
 
-        void init();
-        void destroy();
         std::set<ScriptableObject*>& data();
     private:
+        friend class UVKGlobal;
+        void init();
+        void destroy();
         std::set<ScriptableObject*> a;
     };
 }

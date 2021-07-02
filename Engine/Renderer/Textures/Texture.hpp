@@ -15,14 +15,11 @@ namespace UVK
     public:
         Texture() = default;
         explicit Texture(std::string loc)
-                :location(std::move(loc))
-        {
-
-        }
+            : location(std::move(loc)) {}
         void load();
-        void loadImgui();
+
         void destroy();
-        void useTexture() const;
+
 
         [[maybe_unused]] std::string& getLocation() { return location; }
         int& getWidth() { return width; }
@@ -30,6 +27,11 @@ namespace UVK
         GLuint& getImage() { return image; };
 
     private:
+        friend class GLPipeline;
+        friend class Editor;
+        void loadImgui();
+        void useTexture() const;
+
         std::string location;
         int width = 0;
         int height = 0;

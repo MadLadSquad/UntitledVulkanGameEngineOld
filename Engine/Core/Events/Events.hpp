@@ -12,6 +12,12 @@ namespace UVK
     class Events
     {
     public:
+        Events() = default;
+    private:
+        friend class Level;
+        friend class GLPipeline;
+        friend class Actor;
+
         void callTick(float deltaTime);
         void callBegin();
         void callEnd();
@@ -20,9 +26,6 @@ namespace UVK
         void add(ScriptableObject* sco);
 
         std::vector<ScriptableObject*>& data();
-    private:
         std::vector<ScriptableObject*> objList;
     };
 }
-
-inline UVK::Events events;

@@ -21,11 +21,12 @@ namespace UVK
     {
     public:
         VKPipeline() = default;
+    private:
+        friend class VulkanRenderer;
 
         void begin();
         void tick();
         void end();
-    private:
 #ifndef __APPLE__
         VKInstance instance;
         Device device;

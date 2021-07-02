@@ -18,6 +18,9 @@ namespace UVK
     {
     public:
         VKSwapchain() = default;
+    private:
+        friend class VKPipeline;
+        friend class Device;
 
         void set(VKInstance* inst, Device* dev);
 
@@ -33,7 +36,7 @@ namespace UVK
         {
             return surface;
         }
-    private:
+
         VkSurfaceKHR surface;
         VKInstance* instance;
         Device* device;

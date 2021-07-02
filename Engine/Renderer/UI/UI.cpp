@@ -12,6 +12,7 @@ void UVK::UI::init()
 {
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
+    io.IniFilename = "gameui.ini";
 
     ImGui::StyleColorsDark();
     ImGui::StyleColorsClassic();
@@ -33,23 +34,10 @@ void UVK::UI::init()
         ImGui_ImplGlfw_InitForOpenGL(global.window.getWindow(), true);
         ImGui_ImplOpenGL3_Init("#version 450");
     }
-
-    cacheScaffold();
 }
 
-void UVK::UI::update(const std::string& fname)
+void UVK::UI::update()
 {
-    if (fname != file)
-    {
-        file = fname;
-        rerender = true;
-    }
-
-    if (rerender == true)
-    {
-        cacheScaffold();
-        rerender = false;
-    }
     ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize;
     window_flags |= ImGuiTreeNodeFlags_SpanAvailWidth;
     window_flags |=  ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoMove;
@@ -64,7 +52,7 @@ void UVK::UI::update(const std::string& fname)
 
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
     ImGui::Begin("Workspace", &bIsOpen, window_flags);
-    ImGui::PopStyleVar(3);
+    ImGui::PopStyleVar(1);
 
     renderUI();
 
@@ -83,24 +71,57 @@ void UVK::UI::update(const std::string& fname)
 
 void UVK::UI::clean()
 {
-    ImGui_ImplOpenGL3_Shutdown();
+    if (global.bUsesVulkan)
+    {
+        ImGui_ImplVulkan_Shutdown();
+    }
+    else
+    {
+        ImGui_ImplOpenGL3_Shutdown();
+    }
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
 }
 
 void UVK::UI::beginFrame()
 {
-    ImGui_ImplOpenGL3_NewFrame();
+    if (global.bUsesVulkan)
+    {
+        ImGui_ImplVulkan_NewFrame();
+    }
+    else
+    {
+        ImGui_ImplOpenGL3_NewFrame();
+    }
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 }
 
 void UVK::UI::renderUI()
 {
-    ImGui::Text("Hello, World UI!");
+    for (auto& a : eventArr)
+    {
+        a();
+    }
+
+    for (auto& a : eventArrImGui)
+    {
+        a();
+    }
 }
 
-void UVK::UI::cacheScaffold()
+void UVK::UI::addEvent(const std::function<void(void)>& func)
 {
+    eventArr.push_back(func);
+}
 
+void UVK::UI::addEventImgui(const std::function<void(void)>& func)
+{
+    eventArrImGui.push_back(func);
+}
+
+void UVK::UI::clear()
+{
+    eventArr.clear();
+    eventArrImGui.clear();
 }

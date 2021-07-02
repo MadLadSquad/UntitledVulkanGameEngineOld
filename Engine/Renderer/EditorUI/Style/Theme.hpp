@@ -14,13 +14,16 @@ namespace UVK
     class EditorTheme
     {
     public:
+        EditorTheme() = default;
         explicit EditorTheme(UVK::String theme)
         {
             setTheme(std::move(theme));
         }
 
-        void setTheme(UVK::String theme);
+    private:
+        friend class Editor;
 
+        void setTheme(UVK::String theme);
         void useTheme();
 
         std::pair<std::string, int> getFont()
@@ -32,7 +35,7 @@ namespace UVK
         {
             return windowRounding;
         }
-    private:
+
         ImVec4 textCol = ImVec4(1.0, 1.0, 1.0, 1.0);
 
         ImVec4 windowBg = ImVec4(0.1, 0.1, 0.1, 1.0);

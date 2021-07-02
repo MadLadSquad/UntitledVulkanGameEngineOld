@@ -43,9 +43,9 @@ void UVK::Registry::destroyActor(Actor &act)
 
     pool.destroy(act);
 }*/
-UVK::Actor::Actor(const std::string& nameN, uint64_t idN, const std::string& devNameN)
+UVK::Actor::Actor(const std::string& nameN, uint64_t idN, const std::string& devNameN, bool bCreatedByLevel)
 {
-    create(nameN, idN, devNameN);
+    create(nameN, idN, devNameN, bCreatedByLevel);
 }
 
 entt::entity& UVK::Actor::data()
@@ -53,7 +53,7 @@ entt::entity& UVK::Actor::data()
     return entity;
 }
 
-void UVK::Actor::create(const std::string& nameN, uint64_t idN, const std::string& devNameN)
+void UVK::Actor::create(const std::string& nameN, uint64_t idN, const std::string& devNameN, bool bCreatedByLevel)
 {
     entity = global.ecs.data().create();
 
@@ -66,18 +66,19 @@ void UVK::Actor::create(const std::string& nameN, uint64_t idN, const std::strin
     {
         if (b->name == nameN && b->id == idN && b->devname == devNameN)
         {
-            events.add(b);
+            b->entities.push_back(this);
+            global.events.add(b);
         }
     }
 }
 
 void UVK::Actor::destroy()
 {
-    auto& component = get<CoreComponent>();
+    const auto& component = get<CoreComponent>();
 
     std::vector<ScriptableObject*> temp;
     bool tested = false;
-    for (auto& a : events.data())
+    for (auto& a : global.events.data())
     {
         if (a->id == component.id && a->name == component.name && a->devname == component.devName && !tested)
         {
@@ -91,8 +92,8 @@ void UVK::Actor::destroy()
         }
     }
 
-    events.clear();
-    events.data() = std::move(temp);
+    global.events.clear();
+    global.events.data() = std::move(temp);
 
     global.ecs.data().destroy(entity);
 }

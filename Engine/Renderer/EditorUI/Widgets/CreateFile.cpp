@@ -3,10 +3,11 @@
 #include "CreateFile.hpp"
 #include <cpp/imgui_stdlib.h>
 #include <Core.hpp>
+
 #ifndef PRODUCTION
-void CreateFile::display(short& selectedFile, std::string& fileOutLocation, bool& bShowCreateFile1)
+void CreateFile::display(short& selectedFile, std::string& fileOutLocation, bool& bShowCreateFile1, UVK::Texture& insert, const std::string& cpFileLoc)
 {
-    ImGui::Begin("Create a file");
+    ImGui::Begin("Create a file", &bShowCreateFile1);
 
     static std::string str;
 
@@ -60,6 +61,11 @@ void CreateFile::display(short& selectedFile, std::string& fileOutLocation, bool
     ImGui::Text("Selected file type: %s", str.c_str());
 
     ImGui::InputTextWithHint("Location##genfile", "Location starts from your Source folder!", &fileOutLocation);
+    ImGui::SameLine();
+    if (ImGui::ImageButton((void*)(intptr_t)insert.getImage(), ImVec2(10.0f, 10.0f)))
+    {
+        fileOutLocation = cpFileLoc;
+    }
 
     if (ImGui::Button("Cancel"))
     {

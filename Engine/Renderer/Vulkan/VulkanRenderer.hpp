@@ -20,9 +20,10 @@ namespace UVK
     {
     public:
         VulkanRenderer() = default;
+    private:
+        friend class Renderer;
 
         void run();
-    private:
         void start();
         void render();
         void cleanup();

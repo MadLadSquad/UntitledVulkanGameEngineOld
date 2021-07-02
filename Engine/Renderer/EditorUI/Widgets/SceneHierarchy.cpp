@@ -16,7 +16,7 @@ void SceneHierarchy::addEntity(int& entNum)
 {
     //registry.createActor(static_cast<std::string>("NewEntity" + std::to_string(entNum)).c_str());
     //UVK::Actor actor(static_cast<std::string>("NewEntity" + std::to_string(entNum)), 0, "a");
-    auto a = UVK::global.ecs.data().create();
+    const auto a = UVK::global.ecs.data().create();
     auto& b = UVK::global.ecs.data().emplace<UVK::CoreComponent>(a);
     b.name = "NewEntity" + std::to_string(entNum);
     b.id = 0;

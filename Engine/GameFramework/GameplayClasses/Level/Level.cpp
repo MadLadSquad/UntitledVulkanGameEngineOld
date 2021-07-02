@@ -2,9 +2,8 @@
 // Last update 30/6/2021 by Madman10K
 #include "../../Components/Components.hpp"
 #include "Engine/Core/Core/Actor.hpp"
-#include "Level.hpp"
-#include "../../Actors/ActorManager.hpp"
 #include <Events/Events.hpp>
+#include "../../Actors/ActorManager.hpp"
 #include <Engine/Core/Core/Global.hpp>
 
 // Creates bindings for a FVector
@@ -129,10 +128,11 @@ void UVK::Level::open(String location) noexcept
     global.ecs.clear();
     if (!global.bEditor)
     {
-        events.callEnd();
+        global.events.callEnd();
+        global.ui.clear();
     }
 
-    events.clear();
+    global.events.clear();
 
     logger.consoleLog("Opening level with location: ", UVK_LOG_TYPE_NOTE, location);
 
@@ -152,6 +152,7 @@ void UVK::Level::open(String location) noexcept
     if (bValid)
     {
         global.levelName = out["name"].as<std::string>();
+        global.levelLocation = location;
         logger.consoleLog("Opened file with name: ", UVK_LOG_TYPE_SUCCESS, global.levelName);
         global.colour = out["background-colour"].as<FVector4>();
         global.ambientLight = out["ambient-light"].as<FVector4>();
@@ -166,7 +167,7 @@ void UVK::Level::open(String location) noexcept
                 auto id = entity["id"].as<uint64_t>();
                 auto devName = entity["dev-name"].as<std::string>();
 
-                auto act = Actor(name, id, devName);
+                auto act = Actor(name, id, devName, true);
 
                 if (entity["audio-pitch"] && entity["audio-gain"] && entity["audio-location"])
                 {
@@ -182,22 +183,13 @@ void UVK::Level::open(String location) noexcept
 
                     a.init(data);
                 }
-
-                for (auto& it : global.actorManager.data())
-                {
-                    if (it->name == name && it->id == id && it->devname == devName)
-                    {
-                        it->entities.push_back(&act);
-                        events.add(it);
-                    }
-                }
             }
             logger.consoleLog("Iterated entities", UVK_LOG_TYPE_SUCCESS);
         }
 
         if (!global.bEditor)
         {
-            events.callBegin();
+            global.events.callBegin();
         }
     }
 }

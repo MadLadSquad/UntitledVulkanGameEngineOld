@@ -15,12 +15,15 @@ namespace UVK
     {
     public:
         Device() = default;
+    private:
+        friend class VKPipeline;
+        friend class VKSwapchain;
 
         void set(VkInstance* inst, VKSwapchain* swap);
         void destroyLogicalDevice() const;
 
         VKDevice& getDevice();
-    private:
+
         void getPhysicalDevice();
         void createLogicalDevice();
 

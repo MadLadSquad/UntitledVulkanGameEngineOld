@@ -22,11 +22,6 @@ namespace UVK
         uint16_t state{};
     };
 
-    namespace InGlobals
-    {
-        inline std::vector<InputAction> inputActionList;
-    }
-
     /**
      * @brief A standard cross-renderer window abstraction
      */
@@ -35,39 +30,36 @@ namespace UVK
     public:
         Window();
 
-        void createWindow();
-        void dumpConfig();
-        void destroyWindow();
-
-        void setTitle(UVK::String newTitle) const;
         [[nodiscard]] GLFWwindow* getWindow() const;
-
-        [[nodiscard]] FVector2 getLastMousePosition() const;
-        [[nodiscard]] FVector2 getCurrentMousePosition() const;
-
-        void setCursorVisibility(bool bIsVisible);
 
         [[nodiscard]] int getBufferWidth() const;
         [[nodiscard]] int getBufferHeight() const;
 
+        [[nodiscard]] FVector2 getLastMousePosition() const;
+        [[nodiscard]] FVector2 getCurrentMousePosition() const;
         FVector2 getMousePositionChange();
-
-        const std::array<uint16_t, 350>& getKeys();
         FVector2 getScroll();
 
-        bool& getVulkan()
-        {
-            return bVulkan;
-        }
+        void setCursorVisibility(bool bIsVisible);
+        void setTitle(UVK::String newTitle) const;
+        void dumpConfig();
     private:
+        friend class GLPipeline;
+        friend class Renderer;
+        friend class VulkanRenderer;
+        friend class Input;
+        friend class Editor;
+
+        void createWindow();
+        void destroyWindow();
+
         std::array<uint16_t, 350> keysArr{};
+        const std::array<uint16_t, 350>& getKeys();
 
         FVector2 scroll{};
 
         void openConfig();
         void doCallBacks();
-
-        bool bVulkan{};
 
         static void framebufferSizeCallback(GLFWwindow* window, int width, int height);
         static void keyboardInputCallback(GLFWwindow* window, int key, int scanCode, int action, int mods);

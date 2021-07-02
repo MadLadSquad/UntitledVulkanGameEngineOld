@@ -120,9 +120,9 @@ namespace Keys
     [[maybe_unused]] constexpr uint16_t NumPadAdd = 334;
     [[maybe_unused]] constexpr uint16_t NumPadEnter = 335;
     [[maybe_unused]] constexpr uint16_t NumPadEqual = 336;
-    [[maybe_unused]] constexpr uint16_t LeftShift= 340;
+    [[maybe_unused]] constexpr uint16_t LeftShift = 340;
     [[maybe_unused]] constexpr uint16_t LeftControl = 341;
-    [[maybe_unused]] constexpr uint16_t LeftAlt= 342;
+    [[maybe_unused]] constexpr uint16_t LeftAlt = 342;
     [[maybe_unused]] constexpr uint16_t LeftSuper = 343;
     [[maybe_unused]] constexpr uint16_t RightShift = 344;
     [[maybe_unused]] constexpr uint16_t RightControl = 345;

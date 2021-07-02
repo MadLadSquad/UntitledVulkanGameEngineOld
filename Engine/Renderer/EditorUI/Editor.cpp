@@ -1,8 +1,8 @@
 // Editor.cpp
 // Last update 30/6/2021 by Madman10K
 #include <GL/glew.h>
+#include <imgui_impl_vulkan.h>
 #include "Editor.hpp"
-#include "../../GameFramework/GameplayClasses/Level/Level.hpp"
 #include "Widgets/SceneHierarchy.hpp"
 #include "Widgets/DetailsPanel.hpp"
 #include "Widgets/SaveLevel.hpp"
@@ -21,9 +21,9 @@
 #include "Widgets/Help.hpp"
 #include "Widgets/RemoveFile.hpp"
 #include "Widgets/Ship.hpp"
-#include "../Window/Window.hpp"
 #include <Engine/Core/Core/Global.hpp>
 #include <Renderer/OpenGL/Components/GLShader.hpp>
+//#include "../../GameFramework/GameplayClasses/Level/Level.hpp"
 
 void UVK::Editor::initEditor()
 {
@@ -109,8 +109,17 @@ void UVK::Editor::initEditor()
         io.Fonts->Build();
     }
 #endif
-    ImGui_ImplGlfw_InitForOpenGL(global.window.getWindow(), true);
-    ImGui_ImplOpenGL3_Init("#version 450");
+    if (global.bUsesVulkan)
+    {
+        ImGui_ImplGlfw_InitForVulkan(global.window.getWindow(), true);
+        // to be implemented
+        //ImGui_ImplVulkan_Init();
+    }
+    else
+    {
+        ImGui_ImplGlfw_InitForOpenGL(global.window.getWindow(), true);
+        ImGui_ImplOpenGL3_Init("#version 450");
+    }
 #endif
     tm.stopRecording();
     frameTimeData[0] = tm.getDuration();
@@ -170,7 +179,16 @@ void UVK::Editor::runEditor(FVector4& colour, GLFrameBuffer& fb, Camera& camera,
     displayEditor(colour, fb, camera, lvl);
 
     ImGui::Render();
-    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+    if (global.bUsesVulkan)
+    {
+        // To be implemented
+        //ImGui_ImplVulkan_RenderDrawData(ImGui::GetDrawData(), );
+    }
+    else
+    {
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+    }
 
     if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
     {
@@ -185,36 +203,70 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
 {
     ImGuiStyle& style = ImGui::GetStyle();
 
+    if ((Input::getAction("editor-bind-modifier") == Keys::KeyPressed || Input::getAction("editor-bind-modifier") == Keys::KeyRepeat) && (Input::getAction("editor-shift") == Keys::KeyPressed || Input::getAction("editor-shift") == Keys::KeyRepeat) && (Input::getAction("editor-level-saveas") == Keys::KeyPressed || Input::getAction("editor-level-saveas") == Keys::KeyRepeat))
+    {
+        bShowSaveLevelWidget = true;
+    }
+    else if ((Input::getAction("editor-bind-modifier") == Keys::KeyPressed || Input::getAction("editor-bind-modifier") == Keys::KeyRepeat) && (Input::getAction("editor-level-save") == Keys::KeyPressed || Input::getAction("editor-level-save") == Keys::KeyRepeat))
+    {
+        // TODO: Change this for file indexing :D
+        UVK::Level::save(global.levelLocation.c_str());
+    }
+    else if ((Input::getAction("editor-bind-modifier") == Keys::KeyPressed || Input::getAction("editor-bind-modifier") == Keys::KeyRepeat) && (Input::getAction("editor-shift") == Keys::KeyPressed || Input::getAction("editor-shift") == Keys::KeyRepeat) && (Input::getAction("editor-new-file") == Keys::KeyPressed || Input::getAction("editor-new-file") == Keys::KeyRepeat))
+    {
+        bShowCreateFile1 = true;
+    }
+    else if ((Input::getAction("editor-bind-modifier") == Keys::KeyPressed || Input::getAction("editor-bind-modifier") == Keys::KeyRepeat) && (Input::getAction("editor-level-new") == Keys::KeyPressed || Input::getAction("editor-level-new") == Keys::KeyRepeat))
+    {
+        bShowSaveWarning = true;
+    }
+    else if ((Input::getAction("editor-bind-modifier") == Keys::KeyPressed || Input::getAction("editor-bind-modifier") == Keys::KeyRepeat) && (Input::getAction("editor-level-open") == Keys::KeyPressed || Input::getAction("editor-level-open") == Keys::KeyRepeat))
+    {
+        bShowOpenLevelWidget = true;
+    }
+    else if ((Input::getAction("editor-bind-modifier") == Keys::KeyPressed || Input::getAction("editor-bind-modifier") == Keys::KeyRepeat) && (Input::getAction("editor-shift") == Keys::KeyPressed || Input::getAction("editor-shift") == Keys::KeyRepeat) && (Input::getAction("editor-exit") == Keys::KeyPressed || Input::getAction("editor-exit") == Keys::KeyRepeat))
+    {
+        logger.consoleLog("Shutting down editor!", UVK_LOG_TYPE_NOTE);
+        glfwSetWindowShouldClose(global.window.getWindow(), GL_TRUE);
+    }
+
+
     if (ImGui::BeginMenuBar())
     {
         if (ImGui::BeginMenu("File"))
         {
-            if (ImGui::Button("Save Level"))
+            if (ImGui::MenuItem("Save Level", "CTRL+S"))
+            {
+                // TODO: Change this for file indexing :D
+                UVK::Level::save(global.levelLocation.c_str());
+            }
+
+            if (ImGui::MenuItem("Save Level As", "CTRL+SHIFT+S"))
             {
                 bShowSaveLevelWidget = true;
             }
 
-            if (ImGui::Button("New Level"))
+            if (ImGui::MenuItem("New Level", "CTRL+N"))
             {
                 bShowSaveWarning = true;
             }
 
-            if (ImGui::Button("Open Level"))
+            if (ImGui::MenuItem("Open Level", "CTRL+O"))
             {
                 bShowOpenLevelWidget = true;
             }
 
-            if (ImGui::Button("New File"))
+            if (ImGui::MenuItem("New File", "CTRL+SHIFT+N"))
             {
                 bShowCreateFile1 = true;
             }
 
-            if (ImGui::Button("Remove File"))
+            if (ImGui::MenuItem("Remove File"))
             {
                 bShowRemoveFile = true;
             }
 
-            if (ImGui::Button("Regenerate files"))
+            if (ImGui::MenuItem("Regenerate files"))
             {
                 int lnt;
 #ifdef _WIN32
@@ -229,12 +281,12 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
                 }
             }
 
-            if (ImGui::Button("Ship Project"))
+            if (ImGui::MenuItem("Ship Project"))
             {
                 bShowShip = true;
             }
 
-            if (ImGui::Button("Exit"))
+            if (ImGui::MenuItem("Exit", "CTRL+SHIFT+W"))
             {
                 glfwSetWindowShouldClose(global.window.getWindow(), GL_TRUE);
             }
@@ -242,17 +294,17 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
         }
         if (ImGui::BeginMenu("Edit"))
         {
-            if (ImGui::Button("Undo"))
+            if (ImGui::MenuItem("Undo"))
             {
 
             }
 
-            if (ImGui::Button("Redo"))
+            if (ImGui::MenuItem("Redo"))
             {
 
             }
 
-            if (ImGui::Button("Undo history"))
+            if (ImGui::MenuItem("Undo history"))
             {
 
             }
@@ -277,12 +329,12 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
 
         if (ImGui::BeginMenu("More"))
         {
-            if (ImGui::Button("About us"))
+            if (ImGui::MenuItem("About us"))
             {
                 bShowAboutUs = true;
             }
 
-            if (ImGui::Button("Help"))
+            if (ImGui::MenuItem("Help"))
             {
                 bShowHelp = true;
             }
@@ -301,17 +353,17 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
 
     if (bShowSaveLevelWidget)
     {
-        SaveLevel::display(bShowSaveLevelWidget, location, levelName, colour);
+        SaveLevel::display(bShowSaveLevelWidget, location, levelName, colour, insert, cpFileLoc);
     }
 
     if (bShowOpenLevelWidget)
     {
-        OpenLevelWidget::display(openLevel, bShowOpenLevelWidget, frameTimeData[1], colour, levelName);
+        OpenLevelWidget::display(openLevel, bShowOpenLevelWidget, frameTimeData[1], colour, levelName, insert, cpFileLoc);
     }
 
     if (bShowCreateFile1)
     {
-        CreateFile::display(selectedFile, fileOutLocation, bShowCreateFile1);
+        CreateFile::display(selectedFile, fileOutLocation, bShowCreateFile1, insert, cpFileLoc);
     }
 
     if (bShowSceneHierarchy)
@@ -328,7 +380,7 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
 
     if (bShowDetailsPanel)
     {
-        DetailsPanel::display(selectedEntity, lvl, bShowDetailsPanel, bDestroyEntity);
+        DetailsPanel::display(selectedEntity, lvl, bShowDetailsPanel, bDestroyEntity, insert, cpFileLoc);
     }
 
 #ifndef __MINGW32__
@@ -341,9 +393,7 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
     if (bShowToolbar)
     {
         style.WindowPadding = ImVec2(0.0f, 0.0f);
-
         TopToolbar::display(play, bShowToolbar);
-
         style.WindowPadding = ImVec2(8.0f, 8.0f);
     }
 
@@ -371,7 +421,7 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
 
     if (bShowWorldSettings)
     {
-        WorldSettings::display(colour, global.ambientLight, levelName, bShowWorldSettings);
+        WorldSettings::display(colour, global.ambientLight, levelName, bShowWorldSettings, insert, cpFileLoc);
     }
 
     if (bShowAboutUs)
@@ -386,7 +436,7 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
 
     if (bShowRemoveFile)
     {
-        RemoveFile::display(bShowRemoveFile);
+        RemoveFile::display(bShowRemoveFile, insert, cpFileLoc);
     }
 
     if (bShowShip)
@@ -398,7 +448,14 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
 
 void UVK::Editor::beginFrame()
 {
-    ImGui_ImplOpenGL3_NewFrame();
+    if (global.bUsesVulkan)
+    {
+        ImGui_ImplVulkan_NewFrame();
+    }
+    else
+    {
+        ImGui_ImplOpenGL3_NewFrame();
+    }
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
     ImGuizmo::BeginFrame();
@@ -409,7 +466,14 @@ void UVK::Editor::destroyContext()
     play.destroy();
     logoTxt.destroy();
 
-    ImGui_ImplOpenGL3_Shutdown();
+    if (global.bUsesVulkan)
+    {
+        ImGui_ImplVulkan_Shutdown();
+    }
+    else
+    {
+        ImGui_ImplOpenGL3_Shutdown();
+    }
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
 #ifndef PRODUCTION

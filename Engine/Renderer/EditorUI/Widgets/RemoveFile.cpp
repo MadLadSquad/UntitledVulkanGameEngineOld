@@ -6,16 +6,20 @@
 #include <cpp/imgui_stdlib.h>
 
 #ifndef PRODUCTION
-void RemoveFile::display(bool& bShow)
+void RemoveFile::display(bool& bShow, UVK::Texture& insert, const std::string& cpFileLoc)
 {
     ImGui::Begin("RemoveFile", &bShow);
 
     static std::string in;
     bool bSO = false;
 
-
     ImGui::Checkbox("Scriptable Object?", &bSO);
     ImGui::InputTextWithHint("File to delete", "Location starts from the source folder, do not specify the file's extension, only the name", &in);
+    ImGui::SameLine();
+    if (ImGui::ImageButton((void*)(intptr_t)insert.getImage(), ImVec2(10.0f, 10.0f)))
+    {
+        in = cpFileLoc;
+    }
 
     if (ImGui::Button("Close##delete"))
     {

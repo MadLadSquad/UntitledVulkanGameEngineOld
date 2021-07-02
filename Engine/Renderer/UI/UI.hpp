@@ -2,7 +2,6 @@
 // Last update 30/6/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
-#include <utility>
 
 namespace UVK
 {
@@ -10,20 +9,21 @@ namespace UVK
     {
     public:
         UI() = default;
-        explicit UI(std::string filename)
-            : file(std::move(filename)) {}
+
+        void addEvent(const std::function<void(void)>& func);
+        void addEventImgui(const std::function<void(void)>& func);
+    private:
+        friend class GLPipeline;
+        friend class Level;
 
         void init();
-        void update(const std::string& fname);
+        void update();
         static void clean();
-
+        void clear();
         static void beginFrame();
-    private:
-        std::string file;
-        std::string savedBuffer;
-        bool rerender = false;
 
+        std::vector<std::function<void(void)>> eventArr;
+        std::vector<std::function<void(void)>> eventArrImGui;
         void renderUI();
-        void cacheScaffold();
     };
 }

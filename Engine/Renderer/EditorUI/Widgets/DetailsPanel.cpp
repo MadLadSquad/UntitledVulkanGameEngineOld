@@ -1,12 +1,11 @@
 // DetailsPanel.cpp
 // Last update 30/6/2021 by Madman10K
 #include <GL/glew.h>
-#include <Core/Actor.hpp>
 #include <imgui.h>
 #include <cpp/imgui_stdlib.h>
-#include "DetailsPanel.hpp"
-#include <GameFramework/GameplayClasses/Level/Level.hpp>
 #include <GameFramework/Components/Components.hpp>
+#include "DetailsPanel.hpp"
+#include <Core/Actor.hpp>
 
 #ifndef PRODUCTION
 void DetailsPanel::DrawVec3Control(const std::string &label, glm::vec3 &values, float resetValue, float columnWidth)
@@ -77,7 +76,7 @@ void DetailsPanel::DrawVec3Control(const std::string &label, glm::vec3 &values, 
     ImGui::PopID();
 }
 
-void DetailsPanel::display(UVK::Actor& ent, UVK::Level* lvl, bool& bShow, bool& destroy)
+void DetailsPanel::display(UVK::Actor& ent, UVK::Level* lvl, bool& bShow, bool& destroy, UVK::Texture& insert, const std::string& cpFileLoc)
 {
     ImGui::Begin("Details", &bShow, ImGuiWindowFlags_MenuBar);
 
@@ -158,9 +157,25 @@ void DetailsPanel::display(UVK::Actor& ent, UVK::Level* lvl, bool& bShow, bool& 
 
         std::string id = std::to_string(a.id);
         ImGui::InputText("Name##inputactorname", &a.name);
+        ImGui::SameLine();
+        if (ImGui::ImageButton((void*)(intptr_t)insert.getImage(), ImVec2(10.0f, 10.0f)))
+        {
+            a.name = cpFileLoc;
+        }
 
         ImGui::InputText("ID##inputactoridentifier", &id);
+        ImGui::SameLine();
+        if (ImGui::ImageButton((void*)(intptr_t)insert.getImage(), ImVec2(10.0f, 10.0f)))
+        {
+            id = cpFileLoc;
+        }
+
         ImGui::InputText("Development Name##devname", &a.devName);
+        ImGui::SameLine();
+        if (ImGui::ImageButton((void*)(intptr_t)insert.getImage(), ImVec2(10.0f, 10.0f)))
+        {
+            a.devName = cpFileLoc;
+        }
 
         if (a.name == lvl->gameMode->pawn->name && a.id == lvl->gameMode->pawn->id && a.devName == lvl->gameMode->pawn->devName)
         {
@@ -210,7 +225,12 @@ void DetailsPanel::display(UVK::Actor& ent, UVK::Level* lvl, bool& bShow, bool& 
         ImGui::SliderFloat("Gain", &a.data.gain, 0.0f, 10.0f);
         ImGui::Checkbox("Repeat", &a.data.bLoop);
         ImGui::InputText("File Location", &a.data.location);
-
+        ImGui::SameLine();
+        if (ImGui::ImageButton((void*)(intptr_t)insert.getImage(), ImVec2(10.1f, 10.1f)))
+        {
+            std::cout << "true" << std::endl;
+            a.data.location = cpFileLoc;
+        }
         DrawVec3Control("Position", a.data.position, 0.0f, 100.0f);
         DrawVec3Control("Velocity", a.data.velocity, 0.0f, 100.0f);
     }

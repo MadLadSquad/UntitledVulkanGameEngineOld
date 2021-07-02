@@ -9,30 +9,31 @@
 
 void UVK::GLPipeline::begin(bool bHasEditor, Level* lvl)
 {
-    level = lvl;
     bEditor = bHasEditor;
 
     global.window.createWindow();
 
-    if (!bEditor)
-    {
-        events.callBegin();
-    }
-    else
+    if (bEditor)
     {
 #ifndef PRODUCTION
         auto* lv = new UVK::EditorLevel;
-        level = lv;
+        global.level = lv;
 
         Actor a("Editor Pawn", 330, "EditorPawn");
-        level->gameMode->pawn->beginPlay();
-#ifdef DEVELOPMENT
+        global.level->gameMode->pawn->beginPlay();
+    #ifdef DEVELOPMENT
         tx = Texture("../Content/Engine/brick.jpg");
         tx.load();
-#endif
+    #endif
+        ed.setTheme(colTheme);
+        ed.initEditor();
 #endif
     }
-    initEditor();
+    else
+    {
+        global.ui.init();
+        global.level->beginPlay();
+    }
     enableFeatures();
 }
 
@@ -53,7 +54,7 @@ void UVK::GLPipeline::tick()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
         UVK::Editor::beginFrame();
-        level->gameMode->pawn->tick(deltaTime);
+        global.level->gameMode->pawn->tick(deltaTime);
 #ifdef DEVELOPMENT
         tx.useTexture();
 #endif
@@ -62,10 +63,10 @@ void UVK::GLPipeline::tick()
     {
         glClearColor(global.colour.x, global.colour.y, global.colour.z, global.colour.w);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-        ui.beginFrame();
+        UVK::UI::beginFrame();
     }
 
-    UVK::GLEntityManager::tick(&level->gameMode->pawn->camera);
+    UVK::GLEntityManager::tick(&global.level->gameMode->pawn->camera);
 
     glUseProgram(0);
 
@@ -77,14 +78,16 @@ void UVK::GLPipeline::tick()
         glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        ed.runEditor(global.colour, fb, level->gameMode->pawn->camera, level);
+        ed.runEditor(global.colour, fb, global.level->gameMode->pawn->camera, global.level);
 #endif
     }
     else
     {
-        level->tick(deltaTime);
-        events.callTick(deltaTime);
-        ui.update();
+        global.level->tick(deltaTime);
+        global.events.callTick(deltaTime);
+        global.ui.update();
+
+        global.finalizeOpening();
     }
 
     glfwSwapBuffers(global.window.getWindow());
@@ -96,14 +99,14 @@ void UVK::GLPipeline::end()
     {
 #ifndef PRODUCTION
         ed.destroyContext();
-        level->gameMode->pawn->endPlay();
+        global.level->gameMode->pawn->endPlay();
 #endif
     }
     else
     {
-        level->endPlay();
-        events.callEnd();
-        ui.clean();
+        global.level->endPlay();
+        global.events.callEnd();
+        UVK::UI::clean();
     }
 
     UVK::GLEntityManager::clean();
@@ -117,21 +120,6 @@ void UVK::GLPipeline::enableFeatures()
     glEnable(GL_CULL_FACE);
     glCullFace(GL_FRONT);
     glFrontFace(GL_CCW);
-}
-
-void UVK::GLPipeline::initEditor()
-{
-    if (bEditor)
-    {
-#ifndef PRODUCTION
-        ed.setTheme(colTheme);
-        ed.initEditor();
-#endif
-    }
-    else
-    {
-        ui.init();
-    }
 }
 
 UVK::GLPipeline::GLPipeline(bool bHasEditor, UVK::Level *lvl)

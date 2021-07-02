@@ -7,7 +7,7 @@
 #ifndef PRODUCTION
 void NewLevel::display(bool &bShow)
 {
-    ImGui::Begin("WARNING##new level");
+    ImGui::Begin("WARNING##new level", &bShow);
 
     ImGui::Text("Creating a new level will not save any changes to the level you are currently editing!");
     ImGui::Text("If you want to save your changes click Cancel and do so, otherwise you can click Create");
