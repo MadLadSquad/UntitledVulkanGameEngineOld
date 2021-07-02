@@ -1,5 +1,5 @@
 // SceneHierarchy.cpp
-// Last update 30/6/2021 by Madman10K
+// Last update 2/7/2021 by Madman10K
 #include <GL/glew.h>
 #include "SceneHierarchy.hpp"
 #include <Core/Actor.hpp>
@@ -45,7 +45,7 @@ void SceneHierarchy::display(UVK::Actor& selectedEntity, std::string &entAppend,
     // to be fixed immediately because it's a big performance drain
     UVK::global.ecs.data().each([&](entt::entity ent)
     {
-        auto& a = UVK::global.ecs.data().get<UVK::CoreComponent>(ent);
+        const auto& a = UVK::global.ecs.data().get<UVK::CoreComponent>(ent);
 
         if (ImGui::Selectable(static_cast<std::string>(a.name + ", " + std::to_string(a.id)).c_str()))
         {

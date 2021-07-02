@@ -1,5 +1,5 @@
 // VulkanRenderer.cpp
-// Last update 30/6/2021 by Madman10K
+// Last update 2/7/2021 by Madman10K
 #ifndef __APPLE__
 #define GLFW_INCLUDE_VULKAN
 #include <GL/glew.h>

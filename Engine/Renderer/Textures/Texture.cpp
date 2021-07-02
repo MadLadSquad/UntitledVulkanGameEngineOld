@@ -1,5 +1,5 @@
 // Texture.cpp
-// Last update 4/28/2021 by Madman10K
+// Last update 2/7/2021 by Madman10K
 #define STB_IMAGE_IMPLEMENTATION
 #include "GL/glew.h"
 #include "Texture.hpp"

@@ -1,5 +1,5 @@
 // GLFrameBuffer.cpp
-// Last update 4/13/2021 by Madman10K
+// Last update 2/7/2021 by Madman10K
 #include <GL/glew.h>
 #include "GLFrameBuffer.hpp"
 

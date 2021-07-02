@@ -1,5 +1,5 @@
 // VKSwapchain.hpp
-// Last update 3/6/2021 by Madman10K
+// Last update 2/7/2021 by Madman10K
 #pragma once
 #ifndef __APPLE__
     #include <vulkan/vulkan.h>

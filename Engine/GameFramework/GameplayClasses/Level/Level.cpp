@@ -1,9 +1,8 @@
 // Level.cpp
-// Last update 30/6/2021 by Madman10K
+// Last update 2/7/2021 by Madman10K
 #include "../../Components/Components.hpp"
 #include "Engine/Core/Core/Actor.hpp"
 #include <Events/Events.hpp>
-#include "../../Actors/ActorManager.hpp"
 #include <Engine/Core/Core/Global.hpp>
 
 // Creates bindings for a FVector

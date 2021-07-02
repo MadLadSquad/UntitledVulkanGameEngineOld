@@ -1,5 +1,5 @@
 // Core.hpp
-// Last update 2/7/2020 by Madman10K
+// Last update 2/7/2021 by Madman10K
 #pragma once
 
 // Includes

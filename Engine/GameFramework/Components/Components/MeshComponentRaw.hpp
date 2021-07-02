@@ -1,5 +1,5 @@
 // MeshComponentRaw.hpp
-// Last update 26/6/2021 by Madman10K
+// Last update 2/7/2021 by Madman10K
 #pragma once
 #include <glm/gtx/quaternion.hpp>
 #include <../Renderer/OpenGL/Components/GLMesh.hpp>

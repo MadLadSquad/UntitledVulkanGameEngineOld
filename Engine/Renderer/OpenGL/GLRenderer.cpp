@@ -1,5 +1,5 @@
 // GLRenderer.cpp
-// Last update 30/6/2021 by Madman10K
+// Last update 2/7/2021 by Madman10K
 #include <GL/glew.h>
 #include "GLRenderer.hpp"
 #include "../../Core/Events/Events.hpp"

@@ -1,5 +1,5 @@
 // MeshComponent.cpp
-// Last update 26/6/2021 by Madman10K
+// Last update 2/7/2021 by Madman10K
 #include "MeshComponent.hpp"
 
 void UVK::MeshComponent::createMesh(UVK::String modelLocation, UVK::String vertexShader, UVK::String fragmentShader, ShaderImportType type)
