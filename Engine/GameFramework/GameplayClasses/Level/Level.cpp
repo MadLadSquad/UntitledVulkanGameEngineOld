@@ -113,7 +113,12 @@ void UVK::Level::save(String location)
     out << YAML::Key << "actors" << YAML::Value << YAML::BeginSeq;
     global.ecs.data().each([&](auto entityID)
     {
-        saveEntity(out, entityID);
+        const auto& b = global.ecs.data().get<CoreComponent>(entityID);
+
+        if (b.id != 330 && b.name.find("Editor") == std::string::npos)
+        {
+            saveEntity(out, entityID);
+        }
     });
     out << YAML::EndSeq;
     out << YAML::EndMap;
@@ -165,7 +170,10 @@ void UVK::Level::open(String location) noexcept
                 auto name = entity["actor"].as<std::string>();
                 auto id = entity["id"].as<uint64_t>();
                 auto devName = entity["dev-name"].as<std::string>();
-
+                if (id == 330 && name.find("Editor") == std::string::npos)
+                {
+                    id = 331;
+                }
                 auto act = Actor(name, id, devName, true);
 
                 if (entity["audio-pitch"] && entity["audio-gain"] && entity["audio-location"])

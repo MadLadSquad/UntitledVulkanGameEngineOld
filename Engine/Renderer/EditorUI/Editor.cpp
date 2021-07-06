@@ -17,13 +17,13 @@
 #include "Widgets/CreateFile.hpp"
 #include "Widgets/OpenLevelWidget.hpp"
 #include "Widgets/About.hpp"
+#include "Widgets/Settings.hpp"
 #include "Widgets/NewLevel.hpp"
 #include "Widgets/Help.hpp"
 #include "Widgets/RemoveFile.hpp"
 #include "Widgets/Ship.hpp"
 #include <Engine/Core/Core/Global.hpp>
 #include <Renderer/OpenGL/Components/GLShader.hpp>
-//#include "../../GameFramework/GameplayClasses/Level/Level.hpp"
 
 void UVK::Editor::initEditor()
 {
@@ -88,27 +88,40 @@ void UVK::Editor::initEditor()
     ImGui::StyleColorsClassic();
 
     ImGuiStyle& style = ImGui::GetStyle();
-    EditorTheme theme(colTheme);
+    EditorTheme theme;
+    if (!global.rendererSettings.themeLoc.empty())
+    {
+        theme = EditorTheme(colTheme);
+    }
+
     //style.WindowPadding = ImVec2(0.0f, 0.0f);
 
     if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
     {
-        style.WindowRounding = theme.getWindowRounding();
+        if (!global.rendererSettings.themeLoc.empty())
+        {
+            style.WindowRounding = theme.getWindowRounding();
+        }
         style.Colors[ImGuiCol_WindowBg].w = 1.0f;
     }
-    theme.useTheme();
 
-#ifndef __MINGW32__
-    if (std_filesystem::exists(theme.getFont().first))
+    if (!global.rendererSettings.themeLoc.empty())
     {
-        ImFontConfig config;
-        io.Fonts->AddFontFromFileTTF(theme.getFont().first.c_str(), (float)theme.getFont().second, &config, io.Fonts->GetGlyphRangesCyrillic());
-        io.Fonts->AddFontFromFileTTF(theme.getFont().first.c_str(), (float)theme.getFont().second, &config, io.Fonts->GetGlyphRangesThai());
-        io.Fonts->AddFontFromFileTTF(theme.getFont().first.c_str(), (float)theme.getFont().second, &config, io.Fonts->GetGlyphRangesVietnamese());
+        theme.useTheme();
+#ifndef __MINGW32__
+        if (std_filesystem::exists(theme.getFont().first))
+        {
+            ImFontConfig config;
+            io.Fonts->AddFontFromFileTTF(theme.getFont().first.c_str(), (float)theme.getFont().second, &config, io.Fonts->GetGlyphRangesCyrillic());
+            io.Fonts->AddFontFromFileTTF(theme.getFont().first.c_str(), (float)theme.getFont().second, &config, io.Fonts->GetGlyphRangesThai());
+            io.Fonts->AddFontFromFileTTF(theme.getFont().first.c_str(), (float)theme.getFont().second, &config, io.Fonts->GetGlyphRangesVietnamese());
 
-        io.Fonts->Build();
-    }
+            io.Fonts->Build();
+        }
 #endif
+    }
+
+
     if (global.bUsesVulkan)
     {
         ImGui_ImplGlfw_InitForVulkan(global.window.getWindow(), true);
@@ -294,23 +307,47 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
         }
         if (ImGui::BeginMenu("Edit"))
         {
-            if (ImGui::MenuItem("Undo"))
+            if (ImGui::MenuItem("Undo", "CTRL+Z"))
             {
 
             }
 
-            if (ImGui::MenuItem("Redo"))
+            if (ImGui::MenuItem("Redo", "CTRL+Y"))
             {
 
             }
 
-            if (ImGui::MenuItem("Undo history"))
-            {
-
-            }
             ImGui::EndMenu();
         }
 
+        if (ImGui::BeginMenu("Settings"))
+        {
+            if (ImGui::MenuItem("Window Settings"))
+            {
+                bShowWindowSettings = true;
+            }
+
+            if (ImGui::MenuItem("Renderer Settings"))
+            {
+                bShowRendererSettings = true;
+            }
+
+            if (ImGui::MenuItem("Editor Keybind Settings"))
+            {
+                bShowKeybindSettings = true;
+            }
+
+            if (ImGui::MenuItem("Game Keybind Settings"))
+            {
+                bShowGameKeybinds = true;
+            }
+
+            if (ImGui::MenuItem("Theme Editor"))
+            {
+                bShowThemeSettings = true;
+            }
+            ImGui::EndMenu();
+        }
         if (ImGui::BeginMenu("View"))
         {
             ImGui::Checkbox("Filesystem", &bShowFilesystem);
@@ -442,6 +479,31 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
     if (bShowShip)
     {
         Shipping::display(bShowShip);
+    }
+
+    if (bShowWindowSettings)
+    {
+        Settings::displayWindow(bShowWindowSettings);
+    }
+
+    if (bShowRendererSettings)
+    {
+        Settings::displayRenderer(bShowRendererSettings);
+    }
+
+    if (bShowKeybindSettings)
+    {
+        Settings::displayKeybindEditor(bShowKeybindSettings);
+    }
+
+    if (bShowGameKeybinds)
+    {
+        Settings::displayKeybindGame(bShowGameKeybinds);
+    }
+
+    if (bShowThemeSettings)
+    {
+        Settings::displayThemeEditor(bShowThemeSettings);
     }
 #endif
 }

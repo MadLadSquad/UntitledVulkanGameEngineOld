@@ -7,9 +7,9 @@ void Help::display(bool& bShow)
 {
     ImGui::Begin("Help", &bShow);
 
-    char* link1 = (char*)"https://github.com/MadLadSquad/UntitledVulkanGameEngine\0";
-    char* link2 = (char*)"https://github.com/MadLadSquad/UntitledVulkanGameEngine/wiki\0";
-    char* link3 = (char*)"https://discord.gg/4wgH8ZE\0";
+    constexpr char* link1 = (char*)"https://github.com/MadLadSquad/UntitledVulkanGameEngine\0";
+    constexpr char* link2 = (char*)"https://github.com/MadLadSquad/UntitledVulkanGameEngine/wiki\0";
+    constexpr char* link3 = (char*)"https://discord.gg/4wgH8ZE\0";
 
     ImGui::Text("Github Repo: ");
     ImGui::InputText("##in", link1, strlen(link1), ImGuiInputTextFlags_ReadOnly);

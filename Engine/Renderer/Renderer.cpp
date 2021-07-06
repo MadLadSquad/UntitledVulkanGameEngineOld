@@ -11,21 +11,21 @@ UVK::Renderer::Renderer(UVK::Level* lvl, bool bUsesEditor)
 
 void UVK::Renderer::switchRenderer()
 {
-    if (bIsVulkan)bIsVulkan = false;
-    else bIsVulkan = true;
+    if (rs->bVulkan) rs->bVulkan = false;
+    else rs->bVulkan = true;
 }
 
-void UVK::Renderer::saveSettings() const
+void UVK::RendererSettings::saveSettings() const
 {
     YAML::Emitter out;
     out << YAML::BeginMap;
 
-    out << YAML::Key << "vulkan" << YAML::Value << bIsVulkan;
-    out << YAML::Key << "theme" << YAML::Value << theme;
+    out << YAML::Key << "vulkan" << YAML::Value << bVulkan;
+    out << YAML::Key << "theme" << YAML::Value << themeLoc;
 
     out << YAML::EndMap;
 
-    std::ofstream fileout("Config/Settings/Renderer.yaml");
+    std::ofstream fileout("../Config/Settings/Renderer.yaml");
     fileout << out.c_str();
 }
 
@@ -33,15 +33,15 @@ void UVK::Renderer::startRenderer(UVK::Level* lvl, bool bUsesEditor)
 {
     loadSettings();
 
-    global.bUsesVulkan = bIsVulkan;
-    if (bIsVulkan)
+    global.bUsesVulkan = rs->bVulkan;
+    if (rs->bVulkan)
     {
         VulkanRenderer renderer{};
         renderer.run();
     }
     else
     {
-        GLRenderer renderer(lvl, bUsesEditor, theme.c_str());
+        GLRenderer renderer(lvl, bUsesEditor, rs->themeLoc.c_str());
     }
 }
 
@@ -50,9 +50,11 @@ void UVK::Renderer::loadSettings()
     YAML::Node a;
     bool bUsesConf = true;
 
+    rs = &global.rendererSettings;
+
     try
     {
-        a = YAML::LoadFile("Config/Settings/Renderer.yaml");
+        a = YAML::LoadFile("../Config/Settings/Renderer.yaml");
     }
     catch (YAML::BadFile&)
     {
@@ -65,16 +67,16 @@ void UVK::Renderer::loadSettings()
     {
         if (a["vulkan"])
         {
-            bIsVulkan = a["vulkan"].as<bool>();
+            rs->bVulkan = a["vulkan"].as<bool>();
         }
 
         if (a["theme"])
         {
-            theme = a["theme"].as<std::string>();
+            rs->themeLoc = a["theme"].as<std::string>();
         }
     }
     else
     {
-        bIsVulkan = false;
+        rs->bVulkan = false;
     }
 }

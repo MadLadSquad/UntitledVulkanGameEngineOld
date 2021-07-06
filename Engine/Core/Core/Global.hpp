@@ -13,6 +13,15 @@
 
 namespace UVK
 {
+    struct RendererSettings
+    {
+        RendererSettings() = default;
+        std::string themeLoc;
+        bool bVulkan = false;
+
+        void saveSettings() const;
+    };
+
     struct UVKGlobal
     {
         UVKGlobal()
@@ -36,6 +45,11 @@ namespace UVK
             };
         }
 
+        std::vector<InputAction>& getActions()
+        {
+            return inputActionList;
+        }
+
         ~UVKGlobal()
         {
             delete level;
@@ -54,6 +68,8 @@ namespace UVK
         GameInstance* instance{};
         Window window;
         ECSManager ecs;
+
+        RendererSettings rendererSettings;
 
         UI ui;
         Level* level = nullptr;

@@ -45,7 +45,7 @@ namespace UVK
 
         int entNum = 0;
         int viewportWidth = 0, viewportHeight = 0;
-        short selectedFile = 0;
+        uint8_t selectedFile = 0;
 
         Actor selectedEntity;
 
@@ -69,6 +69,11 @@ namespace UVK
         bool bShowMemoryEditor = true;
         bool bShowRemoveFile = false;
         bool bShowShip = false;
+        bool bShowWindowSettings = false;
+        bool bShowRendererSettings = false;
+        bool bShowKeybindSettings = false;
+        bool bShowThemeSettings = false;
+        bool bShowGameKeybinds = false;
 
         void displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& camera, UVK::Level* lvl);
 

@@ -148,8 +148,7 @@ namespace Keys
     [[maybe_unused]] constexpr uint16_t ScrollRight = 10;
     [[maybe_unused]] constexpr uint16_t ScrollLeft = 11;
 
-    [[maybe_unused]] constexpr uint16_t KeyReleased = 0;
-    [[maybe_unused]] constexpr uint16_t KeyPressed = 1;
-    [[maybe_unused]] constexpr uint16_t KeyRepeat = 2;
-    [[maybe_unused]] constexpr uint16_t KeyAny = 3;
+    [[maybe_unused]] constexpr uint8_t KeyReleased = 0;
+    [[maybe_unused]] constexpr uint8_t KeyPressed = 1;
+    [[maybe_unused]] constexpr uint8_t KeyRepeat = 2;
 }

@@ -30,7 +30,7 @@ void RemoveFile::display(bool& bShow, UVK::Texture& insert, const std::string& c
 
     if (ImGui::Button("Delete##delete"))
     {
-        int lnt = 0;
+        int8_t lnt = 0;
         bool error = false;
         if (bSO)
         {

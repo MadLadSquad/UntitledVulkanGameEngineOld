@@ -9,20 +9,14 @@ void SaveLevel::display(bool &bOpen, std::string &location, std::string &name, U
 {
     ImGui::Begin("Save level", &bOpen);
 
-    ImGui::InputText("location##inputlocationsave", &location);
+    ImGui::InputTextWithHint("location##inputlocationsave", "Location starting from the Content directory", &location);
     ImGui::SameLine();
     if (ImGui::ImageButton((void*)(intptr_t)insert.getImage(), ImVec2(10.0f, 10.0f)))
     {
         location = cpFileLoc;
     }
 
-    // TODO: Fix problem with insertion here
-    ImGui::InputText("name##inputnamesave", &name);
-    ImGui::SameLine();
-    if (ImGui::ImageButton((void*)(intptr_t)insert.getImage(), ImVec2(10.0f, 10.0f)))
-    {
-        name = cpFileLoc;
-    }
+    ImGui::InputTextWithHint("name##inputnamesave", "Internal name of the level (NOT THE FILENAME)", &name);
 
     if (ImGui::Button("Cancel##cancelbuttononsave"))
     {
@@ -33,7 +27,7 @@ void SaveLevel::display(bool &bOpen, std::string &location, std::string &name, U
 
     if (ImGui::Button("Submit##submitbuttononsave"))
     {
-        UVK::Level::save(location.c_str());
+        UVK::Level::save(static_cast<std::string>("../Content/" + location).c_str());
         bOpen = false;
     }
 

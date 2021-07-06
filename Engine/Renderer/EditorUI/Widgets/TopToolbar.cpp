@@ -6,7 +6,7 @@
 #ifndef PRODUCTION
 void TopToolbar::display(UVK::Texture &play, bool& bShow)
 {
-    int lnt = 0;
+    int8_t lnt = 0;
 
     ImGui::Begin("Toolbar", &bShow);
 

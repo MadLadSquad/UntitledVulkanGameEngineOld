@@ -26,7 +26,7 @@ void EditorViewport::display(UVK::GLFrameBuffer& fb, int& viewportWidth, int& vi
     }
     ImGui::Image((void*)(intptr_t)fb.getFramebufferTexture(), ImVec2((float)viewportWidth, (float)viewportHeight), ImVec2(0, 1), ImVec2(1, 0));
 
-    static int operationType = -1;
+    static int16_t operationType = -1;
     bool snap;
     float snapVal = 0.05f;
 

@@ -12,14 +12,24 @@ namespace UVK
     struct InputAction
     {
         InputAction() = default;
-        bool operator==(uint16_t st) const
+        bool operator==(uint8_t st) const
         {
             return state == st;
         }
 
         std::string name{};
         uint16_t keyCode{};
-        uint16_t state{};
+        uint8_t state{};
+    };
+
+    struct WindowData
+    {
+        WindowData() = default;
+
+        bool fullscreen = false;
+        std::string image = "../Content/Engine/icon.png";
+        std::string name = "Untitled Vulkan Game Engine Editor";
+        FVector2 size = FVector2(800, 600);
     };
 
     /**
@@ -42,7 +52,12 @@ namespace UVK
 
         void setCursorVisibility(bool bIsVisible);
         void setTitle(UVK::String newTitle) const;
-        void dumpConfig();
+        void dumpConfig() const;
+
+        WindowData& data();
+
+        static void saveEditorKeybinds();
+        static void saveGameKeybinds();
     private:
         friend class GLPipeline;
         friend class Renderer;
@@ -70,11 +85,7 @@ namespace UVK
         [[nodiscard]] double getXMousePositionChange();
         [[nodiscard]] double getYMousePositionChange();
 
-        std::string image = "../Content/Engine/icon.png";
-        int width = 800;
-        int height = 600;
-        bool bIsFullScreen = false;
-        std::string name = "Untitled Vulkan Game Engine Editor";
+        WindowData resources;
 
         GLFWwindow* windowMain = nullptr;
 
@@ -91,8 +102,6 @@ namespace UVK
         int bufferHeight = 0;
     };
 }
-
-//inline UVK::Window currentWindow{};
 
 namespace UVK
 {

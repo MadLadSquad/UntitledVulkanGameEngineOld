@@ -7,68 +7,63 @@
 
 void UVK::GLEntityManager::tick(Camera* camera)
 {
-    global.ecs.data().each([&](entt::entity ent)
+    for (const auto& a : global.ecs.data().view<AudioComponent>())
     {
-        if (global.ecs.data().has<AudioComponent>(ent))
-        {
 #ifndef __MINGW32__
-            bool bRemove = false;
-
-            {
-                auto& audiocmp = global.ecs.data().get<AudioComponent>(ent);
-
-                auto& state = audiocmp.src.getState();
-
-                if (state == UVK_AUDIO_STATE_RESUME)
-                {
-                    audiocmp.src.play();
-                }
-                else if (state == UVK_AUDIO_STATE_PAUSED)
-                {
-                    alSourcePause(audiocmp.src.getBuffer().getBuffer());
-                }
-                else if (state == UVK_AUDIO_STATE_STOPPED)
-                {
-                    audiocmp.src.getBuffer().removeSound();
-                    bRemove = true;
-                }
-            }
-
-            if (bRemove)
-            {
-                global.ecs.data().remove<AudioComponent>(ent);
-            }
-#endif
-        }
-
-        if (global.ecs.data().has<MeshComponentRaw>(ent))
         {
-            auto& a = global.ecs.data().get<MeshComponentRaw>(ent);
-            a.render(camera->getProjection().data(), *camera);
+            auto& audiocmp = global.ecs.data().get<AudioComponent>(a);
+
+            auto& state = audiocmp.src.getState();
+
+            switch (state)
+            {
+                case UVK_AUDIO_STATE_RESUME:
+                    audiocmp.src.play();
+                    break;
+                case UVK_AUDIO_STATE_PAUSED:
+                    alSourcePause(audiocmp.src.getBuffer().getBuffer());
+                    break;
+                case UVK_AUDIO_STATE_STOPPED:
+                    audiocmp.src.getBuffer().removeSound();
+                    state = UVK_AUDIO_STATE_PAUSED;
+                    break;
+                case UVK_AUDIO_STATE_RUNNING:
+                    break;
+            }
+
+            //else if (state == UVK_AUDIO_STATE_STOPPED)
+            //{
+            //    audiocmp.src.getBuffer().removeSound();
+            //    bRemove = true;
+            //}
         }
-    });
+#endif
+    }
+
+    for (const auto& a : global.ecs.data().view<MeshComponentRaw>())
+    {
+        auto& b = global.ecs.data().get<MeshComponentRaw>(a);
+        b.render(camera->getProjection().data(), *camera);
+    }
 }
 
 void UVK::GLEntityManager::clean()
 {
-    global.ecs.each([&](entt::entity ent)
+    for (const auto& a : global.ecs.data().view<MeshComponentRaw>())
     {
-        if (global.ecs.data().has<MeshComponentRaw>(ent))
-        {
-            auto& a = global.ecs.data().get<MeshComponentRaw>(ent);
+        auto& b = global.ecs.data().get<MeshComponentRaw>(a);
 
-            a.clearMesh();
-        }
+        b.clearMesh();
+    }
 
-        if (global.ecs.data().has<AudioComponent>(ent))
-        {
+    for (const auto& a : global.ecs.data().view<AudioComponent>())
+    {
 #ifndef __MINGW32__
-            auto& a = global.ecs.data().get<AudioComponent>(ent);
+        auto& b = global.ecs.data().get<AudioComponent>(a);
 
-            a.src.getBuffer().removeSound();
+        b.src.getBuffer().removeSound();
 #endif
-        }
-    });
+    }
 
     global.ecs.clear();
 }

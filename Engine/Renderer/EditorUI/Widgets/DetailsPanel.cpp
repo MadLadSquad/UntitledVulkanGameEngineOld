@@ -107,7 +107,7 @@ void DetailsPanel::display(UVK::Actor& ent, UVK::Level* lvl, bool& bShow, bool& 
                 auto& a = ent.add<UVK::AudioComponent>();
 
                 UVK::AudioSourceData dt;
-                dt.location = "and.wav";
+                dt.location = "test.wav";
                 dt.velocity = UVK::FVector(0.0f, 0.0f, 0.0f);
                 dt.position = UVK::FVector(0.0f, 0.0f, 0.0f);
                 dt.bLoop = false;
@@ -155,7 +155,6 @@ void DetailsPanel::display(UVK::Actor& ent, UVK::Level* lvl, bool& bShow, bool& 
     {
         auto& a = ent.get<UVK::CoreComponent>();
 
-        std::string id = std::to_string(a.id);
         ImGui::InputText("Name##inputactorname", &a.name);
         ImGui::SameLine();
         if (ImGui::ImageButton((void*)(intptr_t)insert.getImage(), ImVec2(10.0f, 10.0f)))
@@ -163,12 +162,11 @@ void DetailsPanel::display(UVK::Actor& ent, UVK::Level* lvl, bool& bShow, bool& 
             a.name = cpFileLoc;
         }
 
-        ImGui::InputText("ID##inputactoridentifier", &id);
-        ImGui::SameLine();
-        if (ImGui::ImageButton((void*)(intptr_t)insert.getImage(), ImVec2(10.0f, 10.0f)))
-        {
-            id = cpFileLoc;
-        }
+        auto id = static_cast<int>(a.id);
+        ImGui::InputInt("ID##inputactoridentifier", &id);
+        if (id == 330 && a.name.find("Editor") == std::string::npos)
+            id += 1;
+        a.id = id;
 
         ImGui::InputText("Development Name##devname", &a.devName);
         ImGui::SameLine();
@@ -219,20 +217,53 @@ void DetailsPanel::display(UVK::Actor& ent, UVK::Level* lvl, bool& bShow, bool& 
     if (ent.has<UVK::AudioComponent>())
     {
         ImGui::Separator();
-        auto& a = ent.get<UVK::AudioComponent>();
 
-        ImGui::SliderFloat("Pitch", &a.data.pitch, 0.5f, 2.0f);
-        ImGui::SliderFloat("Gain", &a.data.gain, 0.0f, 10.0f);
-        ImGui::Checkbox("Repeat", &a.data.bLoop);
-        ImGui::InputText("File Location", &a.data.location);
+        auto& a = ent.get<UVK::AudioComponent>();
+        UVK::AudioSourceData dt = a.data;
+
+        ImGui::SliderFloat("Pitch", &dt.pitch, 0.5f, 2.0f);
+        ImGui::SliderFloat("Gain", &dt.gain, 0.0f, 10.0f);
+        ImGui::Checkbox("Repeat", &dt.bLoop);
+        ImGui::InputText("File Location", &dt.location);
         ImGui::SameLine();
         if (ImGui::ImageButton((void*)(intptr_t)insert.getImage(), ImVec2(10.1f, 10.1f)))
         {
             std::cout << "true" << std::endl;
-            a.data.location = cpFileLoc;
+            dt.location = cpFileLoc;
         }
+        a.data = dt;
+        if (ImGui::Button("Play") && !dt.location.empty())
+        {
+            ent.remove<UVK::AudioComponent>();
+            auto& comp = ent.add<UVK::AudioComponent>();
+            comp.init(dt);
+            comp.play();
+        }
+        ImGui::SameLine();
+        if (ImGui::Button("Resume"))
+        {
+            a.resume();
+        }
+        ImGui::SameLine();
+        if (ImGui::Button("Pause"))
+        {
+            a.pause();
+        }
+        ImGui::SameLine();
+        if (ImGui::Button("Stop"))
+        {
+            a.stop();
+        }
+        ImGui::SameLine();
+        if (ImGui::Button("Replay"))
+        {
+            a.stop();
+            a.play();
+        }
+
         DrawVec3Control("Position", a.data.position, 0.0f, 100.0f);
         DrawVec3Control("Velocity", a.data.velocity, 0.0f, 100.0f);
+
     }
 #endif
     ImGui::End();

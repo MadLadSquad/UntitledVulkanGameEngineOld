@@ -7,6 +7,14 @@
 void UVK::ActorManager::init()
 {
     ACTOR_SET_DEPLOY
+
+    for (auto& b : a)
+    {
+        if (b->id == 330 && b->name.find("Editor") == std::string::npos)
+        {
+            b->id = 331;
+        }
+    }
 }
 
 void UVK::ActorManager::destroy()

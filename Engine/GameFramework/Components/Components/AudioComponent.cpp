@@ -2,6 +2,8 @@
 // Last update 2/7/2021 by Madman10K
 #include "AudioComponent.hpp"
 
+#include <utility>
+
 void UVK::AudioComponent::play()
 {
 #ifndef __MINGW32__
@@ -14,33 +16,27 @@ void UVK::AudioComponent::play()
 void UVK::AudioComponent::stop()
 {
 #ifndef __MINGW32__
-    auto& state = src.getState();
-
-    state = UVK_AUDIO_STATE_STOPPED;
+    src.getState() = UVK_AUDIO_STATE_STOPPED;
 #endif
 }
 
 void UVK::AudioComponent::pause()
 {
 #ifndef __MINGW32__
-    auto& state = src.getState();
-
-    state = UVK_AUDIO_STATE_PAUSED;
+    src.getState() = UVK_AUDIO_STATE_PAUSED;
 #endif
 }
 
 void UVK::AudioComponent::resume()
 {
 #ifndef __MINGW32__
-    auto& state = src.getState();
-
-    state = UVK_AUDIO_STATE_RESUME;
+    src.getState() = UVK_AUDIO_STATE_RESUME;
 #endif
 }
 
 void UVK::AudioComponent::init(AudioSourceData dt)
 {
-    data = dt;
+    data = std::move(dt);
 
 #ifndef __MINGW32__
 

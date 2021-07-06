@@ -5,7 +5,7 @@
 #include <Core.hpp>
 
 #ifndef PRODUCTION
-void CreateFile::display(short& selectedFile, std::string& fileOutLocation, bool& bShowCreateFile1, UVK::Texture& insert, const std::string& cpFileLoc)
+void CreateFile::display(uint8_t& selectedFile, std::string& fileOutLocation, bool& bShowCreateFile1, UVK::Texture& insert, const std::string& cpFileLoc)
 {
     ImGui::Begin("Create a file", &bShowCreateFile1);
 

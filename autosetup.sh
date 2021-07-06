@@ -3,6 +3,15 @@ echo "Compiling GLEW ..."
 
 mkdir Source || exit
 mkdir Generated || exit
+cd Config || exit
+touch Engine/GameKeybinds.yaml
+echo "\
+bindings:
+  - key: NewAction0
+    val: 65
+" > Engine/EditorKeybinds.yaml
+cd .. || exit
+
 
 cd Engine/ThirdParty/glew/auto || exit 
 make || exit

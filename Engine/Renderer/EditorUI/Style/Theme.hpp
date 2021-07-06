@@ -20,6 +20,7 @@ namespace UVK
             setTheme(std::move(theme));
         }
 
+        static void save(UVK::String filename, UVK::String font, int fontSz);
     private:
         friend class Editor;
 
@@ -63,6 +64,7 @@ namespace UVK
         ImVec4 titleBgActive = ImVec4(0.15, 0.15, 0.15, 1.0);
 
         ImVec4 menubarBG = ImVec4(0.01, 0.01, 0.01, 1.0);
+        ImVec4 popupBG;
 
         std::string fontLoc;
         int fontSize = 12;

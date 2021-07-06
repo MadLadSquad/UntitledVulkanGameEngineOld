@@ -34,7 +34,7 @@ void Shipping::display(bool& bShow)
     if (ImGui::Button("Compile##compile"))
     {
 #ifndef _WIN32
-        int lnt;
+        int8_t lnt;
         auto a = std::async(std::launch::async, [&]() {
             lnt = system(static_cast<std::string>("cd ../UVKBuildTool/build/ && ./UVKBuildTool --build " + std::to_string(jobs)).c_str());
         });

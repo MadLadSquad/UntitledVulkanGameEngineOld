@@ -51,7 +51,6 @@ void UVK::Window::doCallBacks()
 void UVK::Window::framebufferSizeCallback(GLFWwindow* window, int width, int height)
 {
     glViewport(0, 0, width, height);
-
 }
 
 void UVK::Window::createWindow()
@@ -84,19 +83,19 @@ void UVK::Window::createWindow()
     }
 
     logger.consoleLog("Window settings configured", UVK_LOG_TYPE_NOTE);
-    if (bIsFullScreen)
+    if (resources.fullscreen)
     {
-        windowMain = glfwCreateWindow(width, height, name.c_str(), glfwGetPrimaryMonitor(), nullptr);
+        windowMain = glfwCreateWindow((int)resources.size.x, (int)resources.size.y, resources.name.c_str(), glfwGetPrimaryMonitor(), nullptr);
         logger.consoleLog("Created window", UVK_LOG_TYPE_NOTE);
     }
     else
     {
-        windowMain = glfwCreateWindow(width, height, name.c_str(), nullptr, nullptr);
+        windowMain = glfwCreateWindow((int)resources.size.x, (int)resources.size.y, resources.name.c_str(), nullptr, nullptr);
         logger.consoleLog("Created window", UVK_LOG_TYPE_NOTE);
     }
 
     GLFWimage images[1];
-    images[0].pixels = stbi_load(image.c_str(), &images[0].width, &images[0].height, nullptr, 4);
+    images[0].pixels = stbi_load(resources.image.c_str(), &images[0].width, &images[0].height, nullptr, 4);
     glfwSetWindowIcon(windowMain, 1, images);
     stbi_image_free(images[0].pixels);
 
@@ -110,7 +109,10 @@ void UVK::Window::createWindow()
 
     glfwGetFramebufferSize(windowMain, &bufferWidth, &bufferHeight);
     glfwMakeContextCurrent(windowMain);
-    glfwSwapInterval(0);
+    if (!global.bEditor)
+    {
+        glfwSwapInterval(0);
+    }
 
     doCallBacks();
 
@@ -137,17 +139,20 @@ void UVK::Window::destroyWindow()
     glfwTerminate();
 }
 
-void UVK::Window::dumpConfig()
+void UVK::Window::dumpConfig() const
 {
     YAML::Emitter out;
-    out << YAML::BeginMap<< YAML::Key << "image" << YAML::Value << image;
-    out << YAML::Key << "width" << YAML::Value << width;
-    out << YAML::Key << "height" << YAML::Value << height;
-    out << YAML::Key << "fullscreen" << YAML::Value << bIsFullScreen;
-    out << YAML::Key << "window-name" << YAML::Value << name;
+    out << YAML::BeginMap << YAML::Key << "image" << YAML::Value << resources.image;
+    out << YAML::Key << "width" << YAML::Value << resources.size.x;
+    out << YAML::Key << "height" << YAML::Value << resources.size.y;
+    out << YAML::Key << "fullscreen" << YAML::Value << resources.fullscreen;
+    out << YAML::Key << "window-name" << YAML::Value << resources.name;
 
-    std::ofstream fileout("Config/Settings/Window.yaml");
+    std::ofstream fileout("../Config/Settings/Window.yaml");
     fileout << out.c_str();
+
+    saveEditorKeybinds();
+    saveGameKeybinds();
 }
 
 void UVK::Window::openConfig()
@@ -158,7 +163,7 @@ void UVK::Window::openConfig()
 
     try
     {
-        out = YAML::LoadFile("Config/Settings/Window.yaml");
+        out = YAML::LoadFile("../Config/Settings/Window.yaml");
     }
     catch (YAML::BadFile&)
     {
@@ -169,30 +174,63 @@ void UVK::Window::openConfig()
     {
         if (out["image"])
         {
-            image = out["image"].as<std::string>();
+            resources.image = out["image"].as<std::string>();
         }
 
         if (out["width"] && out["height"])
         {
-            width = out["width"].as<int>();
-            height = out["height"].as<int>();
+            resources.size.x = (float)out["width"].as<int>();
+            resources.size.y = (float)out["height"].as<int>();
         }
 
         if (out["fullscreen"])
         {
-            bIsFullScreen = out["fullscreen"].as<bool>();
+            resources.fullscreen = out["fullscreen"].as<bool>();
         }
 
         if (out["window-name"])
         {
-            name = out["window-name"].as<std::string>();
+            resources.name = out["window-name"].as<std::string>();
+        }
+    }
+
+    if (global.bEditor)
+    {
+        YAML::Node keybinds;
+
+        bValid = true;
+        try
+        {
+            keybinds = YAML::LoadFile("../Config/Engine/EditorKeybinds.yaml");
+        }
+        catch (YAML::BadFile&)
+        {
+            bValid = false;
+        }
+
+        if (bValid)
+        {
+            auto binds = keybinds["bindings"];
+
+            if (binds)
+            {
+                for (const YAML::Node& a : binds)
+                {
+                    InputAction action{};
+                    action.name = a["key"].as<std::string>();
+                    action.keyCode = a["val"].as<uint16_t>();
+                    global.inputActionList.push_back(action);
+                }
+            }
         }
     }
 
     YAML::Node keybinds;
+
+    bValid = true;
     try
     {
-        keybinds = YAML::LoadFile("Config/Settings/Keybinds.yaml");
+        keybinds = YAML::LoadFile("../Config/Engine/GameKeybinds.yaml");
     }
     catch (YAML::BadFile&)
     {
@@ -318,6 +356,51 @@ int UVK::Window::getBufferHeight() const
     return bufferHeight;
 }
 
+UVK::WindowData& UVK::Window::data()
+{
+    return resources;
+}
+
+void UVK::Window::saveEditorKeybinds()
+{
+    YAML::Emitter out;
+    out << YAML::BeginMap << YAML::Key << "bindings" << YAML::BeginSeq;
+    for (auto& a : global.inputActionList)
+    {
+        if (a.name.find("editor-") != std::string::npos)
+        {
+            out << YAML::BeginMap << YAML::Key << "key" << YAML::Value << a.name;
+            out << YAML::Key << "val" << YAML::Value << a.keyCode << YAML::EndMap;
+        }
+    }
+
+    out << YAML::EndSeq << YAML::EndMap;
+
+    std::ofstream file("../Config/Engine/EditorKeybinds.yaml");
+    file << out.c_str();
+    file.close();
+}
+
+void UVK::Window::saveGameKeybinds()
+{
+    YAML::Emitter out;
+    out << YAML::BeginMap << YAML::Key << "bindings" << YAML::BeginSeq;
+    for (auto& a : global.inputActionList)
+    {
+        if (a.name.find("editor-") == std::string::npos)
+        {
+            out << YAML::BeginMap << YAML::Key << "key" << YAML::Value << a.name;
+            out << YAML::Key << "val" << YAML::Value << a.keyCode << YAML::EndMap;
+        }
+    }
+
+    out << YAML::EndSeq << YAML::EndMap;
+
+    std::ofstream file("../Config/Engine/GameKeybinds.yaml");
+    file << out.c_str();
+    file.close();
+}
+
 UVK::FVector2 UVK::Input::getLastMousePosition()
 {
     return global.window.getLastMousePosition();
@@ -348,6 +431,7 @@ const UVK::InputAction& UVK::Input::getAction(const std::string& name)
         }
     }
 
+    // trololololololol
     return *(InputAction*)(nullptr);
 }
 

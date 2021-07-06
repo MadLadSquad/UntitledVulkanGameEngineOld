@@ -84,6 +84,7 @@ void UVK::EditorTheme::setTheme(UVK::String theme)
             titleBgCollapsed = out["titleBgCollapsed"].as<ImVec4>();
             titleBgActive = out["titleBgActive"].as<ImVec4>();
             menubarBG = out["menubarBg"].as<ImVec4>();
+            popupBG = out["popupBg"].as<ImVec4>();
             windowRounding = out["window-rounding"].as<float>();
             fontLoc = out["font"].as<std::string>();
             fontSize = out["font-size"].as<int>();
@@ -99,8 +100,8 @@ void UVK::EditorTheme::useTheme()
     colours[ImGuiCol_WindowBg] = windowBg;
 
     colours[ImGuiCol_Header] = header;
-    colours[ImGuiCol_HeaderHovered] = headerActive;
-    colours[ImGuiCol_HeaderActive] = headerHovered;
+    colours[ImGuiCol_HeaderHovered] = headerHovered;
+    colours[ImGuiCol_HeaderActive] = headerActive;
 
     colours[ImGuiCol_Button] = button;
     colours[ImGuiCol_ButtonHovered] = buttonHovered;
@@ -121,5 +122,52 @@ void UVK::EditorTheme::useTheme()
     colours[ImGuiCol_TitleBgCollapsed] = titleBgCollapsed;
 
     colours[ImGuiCol_MenuBarBg] = menubarBG;
+    colours[ImGuiCol_PopupBg] = popupBG;
 }
+
+void UVK::EditorTheme::save(UVK::String filename, UVK::String font, int fontSz)
+{
+    auto& colours = ImGui::GetStyle().Colors;
+    auto& io = ImGui::GetIO();
+
+    YAML::Emitter out;
+    out << YAML::BeginMap << YAML::Key << "textCol" << YAML::Value << colours[ImGuiCol_Text];
+    out << YAML::Key << "windowBg" << YAML::Value << colours[ImGuiCol_WindowBg];
+
+    out << YAML::Key << "header" << YAML::Value << colours[ImGuiCol_Header];
+    out << YAML::Key << "headerActive" << YAML::Value << colours[ImGuiCol_HeaderActive];
+    out << YAML::Key << "headerHovered" << YAML::Value << colours[ImGuiCol_HeaderHovered];
+
+    out << YAML::Key << "button" << YAML::Value << colours[ImGuiCol_Button];
+    out << YAML::Key << "buttonHovered" << YAML::Value << colours[ImGuiCol_ButtonHovered];
+    out << YAML::Key << "buttonActive" << YAML::Value << colours[ImGuiCol_ButtonActive];
+
+    out << YAML::Key << "frame" << YAML::Value << colours[ImGuiCol_FrameBg];
+    out << YAML::Key << "frameHovered" << YAML::Value << colours[ImGuiCol_FrameBgHovered];
+    out << YAML::Key << "frameActive" << YAML::Value << colours[ImGuiCol_FrameBgActive];
+
+    out << YAML::Key << "tab" << YAML::Value << colours[ImGuiCol_Tab];
+    out << YAML::Key << "tabHovered" << YAML::Value << colours[ImGuiCol_TabHovered];
+    out << YAML::Key << "tabActive" << YAML::Value << colours[ImGuiCol_TabActive];
+    out << YAML::Key << "tabUnfocused" << YAML::Value << colours[ImGuiCol_TabUnfocused];
+    out << YAML::Key << "tabUnfocusedActive" << YAML::Value << colours[ImGuiCol_TabUnfocusedActive];
+
+    out << YAML::Key << "titleBg" << YAML::Value << colours[ImGuiCol_TitleBg];
+    out << YAML::Key << "titleBgActive" << YAML::Value << colours[ImGuiCol_TitleBgActive];
+    out << YAML::Key << "titleBgCollapsed" << YAML::Value << colours[ImGuiCol_TitleBgCollapsed];
+
+    out << YAML::Key << "menubarBg" << YAML::Value << colours[ImGuiCol_MenuBarBg];
+    out << YAML::Key << "popupBg" << YAML::Value << colours[ImGuiCol_PopupBg];
+
+    out << YAML::Key << "font" << YAML::Value << font;
+    out << YAML::Key << "font-size" << YAML::Value << fontSz;
+
+    out << YAML::Key << "window-rounding" << YAML::Value << ImGui::GetStyle().WindowRounding;
+    out << YAML::EndMap;
+
+    std::ofstream file(filename);
+    file << out.c_str();
+    file.close();
+}
+
 #endif

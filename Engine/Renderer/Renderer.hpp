@@ -7,6 +7,7 @@
 
 namespace UVK
 {
+    //struct RendererSettings;
     /**
      * @brief Manages the currently used renderer and can switch renderers
      */
@@ -17,12 +18,11 @@ namespace UVK
         Renderer(UVK::Level* lvl, bool bUsesEditor);
 
         void switchRenderer();
-        void saveSettings() const;
+
     private:
         void loadSettings();
         void startRenderer(UVK::Level* lvl, bool bUsesEditor);
 
-        bool bIsVulkan = false;
-        std::string theme;
+        RendererSettings* rs{};
     };
 }

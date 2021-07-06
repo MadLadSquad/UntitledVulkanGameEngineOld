@@ -9,7 +9,12 @@
 
 void SceneHierarchy::destroyEntity(UVK::Actor& selectedEntity)
 {
-    selectedEntity.destroy();
+    const auto& a = selectedEntity.get<UVK::CoreComponent>();
+
+    if (a.id != 330)
+    {
+        selectedEntity.destroy();
+    }
 }
 
 void SceneHierarchy::addEntity(int& entNum)

@@ -11,7 +11,7 @@ void OpenLevelWidget::display(std::string &openLevel, bool &bShowOpenLevelWidget
 {
     ImGui::Begin("Open Level", &bShowOpenLevelWidget);
 
-    ImGui::InputText("File location", &openLevel);
+    ImGui::InputTextWithHint("File location", "Location starts from the content folder", &openLevel);
     ImGui::SameLine();
     if (ImGui::ImageButton((void*)(intptr_t)insert.getImage(), ImVec2(10.0f, 10.0f)))
     {
@@ -31,7 +31,7 @@ void OpenLevelWidget::display(std::string &openLevel, bool &bShowOpenLevelWidget
         Timer tm;
         tm.startRecording();
 
-        UVK::Level::open(openLevel.c_str());
+        UVK::Level::open(static_cast<std::string>("Content/" + openLevel).c_str());
 
         tm.stopRecording();
         dr = tm.getDuration();

@@ -25,6 +25,7 @@ void UVK::GLPipeline::begin(bool bHasEditor, Level* lvl)
         tx = Texture("../Content/Engine/brick.jpg");
         tx.load();
     #endif
+        colTheme = global.rendererSettings.themeLoc.c_str();
         ed.setTheme(colTheme);
         ed.initEditor();
 #endif

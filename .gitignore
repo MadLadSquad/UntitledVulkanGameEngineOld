@@ -7,6 +7,8 @@ Source/
 Generated/
 Exported/
 build/
+Config/Settings
+Config/Engine/GameKeybinds.yaml
 CMakeLists.txt
 uvproj.yaml
 Content/Engine/brick.jpg

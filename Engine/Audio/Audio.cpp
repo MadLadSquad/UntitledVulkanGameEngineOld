@@ -76,27 +76,26 @@ void UVK::AudioBuffer::addSound(String loc)
 
     format = AL_NONE;
 
-    if (sfinfo.channels == 1)
+    switch (sfinfo.channels)
     {
+    case 1:
         format = AL_FORMAT_MONO16;
-    }
-    else if (sfinfo.channels == 2)
-    {
+        break;
+    case 2:
         format = AL_FORMAT_STEREO16;
-    }
-    else if (sfinfo.channels == 3)
-    {
+        break;
+    case 3:
         if (sf_command(sndfile, SFC_WAVEX_GET_AMBISONIC, nullptr, 0) == SF_AMBISONIC_B_FORMAT)
         {
             format = AL_FORMAT_BFORMAT2D_16;
         }
-    }
-    else if (sfinfo.channels == 4)
-    {
+        break;
+    case 4:
         if (sf_command(sndfile, SFC_WAVEX_GET_AMBISONIC, nullptr, 0) == SF_AMBISONIC_B_FORMAT)
         {
             format = AL_FORMAT_BFORMAT3D_16;
         }
+        break;
     }
 
     if (!format)
@@ -143,7 +142,10 @@ void UVK::AudioBuffer::addSound(String loc)
 
 void UVK::AudioBuffer::removeSound()
 {
-    alDeleteBuffers(1, &buffer);
+    if (alIsBuffer(buffer) && buffer)
+    {
+        alDeleteBuffers(1, &buffer);
+    }
 }
 
 UVK::AudioSource::AudioSource(const AudioSourceData& data)
@@ -158,7 +160,6 @@ UVK::AudioSource::AudioSource(const AudioSourceData& data)
     alSource3f(audioData.source, AL_VELOCITY, audioData.velocity.x, audioData.velocity.y, audioData.velocity.z);
     alSourcei(audioData.source, AL_LOOPING, audioData.bLoop);
     alSourcei(audioData.source, AL_BUFFER, (ALint)buffer.getBuffer());
-
 }
 
 void UVK::AudioSource::play()
