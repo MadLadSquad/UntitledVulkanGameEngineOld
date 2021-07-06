@@ -1,5 +1,5 @@
 // Settings.hpp
-// Last update 5/7/2021 by Madman10K
+// Last update 6/7/2021 by Madman10K
 #pragma once
 
 namespace Settings

@@ -1,5 +1,5 @@
 // Theme.cpp
-// Last update 2/7/2021 by Madman10K
+// Last update 6/7/2021 by Madman10K
 #include <Core.hpp>
 #include "Theme.hpp"
 #include <yaml.h>
@@ -127,8 +127,8 @@ void UVK::EditorTheme::useTheme()
 
 void UVK::EditorTheme::save(UVK::String filename, UVK::String font, int fontSz)
 {
-    auto& colours = ImGui::GetStyle().Colors;
-    auto& io = ImGui::GetIO();
+    const auto& colours = ImGui::GetStyle().Colors;
+    const auto& io = ImGui::GetIO();
 
     YAML::Emitter out;
     out << YAML::BeginMap << YAML::Key << "textCol" << YAML::Value << colours[ImGuiCol_Text];

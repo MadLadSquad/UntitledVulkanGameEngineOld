@@ -1,5 +1,5 @@
 // Settings.cpp
-// Last update 5/7/2021 by Madman10K
+// Last update 6/7/2021 by Madman10K
 #include <GL/glew.h>
 #include "Settings.hpp"
 #include <imgui.h>
@@ -91,7 +91,7 @@ void Settings::displayKeybindGame(bool &bOpen)
 
     ImGui::BeginMenuBar();
     bool bDestroy = false;
-    static int newact = 0;
+    static int newact;
     if (ImGui::MenuItem("+ Add Keybind##scn"))
     {
         UVK::InputAction action;
