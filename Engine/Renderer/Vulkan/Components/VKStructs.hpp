@@ -38,6 +38,7 @@ namespace UVK
     {
     private:
         friend class Device;
+        friend class VKSwapchain;
 
         int graphicsFamily = -1;
         int presentationFamily = -1;
@@ -60,6 +61,15 @@ namespace UVK
         VkSurfaceCapabilitiesKHR surfaceCapabilities{};
         std::vector<VkSurfaceFormatKHR> formats{};
         std::vector<VkPresentModeKHR> presentationModes{};
+    };
+
+    struct VKSwapchainImage
+    {
+    private:
+        friend class VKSwapchain;
+
+        VkImage image;
+        VkImageView imageView;
     };
 }
 #endif

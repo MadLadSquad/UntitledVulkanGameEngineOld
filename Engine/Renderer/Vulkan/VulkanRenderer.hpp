@@ -30,7 +30,7 @@ namespace UVK
 
         VKPipeline pipeline;
 #ifndef __APPLE__
-        VkSurfaceFormatKHR findSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& formats);
+
 #endif
     };
 }

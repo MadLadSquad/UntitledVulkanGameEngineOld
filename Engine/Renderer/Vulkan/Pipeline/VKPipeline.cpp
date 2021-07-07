@@ -10,6 +10,7 @@ void UVK::VKPipeline::begin()
     swapchain.createSurface();
 
     device.set(&instance.getData(), &swapchain);
+    swapchain.createSwapchain();
 }
 
 void UVK::VKPipeline::tick()
@@ -19,7 +20,8 @@ void UVK::VKPipeline::tick()
 
 void UVK::VKPipeline::end()
 {
-    device.destroyLogicalDevice();
+    swapchain.destroySwapchain();
     swapchain.destroySurface();
+    device.destroyLogicalDevice();
     instance.destroy();
 }

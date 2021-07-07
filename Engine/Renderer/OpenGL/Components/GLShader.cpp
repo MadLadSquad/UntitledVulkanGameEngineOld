@@ -128,24 +128,47 @@ void UVK::GLShader::addShader(GLuint program, const std::string& shader, GLenum 
 	glAttachShader(program, theShader);
 }
 
-void UVK::GLShaderSPV::readFile(UVK::String vertexLocation, UVK::String fragmentLocation)
+void UVK::GLShaderSPV::readFile(UVK::String location)
 {
-    std::ifstream vertexInput(vertexLocation, std::ios::binary);
-    std::ifstream fragmentInput(fragmentLocation, std::ios::binary);
+    std::ifstream input(location, std::ios::binary);
 
-    vShader = std::vector<unsigned char>(std::istreambuf_iterator<char>(vertexInput), {});
-    fShader = std::vector<unsigned char>(std::istreambuf_iterator<char>(fragmentInput), {});
+    buffer = std::vector<uint32_t>(std::istreambuf_iterator<char>(input), {});
 }
 
 void UVK::GLShaderSPV::compileShader()
 {
-    readFile("../Content/Engine/vShader.spv", "../Content/Engine/fShader.spv");
+    GLuint program = glCreateProgram();
+    shaderID = glCreateShader(format);
+    glSpecializeShader(shaderID, "main", 0, nullptr, nullptr);
+    glAttachShader(program, shaderID);
 
+    glLinkProgram(program);
+
+    GLint bLinked;
+    glGetProgramiv(program, GL_LINK_STATUS, &bLinked);
+    if (bLinked == GL_FALSE)
+    {
+        GLint len;
+        glGetProgramiv(program, GL_INFO_LOG_LENGTH, &len);
+
+        char str[len + 1];
+        str[len] = '\0';
+        glGetProgramInfoLog(program, len, &len, str);
+
+        logger.consoleLog("OpenGL error: ", UVK_LOG_TYPE_ERROR, (const char*)str);
+
+        glDeleteProgram(program);
+        glDeleteShader(shaderID);
+    }
+
+    glDetachShader(program, shaderID);
+    glDeleteShader(shaderID);
+    /*
     GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
     GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 
-    glShaderBinary(1, &vertexShader, GL_SHADER_BINARY_FORMAT_SPIR_V, vShader.data(), vShader.size());
-    glShaderBinary(1, &fragmentShader, GL_SHADER_BINARY_FORMAT_SPIR_V, fShader.data(), fShader.size());
+    glShaderBinary(1, &vertexShader, GL_SHADER_BINARY_FORMAT_SPIR_V, vShader.data(), vShader.size() * sizeof(uint32_t));
+    glShaderBinary(1, &fragmentShader, GL_SHADER_BINARY_FORMAT_SPIR_V, fShader.data(), fShader.size() * sizeof(uint32_t));
 
     glSpecializeShader(vertexShader, "main", 0, nullptr, nullptr);
     glSpecializeShader(fragmentShader, "main", 0, nullptr, nullptr);
@@ -204,6 +227,7 @@ void UVK::GLShaderSPV::compileShader()
 
     glDetachShader(shaderID, vertexShader);
     glDetachShader(shaderID, fragmentShader);
+     */
 }
 
 void UVK::GLShaderSPV::useShader() const

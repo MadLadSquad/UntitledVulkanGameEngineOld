@@ -36,10 +36,20 @@ namespace UVK
         {
             return surface;
         }
+        static VkSurfaceFormatKHR findSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& formats);
+        static VkPresentModeKHR findPresentationMode(const std::vector<VkPresentModeKHR>& modes);
+        static VkExtent2D findSwapchainExtent(const VkSurfaceCapabilitiesKHR& surfaceCapabilities);
+        VkImageView createImageView(VkImage image, VkFormat format, VkImageAspectFlags aspectFlags);
 
         VkSurfaceKHR surface;
+        VkFormat swapchainFormat;
+        VkExtent2D swapchainExtent;
+        VkSwapchainKHR swapchain;
+
         VKInstance* instance;
         Device* device;
+
+        std::vector<VKSwapchainImage> images;
     };
 }
 #endif

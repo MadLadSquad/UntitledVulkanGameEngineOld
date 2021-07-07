@@ -80,7 +80,7 @@ void Settings::displayKeybindEditor(bool& bOpen)
     ImGui::SameLine();
     if (ImGui::Button("Save"))
     {
-        UVK::global.window.saveEditorKeybinds();
+        UVK::Window::saveEditorKeybinds();
     }
     ImGui::End();
 }
@@ -91,10 +91,11 @@ void Settings::displayKeybindGame(bool &bOpen)
 
     ImGui::BeginMenuBar();
     bool bDestroy = false;
-    static int newact;
+
     if (ImGui::MenuItem("+ Add Keybind##scn"))
     {
         UVK::InputAction action;
+        static int newact = 0;
         action.name = "NewAction" + std::to_string(newact);
         action.keyCode = 0;
 
@@ -301,7 +302,9 @@ void Settings::displayThemeEditor(bool& bOpen)
     ImGui::SameLine();
     if (ImGui::Button("Save"))
     {
+#ifdef DEVELOPMENT
         UVK::EditorTheme::save(static_cast<std::string>("../Config/" + outName).c_str(), static_cast<std::string>("../Content/" + fontLoc).c_str(), fontSize);
+#endif
     }
     ImGui::End();
 }

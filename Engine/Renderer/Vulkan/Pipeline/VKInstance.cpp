@@ -20,7 +20,7 @@ void UVK::VKInstance::create()
     createInfo.pApplicationInfo = &appInfo;
 
     // Array of extensions
-    std::vector<const char*> instanceExtensions;
+    std::vector<UVK::String> instanceExtensions;
 
     // Extensions, number of extensions and array of extension names
     uint32_t extensionCount = 0;
@@ -34,6 +34,9 @@ void UVK::VKInstance::create()
     {
         instanceExtensions.push_back(extensions[i]);
     }
+
+    // This extension doesn't work on latest NVidia and AMD, and doesn't work at all on Linux, Mac, iOS and Android
+    //instanceExtensions.push_back(VK_EXT_SWAPCHAIN_COLOR_SPACE_EXTENSION_NAME);
 
     // Check if instance extensions are supported
     if (!checkExtensionSupport(&instanceExtensions))
@@ -68,7 +71,7 @@ bool UVK::VKInstance::checkExtensionSupport(std::vector<UVK::String>* extensions
     std::vector<VkExtensionProperties>extensionsList(extensionCount);
     vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, extensionsList.data());
 
-    // Extension checking
+    // Extension checking, that time complexity doe
     for(const auto& extensionCheck : *extensions)
     {
         bool hasExtension = false;

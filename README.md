@@ -5,10 +5,10 @@
 [![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://lbesson.mit-license.org/)
 [![Discord](https://img.shields.io/discord/717037253292982315.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/4wgH8ZE)
 
->>Last stable release: 0.7.8.2
+>>Last stable release: 0.7.8.3
 >>
 >
->>Current code version: 0.7.8.2
+>>Current code version: 0.7.8.3
 >>
 >
 >>Currently, stable on: Linux, BSD and Windows

@@ -12,6 +12,14 @@
 
 namespace UVK
 {
+    enum ShaderFormat
+    {
+        SHADER_FORMAT_VERTEX = 0x8B31,
+        SHADER_FORMAT_FRAGMENT = 0x8B30,
+        SHADER_FORMAT_GEOMETRY = 0x8DD9,
+        SHADER_FORMAT_COMPUTE = 0x91B9
+    };
+
     /**
      * @brief Shader impost types are file, string, spir
      */
@@ -55,21 +63,31 @@ namespace UVK
     {
     public:
         GLShaderSPV() = default;
-        GLShaderSPV(UVK::String vLoc, UVK::String fLoc)
+        GLShaderSPV(UVK::String location, ShaderFormat fmt)
         {
-            readFile(vLoc, fLoc);
+            format = fmt;
+            readFile(location);
         }
 
         void useShader() const;
 
+        std::vector<uint32_t>& getBuffer()
+        {
+            return buffer;
+        }
+
+        GLuint& getID()
+        {
+            return shaderID;
+        }
     private:
         GLuint shaderID = 0;
-        std::vector<unsigned char> vShader{};
-        std::vector<unsigned char> fShader{};
+        std::vector<uint32_t> buffer{};
+        ShaderFormat format;
 
         void compileShader();
 
-        void readFile(UVK::String vertexLocation, UVK::String fragmentLocation);
+        void readFile(UVK::String location);
     };
 }
 

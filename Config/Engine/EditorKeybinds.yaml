@@ -1,47 +1,47 @@
 bindings:
-  - key: "editor-move"
+  - key: editor-move
     val: 1
-  - key: "editor-gizmos"
+  - key: editor-gizmos
     val: 341
-  - key: "editor-gizmo-none"
+  - key: editor-gizmo-none
     val: 81
-  - key: "editor-gizmo-translate"
+  - key: editor-gizmo-translate
     val: 87
-  - key: "editor-gizmo-rotate"
+  - key: editor-gizmo-rotate
     val: 69
-  - key: "editor-gizmo-scale"
+  - key: editor-gizmo-scale
     val: 82
-  - key: "editor-move-forward"
+  - key: editor-move-forward
     val: 87
-  - key: "editor-move-back"
+  - key: editor-move-back
     val: 83
-  - key: "editor-move-right"
+  - key: editor-move-right
     val: 68
-  - key: "editor-move-left"
+  - key: editor-move-left
     val: 65
-  - key: "editor-move-up"
+  - key: editor-move-up
     val: 69
-  - key: "editor-move-down"
+  - key: editor-move-down
     val: 81
-  - key: "editor-move-scroll-up"
+  - key: editor-move-scroll-up
     val: 8
-  - key: "editor-move-scroll-down"
+  - key: editor-move-scroll-down
     val: 9
-  - key: "editor-gizmo-snap"
+  - key: editor-gizmo-snap
     val: 341
-  - key: "editor-bind-modifier"
+  - key: editor-bind-modifier
     val: 341
-  - key: "editor-level-save"
+  - key: editor-level-save
     val: 83
-  - key: "editor-level-new"
+  - key: editor-level-new
     val: 78
-  - key: "editor-level-saveas"
+  - key: editor-level-saveas
     val: 83
-  - key: "editor-level-open"
+  - key: editor-level-open
     val: 79
-  - key: "editor-new-file"
+  - key: editor-new-file
     val: 78
-  - key: "editor-exit"
+  - key: editor-exit
     val: 87
-  - key: "editor-shift"
+  - key: editor-shift
     val: 340

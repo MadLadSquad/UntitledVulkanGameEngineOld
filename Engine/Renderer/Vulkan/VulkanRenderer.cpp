@@ -46,9 +46,4 @@ void UVK::VulkanRenderer::run()
 
     cleanup();
 }
-
-
-VkSurfaceFormatKHR UVK::VulkanRenderer::findSurfaceFormat(const std::vector<VkSurfaceFormatKHR> &formats) {
-    return VkSurfaceFormatKHR();
-}
 #endif
