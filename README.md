@@ -57,3 +57,5 @@ A: The vulkan renderer is going to be built in the future because we are first t
 -   implot - <https://github.com/epezent/implot>
 -   sndfile - <http://www.mega-nerd.com/libsndfile/>
 -   imgui memory editor - <https://github.com/ocornut/imgui_club>
+-   shaderc - <https://github.com/google/shaderc>
+-   SPIRV-cross - <https://github.com/KhronosGroup/SPIRV-Cross>
