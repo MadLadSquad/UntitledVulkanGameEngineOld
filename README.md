@@ -17,31 +17,37 @@
 >>Development status: Under heavy construction, we commit directly to master so there will be and possibly are countless bugs in the current master branch
 >>
 >
-## Information
-The UntitledVulkanGameEngine is a 3D game engine written in C++. It uses Vulkan and Modern OpenGL as graphics APIs and has a simple and easy to use C++ scripting API. The engine follows the Gentoo philosophy which means that everything is compiled by the user, no binaries needed. We also support multiple platforms like Linux, MacOS and BSD. For patch notes, announcements and development logs join our [discord server](https://discord.gg/4TAwNSx) and subscribe to our [youtube channel](https://www.youtube.com/channel/UCWKEvueStyfeMGnkvVJuGxQ)
+## Info
+The Untitled Vulkan Game Engine is a 3D, C++ game engine made for ease of use, simplicity and performance
+### Features
+-   OpenGL renderer
+-   Vulkan renderer
+-   Native scripting
+-   Editor
+    -   Details panel
+    -   Viewports
+    -   Scene hierarchy
+    -   Top and Header toolbar
+    -   World settings
+    -   Console
+    -   Terminal emulator
+    -   Filesystem
+    -   Statistics
+    -   Tools
+    -   Interface widgets
+-   Levels
+-   3D audio
+-   UI
+-   Game framework
+-   Full docs
+-   Simple naming and feature implementation
+-   Production shipping and export
+-   Windows, Linux and BSD support
+-   Easy C++ scripting API
 ## Learning
-Go to the [wiki](https://github.com/MadLadSquad/UntitledVulkanGameEngine/wiki).
+[Wiki](https://github.com/MadLadSquad/UntitledVulkanGameEngine/wiki).
 ## Development
-Follow [the trello](https://trello.com/b/0upjsxT0/untitledvukangameengine2).
-Modules development status:
--   OpenGL rendered: :construction: 
--   Vulkan renderer: :construction: 
--   Editor: :construction: 
--   Native scripting: :construction: 
--   Event system: :white_check_mark:
--   Scene system: :white_check_mark:
--   Window system: :white_check_mark:
--   Renderer interface: :white_check_mark:
--   Input: :white_check_mark:
--   2D audio: :white_check_mark:
--   3D audio: :white_check_mark:
--   Renderer manager: :white_check_mark:
--   API planning and design: :white_check_mark:
--   Game framework: :construction: 
-## Q&A
-Q: It's called the UntitledVulkanEngine but where is the Vulkan renderer
-
-A: The vulkan renderer is going to be built in the future because we are first trying to lay out solid foundations so we can add it without serious problems
+Follow [the trello board](https://trello.com/b/0upjsxT0/untitledvukangameengine2).
 ## Open-source libraries and SDKs we use
 -   GLFW - <https://github.com/glfw/glfw>
 -   GLEW - <https://github.com/nigels-com/glew>
