@@ -17,8 +17,10 @@
 >>Development status: Under heavy construction, we commit directly to master so there will be and possibly are countless bugs in the current master branch
 >>
 >
+
 ## Info
 The Untitled Vulkan Game Engine is a 3D, C++ game engine made for ease of use, simplicity and performance
+
 ### Features
 -   OpenGL renderer
 -   Vulkan renderer
@@ -44,10 +46,13 @@ The Untitled Vulkan Game Engine is a 3D, C++ game engine made for ease of use, s
 -   Production shipping and export
 -   Windows, Linux and BSD support
 -   Easy C++ scripting API
+
 ## Learning
 [Wiki](https://github.com/MadLadSquad/UntitledVulkanGameEngine/wiki).
+
 ## Development
 Follow [the trello board](https://trello.com/b/0upjsxT0/untitledvukangameengine2).
+
 ## Open-source libraries and SDKs we use
 -   GLFW - <https://github.com/glfw/glfw>
 -   GLEW - <https://github.com/nigels-com/glew>
