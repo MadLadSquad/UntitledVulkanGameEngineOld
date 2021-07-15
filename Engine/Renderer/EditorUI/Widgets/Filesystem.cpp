@@ -134,6 +134,7 @@ void Filesystem::display(std_filesystem::path& pt, std::array<UVK::Texture, 8>& 
             txt = nullptr;
         }
 
+        // path.filename().c_str() shows only the first letter of a filename on Windows for some reason
         ImGui::TextWrapped("%s", path.filename().string().c_str());
         ImGui::NextColumn();
     }
