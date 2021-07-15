@@ -98,28 +98,28 @@ void UVK::Editor::initEditor()
     insert = Texture(static_cast<std::string>("../Content/Engine/insert.png"));
     insert.loadImgui();
 
-    fileTextures[0] = Texture(static_cast<std::string>(pt.string() + "Engine/audio.png"));
+    fileTextures[0] = Texture(static_cast<std::string>("../Content/Engine/audio.png"));
     fileTextures[0].loadImgui();
 
-    fileTextures[1] = Texture(static_cast<std::string>(pt.string() + "Engine/image.png"));
+    fileTextures[1] = Texture(static_cast<std::string>("../Content/Engine/image.png"));
     fileTextures[1].loadImgui();
 
-    fileTextures[2] = Texture(static_cast<std::string>(pt.string() + "Engine/video.png"));
+    fileTextures[2] = Texture(static_cast<std::string>("../Content/Engine/video.png"));
     fileTextures[2].loadImgui();
 
-    fileTextures[3] = Texture(static_cast<std::string>(pt.string() + "Engine/folder.png"));
+    fileTextures[3] = Texture(static_cast<std::string>("../Content/Engine/folder.png"));
     fileTextures[3].loadImgui();
 
-    fileTextures[4] = Texture(static_cast<std::string>(pt.string() + "Engine/font.png"));
+    fileTextures[4] = Texture(static_cast<std::string>("../Content/Engine/font.png"));
     fileTextures[4].loadImgui();
 
-    fileTextures[5] = Texture(static_cast<std::string>(pt.string() + "Engine/obj.png"));
+    fileTextures[5] = Texture(static_cast<std::string>("../Content/Engine/obj.png"));
     fileTextures[5].loadImgui();
 
-    fileTextures[6] = Texture(static_cast<std::string>(pt.string() + "Engine/unknown.png"));
+    fileTextures[6] = Texture(static_cast<std::string>("../Content/Engine/unknown.png"));
     fileTextures[6].loadImgui();
 
-    fileTextures[7] = Texture(static_cast<std::string>(pt.string() + "Engine/code.png"));
+    fileTextures[7] = Texture(static_cast<std::string>("../Content/Engine/code.png"));
     fileTextures[7].loadImgui();
 
     sh->createFromFile("../Content/Engine/defaultvshader.gl", "../Content/Engine/defaultfshader.gl");
