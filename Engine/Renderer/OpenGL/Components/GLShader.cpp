@@ -151,8 +151,8 @@ void UVK::GLShaderSPV::compileShader()
         GLint len;
         glGetProgramiv(program, GL_INFO_LOG_LENGTH, &len);
 
-        char str[len + 1];
-        str[len] = '\0';
+        char str[1024];
+        str[1023] = '\0';
         glGetProgramInfoLog(program, len, &len, str);
 
         logger.consoleLog("OpenGL error: ", UVK_LOG_TYPE_ERROR, (const char*)str);

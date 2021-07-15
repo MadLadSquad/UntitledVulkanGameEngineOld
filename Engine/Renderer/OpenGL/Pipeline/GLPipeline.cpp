@@ -36,6 +36,8 @@ void UVK::GLPipeline::begin(bool bHasEditor, Level* lvl)
         global.level->beginPlay();
     }
     enableFeatures();
+
+    logger.consoleLog("Starting OpenGL renderer", UVK_LOG_TYPE_NOTE);
 }
 
 void UVK::GLPipeline::tick()
@@ -56,6 +58,7 @@ void UVK::GLPipeline::tick()
 
         UVK::Editor::beginFrame();
         global.level->gameMode->pawn->tick(deltaTime);
+        
 #ifdef DEVELOPMENT
         tx.useTexture();
 #endif
@@ -78,7 +81,7 @@ void UVK::GLPipeline::tick()
         glDisable(GL_DEPTH_TEST);
         glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
-
+        
         ed.runEditor(global.colour, fb, global.level->gameMode->pawn->camera, global.level);
 #endif
     }

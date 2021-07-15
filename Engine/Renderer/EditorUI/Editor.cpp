@@ -262,7 +262,7 @@ void UVK::Editor::runEditor(FVector4& colour, GLFrameBuffer& fb, Camera& camera,
 void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& camera, UVK::Level* lvl)
 {
     ImGuiStyle& style = ImGui::GetStyle();
-
+    
     if ((Input::getAction("editor-bind-modifier") == Keys::KeyPressed || Input::getAction("editor-bind-modifier") == Keys::KeyRepeat) && (Input::getAction("editor-shift") == Keys::KeyPressed || Input::getAction("editor-shift") == Keys::KeyRepeat) && (Input::getAction("editor-level-saveas") == Keys::KeyPressed || Input::getAction("editor-level-saveas") == Keys::KeyRepeat))
     {
         bShowSaveLevelWidget = true;
@@ -290,7 +290,7 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
         glfwSetWindowShouldClose(global.window.getWindow(), GL_TRUE);
     }
 
-
+    
     if (ImGui::BeginMenuBar())
     {
         if (ImGui::BeginMenu("File"))
@@ -473,7 +473,7 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
         Filesystem::display(pt, fileTextures, cpFileLoc, bShowFilesystem);
     }
 #endif
-
+    
     if (bShowToolbar)
     {
         style.WindowPadding = ImVec2(0.0f, 0.0f);

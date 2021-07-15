@@ -15,7 +15,13 @@ void Filesystem::display(std_filesystem::path& pt, std::array<UVK::Texture, 8>& 
     ImGui::BeginChild("Explorer");
 
     // ImGui::GetContentRegionAvailWidth() marked as deprecated for some reason
-    ImGui::Columns((int)(ImGui::GetContentRegionAvail().x / cellSize), nullptr, false);
+    auto testing = (int)(ImGui::GetContentRegionAvail().x / cellSize);
+    if (testing < 1)
+    {
+        testing = 1;
+    }
+
+    ImGui::Columns(testing, nullptr, false);
 
     auto p = pt.string();
     Utility::sanitiseFilepath(p, true);
@@ -29,7 +35,6 @@ void Filesystem::display(std_filesystem::path& pt, std::array<UVK::Texture, 8>& 
     // IT'S THE SAME SHIT HOLY FUCK WHAT IS HAPPENING
     if (!(p == "../Content/" || p == "../Content"))
     {
-
         // WHY DO WE NEED TO DO THIS HACK!!!
         ImGui::ImageButton((void*)(intptr_t)textures[3].getImage(), ImVec2(imageSize, imageSize));
         if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
@@ -129,7 +134,7 @@ void Filesystem::display(std_filesystem::path& pt, std::array<UVK::Texture, 8>& 
             txt = nullptr;
         }
 
-        ImGui::TextWrapped("%s", path.relative_path().filename().c_str());
+        ImGui::TextWrapped("%s", path.filename().string().c_str());
         ImGui::NextColumn();
     }
     ImGui::Columns(1);
@@ -143,80 +148,6 @@ void Filesystem::display(std_filesystem::path& pt, std::array<UVK::Texture, 8>& 
     ImGui::SliderFloat("Padding", &padding, 20.0f, 256.0f);
     ImGui::Columns(1);
     ImGui::EndGroup();
-    /*std::string fileType;
-    auto temp = absolute(pt).string();
-    Utility::sanitiseFilepath(temp, true);
-
-    if (ImGui::Selectable("[DIR] ../"))
-    {
-        if (temp[temp.size() - 2] == '/')
-            temp.erase(temp.size() - 2);
-        else if (temp[temp.size() - 1] == '/' && temp.size() != 1)
-            temp.erase(temp.size() - 1);
-
-        if (temp.size() != 1)
-        {
-            auto last = temp.find_last_of('/');
-
-            temp.erase(last);
-            temp += "/";
-        }
-
-        pt = std_filesystem::path(temp);
-    }
-
-    for (auto& p: std_filesystem::directory_iterator(pt))
-    {
-        if (p.is_directory())
-        {
-            fileType = "[DIR] ";
-        }
-        else if (p.path().filename().extension().string() == ".wav" || p.path().filename().extension().string() == ".mp3" || p.path().filename().extension().string() == ".flac")
-        {
-            fileType = "[SND] ";
-        }
-        else if (p.path().filename().extension().string() == ".obj" || p.path().filename().extension().string() == ".mtl" || p.path().filename().extension().string() == ".fbx")
-        {
-            fileType = "[3D] ";
-        }
-        else if (p.path().filename().extension().string() == ".png" || p.path().filename().extension().string() == ".jpg" || p.path().filename().extension().string() == ".jpeg")
-        {
-            fileType = "[IMG] ";
-        }
-        else if (p.path().filename().extension().string() == ".mp4" || p.path().filename().extension().string() == ".mov")
-        {
-            fileType = "[VID] ";
-        }
-        else if (p.path().filename().extension().string() == ".vert" || p.path().filename().extension().string() == ".frag" || p.path().filename().extension().string() == ".gl" || p.path().filename().extension().string() == ".glsl" || p.path().filename().extension().string() == ".spv" || p.path().filename().extension().string() == ".vk")
-        {
-            fileType = "[SHADER] ";
-        }
-        else if (p.path().filename().extension().string() == ".sh" || p.path().filename().extension().string() == ".cmd" || p.path().filename().extension().string() == ".bat" || p.path().filename().extension().string() == ".py" || p.path().filename().extension().string() == ".perl")
-        {
-            fileType = "[SCRIPT] ";
-        }
-        else if (p.path().filename().string() == ".yaml" || p.path().filename().string() == ".yml" || p.path().filename().string() == ".uvklevel")
-        {
-            fileType = "[LEVEL/CONFIG] ";
-        }
-        else
-        {
-            fileType = "[?] ";
-        }
-
-        if (ImGui::Selectable(static_cast<std::string>(fileType + p.path().filename().string()).c_str(), false, ImGuiSelectableFlags_AllowDoubleClick))
-        {
-            if (ImGui::IsMouseDoubleClicked(0) && fileType == "[DIR] ")
-            {
-                pt = std_filesystem::path(p.path().string());
-            }
-            else
-            {
-                cpLoc = p.path().string();
-            }
-        }
-    }
-     */
     ImGui::End();
 }
 #endif
