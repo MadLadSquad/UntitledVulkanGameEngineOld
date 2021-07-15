@@ -15,7 +15,7 @@
  */
 namespace Filesystem
 {
-    void display(std_filesystem::path& pt, std::string& cpLoc, bool& bShow);
+    void display(std_filesystem::path& pt, std::array<UVK::Texture, 8>& textures, std::string& cpLoc, bool& bShow);
 }
 #endif
 #endif

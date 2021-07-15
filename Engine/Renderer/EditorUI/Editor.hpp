@@ -43,6 +43,8 @@ namespace UVK
         Texture logoTxt;
         Texture insert;
 
+        std::array<Texture, 8> fileTextures;
+
         int entNum = 0;
         int viewportWidth = 0, viewportHeight = 0;
         uint8_t selectedFile = 0;

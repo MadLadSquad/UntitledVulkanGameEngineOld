@@ -431,8 +431,8 @@ const UVK::InputAction& UVK::Input::getAction(const std::string& name)
         }
     }
 
-    // trololololololol
-    return *(InputAction*)(nullptr);
+    logger.consoleLog("Input action with name: ", UVK_LOG_TYPE_ERROR, name, ", does not exist!");
+    throw std::runtime_error(" ");
 }
 
 uint16_t UVK::Input::getKey(uint16_t key)

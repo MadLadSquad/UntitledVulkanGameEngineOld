@@ -15,7 +15,7 @@ void DetailsPanel::DrawVec3Control(const std::string &label, glm::vec3 &values, 
 
     ImGui::PushID(label.c_str());
 
-    ImGui::Columns(2);
+    ImGui::Columns(2, nullptr, false);
     ImGui::SetColumnWidth(0, columnWidth);
     ImGui::Text(label.c_str());
     ImGui::NextColumn();

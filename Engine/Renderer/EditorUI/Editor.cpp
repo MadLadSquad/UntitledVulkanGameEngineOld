@@ -31,7 +31,7 @@ void UVK::Editor::initEditor()
 #ifndef PRODUCTION
     tm.startRecording();
 #ifndef __MINGW32__
-    pt = std_filesystem::absolute(std_filesystem::current_path());
+    pt = "../Content/";
 #endif
     YAML::Node file;
 
@@ -54,16 +54,40 @@ void UVK::Editor::initEditor()
     auto* sh = new GLShader();
 #ifndef __MINGW32__
 
-    play = Texture(static_cast<std::string>(pt.string() + "/../Content/Engine/Play.png"));
+    play = Texture(static_cast<std::string>(pt.string() + "Engine/Play.png"));
     play.loadImgui();
 
-    logoTxt = Texture(static_cast<std::string>(pt.string() + "/../Content/Engine/logo.png"));
+    logoTxt = Texture(static_cast<std::string>(pt.string() + "Engine/logo.png"));
     logoTxt.loadImgui();
 
-    insert = Texture(static_cast<std::string>(pt.string() + "/../Content/Engine/insert.png"));
+    insert = Texture(static_cast<std::string>(pt.string() + "Engine/insert.png"));
     insert.loadImgui();
 
-    sh->createFromFile(static_cast<std::string>(pt.string() + "/../Content/Engine/defaultvshader.gl").c_str(), static_cast<std::string>(pt.string() + "/../Content/Engine/defaultfshader.gl").c_str());
+    fileTextures[0] = Texture(static_cast<std::string>(pt.string() + "Engine/audio.png"));
+    fileTextures[0].loadImgui();
+
+    fileTextures[1] = Texture(static_cast<std::string>(pt.string() + "Engine/image.png"));
+    fileTextures[1].loadImgui();
+
+    fileTextures[2] = Texture(static_cast<std::string>(pt.string() + "Engine/video.png"));
+    fileTextures[2].loadImgui();
+
+    fileTextures[3] = Texture(static_cast<std::string>(pt.string() + "Engine/folder.png"));
+    fileTextures[3].loadImgui();
+
+    fileTextures[4] = Texture(static_cast<std::string>(pt.string() + "Engine/font.png"));
+    fileTextures[4].loadImgui();
+
+    fileTextures[5] = Texture(static_cast<std::string>(pt.string() + "Engine/obj.png"));
+    fileTextures[5].loadImgui();
+
+    fileTextures[6] = Texture(static_cast<std::string>(pt.string() + "Engine/unknown.png"));
+    fileTextures[6].loadImgui();
+
+    fileTextures[7] = Texture(static_cast<std::string>(pt.string() + "Engine/code.png"));
+    fileTextures[7].loadImgui();
+
+    sh->createFromFile(static_cast<std::string>(pt.string() + "Engine/defaultvshader.gl").c_str(), static_cast<std::string>(pt.string() + "/../Content/Engine/defaultfshader.gl").c_str());
 #else
     play = Texture(static_cast<std::string>("../Content/Engine/Play.png"));
     play.loadImgui();
@@ -73,6 +97,30 @@ void UVK::Editor::initEditor()
 
     insert = Texture(static_cast<std::string>("../Content/Engine/insert.png"));
     insert.loadImgui();
+
+    fileTextures[0] = Texture(static_cast<std::string>(pt.string() + "Engine/audio.png"));
+    fileTextures[0].loadImgui();
+
+    fileTextures[1] = Texture(static_cast<std::string>(pt.string() + "Engine/image.png"));
+    fileTextures[1].loadImgui();
+
+    fileTextures[2] = Texture(static_cast<std::string>(pt.string() + "Engine/video.png"));
+    fileTextures[2].loadImgui();
+
+    fileTextures[3] = Texture(static_cast<std::string>(pt.string() + "Engine/folder.png"));
+    fileTextures[3].loadImgui();
+
+    fileTextures[4] = Texture(static_cast<std::string>(pt.string() + "Engine/font.png"));
+    fileTextures[4].loadImgui();
+
+    fileTextures[5] = Texture(static_cast<std::string>(pt.string() + "Engine/obj.png"));
+    fileTextures[5].loadImgui();
+
+    fileTextures[6] = Texture(static_cast<std::string>(pt.string() + "Engine/unknown.png"));
+    fileTextures[6].loadImgui();
+
+    fileTextures[7] = Texture(static_cast<std::string>(pt.string() + "Engine/code.png"));
+    fileTextures[7].loadImgui();
 
     sh->createFromFile("../Content/Engine/defaultvshader.gl", "../Content/Engine/defaultfshader.gl");
 #endif
@@ -120,7 +168,6 @@ void UVK::Editor::initEditor()
         }
 #endif
     }
-
 
     if (global.bUsesVulkan)
     {
@@ -423,7 +470,7 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
 #ifndef __MINGW32__
     if (bShowFilesystem)
     {
-        Filesystem::display(pt, cpFileLoc, bShowFilesystem);
+        Filesystem::display(pt, fileTextures, cpFileLoc, bShowFilesystem);
     }
 #endif
 
@@ -438,6 +485,7 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
     {
         ImGui::Begin("Tools", &bShowTools);
         ImGui::Text("Coming soon!");
+
         ImGui::End();
     }
 
@@ -527,6 +575,11 @@ void UVK::Editor::destroyContext()
 {
     play.destroy();
     logoTxt.destroy();
+    insert.destroy();
+    for (auto& a : fileTextures)
+    {
+        a.destroy();
+    }
 
     if (global.bUsesVulkan)
     {
