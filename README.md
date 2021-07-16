@@ -59,3 +59,4 @@ Follow [the trello board](https://trello.com/b/0upjsxT0/untitledvukangameengine2
 -   imgui memory editor - <https://github.com/ocornut/imgui_club>
 -   shaderc - <https://github.com/google/shaderc>
 -   SPIRV-cross - <https://github.com/KhronosGroup/SPIRV-Cross>
+-   Filesystem icons from the Gruvbox-Material-GTK theme - <https://github.com/sainnhe/gruvbox-material-gtk>
