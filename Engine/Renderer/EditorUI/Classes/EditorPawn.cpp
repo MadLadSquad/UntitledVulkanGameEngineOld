@@ -23,7 +23,7 @@ void UVK::EditorPawn::move(float deltaTime)
 {
     if (UVK::Input::getAction("editor-move") == Keys::KeyPressed || UVK::Input::getAction("editor-move") == Keys::KeyRepeat)
     {
-        global.window.setCursorVisibility(false);
+        Window::setCursorVisibility(false);
 
         if (UVK::Input::getAction("editor-move-forward") == Keys::KeyPressed || UVK::Input::getAction("editor-move-forward") == Keys::KeyRepeat)
         {
@@ -72,7 +72,7 @@ void UVK::EditorPawn::move(float deltaTime)
     }
     else
     {
-        global.window.setCursorVisibility(true);
+        Window::setCursorVisibility(true);
     }
 }
 

@@ -1,10 +1,10 @@
 // OpenLevelWidget.cpp
-// Last update 2/7/2021 by Madman10K
+// Last update 17/7/2021 by Madman10K
 #include <GL/glew.h>
 #include "OpenLevelWidget.hpp"
-#include "../../GameFramework/GameplayClasses/Level/Level.hpp"
 #include <imgui.h>
 #include <cpp/imgui_stdlib.h>
+#include <Renderer/EditorUI/Classes/EditorLevel.hpp>
 
 #ifndef PRODUCTION
 void OpenLevelWidget::display(std::string &openLevel, bool &bShowOpenLevelWidget, double& dr, UVK::FVector4& colour, std::string& name, UVK::Texture& insert, const std::string& cpFileLoc)
@@ -18,7 +18,7 @@ void OpenLevelWidget::display(std::string &openLevel, bool &bShowOpenLevelWidget
         openLevel = cpFileLoc;
     }
 
-    ImGui::Text("Keep in mind that clicking Submit WILL NOT SAVE any changes made to the level you are editing");
+    ImGui::TextWrapped("Keep in mind that clicking Submit WILL NOT SAVE any changes made to the level you are editing");
     if (ImGui::Button("Cancel"))
     {
         bShowOpenLevelWidget = false;
@@ -31,7 +31,7 @@ void OpenLevelWidget::display(std::string &openLevel, bool &bShowOpenLevelWidget
         Timer tm;
         tm.startRecording();
 
-        UVK::Level::open(static_cast<std::string>("Content/" + openLevel).c_str());
+        UVK::Level::open<UVK::EditorLevel>(static_cast<std::string>("Content/" + openLevel).c_str());
 
         tm.stopRecording();
         dr = tm.getDuration();

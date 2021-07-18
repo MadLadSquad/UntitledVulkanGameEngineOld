@@ -1,5 +1,5 @@
 // NewLevel.cpp
-// Last update 30/6/2021 by Madman10K
+// Last update 18/7/2021 by Madman10K
 #include <GL/glew.h>
 #include "NewLevel.hpp"
 #include "Core/Actor.hpp"
@@ -9,8 +9,8 @@ void NewLevel::display(bool &bShow)
 {
     ImGui::Begin("WARNING##new level", &bShow);
 
-    ImGui::Text("Creating a new level will not save any changes to the level you are currently editing!");
-    ImGui::Text("If you want to save your changes click Cancel and do so, otherwise you can click Create");
+    ImGui::TextWrapped("Creating a new level will not save any changes to the level you are currently editing!");
+    ImGui::TextWrapped("If you want to save your changes click Cancel and do so, otherwise you can click Create");
 
     if (ImGui::Button("Cancel"))
     {
@@ -21,7 +21,7 @@ void NewLevel::display(bool &bShow)
 
     if (ImGui::Button("Create##new level"))
     {
-        UVK::global.ecs.clear();
+        UVK::ECS::clear();
         bShow = false;
     }
     ImGui::End();

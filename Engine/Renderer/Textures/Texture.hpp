@@ -1,9 +1,7 @@
 // Texture.hpp
-// Last update 2/7/2021 by Madman10K
+// Last update 17/7/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
-#include <utility>
-#include <stb/stb_image.h>
 
 namespace UVK
 {
@@ -27,6 +25,8 @@ namespace UVK
         GLuint& getImage() { return image; };
 
     private:
+        unsigned char* gen();
+
         friend class GLPipeline;
         friend class Editor;
         void loadImgui();

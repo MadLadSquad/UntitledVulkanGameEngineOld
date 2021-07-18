@@ -1,5 +1,5 @@
 // Editor.cpp
-// Last update 6/7/2021 by Madman10K
+// Last update 18/7/2021 by Madman10K
 #include <GL/glew.h>
 #include <imgui_impl_vulkan.h>
 #include "Editor.hpp"
@@ -44,11 +44,12 @@ void UVK::Editor::initEditor()
         logger.consoleLog("Could not find uvproj.yaml file", UVK_LOG_TYPE_ERROR);
     }
 
-    if (file["engine-version"] && file["name"] && file["version"])
+    if (file["engine-version"] && file["name"] && file["version"] && file["startup-level"])
     {
         engineVersion = file["engine-version"].as<std::string>();
         projectVersion = file["version"].as<std::string>();
         projectName = file["name"].as<std::string>();
+        startupLevel = file["startup-level"].as<std::string>();
     }
 
     auto* sh = new GLShader();
@@ -369,6 +370,11 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
 
         if (ImGui::BeginMenu("Settings"))
         {
+            if (ImGui::MenuItem("Game Settings"))
+            {
+                bShowGameSettings = true;
+            }
+
             if (ImGui::MenuItem("Window Settings"))
             {
                 bShowWindowSettings = true;
@@ -437,12 +443,12 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
 
     if (bShowSaveLevelWidget)
     {
-        SaveLevel::display(bShowSaveLevelWidget, location, levelName, colour, insert, cpFileLoc);
+        SaveLevel::display(bShowSaveLevelWidget, location, global.levelName, colour, insert, cpFileLoc);
     }
 
     if (bShowOpenLevelWidget)
     {
-        OpenLevelWidget::display(openLevel, bShowOpenLevelWidget, frameTimeData[1], colour, levelName, insert, cpFileLoc);
+        OpenLevelWidget::display(openLevel, bShowOpenLevelWidget, frameTimeData[1], colour, global.levelName, insert, cpFileLoc);
     }
 
     if (bShowCreateFile1)
@@ -506,7 +512,7 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
 
     if (bShowWorldSettings)
     {
-        WorldSettings::display(colour, global.ambientLight, levelName, bShowWorldSettings, insert, cpFileLoc);
+        WorldSettings::display(colour, global.ambientLight, global.levelName, bShowWorldSettings, insert, cpFileLoc);
     }
 
     if (bShowAboutUs)
@@ -552,6 +558,11 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
     if (bShowThemeSettings)
     {
         Settings::displayThemeEditor(bShowThemeSettings);
+    }
+
+    if (bShowGameSettings)
+    {
+        Settings::displayProjectSettings(projectName, projectVersion, engineVersion, startupLevel, bShowGameSettings);
     }
 #endif
 }

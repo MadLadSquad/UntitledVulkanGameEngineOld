@@ -21,8 +21,8 @@ void SceneHierarchy::addEntity(int& entNum)
 {
     //registry.createActor(static_cast<std::string>("NewEntity" + std::to_string(entNum)).c_str());
     //UVK::Actor actor(static_cast<std::string>("NewEntity" + std::to_string(entNum)), 0, "a");
-    const auto a = UVK::global.ecs.data().create();
-    auto& b = UVK::global.ecs.data().emplace<UVK::CoreComponent>(a);
+    const auto a = UVK::ECS::data().create();
+    auto& b = UVK::ECS::data().emplace<UVK::CoreComponent>(a);
     b.name = "NewEntity" + std::to_string(entNum);
     b.id = 0;
     b.devName = "a";
@@ -48,9 +48,9 @@ void SceneHierarchy::display(UVK::Actor& selectedEntity, std::string &entAppend,
     ImGui::EndMenuBar();
 
     // to be fixed immediately because it's a big performance drain
-    UVK::global.ecs.data().each([&](entt::entity ent)
+    UVK::ECS::data().each([&](entt::entity ent)
     {
-        const auto& a = UVK::global.ecs.data().get<UVK::CoreComponent>(ent);
+        const auto& a = UVK::ECS::data().get<UVK::CoreComponent>(ent);
 
         if (ImGui::Selectable(static_cast<std::string>(a.name + ", " + std::to_string(a.id)).c_str()))
         {
@@ -58,7 +58,7 @@ void SceneHierarchy::display(UVK::Actor& selectedEntity, std::string &entAppend,
         }
     });
 
-    if (bDestroy && UVK::global.ecs.data().valid(selectedEntity.data()))
+    if (bDestroy && UVK::ECS::data().valid(selectedEntity.data()))
     {
         destroyEntity(selectedEntity);
     }

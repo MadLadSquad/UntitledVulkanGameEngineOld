@@ -1,6 +1,6 @@
 // MeshComponent.hpp
-// Last update 2/7/2021 by Madman10K
-#include <glm/gtx/quaternion.hpp>
+// Last update 17/7/2021 by Madman10K
+
 #include <../Renderer/OpenGL/Components/GLMesh.hpp>
 #include <Renderer/Camera/Camera.hpp>
 
@@ -26,9 +26,9 @@ namespace UVK
 
         ShaderImportType impType;
     private:
-        GLuint uniformModel = 0;
-        GLuint uniformProjection = 0;
-        GLuint uniformView = 0;
+        uint32_t uniformModel = 0;
+        uint32_t uniformProjection = 0;
+        uint32_t uniformView = 0;
 
         GLMesh mesh;
         GLShader shader;

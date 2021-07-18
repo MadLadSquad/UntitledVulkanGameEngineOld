@@ -1,8 +1,20 @@
 // Utility.hpp
-// Last update 26/6/2021 by Madman10K
+// Last update 17/7/2021 by Madman10K
 #pragma once
 #include <iostream>
 #include "Types.hpp"
+
+// A namespace of dangerous stuff that you probably shouldn't touch. It's used to hide design flaws btw.
+namespace Internal
+{
+    // This function is used for opening levels, it's global like that because of our bad design
+    inline std::function<void(void)> openFunction;
+
+    // it's global like that because of our bad design
+    inline UVK::Level* currentLevel = nullptr;
+
+    inline bool openConfirmation = false;
+}
 
 /**
  * @brief A namespace of useful utility functions

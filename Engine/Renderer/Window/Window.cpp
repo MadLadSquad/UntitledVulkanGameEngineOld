@@ -1,9 +1,13 @@
 // Window.cpp
-// Last update 2/7/2021 by Madman10K
+// Last update 17/7/2021 by Madman10K
+#include <GL/glew.h>
 #include "Window.hpp"
+#include <glfw3.h>
+#include <yaml.h>
 #include <Engine/Core/Core/Global.hpp>
+#include <stb/stb_image.h>
 
-double UVK::Window::getYMousePositionChange()
+double UVK::WindowInternal::getYMousePositionChange()
 {
     auto a = (float)offsetY;
     offsetY = 0.0f;
@@ -11,7 +15,7 @@ double UVK::Window::getYMousePositionChange()
     return a;
 }
 
-double UVK::Window::getXMousePositionChange()
+double UVK::WindowInternal::getXMousePositionChange()
 {
     auto a = (float)offsetX;
     offsetX = 0.0f;
@@ -19,27 +23,28 @@ double UVK::Window::getXMousePositionChange()
     return a;
 }
 
-void UVK::Window::setTitle(UVK::String newTitle) const
+void UVK::WindowInternal::setTitle(UVK::String newTitle)
 {
     glfwSetWindowTitle(windowMain, newTitle);
+    resources.name = newTitle;
 }
 
-GLFWwindow* UVK::Window::getWindow() const
+GLFWwindow* UVK::WindowInternal::getWindow() const
 {
     return windowMain;
 }
 
-UVK::FVector2 UVK::Window::getLastMousePosition() const
+UVK::FVector2 UVK::WindowInternal::getLastMousePosition() const
 {
     return FVector2(lastPosX, lastPosY);
 }
 
-UVK::FVector2 UVK::Window::getCurrentMousePosition() const
+UVK::FVector2 UVK::WindowInternal::getCurrentMousePosition() const
 {
     return FVector2(posX, posY);
 }
 
-void UVK::Window::doCallBacks()
+void UVK::WindowInternal::doCallBacks()
 {
     glfwSetFramebufferSizeCallback(windowMain, framebufferSizeCallback);
     glfwSetKeyCallback(windowMain, keyboardInputCallback);
@@ -48,12 +53,16 @@ void UVK::Window::doCallBacks()
     glfwSetScrollCallback(windowMain, scrollInputCallback);
 }
 
-void UVK::Window::framebufferSizeCallback(GLFWwindow* window, int width, int height)
+void UVK::WindowInternal::framebufferSizeCallback(GLFWwindow* window, int width, int height)
 {
+    auto* windowInst = static_cast<WindowInternal*>(glfwGetWindowUserPointer(window));
+    windowInst->data().size.x = (float)width;
+    windowInst->data().size.y = (float)height;
+
     glViewport(0, 0, width, height);
 }
 
-void UVK::Window::createWindow()
+void UVK::WindowInternal::createWindow()
 {
     openConfig();
 
@@ -107,7 +116,12 @@ void UVK::Window::createWindow()
     }
     logger.consoleLog("Window was created successfully", UVK_LOG_TYPE_SUCCESS);
 
-    glfwGetFramebufferSize(windowMain, &bufferWidth, &bufferHeight);
+    int tempx = (int)resources.size.x;
+    int tempy = (int)resources.size.y;
+    glfwGetFramebufferSize(windowMain, &tempx, &tempy);
+    resources.size.x = (float)tempx;
+    resources.size.y = (float)tempy;
+
     glfwMakeContextCurrent(windowMain);
     if (!global.bEditor)
     {
@@ -127,35 +141,26 @@ void UVK::Window::createWindow()
             return;
         }
 
-        glViewport(0, 0, bufferWidth, bufferHeight);
+        glViewport(0, 0, (int)resources.size.x, (int)resources.size.y);
     }
 
     glfwSetWindowUserPointer(windowMain, this);
 }
 
-void UVK::Window::destroyWindow()
+void UVK::WindowInternal::destroyWindow()
 {
     glfwDestroyWindow(windowMain);
     glfwTerminate();
 }
 
-void UVK::Window::dumpConfig() const
+void UVK::WindowInternal::dumpConfig()
 {
-    YAML::Emitter out;
-    out << YAML::BeginMap << YAML::Key << "image" << YAML::Value << resources.image;
-    out << YAML::Key << "width" << YAML::Value << resources.size.x;
-    out << YAML::Key << "height" << YAML::Value << resources.size.y;
-    out << YAML::Key << "fullscreen" << YAML::Value << resources.fullscreen;
-    out << YAML::Key << "window-name" << YAML::Value << resources.name;
-
-    std::ofstream fileout("../Config/Settings/Window.yaml");
-    fileout << out.c_str();
-
+    saveWindowSettings();
     saveEditorKeybinds();
     saveGameKeybinds();
 }
 
-void UVK::Window::openConfig()
+void UVK::WindowInternal::openConfig()
 {
     YAML::Node out;
 
@@ -254,7 +259,7 @@ void UVK::Window::openConfig()
     }
 }
 
-void UVK::Window::keyboardInputCallback(GLFWwindow* window, int key, int scanCode, int action, int mods)
+void UVK::WindowInternal::keyboardInputCallback(GLFWwindow* window, int key, int scanCode, int action, int mods)
 {
     for (auto& a : global.inputActionList)
     {
@@ -264,13 +269,13 @@ void UVK::Window::keyboardInputCallback(GLFWwindow* window, int key, int scanCod
         }
     }
 
-    auto* wind = (Window*)glfwGetWindowUserPointer(window);
+    auto* wind = (WindowInternal*)glfwGetWindowUserPointer(window);
     wind->keysArr[key] = action;
 }
 
-void UVK::Window::mouseCursorPositionCallback(GLFWwindow* window, double xpos, double ypos)
+void UVK::WindowInternal::mouseCursorPositionCallback(GLFWwindow* window, double xpos, double ypos)
 {
-    auto* windowInst = static_cast<Window*>(glfwGetWindowUserPointer(window));
+    auto* windowInst = static_cast<WindowInternal*>(glfwGetWindowUserPointer(window));
 
     if (windowInst->bFirstMove)
     {
@@ -291,7 +296,7 @@ void UVK::Window::mouseCursorPositionCallback(GLFWwindow* window, double xpos, d
     windowInst->lastPosY = ypos;
 }
 
-void UVK::Window::mouseKeyInputCallback(GLFWwindow* window, int button, int action, int mods)
+void UVK::WindowInternal::mouseKeyInputCallback(GLFWwindow* window, int button, int action, int mods)
 {
     for (auto& a : global.inputActionList)
     {
@@ -301,35 +306,35 @@ void UVK::Window::mouseKeyInputCallback(GLFWwindow* window, int button, int acti
         }
     }
 
-    auto* wind = (Window*)glfwGetWindowUserPointer(window);
+    auto* wind = (WindowInternal*)glfwGetWindowUserPointer(window);
     wind->keysArr[button] = action;
 }
 
-void UVK::Window::scrollInputCallback(GLFWwindow* window, double xoffset, double yoffset)
+void UVK::WindowInternal::scrollInputCallback(GLFWwindow* window, double xoffset, double yoffset)
 {
-    auto* windowInst = static_cast<Window*>(glfwGetWindowUserPointer(window));
+    auto* windowInst = static_cast<WindowInternal*>(glfwGetWindowUserPointer(window));
 
     windowInst->scroll = UVK::FVector2(xoffset, yoffset);
 }
 
-const std::array<uint16_t, 350>& UVK::Window::getKeys()
+const std::array<uint16_t, 350>& UVK::WindowInternal::getKeys()
 {
     return keysArr;
 }
 
-UVK::FVector2 UVK::Window::getScroll()
+UVK::FVector2 UVK::WindowInternal::getScroll()
 {
     FVector2 ret = scroll;
     scroll = FVector2(0.0f, 0.0f);
     return ret;
 }
 
-UVK::Window::Window()
+UVK::WindowInternal::WindowInternal()
 {
     std::fill(keysArr.begin(), keysArr.end(), false);
 }
 
-void UVK::Window::setCursorVisibility(bool bIsVisible)
+void UVK::WindowInternal::setCursorVisibility(bool bIsVisible)
 {
     if (bIsVisible)
     {
@@ -341,27 +346,27 @@ void UVK::Window::setCursorVisibility(bool bIsVisible)
     }
 }
 
-int UVK::Window::getBufferWidth() const
+int UVK::WindowInternal::getBufferWidth() const
 {
-    return bufferWidth;
+    return (int)resources.size.x;
 }
 
-UVK::FVector2 UVK::Window::getMousePositionChange()
+UVK::FVector2 UVK::WindowInternal::getMousePositionChange()
 {
     return FVector2(getXMousePositionChange(), getYMousePositionChange());
 }
 
-int UVK::Window::getBufferHeight() const
+int UVK::WindowInternal::getBufferHeight() const
 {
-    return bufferHeight;
+    return (int)resources.size.y;
 }
 
-UVK::WindowData& UVK::Window::data()
+UVK::WindowData& UVK::WindowInternal::data()
 {
     return resources;
 }
 
-void UVK::Window::saveEditorKeybinds()
+void UVK::WindowInternal::saveEditorKeybinds()
 {
     YAML::Emitter out;
     out << YAML::BeginMap << YAML::Key << "bindings" << YAML::BeginSeq;
@@ -381,7 +386,7 @@ void UVK::Window::saveEditorKeybinds()
     file.close();
 }
 
-void UVK::Window::saveGameKeybinds()
+void UVK::WindowInternal::saveGameKeybinds()
 {
     YAML::Emitter out;
     out << YAML::BeginMap << YAML::Key << "bindings" << YAML::BeginSeq;
@@ -399,6 +404,20 @@ void UVK::Window::saveGameKeybinds()
     std::ofstream file("../Config/Engine/GameKeybinds.yaml");
     file << out.c_str();
     file.close();
+}
+
+void UVK::WindowInternal::saveWindowSettings()
+{
+    YAML::Emitter out;
+    out << YAML::BeginMap << YAML::Key << "image" << YAML::Value << resources.image;
+    out << YAML::Key << "width" << YAML::Value << resources.size.x;
+    out << YAML::Key << "height" << YAML::Value << resources.size.y;
+    out << YAML::Key << "fullscreen" << YAML::Value << resources.fullscreen;
+    out << YAML::Key << "window-name" << YAML::Value << resources.name;
+
+    std::ofstream fileout("../Config/Settings/Window.yaml");
+    fileout << out.c_str();
+    fileout.close();
 }
 
 UVK::FVector2 UVK::Input::getLastMousePosition()

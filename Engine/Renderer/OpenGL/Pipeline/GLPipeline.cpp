@@ -1,5 +1,5 @@
 // GLPipeline.cpp
-// Last update 6/7/2021 by Madman10K
+// Last update 17/7/2021 by Madman10K
 #include <GL/glew.h>
 #include <Events/Events.hpp>
 #include <Renderer/EditorUI/Classes/EditorLevel.hpp>
@@ -17,10 +17,11 @@ void UVK::GLPipeline::begin(bool bHasEditor, Level* lvl)
     {
 #ifndef PRODUCTION
         auto* lv = new UVK::EditorLevel;
-        global.level = lv;
+        Internal::currentLevel = lv;
+        global.currentLevel = Internal::currentLevel;
 
         Actor a("Editor Pawn", 330, "EditorPawn");
-        global.level->gameMode->pawn->beginPlay();
+        global.currentLevel->gameMode->pawn->beginPlay();
     #ifdef DEVELOPMENT
         tx = Texture("../Content/Engine/brick.jpg");
         tx.load();
@@ -33,7 +34,7 @@ void UVK::GLPipeline::begin(bool bHasEditor, Level* lvl)
     else
     {
         global.ui.init();
-        global.level->beginPlay();
+        global.currentLevel->beginPlay();
     }
     enableFeatures();
 
@@ -57,7 +58,7 @@ void UVK::GLPipeline::tick()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
         UVK::Editor::beginFrame();
-        global.level->gameMode->pawn->tick(deltaTime);
+        global.currentLevel->gameMode->pawn->tick(deltaTime);
         
 #ifdef DEVELOPMENT
         tx.useTexture();
@@ -67,10 +68,10 @@ void UVK::GLPipeline::tick()
     {
         glClearColor(global.colour.x, global.colour.y, global.colour.z, global.colour.w);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-        UVK::UI::beginFrame();
+        UVK::UIInternal::beginFrame();
     }
 
-    UVK::GLEntityManager::tick(&global.level->gameMode->pawn->camera);
+    UVK::GLEntityManager::tick(&global.currentLevel->gameMode->pawn->camera);
 
     glUseProgram(0);
 
@@ -82,12 +83,12 @@ void UVK::GLPipeline::tick()
         glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         
-        ed.runEditor(global.colour, fb, global.level->gameMode->pawn->camera, global.level);
+        ed.runEditor(global.colour, fb, global.currentLevel->gameMode->pawn->camera, global.currentLevel);
 #endif
     }
     else
     {
-        global.level->tick(deltaTime);
+        global.currentLevel->tick(deltaTime);
         global.events.callTick(deltaTime);
         global.ui.update();
 
@@ -103,14 +104,14 @@ void UVK::GLPipeline::end()
     {
 #ifndef PRODUCTION
         ed.destroyContext();
-        global.level->gameMode->pawn->endPlay();
+        global.currentLevel->gameMode->pawn->endPlay();
 #endif
     }
     else
     {
-        global.level->endPlay();
+        global.currentLevel->endPlay();
         global.events.callEnd();
-        UVK::UI::clean();
+        UVK::UIInternal::clean();
     }
 
     UVK::GLEntityManager::clean();

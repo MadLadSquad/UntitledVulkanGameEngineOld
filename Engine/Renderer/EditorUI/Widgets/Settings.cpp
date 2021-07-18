@@ -1,26 +1,27 @@
 // Settings.cpp
-// Last update 6/7/2021 by Madman10K
+// Last update 18/7/2021 by Madman10K
 #include <GL/glew.h>
 #include "Settings.hpp"
 #include <imgui.h>
 #include <cpp/imgui_stdlib.h>
 #include <Core/Global.hpp>
 #include <Renderer/EditorUI/Style/Theme.hpp>
+#include <Core/Interfaces/SettingsManager.hpp>
 
 void Settings::displayWindow(bool& bOpen)
 {
     ImGui::Begin("Window Settings", &bOpen);
 
-    int arr[] = { (int)UVK::global.window.data().size.x, (int)UVK::global.window.data().size.y };
+    int arr[] = { (int)UVK::Window::windowSize().x, (int)UVK::Window::windowSize().y };
 
-    ImGui::Text("DISCLAIMER: The editor needs to be reloaded for changes to appear!");
-    ImGui::Checkbox("Fullscreen", &UVK::global.window.data().fullscreen);
+    ImGui::TextWrapped("DISCLAIMER: The editor needs to be reloaded for changes to appear!");
+    ImGui::Checkbox("Fullscreen", &UVK::Window::fullscreen());
     ImGui::InputInt2("Window Size", arr);
-    ImGui::InputText("Window Name", &UVK::global.window.data().name);
-    ImGui::InputText("Window Icon location", &UVK::global.window.data().image);
+    ImGui::InputText("Window Name", &UVK::Window::name());
+    ImGui::InputText("Window Icon location", &UVK::Window::iconLocation());
 
-    UVK::global.window.data().size.x = (float)arr[0];
-    UVK::global.window.data().size.y = (float)arr[1];
+    UVK::Window::windowSize().x = (float)arr[0];
+    UVK::Window::windowSize().y = (float)arr[1];
 
     if (ImGui::Button("Close"))
     {
@@ -29,7 +30,7 @@ void Settings::displayWindow(bool& bOpen)
     ImGui::SameLine();
     if (ImGui::Button("Save"))
     {
-        UVK::global.window.dumpConfig();
+        UVK::SettingsManager::saveWindowSettings();
     }
     ImGui::End();
 }
@@ -38,9 +39,9 @@ void Settings::displayRenderer(bool& bOpen)
 {
     ImGui::Begin("Renderer Settings", &bOpen);
 
-    ImGui::Text("DISCLAIMER: The editor needs to be reloaded for changes to appear!");
-    ImGui::Checkbox("Vulkan", &UVK::global.rendererSettings.bVulkan);
-    ImGui::InputText("Theme Location", &UVK::global.rendererSettings.themeLoc);
+    ImGui::TextWrapped("DISCLAIMER: The editor needs to be reloaded for changes to appear!");
+    ImGui::Checkbox("Vulkan", &UVK::SettingsManager::getRendererSettings().bVulkan);
+    ImGui::InputText("Theme Location", &UVK::SettingsManager::getRendererSettings().themeLoc);
 
     if (ImGui::Button("Close"))
     {
@@ -49,7 +50,7 @@ void Settings::displayRenderer(bool& bOpen)
     ImGui::SameLine();
     if (ImGui::Button("Save"))
     {
-        UVK::global.rendererSettings.saveSettings();
+        UVK::SettingsManager::saveRendererSettings();
     }
     ImGui::End();
 }
@@ -58,7 +59,7 @@ void Settings::displayKeybindEditor(bool& bOpen)
 {
     ImGui::Begin("Editor Keybinds", &bOpen);
 
-    for (auto& a : UVK::global.getActions())
+    for (auto& a : UVK::InputActions::getActions())
     {
         if (a.name.find("editor-") != std::string::npos)
         {
@@ -80,7 +81,7 @@ void Settings::displayKeybindEditor(bool& bOpen)
     ImGui::SameLine();
     if (ImGui::Button("Save"))
     {
-        UVK::Window::saveEditorKeybinds();
+        UVK::SettingsManager::saveEditorKeybindSettings();
     }
     ImGui::End();
 }
@@ -99,31 +100,31 @@ void Settings::displayKeybindGame(bool &bOpen)
         action.name = "NewAction" + std::to_string(newact);
         action.keyCode = 0;
 
-        UVK::global.getActions().push_back(action);
+        UVK::InputActions::getActions().push_back(action);
         ++newact;
     }
     if (ImGui::MenuItem("- Remove Keybind##scn")) bDestroy = true;
 
     ImGui::EndMenuBar();
 
-    for (int a = 0; a < UVK::global.getActions().size(); a++)
+    for (int a = 0; a < UVK::InputActions::getActions().size(); a++)
     {
-        if (UVK::global.getActions()[a].name.find("editor-") == std::string::npos)
+        if (UVK::InputActions::getActions()[a].name.find("editor-") == std::string::npos)
         {
             if (bDestroy)
             {
-                UVK::global.getActions().erase(UVK::global.getActions().begin() + a);
+                UVK::InputActions::getActions().erase(UVK::InputActions::getActions().begin() + a);
                 bDestroy = false;
             }
             else
             {
                 ImGui::Separator();
-                ImGui::Text("%s", UVK::global.getActions()[a].name.c_str());
-                ImGui::InputText(static_cast<std::string>("Name##" + UVK::global.getActions()[a].name + std::to_string(UVK::global.getActions()[a].keyCode)).c_str(), &UVK::global.getActions()[a].name);
+                ImGui::Text("%s", UVK::InputActions::getActions()[a].name.c_str());
+                ImGui::InputText(static_cast<std::string>("Name##" + UVK::InputActions::getActions()[a].name + std::to_string(UVK::InputActions::getActions()[a].keyCode)).c_str(), &UVK::InputActions::getActions()[a].name);
 
-                int i = UVK::global.getActions()[a].keyCode;
-                ImGui::InputInt(static_cast<std::string>("Keycode##" + UVK::global.getActions()[a].name + std::to_string(UVK::global.getActions()[a].keyCode)).c_str(), &i);
-                UVK::global.getActions()[a].keyCode = i;
+                int i = UVK::InputActions::getActions()[a].keyCode;
+                ImGui::InputInt(static_cast<std::string>("Keycode##" + UVK::InputActions::getActions()[a].name + std::to_string(UVK::InputActions::getActions()[a].keyCode)).c_str(), &i);
+                UVK::InputActions::getActions()[a].keyCode = i;
             }
         }
     }
@@ -137,7 +138,7 @@ void Settings::displayKeybindGame(bool &bOpen)
     ImGui::SameLine();
     if (ImGui::Button("Save"))
     {
-        UVK::Window::saveGameKeybinds();
+        UVK::SettingsManager::saveKeybindSettings();
     }
     ImGui::End();
 }
@@ -306,5 +307,48 @@ void Settings::displayThemeEditor(bool& bOpen)
         UVK::EditorTheme::save(static_cast<std::string>("../Config/" + outName).c_str(), static_cast<std::string>("../Content/" + fontLoc).c_str(), fontSize);
 #endif
     }
+    ImGui::End();
+}
+
+void Settings::displayProjectSettings(std::string& name, std::string& ver, std::string& enginever, std::string& startupLevel, bool& bOpen)
+{
+    ImGui::Begin("Project Settings", &bOpen);
+
+    ImGui::InputText("Project Name", &name);
+    ImGui::InputText("Project Version", &ver);
+    ImGui::InputText("Engine Version", &enginever);
+    ImGui::InputText("Startup Level Name", &startupLevel);
+
+    ImGui::TextWrapped("If you click \"Save\" your project's generated files will be regenerated!");
+
+    if (ImGui::Button("Close"))
+    {
+        bOpen = false;
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Save"))
+    {
+        YAML::Emitter o;
+        o << YAML::BeginMap << YAML::Key << "name" << YAML::Value << name;
+        o << YAML::Key << "startup-level" << YAML::Value << startupLevel;
+        o << YAML::Key << "version" << YAML::Value << ver;
+        o << YAML::Key << "engine-version" << YAML::Value << enginever << YAML::EndMap;
+
+        std::ofstream out("../uvproj.yaml");
+        out << o.c_str();
+        out.close();
+
+        static int lnt;
+#ifndef _WIN32
+        lnt = system("cd ../UVKBuildTool/build && ./UVKBuildTool --generate && cd ../../");
+#else
+        lnt = system("cd ../UVKBuildTool/build && UVKBuildTool.exe --generate && cd ../../");
+#endif
+        if (lnt)
+        {
+
+        }
+    }
+
     ImGui::End();
 }

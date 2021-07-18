@@ -1,14 +1,14 @@
 // UI.hpp
-// Last update 2/7/2021 by Madman10K
+// Last update 18/7/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 
 namespace UVK
 {
-    class UI
+    class UIInternal
     {
     public:
-        UI() = default;
+        UIInternal() = default;
 
         void addEvent(const std::function<void(void)>& func);
         void addEventImgui(const std::function<void(void)>& func);

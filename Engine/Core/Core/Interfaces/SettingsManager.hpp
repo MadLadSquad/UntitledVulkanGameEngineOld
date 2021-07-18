@@ -1,14 +1,22 @@
-//
-// Created by i-use-gentoo-btw on 7/14/21.
-//
+// SettingsManager.hpp
+// Last update 18/7/2021 by Madman10K
+#pragma once
 
-#ifndef GAME_SETTINGSMANAGER_HPP
-#define GAME_SETTINGSMANAGER_HPP
+namespace UVK
+{
+    struct RendererSettings;
 
+    class SettingsManager
+    {
+    public:
+        // Saves all settings
+        static void saveSettings();
+        static void saveRendererSettings();
+        static void saveEditorKeybindSettings();
+        static void saveKeybindSettings();
+        static void saveWindowSettings();
+        static void saveWindowAndKeybindSettings();
 
-class SettingsManager {
-
-};
-
-
-#endif //GAME_SETTINGSMANAGER_HPP
+        static RendererSettings& getRendererSettings();
+    };
+}

@@ -1,5 +1,5 @@
 // UI.cpp
-// Last update 2/7/2021 by Madman10K
+// Last update 18/7/2021 by Madman10K
 #include <GL/glew.h>
 #include "UI.hpp"
 #include <imgui.h>
@@ -7,8 +7,10 @@
 #include <imgui_impl_vulkan.h>
 #include <imgui_impl_glfw.h>
 #include <Core/Global.hpp>
+#include <Core/Interfaces/UInterface.hpp>
 
-void UVK::UI::init()
+
+void UVK::UIInternal::init()
 {
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
@@ -36,7 +38,7 @@ void UVK::UI::init()
     }
 }
 
-void UVK::UI::update()
+void UVK::UIInternal::update()
 {
     ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize;
     window_flags |= ImGuiTreeNodeFlags_SpanAvailWidth;
@@ -69,7 +71,7 @@ void UVK::UI::update()
     }
 }
 
-void UVK::UI::clean()
+void UVK::UIInternal::clean()
 {
     if (global.bUsesVulkan)
     {
@@ -83,7 +85,7 @@ void UVK::UI::clean()
     ImGui::DestroyContext();
 }
 
-void UVK::UI::beginFrame()
+void UVK::UIInternal::beginFrame()
 {
     if (global.bUsesVulkan)
     {
@@ -97,7 +99,7 @@ void UVK::UI::beginFrame()
     ImGui::NewFrame();
 }
 
-void UVK::UI::renderUI()
+void UVK::UIInternal::renderUI()
 {
     for (auto& a : eventArr)
     {
@@ -110,17 +112,17 @@ void UVK::UI::renderUI()
     }
 }
 
-void UVK::UI::addEvent(const std::function<void(void)>& func)
+void UVK::UIInternal::addEvent(const std::function<void(void)>& func)
 {
     eventArr.push_back(func);
 }
 
-void UVK::UI::addEventImgui(const std::function<void(void)>& func)
+void UVK::UIInternal::addEventImgui(const std::function<void(void)>& func)
 {
     eventArrImGui.push_back(func);
 }
 
-void UVK::UI::clear()
+void UVK::UIInternal::clear()
 {
     eventArr.clear();
     eventArrImGui.clear();

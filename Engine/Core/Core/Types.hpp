@@ -1,5 +1,5 @@
 // Types.hpp
-// Last update 30/6/2021 by Madman10K
+// Last update 18/7/2021 by Madman10K
 #define GLM_FORCE_DEPTH_ZERO_TO_ONE
 #include <vector>
 #include <glm/glm.hpp>
@@ -21,6 +21,9 @@ namespace UVK
 	typedef entt::registry EntityPool;
 	// String
 	using String = const char*;
+
+	template<typename T>
+	using EntityView = entt::view<T>;
 
     class Math;
     class Level;

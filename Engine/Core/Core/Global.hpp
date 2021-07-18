@@ -1,5 +1,5 @@
-// RendererResources.hpp
-// Last update 6/7/2021 by Madman10K
+// Global.hpp
+// Last update 18/7/2021 by Madman10K
 #pragma once
 #include <Core/ECS.hpp>
 #include <Core.hpp>
@@ -22,118 +22,69 @@ namespace UVK
         void saveSettings() const;
     };
 
-    struct UVKGlobal
+    class UVKGlobal
     {
-        UVKGlobal()
-        {
-            colour = FVector4(1.0f, 1.0f, 1.0f, 1.0f);
-            actorManager.init();
-        }
+    public:
+        UVKGlobal();
+        ~UVKGlobal();
 
-        template<typename T>
-        void openNewLevel(String name)
-        {
-            func = [=](){
-                const char* loc = name;
-                level->endPlay();
-                delete level;
+        GameInstance* instance{};
+        WindowInternal window;
 
-                T* lvl = new T();
-                level = lvl;
-                T::open(loc);
-                level->beginPlay();
-            };
-        }
-
-        std::vector<InputAction>& getActions()
-        {
-            return inputActionList;
-        }
-
-        ~UVKGlobal()
-        {
-            delete level;
-            actorManager.destroy();
-        }
-
-        FVector4 colour{};
-        FVector4 ambientLight{};
+        bool& getEditor();
+        Level* currentLevel = nullptr;
+    private:
+        RendererSettings rendererSettings;
 
         std::string levelName;
         std::string levelLocation;
 
-        bool bEditor{};
-        bool bUsesVulkan{};
+        FVector4 colour{};
+        FVector4 ambientLight{};
 
-        GameInstance* instance{};
-        Window window;
-        ECSManager ecs;
-
-        RendererSettings rendererSettings;
-
-        UI ui;
-        Level* level = nullptr;
-    private:
+        friend class Renderer;
+        friend class Camera;
+        friend class Editor;
         friend class GLPipeline;
-        friend class Window;
+        friend class GLEntityManager;
+        friend class ECS;
+        friend class WindowInternal;
         friend class Input;
         friend class Actor;
         friend class Level;
+        friend class UI;
+        friend class UIInternal;
+        friend class InputActions;
+        friend class Math;
+        friend class SettingsManager;
+        friend struct MeshComponentRaw;
+
+        bool bEditor{};
+        bool bUsesVulkan{};
+        ECSManager ecs;
 
         UVK::Events events;
         UVK::ActorManager actorManager;
         std::vector<InputAction> inputActionList;
-        std::function<void(void)> func = [=](){};
+        UIInternal ui;
 
-        void finalizeOpening()
-        {
-            func();
-
-            func = [=](){};
-        }
+        void finalizeOpening();
+        std::vector<InputAction>& getActions();
     };
 
     inline UVKGlobal global;
 
+    class InputActions
+    {
+    public:
+        static std::vector<InputAction>& getActions();
+    };
+
     class Math
     {
     public:
-        static void translate(glm::mat4& mat, FVector vt)
-        {
-            if (global.bUsesVulkan)
-            {
-                mat = glm::translate(mat, FVector(vt.x, -vt.y, vt.z));
-            }
-            else
-            {
-                mat = glm::translate(mat, vt);
-            }
-        }
-
-        static void rotate(glm::mat4& mat, FVector vt)
-        {
-            if (global.bUsesVulkan)
-            {
-                auto rot = glm::toMat4(glm::quat(FVector(vt.x, -vt.y, vt.z)));
-                mat *= rot;
-            }
-            else
-            {
-                auto rot = glm::toMat4(glm::quat(vt));
-                mat *= rot;
-            }
-        }
-
-        static void scale(glm::mat4& mat, FVector vt)
-        {
-            if (global.bUsesVulkan)
-            {
-                mat = glm::scale(mat, FVector(vt.x, -vt.y, vt.z));
-            }
-            else
-            {
-                mat = glm::scale(mat, vt);
-            }
-        }
+        static void translate(glm::mat4& mat, FVector vt);
+        static void rotate(glm::mat4& mat, FVector vt);
+        static void scale(glm::mat4& mat, FVector vt);
     };
 }

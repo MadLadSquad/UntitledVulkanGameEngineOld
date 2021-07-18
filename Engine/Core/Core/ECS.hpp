@@ -15,6 +15,12 @@ namespace UVK
 
         void each(std::function<void(entt::entity)> func);
 
+        template<typename T>
+        EntityView<T> view()
+        {
+            return EntityView<T>();
+        }
+
         UVK::EntityPool& data();
         void clear();
     private:

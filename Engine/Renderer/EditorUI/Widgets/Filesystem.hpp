@@ -1,5 +1,5 @@
 // Filesystem.hpp
-// Last update 15/6/2021 by Madman10K
+// Last update 17/7/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 #include "Engine/Renderer/Textures/Texture.hpp"
@@ -15,7 +15,7 @@
  */
 namespace Filesystem
 {
-    void display(std_filesystem::path& pt, std::array<UVK::Texture, 8>& textures, std::string& cpLoc, bool& bShow);
+    void display(std_filesystem::path& pt, UVK::Texture* textures, std::string& cpLoc, bool& bShow);
 }
 #endif
 #endif

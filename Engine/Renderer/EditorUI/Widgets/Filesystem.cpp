@@ -1,10 +1,10 @@
 // Filesystem.cpp
-// Last update 15/6/2021 by Madman10K
+// Last update 17/7/2021 by Madman10K
 #include "Filesystem.hpp"
 
 #ifndef PRODUCTION
 #ifndef __MINGW32__
-void Filesystem::display(std_filesystem::path& pt, std::array<UVK::Texture, 8>& textures, std::string& cpLoc, bool& bShow)
+void Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, std::string& cpLoc, bool& bShow)
 {
     ImGui::Begin("Filesystem##Widget", &bShow);
 

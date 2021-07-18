@@ -1,5 +1,5 @@
 // EditorPawn.hpp
-// Last update 2/7/2021 by Madman10K
+// Last update 18/7/2021 by Madman10K
 #pragma once
 #include <GL/glew.h>
 #include <Engine/Core/Core/Global.hpp>
@@ -17,7 +17,7 @@ namespace UVK
             camera = Camera(FVector(0.0f, 0.0f, 0.0f), FVector(0.0f, 1.0f, 0.0f), FVector(0.0f, 0.0f, 0.0f));
             camera.getProjection().getPlanes() = FVector2(0.1f, 100.0f);
             camera.getProjection().getFOV() = 90.0f;
-            camera.getProjection().getAspectRatio() = (GLfloat)global.window.getBufferWidth() / (GLfloat)global.window.getBufferHeight();
+            camera.getProjection().getAspectRatio() = (GLfloat)Window::windowSize().x / (GLfloat)Window::windowSize().y;
             camera.getProjection().recalculateRH();
 
             name = "Editor Pawn";

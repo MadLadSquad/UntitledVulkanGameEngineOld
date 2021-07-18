@@ -1,5 +1,5 @@
 // Level.hpp
-// Last update 6/7/2021 by Madman10K
+// Last update 18/7/2021 by Madman10K
 #include <Core.hpp>
 #include "../GameMode.hpp"
 #include "../GameInstance.hpp"
@@ -25,7 +25,6 @@ namespace UVK
             delete gameInstance;
         }
 
-
         /**
          * @brief Saves to a level file with a location
          * @param location the ouput location of the file
@@ -35,9 +34,22 @@ namespace UVK
 
         /**
          * @brief Opens a level file
-         * @param file file location
+         * @param location: file location
          */
-        static void open(String file) noexcept;
+        template<typename T>
+        static void open(String location) noexcept
+        {
+            Internal::openFunction = [=]()
+            {
+                const char* loc = location;
+                T* lvl = new T();
+                Internal::currentLevel = lvl;
+                T::openInternal(loc);
+                Internal::currentLevel->beginPlay();
+            };
+
+            Internal::openConfirmation = true;
+        }
 
         GameInstance* gameInstance = nullptr;
         GameMode* gameMode = nullptr;
@@ -67,12 +79,21 @@ namespace UVK
             gameInstance->endPlay();
             gameMode->endPlay();
         }
+
+        static void openInternal(String file);
+
+        static FVector4& getAmbientLighting();
+        static FVector4& getSceneColour();
+        static std::string& getLevelName();
     private:
+        friend struct UVKGlobal;
+
         /**
          * @brief Utility function to save an entity
          * @param out a YAML::Emitter reference to the emitter
          * @param act actor to be saved
          */
         static void saveEntity(YAML::Emitter& out, entt::entity act);
+
     };
 }

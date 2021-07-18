@@ -1,11 +1,7 @@
 // Window.hpp
-// Last update 2/7/2021 by Madman10K
+// Last update 18/7/2021 by Madman10K
 #pragma once
-#include <GL/glew.h>
-#include "../Textures/Texture.hpp"
-#include <glfw3.h>
-#include <yaml.h>
-#include "UVKLog.h"
+#include <Core.hpp>
 
 namespace UVK
 {
@@ -35,35 +31,42 @@ namespace UVK
     /**
      * @brief A standard cross-renderer window abstraction
      */
-    class Window
+    class WindowInternal
     {
     public:
-        Window();
-
+        WindowInternal();
+    private:
         [[nodiscard]] GLFWwindow* getWindow() const;
 
         [[nodiscard]] int getBufferWidth() const;
         [[nodiscard]] int getBufferHeight() const;
 
-        [[nodiscard]] FVector2 getLastMousePosition() const;
-        [[nodiscard]] FVector2 getCurrentMousePosition() const;
-        FVector2 getMousePositionChange();
-        FVector2 getScroll();
-
         void setCursorVisibility(bool bIsVisible);
-        void setTitle(UVK::String newTitle) const;
-        void dumpConfig() const;
+        void setTitle(UVK::String newTitle);
+        void dumpConfig();
 
         WindowData& data();
 
         static void saveEditorKeybinds();
         static void saveGameKeybinds();
-    private:
+        void saveWindowSettings();
+
         friend class GLPipeline;
         friend class Renderer;
+        friend class GLRenderer;
         friend class VulkanRenderer;
+        friend class VKSwapchain;
         friend class Input;
         friend class Editor;
+        friend class APawn;
+        friend class Window;
+        friend class SettingsManager;
+        friend class UIInternal;
+
+        [[nodiscard]] FVector2 getLastMousePosition() const;
+        [[nodiscard]] FVector2 getCurrentMousePosition() const;
+        FVector2 getMousePositionChange();
+        FVector2 getScroll();
 
         void createWindow();
         void destroyWindow();
@@ -91,15 +94,12 @@ namespace UVK
 
         bool bFirstMove = true;
 
-        GLdouble posX = 0;
-        GLdouble posY = 0;
-        GLdouble lastPosX = 0;
-        GLdouble lastPosY = 0;
-        GLdouble offsetX = 0;
-        GLdouble offsetY = 0;
-
-        int bufferWidth = 0;
-        int bufferHeight = 0;
+        double posX = 0;
+        double posY = 0;
+        double lastPosX = 0;
+        double lastPosY = 0;
+        double offsetX = 0;
+        double offsetY = 0;
     };
 }
 

@@ -1,8 +1,6 @@
 // AudioComponent.cpp
-// Last update 6/7/2021 by Madman10K
+// Last update 17/7/2021 by Madman10K
 #include "AudioComponent.hpp"
-
-#include <utility>
 
 void UVK::AudioComponent::play()
 {

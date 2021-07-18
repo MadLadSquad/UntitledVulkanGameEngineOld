@@ -1,8 +1,7 @@
 // APawn.hpp
-// Last update 2/7/2021 by Madman10K
+// Last update 17/7/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
-#include "ScriptableObject.hpp"
 #include <Renderer/Camera/Camera.hpp>
 
 namespace UVK

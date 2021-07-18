@@ -1,5 +1,5 @@
 // Editor.hpp
-// Last update 6/7/2021 by Madman10K
+// Last update 18/7/2021 by Madman10K
 #pragma once
 #include <iostream>
 #include <utility>
@@ -9,11 +9,8 @@
 #include "../Textures/Texture.hpp"
 #include <Audio/Audio.hpp>
 
-
 namespace UVK
 {
-    //class Level;
-
     /**
      * @brief Controls the whole editor and related operations
      */
@@ -43,13 +40,13 @@ namespace UVK
         Texture logoTxt;
         Texture insert;
 
-        std::array<Texture, 8> fileTextures;
+        Texture fileTextures[8];
 
         int entNum = 0;
         int viewportWidth = 0, viewportHeight = 0;
         uint8_t selectedFile = 0;
 
-        Actor selectedEntity;
+        Actor selectedEntity{};
 
         bool bShowOpenLevelWidget= false;
         bool bShowSaveLevelWidget = false;
@@ -76,10 +73,10 @@ namespace UVK
         bool bShowKeybindSettings = false;
         bool bShowThemeSettings = false;
         bool bShowGameKeybinds = false;
+        bool bShowGameSettings = false;
 
         void displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& camera, UVK::Level* lvl);
 
-        std::string levelName;
         std::string openLevel;
         std::string location;
         std::string name;
@@ -89,7 +86,8 @@ namespace UVK
         std::string engineVersion;
         std::string projectVersion;
         std::string projectName;
-        UVK::String colTheme;
+        std::string startupLevel;
+        UVK::String colTheme{};
         std::string cpFileLoc;
 
         double frameTimeData[2] = { 0.0, 0.0 };

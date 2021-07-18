@@ -1,5 +1,5 @@
 // Level.cpp
-// Last update 6/7/2021 by Madman10K
+// Last update 18/7/2021 by Madman10K
 #include "../../Components/Components.hpp"
 #include "Engine/Core/Core/Actor.hpp"
 #include <Events/Events.hpp>
@@ -127,9 +127,10 @@ void UVK::Level::save(String location)
     fileout << out.c_str();
 }
 
-void UVK::Level::open(String location) noexcept
+void UVK::Level::openInternal(UVK::String location)
 {
     global.ecs.clear();
+    global.ui.clear();
     if (!global.bEditor)
     {
         global.events.callEnd();
@@ -199,4 +200,19 @@ void UVK::Level::open(String location) noexcept
             global.events.callBegin();
         }
     }
+}
+
+UVK::FVector4& UVK::Level::getAmbientLighting()
+{
+    return global.ambientLight;
+}
+
+UVK::FVector4& UVK::Level::getSceneColour()
+{
+    return global.colour;
+}
+
+std::string& UVK::Level::getLevelName()
+{
+    return global.levelName;
 }

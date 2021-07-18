@@ -1,5 +1,5 @@
 // VKSwapchain.cpp
-// Last update 2/7/2021 by Madman10K
+// Last update 18/7/2021 by Madman10K
 #ifndef __APPLE__
 #include <GL/glew.h>
 #define GLFW_INCLUDE_VULKAN
@@ -8,8 +8,6 @@
 #include <GLFW/glfw3.h>
 #include "VKSwapchain.hpp"
 #include "VKDevice.hpp"
-#include <Renderer/Window/Window.hpp>
-
 
 void UVK::VKSwapchain::createSurface()
 {
