@@ -45,7 +45,7 @@ jobs:
     - name: Extract project
       run: xcopy /i /e /c /k /y /r UVKSampleProject .  
     - name: Generated generated files
-      run: mkdir Generated && cd UVKBuildTool/ && mkdir build && cd build && cmake -G "Unix Makefiles" .. && mingw32-make && dir && ./UVKBuildTool.exe --generate
+      run: mkdir Generated && cd UVKBuildTool/ && mkdir build && cd build && cmake -G "Unix Makefiles" .. && mingw32-make && dir && ./UVKBuildTool.exe --install
     - name: Make build directory and cmake
       run: ls && mkdir build && cd build && cmake .. -G "Unix Makefiles" && mingw32-make
   #Mac: 
