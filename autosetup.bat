@@ -21,7 +21,7 @@ echo Compiling build tool and generating files ...
 mkdir Source && mkdir Generated && mkdir Exported && cd Config && mkdir Settings && cd ../
 cd UVKBuildTool/ && mkdir build && cd build
 cmake .. -G "Unix Makefiles" && mingw32-make 
-UVKBuildTool --generate 
+UVKBuildTool --install
 cd ../../ && mkdir build && cd build && cmake .. && cd ..
 
 echo name: Game > "uvproj.yaml"

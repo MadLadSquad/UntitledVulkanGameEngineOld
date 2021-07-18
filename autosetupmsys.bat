@@ -23,7 +23,7 @@ echo startup-level-exists: false >> "uvproj.yaml"
 echo Compiling build tool and generating files ...
 mkdir Source && mkdir Generated && mkdir Exported && cd Config && mkdir Settings && cd ../
 cd UVKBuildTool/ && mkdir build && cd build/ 
-cmake .. -G "Unix Makefiles" && make && UVKBuildTool --generate 
+cmake .. -G "Unix Makefiles" && make && UVKBuildTool --install
 cd ../../ && mkdir build && cd build && cmake .. && cd ..
 
 echo name: Game > "uvproj.yaml"

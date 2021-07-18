@@ -40,7 +40,7 @@ mkdir build || exit
 cd build || exit
 cmake .. -G "Unix Makefiles" || exit
 make || exit
-./UVKBuildTool --generate || exit
+./UVKBuildTool --install || exit
 cd ../../ || exit
 mkdir build || exit
 mkdir Exported  || exit
