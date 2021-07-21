@@ -1,5 +1,5 @@
 // GameState.hpp
-// Last update 2/7/2021 by Madman10K
+// Last update 19/7/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 
@@ -17,4 +17,13 @@ namespace UVK
 
         virtual ~GameState() = default;
     };
+
+    template<typename T>
+    static GameState* makeGameState()
+    {
+        T* gs = new T();
+        return gs;
+    }
+
+    static void destroyGameState(GameState* gs);
 }

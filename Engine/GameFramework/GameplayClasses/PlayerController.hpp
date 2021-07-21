@@ -18,18 +18,21 @@ namespace UVK
         virtual void beginPlay() = 0;
         virtual void tick(float deltaTime) = 0;
         virtual void endPlay() = 0;
-        void possess(APawn* pawn)
-        {
-            currentPawn = pawn;
-        }
+
+        void possess(APawn* pawn);
 
         APawn* currentPawn{};
 
-        virtual ~PlayerController()
-        {
-            delete currentPawn;
-        }
+        virtual ~PlayerController();
     private:
-
     };
+
+    template<typename T>
+    static PlayerController* makePlayerController()
+    {
+        T* pc = new T();
+        return pc;
+    }
+
+    static void destroyPlayerController(PlayerController* pc);
 }

@@ -1,18 +1,16 @@
 // Global.cpp
-// Last update 18/7/2021 by Madman10K
+// Last update 21/7/2021 by Madman10K
 #include "Global.hpp"
 
 UVK::UVKGlobal::UVKGlobal()
 {
     colour = FVector4(1.0f, 1.0f, 1.0f, 1.0f);
-    actorManager.init();
     currentLevel = Internal::currentLevel;
 }
 
 UVK::UVKGlobal::~UVKGlobal()
 {
     delete currentLevel;
-    actorManager.destroy();
 }
 
 void UVK::UVKGlobal::finalizeOpening()
@@ -80,4 +78,9 @@ void UVK::Math::scale(glm::mat4& mat, UVK::FVector vt)
 bool& UVK::UVKGlobal::getEditor()
 {
     return bEditor;
+}
+
+void UVK::UVKGlobal::openLevelInternal(UVK::String name)
+{
+    UVK::Level::openInternal(name);
 }

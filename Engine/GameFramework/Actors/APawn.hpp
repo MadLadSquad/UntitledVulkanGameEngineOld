@@ -1,5 +1,5 @@
 // APawn.hpp
-// Last update 17/7/2021 by Madman10K
+// Last update 21/7/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 #include <Renderer/Camera/Camera.hpp>
@@ -25,4 +25,13 @@ namespace UVK
     private:
 
     };
+
+    template<typename T>
+    static APawn* makePawn()
+    {
+        T* pw = new T();
+        return pw;
+    }
+
+    static void destroyPawn(APawn* pw);
 }

@@ -1,5 +1,5 @@
 // Level.cpp
-// Last update 18/7/2021 by Madman10K
+// Last update 21/7/2021 by Madman10K
 #include "../../Components/Components.hpp"
 #include "Engine/Core/Core/Actor.hpp"
 #include <Events/Events.hpp>
@@ -133,11 +133,11 @@ void UVK::Level::openInternal(UVK::String location)
     global.ui.clear();
     if (!global.bEditor)
     {
-        global.events.callEnd();
+        global.instance->events.callEnd();
         global.ui.clear();
     }
 
-    global.events.clear();
+    global.instance->events.clear();
 
     logger.consoleLog("Opening level with location: ", UVK_LOG_TYPE_NOTE, location);
 
@@ -197,7 +197,7 @@ void UVK::Level::openInternal(UVK::String location)
 
         if (!global.bEditor)
         {
-            global.events.callBegin();
+            global.instance->events.callBegin();
         }
     }
 }
@@ -215,4 +215,19 @@ UVK::FVector4& UVK::Level::getSceneColour()
 std::string& UVK::Level::getLevelName()
 {
     return global.levelName;
+}
+
+void UVK::Level::endAutohandle() const
+{
+    gameMode->endPlay();
+}
+
+void UVK::Level::tickAutohandle(float deltaTime) const
+{
+    gameMode->tick(deltaTime);
+}
+
+void UVK::Level::beginAutohandle() const
+{
+    gameMode->beginPlay();
 }

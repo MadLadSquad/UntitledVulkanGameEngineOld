@@ -1,5 +1,5 @@
 // Global.hpp
-// Last update 18/7/2021 by Madman10K
+// Last update 21/7/2021 by Madman10K
 #pragma once
 #include <Core/ECS.hpp>
 #include <Core.hpp>
@@ -33,6 +33,8 @@ namespace UVK
 
         bool& getEditor();
         Level* currentLevel = nullptr;
+
+        static void openLevelInternal(UVK::String name);
     private:
         RendererSettings rendererSettings;
 
@@ -57,17 +59,20 @@ namespace UVK
         friend class InputActions;
         friend class Math;
         friend class SettingsManager;
+        friend class GameInstance;
         friend struct MeshComponentRaw;
 
         bool bEditor{};
         bool bUsesVulkan{};
         ECSManager ecs;
 
-        UVK::Events events;
-        UVK::ActorManager actorManager;
         std::vector<InputAction> inputActionList;
         UIInternal ui;
 
+        /**
+         * @note detailed description of this function and the whole Level opening system
+         * can be found in Core/Core/Utility.hpp
+         */
         void finalizeOpening();
         std::vector<InputAction>& getActions();
     };

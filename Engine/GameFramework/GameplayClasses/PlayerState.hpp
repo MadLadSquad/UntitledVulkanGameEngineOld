@@ -1,5 +1,5 @@
 // PlayerState.hpp
-// Last update 2/7/2021 by Madman10K
+// Last update 19/7/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 #include "../Actors/APawn.hpp"
@@ -18,4 +18,13 @@ namespace UVK
 
         virtual ~PlayerState() = default;
     };
+
+    template<typename T>
+    static PlayerState* makePlayerState()
+    {
+        T* ps = new T();
+        return ps;
+    }
+
+    static void destroyPlayerState(PlayerState* ps);
 }

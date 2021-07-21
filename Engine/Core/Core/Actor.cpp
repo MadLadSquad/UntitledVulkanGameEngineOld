@@ -1,5 +1,5 @@
 // Actor.cpp
-// Last update 2/7/2021 by Madman10K
+// Last update 21/7/2021 by Madman10K
 #include <GL/glew.h>
 #include "Actor.hpp"
 #include <GameFramework/Actors/ActorManager.hpp>
@@ -25,12 +25,12 @@ void UVK::Actor::create(const std::string& nameN, uint64_t idN, const std::strin
     a.id = idN;
     a.devName = devNameN;
 
-    for (auto& b : global.actorManager.data())
+    for (auto& b : global.instance->actorManager.data())
     {
         if (b->name == nameN && b->id == idN && b->devname == devNameN)
         {
             b->entities.push_back(this);
-            global.events.add(b);
+            global.instance->events.add(b);
         }
     }
 }
@@ -41,7 +41,7 @@ void UVK::Actor::destroy()
 
     std::vector<ScriptableObject*> temp;
     bool tested = false;
-    for (auto& a : global.events.data())
+    for (auto& a : global.instance->events.data())
     {
         if (a->id == component.id && a->name == component.name && a->devname == component.devName && !tested)
         {
@@ -55,8 +55,8 @@ void UVK::Actor::destroy()
         }
     }
 
-    global.events.clear();
-    global.events.data() = std::move(temp);
+    global.instance->events.clear();
+    global.instance->events.data() = std::move(temp);
 
     global.ecs.data().destroy(entity);
 }

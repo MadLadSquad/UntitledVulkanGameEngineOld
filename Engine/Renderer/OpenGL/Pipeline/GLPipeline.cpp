@@ -1,5 +1,5 @@
 // GLPipeline.cpp
-// Last update 17/7/2021 by Madman10K
+// Last update 21/7/2021 by Madman10K
 #include <GL/glew.h>
 #include <Events/Events.hpp>
 #include <Renderer/EditorUI/Classes/EditorLevel.hpp>
@@ -89,7 +89,7 @@ void UVK::GLPipeline::tick()
     else
     {
         global.currentLevel->tick(deltaTime);
-        global.events.callTick(deltaTime);
+        global.instance->events.callTick(deltaTime);
         global.ui.update();
 
         global.finalizeOpening();
@@ -110,7 +110,7 @@ void UVK::GLPipeline::end()
     else
     {
         global.currentLevel->endPlay();
-        global.events.callEnd();
+        global.instance->events.callEnd();
         UVK::UIInternal::clean();
     }
 

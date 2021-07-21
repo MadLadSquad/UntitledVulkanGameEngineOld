@@ -1,5 +1,5 @@
 // GameMode.hpp
-// Last update 2/7/2021 by Madman10K
+// Last update 19/7/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 #include "GameState.hpp"
@@ -26,37 +26,20 @@ namespace UVK
         PlayerController* pc = nullptr;
         APawn* pawn = nullptr;
 
-        virtual ~GameMode()
-        {
-            delete gs;
-            delete ps;
-            delete pc;
-            delete pawn;
-        }
+        virtual ~GameMode();
 
-        void beginAutohandle() const
-        {
-            gs->beginPlay();
-            ps->beginPlay();
-            pc->beginPlay();
-            pawn->beginPlay();
-        }
-
-        void tickAutohandle(float deltaTime) const
-        {
-            gs->tick(deltaTime);
-            ps->tick(deltaTime);
-            pc->tick(deltaTime);
-            pawn->tick(deltaTime);
-        }
-
-        void endAutohandle() const
-        {
-            gs->endPlay();
-            ps->endPlay();
-            pc->endPlay();
-            pawn->endPlay();
-        }
+        void beginAutohandle() const;
+        void tickAutohandle(float deltaTime) const;
+        void endAutohandle() const;
     private:
     };
+
+    template<typename T>
+    static GameMode* makeGameMode()
+    {
+        T* gm = new T();
+        return gm;
+    }
+
+    static void destroyGameMode(GameMode* gm);
 }

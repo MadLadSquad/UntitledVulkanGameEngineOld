@@ -1,5 +1,5 @@
 // Level.hpp
-// Last update 18/7/2021 by Madman10K
+// Last update 21/7/2021 by Madman10K
 #include <Core.hpp>
 #include "../GameMode.hpp"
 #include "../GameInstance.hpp"
@@ -13,7 +13,6 @@ namespace UVK
     class Level
     {
     public:
-        //Level(const char* name) { open(name); }
         Level() = default;
 
         virtual void tick(float deltaTime) = 0;
@@ -22,7 +21,6 @@ namespace UVK
         virtual ~Level()
         {
             delete gameMode;
-            delete gameInstance;
         }
 
         /**
@@ -35,59 +33,50 @@ namespace UVK
         /**
          * @brief Opens a level file
          * @param location: file location
+         * @note detailed description of this function and the whole Level opening system
+         * can be found in Core/Core/Utility.hpp
          */
         template<typename T>
         static void open(String location) noexcept
         {
-            Internal::openFunction = [=]()
+            // Capturing by value, otherwise the function crashes
+            Internal::openFunction = [location]()
             {
-                const char* loc = location;
                 T* lvl = new T();
                 Internal::currentLevel = lvl;
-                T::openInternal(loc);
+                T::openInternal(location);
                 Internal::currentLevel->beginPlay();
             };
 
             Internal::openConfirmation = true;
         }
 
-        GameInstance* gameInstance = nullptr;
         GameMode* gameMode = nullptr;
 
         /**
          * @brief Begin event autohandler handles all events from the GameInstance and GameMode
          */
-        void beginAutohandle() const
-        {
-            gameInstance->beginPlay();
-            gameMode->beginPlay();
-        }
+        void beginAutohandle() const;
+
         /**
          * @brief Tick event autohandler handles all events from the GameInstance and GameMode
          */
-        void tickAutohandle(float deltaTime) const
-        {
-            gameInstance->tick(deltaTime);
-            gameMode->tick(deltaTime);
-        }
+        void tickAutohandle(float deltaTime) const;
 
         /**
          * @brief End event autohandler handles all events from the GameInstance and GameMode
          */
-        void endAutohandle() const
-        {
-            gameInstance->endPlay();
-            gameMode->endPlay();
-        }
+        void endAutohandle() const;
 
-        static void openInternal(String file);
+
 
         static FVector4& getAmbientLighting();
         static FVector4& getSceneColour();
         static std::string& getLevelName();
     private:
-        friend struct UVKGlobal;
+        friend class UVKGlobal;
 
+        static void openInternal(String file);
         /**
          * @brief Utility function to save an entity
          * @param out a YAML::Emitter reference to the emitter

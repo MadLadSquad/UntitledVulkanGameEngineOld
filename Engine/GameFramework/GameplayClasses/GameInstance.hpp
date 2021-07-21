@@ -1,7 +1,9 @@
 // GameInstance.hpp
-// Last update 2/7/2021 by Madman10K
+// Last update 21/7/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
+#include <GameFramework/Actors/ActorManager.hpp>
+#include <Events/Events.hpp>
 
 namespace UVK
 {
@@ -11,10 +13,18 @@ namespace UVK
     class GameInstance
     {
     public:
-        virtual void tick(float deltaTime) = 0;
+        GameInstance();
+
         virtual void beginPlay() = 0;
         virtual void endPlay() = 0;
 
-        virtual ~GameInstance() = default;
+        virtual ~GameInstance();
+    private:
+        friend class Actor;
+        friend class Level;
+        friend class GLPipeline;
+
+        UVK::ActorManager actorManager;
+        UVK::Events events;
     };
 }
