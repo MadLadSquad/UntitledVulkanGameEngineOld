@@ -37,7 +37,7 @@ The Untitled Vulkan Game Engine is a 3D, C++ game engine made for ease of use, s
 -   Easy C++ scripting API
 
 ## Learning
-[Wiki](https://github.com/MadLadSquad/UntitledVulkanGameEngine/wiki).
+See the [Wiki](https://github.com/MadLadSquad/UntitledVulkanGameEngine/wiki)
 
 ## Development
 Follow [the trello board](https://trello.com/b/0upjsxT0/untitledvukangameengine2).
