@@ -1,5 +1,5 @@
 // Audio.hpp
-// Last update 2/7/2021 by Madman10K
+// Last update 25/7/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 
@@ -86,13 +86,13 @@ namespace UVK
         void addSound(String loc);
         void removeSound();
 
-        ALuint& getBuffer()
+        ALuint& buffer()
         {
-            return buffer;
+            return bufferI;
         }
 
     private:
-        ALuint buffer = 0;
+        ALuint bufferI = 0;
     };
 
     /**
@@ -106,24 +106,24 @@ namespace UVK
 
         void play();
 
-        AudioSourceData& getAudioData()
+        AudioSourceData& audioData()
         {
-            return audioData;
+            return audioDt;
         }
 
-        AudioBuffer& getBuffer()
+        AudioBuffer& buffer()
         {
-            return buffer;
+            return buf;
         }
 
-        AudioState& getState()
+        AudioState& state()
         {
-            return state;
+            return stt;
         }
     private:
-        AudioSourceData audioData;
-        AudioBuffer buffer;
-        AudioState state{};
+        AudioSourceData audioDt;
+        AudioBuffer buf;
+        AudioState stt{};
     };
 }
 #endif

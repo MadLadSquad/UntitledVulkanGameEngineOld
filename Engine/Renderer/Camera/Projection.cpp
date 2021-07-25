@@ -1,5 +1,5 @@
 // Projection.hpp
-// Last update 2/7/2021 by Madman10K
+// Last update 25/7/2021 by Madman10K
 #include "Projection.hpp"
 
 glm::mat4& UVK::Projection::data()
@@ -10,31 +10,31 @@ glm::mat4& UVK::Projection::data()
 UVK::Projection::Projection(float fov, float ratio, UVK::FVector2 planes)
 {
     FOV = fov;
-    aspectRatio = ratio;
+    aspectRatioI = ratio;
     plane = planes;
 }
 
-float& UVK::Projection::getFOV()
+float& UVK::Projection::fov()
 {
     return FOV;
 }
 
-float& UVK::Projection::getAspectRatio()
+float& UVK::Projection::aspectRatio()
 {
-    return aspectRatio;
+    return aspectRatioI;
 }
 
-UVK::FVector2& UVK::Projection::getPlanes()
+UVK::FVector2& UVK::Projection::planes()
 {
     return plane;
 }
 
 void UVK::Projection::recalculateLH()
 {
-    projection = glm::perspectiveLH(FOV, aspectRatio, plane.x, plane.y);
+    projection = glm::perspectiveLH(FOV, aspectRatioI, plane.x, plane.y);
 }
 
 void UVK::Projection::recalculateRH()
 {
-    projection = glm::perspectiveRH(FOV, aspectRatio, plane.x, plane.y);
+    projection = glm::perspectiveRH(FOV, aspectRatioI, plane.x, plane.y);
 }

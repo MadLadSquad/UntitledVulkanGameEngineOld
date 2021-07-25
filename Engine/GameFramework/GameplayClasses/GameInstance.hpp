@@ -1,5 +1,5 @@
 // GameInstance.hpp
-// Last update 21/7/2021 by Madman10K
+// Last update 25/7/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 #include <GameFramework/Actors/ActorManager.hpp>
@@ -17,6 +17,9 @@ namespace UVK
 
         virtual void beginPlay() = 0;
         virtual void endPlay() = 0;
+
+        // Shutdown your game
+        static void exit();
 
         virtual ~GameInstance();
     private:

@@ -1,11 +1,11 @@
 // Global.cpp
-// Last update 21/7/2021 by Madman10K
+// Last update 25/7/2021 by Madman10K
 #include "Global.hpp"
+#include <GameFramework/GameplayClasses/Level/Level.hpp>
 
 UVK::UVKGlobal::UVKGlobal()
 {
     colour = FVector4(1.0f, 1.0f, 1.0f, 1.0f);
-    currentLevel = Internal::currentLevel;
 }
 
 UVK::UVKGlobal::~UVKGlobal()
@@ -15,16 +15,9 @@ UVK::UVKGlobal::~UVKGlobal()
 
 void UVK::UVKGlobal::finalizeOpening()
 {
-    if (Internal::openConfirmation == true)
-    {
-        currentLevel->endPlay();
-        delete currentLevel;
-        Internal::openFunction();
-        currentLevel = Internal::currentLevel;
-        Internal::openFunction = [=](){};
-    }
+    openFunction();
 
-    Internal::openConfirmation = false;
+    openFunction = [=](){};
 }
 
 std::vector<UVK::InputAction>& UVK::UVKGlobal::getActions()

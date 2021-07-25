@@ -1,5 +1,5 @@
 // Projection.hpp
-// Last update 2/7/2021 by Madman10K
+// Last update 25/7/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 
@@ -13,17 +13,17 @@ namespace UVK
 
         glm::mat4& data();
 
-        float& getFOV();
-        float& getAspectRatio();
+        float& fov();
+        float& aspectRatio();
 
         // x - near, y - far
-        FVector2& getPlanes();
+        FVector2& planes();
 
         void recalculateLH();
         void recalculateRH();
     private:
         float FOV = 90;
-        float aspectRatio;
+        float aspectRatioI;
         FVector2 plane = { 0.1f, 100.0f };
 
         glm::mat4 projection{};

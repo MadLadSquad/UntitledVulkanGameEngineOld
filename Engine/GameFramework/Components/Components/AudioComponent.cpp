@@ -1,5 +1,5 @@
 // AudioComponent.cpp
-// Last update 17/7/2021 by Madman10K
+// Last update 25/7/2021 by Madman10K
 #include "AudioComponent.hpp"
 
 void UVK::AudioComponent::play()
@@ -14,21 +14,21 @@ void UVK::AudioComponent::play()
 void UVK::AudioComponent::stop()
 {
 #ifndef __MINGW32__
-    src.getState() = UVK_AUDIO_STATE_STOPPED;
+    src.state() = UVK_AUDIO_STATE_STOPPED;
 #endif
 }
 
 void UVK::AudioComponent::pause()
 {
 #ifndef __MINGW32__
-    src.getState() = UVK_AUDIO_STATE_PAUSED;
+    src.state() = UVK_AUDIO_STATE_PAUSED;
 #endif
 }
 
 void UVK::AudioComponent::resume()
 {
 #ifndef __MINGW32__
-    src.getState() = UVK_AUDIO_STATE_RESUME;
+    src.state() = UVK_AUDIO_STATE_RESUME;
 #endif
 }
 

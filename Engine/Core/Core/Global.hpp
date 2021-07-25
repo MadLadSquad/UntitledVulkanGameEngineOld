@@ -1,5 +1,5 @@
 // Global.hpp
-// Last update 21/7/2021 by Madman10K
+// Last update 25/7/2021 by Madman10K
 #pragma once
 #include <Core/ECS.hpp>
 #include <Core.hpp>
@@ -8,7 +8,6 @@
 #include <GameFramework/GameplayClasses/GameInstance.hpp>
 #include <GameFramework/Actors/ActorManager.hpp>
 #include <Renderer/UI/UI.hpp>
-#include <GameFramework/GameplayClasses/Level/Level.hpp>
 #include <Events/Events.hpp>
 
 namespace UVK
@@ -21,6 +20,8 @@ namespace UVK
 
         void saveSettings() const;
     };
+
+    class Level;
 
     class UVKGlobal
     {
@@ -75,6 +76,8 @@ namespace UVK
          */
         void finalizeOpening();
         std::vector<InputAction>& getActions();
+
+        std::function<void(void)> openFunction = [=](){};
     };
 
     inline UVKGlobal global;

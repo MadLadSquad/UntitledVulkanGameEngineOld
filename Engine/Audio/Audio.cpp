@@ -1,5 +1,5 @@
 // Audio.cpp
-// Last update 2/7/2021 by Madman10K
+// Last update 25/7/2021 by Madman10K
 #include "Audio.hpp"
 #include <sndfile.h>
 
@@ -117,10 +117,10 @@ void UVK::AudioBuffer::addSound(String loc)
     }
 
     byteNum = (ALsizei)(frameNum * sfinfo.channels) * (ALsizei)sizeof(short);
-    buffer = 0;
+    bufferI = 0;
 
-    alGenBuffers(1, &buffer);
-    alBufferData(buffer, format, memoryBuffer, byteNum, sfinfo.samplerate);
+    alGenBuffers(1, &bufferI);
+    alBufferData(bufferI, format, memoryBuffer, byteNum, sfinfo.samplerate);
 
     free(memoryBuffer);
     sf_close(sndfile);
@@ -131,9 +131,9 @@ void UVK::AudioBuffer::addSound(String loc)
     {
         logger.consoleLog("OpenAL error: ", UVK_LOG_TYPE_ERROR, alGetString(error));
 
-        if (buffer && alIsBuffer(buffer))
+        if (bufferI && alIsBuffer(bufferI))
         {
-            alDeleteBuffers(1, &buffer);
+            alDeleteBuffers(1, &bufferI);
         }
 
         return;
@@ -142,31 +142,31 @@ void UVK::AudioBuffer::addSound(String loc)
 
 void UVK::AudioBuffer::removeSound()
 {
-    if (alIsBuffer(buffer) && buffer)
+    if (alIsBuffer(bufferI) && bufferI)
     {
-        alDeleteBuffers(1, &buffer);
+        alDeleteBuffers(1, &bufferI);
     }
 }
 
 UVK::AudioSource::AudioSource(const AudioSourceData& data)
 {
-    audioData = data;
-    buffer = AudioBuffer(audioData.location.c_str());
+    audioDt = data;
+    buf = AudioBuffer(audioDt.location.c_str());
 
-    alGenSources(1, &audioData.source);
-    alSourcef(audioData.source, AL_PITCH, audioData.pitch);
-    alSourcef(audioData.source, AL_GAIN, audioData.gain);
-    alSource3f(audioData.source, AL_POSITION, audioData.position.x, audioData.position.y, audioData.position.z);
-    alSource3f(audioData.source, AL_VELOCITY, audioData.velocity.x, audioData.velocity.y, audioData.velocity.z);
-    alSourcei(audioData.source, AL_LOOPING, audioData.bLoop);
-    alSourcei(audioData.source, AL_BUFFER, (ALint)buffer.getBuffer());
+    alGenSources(1, &audioDt.source);
+    alSourcef(audioDt.source, AL_PITCH, audioDt.pitch);
+    alSourcef(audioDt.source, AL_GAIN, audioDt.gain);
+    alSource3f(audioDt.source, AL_POSITION, audioDt.position.x, audioDt.position.y, audioDt.position.z);
+    alSource3f(audioDt.source, AL_VELOCITY, audioDt.velocity.x, audioDt.velocity.y, audioDt.velocity.z);
+    alSourcei(audioDt.source, AL_LOOPING, audioDt.bLoop);
+    alSourcei(audioDt.source, AL_BUFFER, (ALint)buf.buffer());
 }
 
 void UVK::AudioSource::play()
 {
-    alSourcePlay(buffer.getBuffer());
+    alSourcePlay(buf.buffer());
 
-    state = UVK_AUDIO_STATE_RUNNING;
+    stt = UVK_AUDIO_STATE_RUNNING;
 
     /*while (state == AL_PLAYING && alGetError() == AL_NO_ERROR)
     {

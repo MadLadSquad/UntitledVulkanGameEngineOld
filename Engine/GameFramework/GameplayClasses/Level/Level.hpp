@@ -1,8 +1,9 @@
 // Level.hpp
-// Last update 21/7/2021 by Madman10K
+// Last update 25/7/2021 by Madman10K
 #include <Core.hpp>
 #include "../GameMode.hpp"
 #include "../GameInstance.hpp"
+#include <Core/Global.hpp>
 
 namespace UVK
 {
@@ -33,22 +34,22 @@ namespace UVK
         /**
          * @brief Opens a level file
          * @param location: file location
-         * @note detailed description of this function and the whole Level opening system
-         * can be found in Core/Core/Utility.hpp
+         * @note For engine devs: this function works by setting a global function* to point to the generated
+         * function below. This function* is called and then reset to an empty function every frame(GLPipeline L95)
          */
         template<typename T>
         static void open(String location) noexcept
         {
             // Capturing by value, otherwise the function crashes
-            Internal::openFunction = [location]()
+            global.openFunction = [location]()
             {
+                global.currentLevel->endPlay();
+                delete global.currentLevel;
                 T* lvl = new T();
-                Internal::currentLevel = lvl;
+                global.currentLevel = lvl;
                 T::openInternal(location);
-                Internal::currentLevel->beginPlay();
+                global.currentLevel->beginPlay();
             };
-
-            Internal::openConfirmation = true;
         }
 
         GameMode* gameMode = nullptr;

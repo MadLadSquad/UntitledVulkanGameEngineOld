@@ -1,5 +1,5 @@
 // Camera.cpp
-// Last update 2/7/2021 by Madman10K
+// Last update 25/7/2021 by Madman10K
 #include <GL/glew.h>
 #include "Camera.hpp"
 #include <Engine/Core/Core/Global.hpp>
@@ -62,7 +62,18 @@ void UVK::Camera::recalculate()
     }
 }
 
-UVK::Projection& UVK::Camera::getProjection()
+UVK::Projection& UVK::Camera::projection()
 {
-    return projection;
+    return proj;
+}
+
+UVK::Camera UVK::makeCamera(FVector position, FVector up, FVector rotation, FVector2 planes, float fov, float aspectRatio)
+{
+    auto camera = Camera(position, up, rotation);
+    camera.projection().planes() = planes;
+    camera.projection().fov() = fov;
+    camera.projection().aspectRatio() = (float)aspectRatio;
+    camera.projection().recalculateRH();
+
+    return camera;
 }

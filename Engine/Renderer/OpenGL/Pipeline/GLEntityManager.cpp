@@ -1,5 +1,5 @@
 // GLEntityManager.hpp
-// Last update 6/7/2021 by Madman10K
+// Last update 25/7/2021 by Madman10K
 #include <GL/glew.h>
 #include <Core/Actor.hpp>
 #include "GLEntityManager.hpp"
@@ -13,7 +13,7 @@ void UVK::GLEntityManager::tick(Camera* camera)
         {
             auto& audiocmp = global.ecs.data().get<AudioComponent>(a);
 
-            auto& state = audiocmp.src.getState();
+            auto& state = audiocmp.src.state();
 
             switch (state)
             {
@@ -21,10 +21,10 @@ void UVK::GLEntityManager::tick(Camera* camera)
                     audiocmp.src.play();
                     break;
                 case UVK_AUDIO_STATE_PAUSED:
-                    alSourcePause(audiocmp.src.getBuffer().getBuffer());
+                    alSourcePause(audiocmp.src.buffer().buffer());
                     break;
                 case UVK_AUDIO_STATE_STOPPED:
-                    audiocmp.src.getBuffer().removeSound();
+                    audiocmp.src.buffer().removeSound();
                     state = UVK_AUDIO_STATE_PAUSED;
                     break;
                 case UVK_AUDIO_STATE_RUNNING:
@@ -43,7 +43,7 @@ void UVK::GLEntityManager::tick(Camera* camera)
     for (const auto& a : global.ecs.data().view<MeshComponentRaw>())
     {
         auto& b = global.ecs.data().get<MeshComponentRaw>(a);
-        b.render(camera->getProjection().data(), *camera);
+        b.render(camera->projection().data(), *camera);
     }
 }
 
@@ -61,7 +61,7 @@ void UVK::GLEntityManager::clean()
 #ifndef __MINGW32__
         auto& b = global.ecs.data().get<AudioComponent>(a);
 
-        b.src.getBuffer().removeSound();
+        b.src.buffer().removeSound();
 #endif
     }
 

@@ -1,11 +1,12 @@
 // DetailsPanel.cpp
-// Last update 2/7/2021 by Madman10K
+// Last update 25/7/2021 by Madman10K
 #include <GL/glew.h>
 #include <imgui.h>
 #include <cpp/imgui_stdlib.h>
 #include <GameFramework/Components/Components.hpp>
 #include "DetailsPanel.hpp"
 #include <Core/Actor.hpp>
+#include <GameFramework/GameplayClasses/Level/Level.hpp>
 
 #ifndef PRODUCTION
 void DetailsPanel::DrawVec3Control(const std::string &label, glm::vec3 &values, float resetValue, float columnWidth)
@@ -179,23 +180,23 @@ void DetailsPanel::display(UVK::Actor& ent, UVK::Level* lvl, bool& bShow, bool& 
         {
             ImGui::Separator();
 
-            static float FOV = lvl->gameMode->pawn->camera.getProjection().getFOV();
-            static UVK::FVector2 planes = lvl->gameMode->pawn->camera.getProjection().getPlanes();
+            static float FOV = lvl->gameMode->pawn->camera.projection().fov();
+            static UVK::FVector2 planes = lvl->gameMode->pawn->camera.projection().planes();
             ImGui::SliderFloat("Camera FOV", &FOV, 1.0f, 180.0f);
             ImGui::SliderFloat("Near Plane", &planes.x, 0.01f, 10000);
             ImGui::SliderFloat("Far Plane", &planes.y, 0.01f, 10000);
 
-            float& ar = lvl->gameMode->pawn->camera.getProjection().getAspectRatio();
+            float& ar = lvl->gameMode->pawn->camera.projection().aspectRatio();
             static UVK::FVector2 aspect = UVK::FVector2(ImGui::GetWindowWidth(), ImGui::GetWindowHeight());
 
             ImGui::DragFloat2("Aspect Ratio", glm::value_ptr(aspect), 1.0f, 0.01f);
 
-            if ((aspect.x / aspect.y) != ar || FOV != lvl->gameMode->pawn->camera.getProjection().getFOV() || planes != lvl->gameMode->pawn->camera.getProjection().getPlanes())
+            if ((aspect.x / aspect.y) != ar || FOV != lvl->gameMode->pawn->camera.projection().fov() || planes != lvl->gameMode->pawn->camera.projection().planes())
             {
-                lvl->gameMode->pawn->camera.getProjection().getFOV() = FOV;
-                lvl->gameMode->pawn->camera.getProjection().getPlanes() = planes;
+                lvl->gameMode->pawn->camera.projection().fov() = FOV;
+                lvl->gameMode->pawn->camera.projection().planes() = planes;
                 ar = aspect.x / aspect.y;
-                lvl->gameMode->pawn->camera.getProjection().recalculateRH();
+                lvl->gameMode->pawn->camera.projection().recalculateRH();
             }
         }
     }

@@ -1,5 +1,5 @@
 // GLPipeline.cpp
-// Last update 21/7/2021 by Madman10K
+// Last update 25/7/2021 by Madman10K
 #include <GL/glew.h>
 #include <Events/Events.hpp>
 #include <Renderer/EditorUI/Classes/EditorLevel.hpp>
@@ -17,8 +17,7 @@ void UVK::GLPipeline::begin(bool bHasEditor, Level* lvl)
     {
 #ifndef PRODUCTION
         auto* lv = new UVK::EditorLevel;
-        Internal::currentLevel = lv;
-        global.currentLevel = Internal::currentLevel;
+        global.currentLevel = lv;
 
         Actor a("Editor Pawn", 330, "EditorPawn");
         global.currentLevel->gameMode->pawn->beginPlay();
@@ -34,6 +33,7 @@ void UVK::GLPipeline::begin(bool bHasEditor, Level* lvl)
     else
     {
         global.ui.init();
+        global.instance->beginPlay();
         global.currentLevel->beginPlay();
     }
     enableFeatures();
@@ -111,6 +111,7 @@ void UVK::GLPipeline::end()
     {
         global.currentLevel->endPlay();
         global.instance->events.callEnd();
+        global.instance->endPlay();
         UVK::UIInternal::clean();
     }
 

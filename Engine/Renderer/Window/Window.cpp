@@ -1,5 +1,5 @@
 // Window.cpp
-// Last update 17/7/2021 by Madman10K
+// Last update 25/7/2021 by Madman10K
 #include <GL/glew.h>
 #include "Window.hpp"
 #include <glfw3.h>
@@ -44,7 +44,7 @@ UVK::FVector2 UVK::WindowInternal::getCurrentMousePosition() const
     return FVector2(posX, posY);
 }
 
-void UVK::WindowInternal::doCallBacks()
+void UVK::WindowInternal::configureCallBacks()
 {
     glfwSetFramebufferSizeCallback(windowMain, framebufferSizeCallback);
     glfwSetKeyCallback(windowMain, keyboardInputCallback);
@@ -128,7 +128,7 @@ void UVK::WindowInternal::createWindow()
         glfwSwapInterval(0);
     }
 
-    doCallBacks();
+    configureCallBacks();
 
     if (!global.bUsesVulkan)
     {
