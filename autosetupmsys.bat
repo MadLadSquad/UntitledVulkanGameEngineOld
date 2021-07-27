@@ -18,7 +18,6 @@ echo name: Game > "uvproj.yaml"
 echo startup-level: "lvl.yaml" >> "uvproj.yaml"
 echo version: 1.0.0 >> "uvproj.yaml"
 echo engine-version: 1.0.0 >> "uvproj.yaml"
-echo startup-level-exists: false >> "uvproj.yaml"
 
 echo Compiling build tool and generating files ...
 mkdir Source && mkdir Generated && mkdir Exported && cd Config && mkdir Settings && cd ../
@@ -30,6 +29,5 @@ echo name: Game > "uvproj.yaml"
 echo startup-level: "lvl.yaml" >> "uvproj.yaml"
 echo version: 1.0.0 >> "uvproj.yaml"
 echo engine-version: 1.0.0 >> "uvproj.yaml"
-echo startup-level-exists: true >> "uvproj.yaml"
 
 cd build/
