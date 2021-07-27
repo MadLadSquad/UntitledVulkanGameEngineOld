@@ -50,7 +50,6 @@ cd .. || exit
 echo "\
 name: Game
 startup-level: \"lvl.yaml\"
-startup-level-exists: true
 version: 1.0.0
 engine-version: 1.0.0" > uvproj.yaml
 
