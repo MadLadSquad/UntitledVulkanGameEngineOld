@@ -1,5 +1,5 @@
 // Level.cpp
-// Last update 25/7/2021 by Madman10K
+// Last update 1/8/2021 by Madman10K
 #include "../../Components/Components.hpp"
 #include "Engine/Core/Core/Actor.hpp"
 #include <Events/Events.hpp>
@@ -124,7 +124,7 @@ void UVK::Level::save(String location)
     out << YAML::EndSeq;
     out << YAML::EndMap;
 
-    std::ofstream fileout(location);
+    std::ofstream fileout(location + std::string(".uvklevel"));
     fileout << out.c_str();
 }
 
@@ -147,7 +147,7 @@ void UVK::Level::openInternal(UVK::String location)
 
     try
     {
-        out = YAML::LoadFile(location);
+        out = YAML::LoadFile(location + std::string(".uvklevel"));
     }
     catch (YAML::BadFile&)
     {

@@ -1,5 +1,5 @@
 // VKGraphicsPipeline.hpp
-// Last update 2/7/2021 by Madman10K
+// Last update 1/8/2021 by Madman10K
 #pragma once
 
 namespace UVK
@@ -9,6 +9,11 @@ namespace UVK
      */
     class VKGraphicsPipeline
     {
+    public:
+        void create();
+        void destroy();
 
+    private:
+        void createVertextShaderStage();
     };
 }

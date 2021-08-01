@@ -1,5 +1,5 @@
 // Editor.hpp
-// Last update 18/7/2021 by Madman10K
+// Last update 1/8/2021 by Madman10K
 #pragma once
 #include <iostream>
 #include <utility>
@@ -38,7 +38,6 @@ namespace UVK
 
         Texture play;
         Texture logoTxt;
-        Texture insert;
 
         Texture fileTextures[8];
 
@@ -74,6 +73,9 @@ namespace UVK
         bool bShowThemeSettings = false;
         bool bShowGameKeybinds = false;
         bool bShowGameSettings = false;
+        bool bShowDirectSaveWarning = false;
+        bool bShowExitWarning = false;
+        bool bShowGenerateWarning = false;
 
         void displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& camera, UVK::Level* lvl);
 
@@ -88,7 +90,6 @@ namespace UVK
         std::string projectName;
         std::string startupLevel;
         UVK::String colTheme{};
-        std::string cpFileLoc;
 
         double frameTimeData[2] = { 0.0, 0.0 };
 #ifndef __MINGW32__

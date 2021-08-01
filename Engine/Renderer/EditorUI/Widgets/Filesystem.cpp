@@ -1,10 +1,12 @@
 // Filesystem.cpp
-// Last update 17/7/2021 by Madman10K
+// Last update 1/8/2021 by Madman10K
+#include <GL/glew.h>
 #include "Filesystem.hpp"
+#include "Assets/Asset.hpp"
 
 #ifndef PRODUCTION
 #ifndef __MINGW32__
-void Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, std::string& cpLoc, bool& bShow)
+void Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, bool& bShow)
 {
     ImGui::Begin("Filesystem##Widget", &bShow);
 
@@ -15,28 +17,22 @@ void Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, std::
     ImGui::BeginChild("Explorer");
 
     // ImGui::GetContentRegionAvailWidth() marked as deprecated for some reason
-    auto testing = (int)(ImGui::GetContentRegionAvail().x / cellSize);
-    if (testing < 1)
+    auto columns = (int)(ImGui::GetContentRegionAvail().x / cellSize);
+    if (columns < 1)
     {
-        testing = 1;
+        columns = 1;
     }
 
-    ImGui::Columns(testing, nullptr, false);
+    ImGui::Columns(columns, nullptr, false);
 
     auto p = pt.string();
     Utility::sanitiseFilepath(p, true);
     pt = std_filesystem::path(p);
 
-
-    // I AM FUCKING MAD, YOU KNOW WHAT, I AM NOT MAD I AM PISSED
-    // YOU ARE SAYING THAT THIS CHECK:
-    // if (p != "../Content/" || p != "../Content")
-    // DOESN'T GO TROUGH BUT THE FOLLOWING DOES!!!
-    // IT'S THE SAME SHIT HOLY FUCK WHAT IS HAPPENING
     if (!(p == "../Content/" || p == "../Content"))
     {
         // WHY DO WE NEED TO DO THIS HACK!!!
-        ImGui::ImageButton((void*)(intptr_t)textures[3].getImage(), ImVec2(imageSize, imageSize));
+        ImGui::ImageButton((void*)(intptr_t)textures[FS_ICON_FOLDER].getImage(), ImVec2(imageSize, imageSize));
         if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
         {
             pt = pt.parent_path();
@@ -56,13 +52,16 @@ void Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, std::
         auto& path = a.path();
 
         UVK::Texture* txt;
+
         if (a.is_directory())
         {
-            txt = &textures[3];
+            txt = &textures[FS_ICON_FOLDER];
             // WHY DO WE NEED TO DO THIS HACK!!!
             ImGui::ImageButton((void*)(intptr_t)txt->getImage(), ImVec2(imageSize, imageSize));
             if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
+            {
                 pt /= path.filename();
+            }
 
             txt = nullptr;
         }
@@ -72,7 +71,7 @@ void Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, std::
             {
                 if (path.filename().extension().string() == b)
                 {
-                    txt = &textures[0];
+                    txt = &textures[FS_ICON_AUDIO];
                 }
             }
 
@@ -82,7 +81,36 @@ void Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, std::
                 {
                     if (path.filename().extension().string() == b)
                     {
-                        txt = &textures[1];
+                        /*
+                        if (bChanged && bChangedTheChanged)
+                        {
+                            auto temp = UVK::Texture();
+                            std::pair<std::string, UVK::Texture> pr;
+                            pr.first = path.string();
+                            pr.second = temp;
+                            texturePreviews.insert(pr);
+
+                            texturePreviews[path.string()] = UVK::Texture(path.string());
+                            texturePreviews[path.string()].loadImgui();
+                            txt = &texturePreviews[path.string()];
+
+                            std::cout << "load" << path.string() << std::endl;
+
+                        }
+                        else
+                        {
+                            //std::cout << "use" << path.string() << std::endl;
+                            txt = &texturePreviews[path.string()];
+                        }*/
+                        //std::cout << txt << std::endl;
+                        txt = &textures[FS_ICON_IMAGE];
+                        //for (auto& it : UVK::global.assetManager.data()[UVK::UVK_ASSET_TYPE_TEXTURE])
+                        //{
+                        //    if (it.location == path.filename().string())
+                        //    {
+                        //        txt = (UVK::Texture*)&it.data;
+                        //    }
+                        //}
                     }
                 }
             }
@@ -93,7 +121,7 @@ void Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, std::
                 {
                     if (path.filename().extension().string() == b)
                     {
-                        txt = &textures[2];
+                        txt = &textures[FS_ICON_VIDEO];
                     }
                 }
             }
@@ -104,7 +132,7 @@ void Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, std::
                 {
                     if (path.filename().extension().string() == b)
                     {
-                        txt = &textures[5];
+                        txt = &textures[FS_ICON_MODEL];
                     }
                 }
             }
@@ -115,21 +143,21 @@ void Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, std::
                 {
                     if (path.filename().extension().string() == b)
                     {
-                        txt = &textures[7];
+                        txt = &textures[FS_ICON_CODE];
                     }
                 }
             }
 
             if (txt == nullptr && path.filename().extension().string() == ".ttf")
             {
-                txt = &textures[4];
+                txt = &textures[FS_ICON_CODE];
             }
 
             if (txt == nullptr)
             {
-                txt = &textures[6];
+                txt = &textures[FS_ICON_UNKNOWN];
             }
-
+            //ImGui::BeginPopup()
             ImGui::ImageButton((void*)(intptr_t)txt->getImage(), ImVec2(imageSize, imageSize));
             txt = nullptr;
         }

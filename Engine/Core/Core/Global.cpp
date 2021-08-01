@@ -1,11 +1,17 @@
 // Global.cpp
-// Last update 25/7/2021 by Madman10K
+// Last update 1/8/2021 by Madman10K
+#include <GL/glew.h>
 #include "Global.hpp"
 #include <GameFramework/GameplayClasses/Level/Level.hpp>
 
 UVK::UVKGlobal::UVKGlobal()
 {
     colour = FVector4(1.0f, 1.0f, 1.0f, 1.0f);
+#ifdef PRODUCTION
+    assetManager.loadArchive();
+#else
+    assetManager.loadRaw();
+#endif
 }
 
 UVK::UVKGlobal::~UVKGlobal()

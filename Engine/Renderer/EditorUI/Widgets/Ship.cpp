@@ -1,53 +1,63 @@
 // Ship.cpp
-// Last update 18/7/2021 by Madman10K
+// Last update 1/8/2021 by Madman10K
 #include "Ship.hpp"
 #include "imgui.h"
 #include <future>
 
 void Shipping::display(bool& bShow)
 {
-    ImGui::Begin("Shipping", &bShow);
+    if (!ImGui::IsPopupOpen("Shipping"))
+        ImGui::OpenPopup("Shipping");
 
-    ImGui::TextWrapped("Compile your program for testing or production!");
-    ImGui::Separator();
-    ImGui::TextWrapped("Warning: This feature is only available on Unix systems");
-    ImGui::TextWrapped("A guide for Windows is available in the Wiki. Link is in the 'Help' window under the 'More' tab");
-
-    static int jobs = 1;
-    static bool testing = false;
-    ImGui::InputInt("Compile jobs", &jobs);
-    ImGui::Checkbox("Testing?", &testing);
-
-    ImGui::TextWrapped("The testing option is when you want a build for internal testing without archiving the assets(not implemented yet)");
-    ImGui::Separator();
-    ImGui::TextWrapped("If you click 'Compile' your editor will freeze, output from the compiling is in the terminal, after it is done it will return to normal.");
-    ImGui::Separator();
-    ImGui::TextWrapped("After the process is done, you can run your app, located in the 'Exported' folder");
-    if (ImGui::Button("Close##compile"))
+    if (ImGui::BeginPopupModal("Shipping", &bShow))
     {
-        bShow = false;
-    }
+        ImGui::TextWrapped("Compile your program for testing or production!");
+        ImGui::Separator();
+        ImGui::TextWrapped("Warning: This feature is only available on Unix systems");
+        ImGui::TextWrapped("A guide for Windows is available in the Wiki. Link is in the 'Help' window under the 'More' tab");
+        ImGui::Separator();
 
-    ImGui::SameLine();
+        static int jobs = 1;
+        static bool testing = false;
+        ImGui::TextWrapped("Compile jobs");
+        ImGui::SameLine();
+        ImGui::InputInt("##Compile jobs", &jobs);
 
-    if (ImGui::Button("Compile##compile"))
-    {
-#ifndef _WIN32
-        int8_t lnt;
-        auto a = std::async(std::launch::async, [&]() {
-            lnt = system(static_cast<std::string>("cd ../UVKBuildTool/build/ && ./UVKBuildTool --build " + std::to_string(jobs)).c_str());
-        });
+        ImGui::TextWrapped("Testing?");
+        ImGui::SameLine();
+        ImGui::Checkbox("##Testing?", &testing);
 
-        a.get();
-
-        if (lnt)
+        ImGui::TextWrapped("The testing option is when you want a build for internal testing without archiving the assets(not implemented yet)");
+        ImGui::Separator();
+        ImGui::TextWrapped("If you click 'Compile' your editor will freeze, output from the compiling is in the terminal, after it is done it will return to normal.");
+        ImGui::Separator();
+        ImGui::TextWrapped("After the process is done, you can run your app, located in the 'Exported' folder");
+        if (ImGui::Button("Close##compile"))
         {
-
+            bShow = false;
         }
-        bShow = false;
+
+        ImGui::SameLine();
+
+        if (ImGui::Button("Compile##compile"))
+        {
+#ifndef _WIN32
+            int8_t lnt;
+            auto a = std::async(std::launch::async, [&]() {
+                lnt = system(static_cast<std::string>("cd ../UVKBuildTool/build/ && ./UVKBuildTool --build " + std::to_string(jobs)).c_str());
+            });
+
+            a.get();
+
+            if (lnt)
+            {
+
+            }
+            bShow = false;
 #else
-        bShow = false;
+            bShow = false;
 #endif
+        }
+        ImGui::EndPopup();
     }
-    ImGui::End();
 }

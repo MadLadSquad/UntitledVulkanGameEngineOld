@@ -1,5 +1,5 @@
 // DetailsPanel.cpp
-// Last update 25/7/2021 by Madman10K
+// Last update 1/8/2021 by Madman10K
 #include <GL/glew.h>
 #include <imgui.h>
 #include <cpp/imgui_stdlib.h>
@@ -77,7 +77,7 @@ void DetailsPanel::DrawVec3Control(const std::string &label, glm::vec3 &values, 
     ImGui::PopID();
 }
 
-void DetailsPanel::display(UVK::Actor& ent, UVK::Level* lvl, bool& bShow, bool& destroy, UVK::Texture& insert, const std::string& cpFileLoc)
+void DetailsPanel::display(UVK::Actor& ent, UVK::Level* lvl, bool& bShow, bool& destroy)
 {
     ImGui::Begin("Details", &bShow, ImGuiWindowFlags_MenuBar);
 
@@ -85,7 +85,7 @@ void DetailsPanel::display(UVK::Actor& ent, UVK::Level* lvl, bool& bShow, bool& 
 
     if (ImGui::BeginMenu("+ Add Component"))
     {
-        if (ImGui::Button("Raw Mesh"))
+        if (ImGui::MenuItem("Raw Mesh"))
         {
             if (!ent.has<UVK::MeshComponentRaw>())
             {
@@ -93,7 +93,7 @@ void DetailsPanel::display(UVK::Actor& ent, UVK::Level* lvl, bool& bShow, bool& 
             }
         }
 
-        if (ImGui::Button("Mesh"))
+        if (ImGui::MenuItem("Mesh"))
         {
             if (!ent.has<UVK::MeshComponent>())
             {
@@ -101,7 +101,7 @@ void DetailsPanel::display(UVK::Actor& ent, UVK::Level* lvl, bool& bShow, bool& 
             }
         }
 
-        if (ImGui::Button("Audio"))
+        if (ImGui::MenuItem("Audio"))
         {
             if (!ent.has<UVK::AudioComponent>())
             {
@@ -124,7 +124,7 @@ void DetailsPanel::display(UVK::Actor& ent, UVK::Level* lvl, bool& bShow, bool& 
 
     if (ImGui::BeginMenu("- Remove Component"))
     {
-        if (ImGui::Button("Raw Mesh##rm"))
+        if (ImGui::MenuItem("Raw Mesh##rm"))
         {
             if (ent.has<UVK::MeshComponentRaw>())
             {
@@ -132,7 +132,7 @@ void DetailsPanel::display(UVK::Actor& ent, UVK::Level* lvl, bool& bShow, bool& 
             }
         }
 
-        if (ImGui::Button("Mesh##rm"))
+        if (ImGui::MenuItem("Mesh##rm"))
         {
             if (ent.has<UVK::MeshComponent>())
             {
@@ -140,7 +140,7 @@ void DetailsPanel::display(UVK::Actor& ent, UVK::Level* lvl, bool& bShow, bool& 
             }
         }
 
-        if (ImGui::Button("Audio##rm"))
+        if (ImGui::MenuItem("Audio##rm"))
         {
             if (ent.has<UVK::AudioComponent>())
             {
@@ -156,25 +156,21 @@ void DetailsPanel::display(UVK::Actor& ent, UVK::Level* lvl, bool& bShow, bool& 
     {
         auto& a = ent.get<UVK::CoreComponent>();
 
-        ImGui::InputText("Name##inputactorname", &a.name);
+        ImGui::TextWrapped("Name");
         ImGui::SameLine();
-        if (ImGui::ImageButton((void*)(intptr_t)insert.getImage(), ImVec2(10.0f, 10.0f)))
-        {
-            a.name = cpFileLoc;
-        }
+        ImGui::InputText("##Name##inputactorname", &a.name);
 
         auto id = static_cast<int>(a.id);
-        ImGui::InputInt("ID##inputactoridentifier", &id);
+        ImGui::TextWrapped("ID");
+        ImGui::SameLine();
+        ImGui::InputInt("##ID##inputactoridentifier", &id);
         if (id == 330 && a.name.find("Editor") == std::string::npos)
             id += 1;
         a.id = id;
 
-        ImGui::InputText("Development Name##devname", &a.devName);
+        ImGui::TextWrapped("Development Name");
         ImGui::SameLine();
-        if (ImGui::ImageButton((void*)(intptr_t)insert.getImage(), ImVec2(10.0f, 10.0f)))
-        {
-            a.devName = cpFileLoc;
-        }
+        ImGui::InputText("##Development Name##devname", &a.devName);
 
         if (a.name == lvl->gameMode->pawn->name && a.id == lvl->gameMode->pawn->id && a.devName == lvl->gameMode->pawn->devName)
         {
@@ -182,14 +178,22 @@ void DetailsPanel::display(UVK::Actor& ent, UVK::Level* lvl, bool& bShow, bool& 
 
             static float FOV = lvl->gameMode->pawn->camera.projection().fov();
             static UVK::FVector2 planes = lvl->gameMode->pawn->camera.projection().planes();
-            ImGui::SliderFloat("Camera FOV", &FOV, 1.0f, 180.0f);
-            ImGui::SliderFloat("Near Plane", &planes.x, 0.01f, 10000);
-            ImGui::SliderFloat("Far Plane", &planes.y, 0.01f, 10000);
+            ImGui::TextWrapped("Camera FOV");
+            ImGui::SameLine();
+            ImGui::SliderFloat("##Camera FOV fov", &FOV, 1.0f, 180.0f);
+            ImGui::TextWrapped("Near Plane");
+            ImGui::SameLine();
+            ImGui::SliderFloat("##Near Plane plane", &planes.x, 0.01f, 10000);
+            ImGui::TextWrapped("Far Plane");
+            ImGui::SameLine();
+            ImGui::SliderFloat("##Far Plane plane", &planes.y, 0.01f, 10000);
 
             float& ar = lvl->gameMode->pawn->camera.projection().aspectRatio();
             static UVK::FVector2 aspect = UVK::FVector2(ImGui::GetWindowWidth(), ImGui::GetWindowHeight());
 
-            ImGui::DragFloat2("Aspect Ratio", glm::value_ptr(aspect), 1.0f, 0.01f);
+            ImGui::TextWrapped("Aspect Ratio");
+            ImGui::SameLine();
+            ImGui::DragFloat2("##Aspect Ratio ratio", glm::value_ptr(aspect), 1.0f, 0.01f);
 
             if ((aspect.x / aspect.y) != ar || FOV != lvl->gameMode->pawn->camera.projection().fov() || planes != lvl->gameMode->pawn->camera.projection().planes())
             {
@@ -222,16 +226,22 @@ void DetailsPanel::display(UVK::Actor& ent, UVK::Level* lvl, bool& bShow, bool& 
         auto& a = ent.get<UVK::AudioComponent>();
         UVK::AudioSourceData dt = a.data;
 
-        ImGui::SliderFloat("Pitch", &dt.pitch, 0.5f, 2.0f);
-        ImGui::SliderFloat("Gain", &dt.gain, 0.0f, 10.0f);
-        ImGui::Checkbox("Repeat", &dt.bLoop);
-        ImGui::InputText("File Location", &dt.location);
+        ImGui::TextWrapped("Pitch");
         ImGui::SameLine();
-        if (ImGui::ImageButton((void*)(intptr_t)insert.getImage(), ImVec2(10.1f, 10.1f)))
-        {
-            std::cout << "true" << std::endl;
-            dt.location = cpFileLoc;
-        }
+        ImGui::SliderFloat("##Pitchpt", &dt.pitch, 0.5f, 2.0f);
+
+        ImGui::TextWrapped("Gain");
+        ImGui::SameLine();
+        ImGui::SliderFloat("##Gaingn", &dt.gain, 0.0f, 10.0f);
+
+        ImGui::TextWrapped("Repeat");
+        ImGui::SameLine();
+        ImGui::Checkbox("##Repeatrt", &dt.bLoop);
+
+        ImGui::TextWrapped("File Location");
+        ImGui::SameLine();
+        ImGui::InputText("##File Location fl", &dt.location);
+
         a.data = dt;
         if (ImGui::Button("Play") && !dt.location.empty())
         {
@@ -264,7 +274,6 @@ void DetailsPanel::display(UVK::Actor& ent, UVK::Level* lvl, bool& bShow, bool& 
 
         DrawVec3Control("Position", a.data.position, 0.0f, 100.0f);
         DrawVec3Control("Velocity", a.data.velocity, 0.0f, 100.0f);
-
     }
 #endif
     ImGui::End();

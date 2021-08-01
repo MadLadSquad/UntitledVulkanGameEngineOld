@@ -1,5 +1,5 @@
 // Window.hpp
-// Last update 25/7/2021 by Madman10K
+// Last update 1/8/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 
@@ -51,8 +51,14 @@ namespace UVK
          * @brief Getter for the internal GLFWwindow
          * @return A pointer to a standard GLFWwindow
          */
+#ifdef DEVELOPMENT
+    public:
         [[nodiscard]] GLFWwindow* getWindow() const;
 
+    private:
+#else
+        [[nodiscard]] GLFWwindow* getWindow() const;
+#endif
         // Returns the frame-buffer width which in most cases is equal to the Window's internal rendering surface
         // width
         [[nodiscard]] int getBufferWidth() const;
@@ -93,10 +99,18 @@ namespace UVK
         [[nodiscard]] FVector2 getCurrentMousePosition() const;
         FVector2 getMousePositionChange();
         FVector2 getScroll();
-
+#ifdef DEVELOPMENT
+    public:
         void createWindow();
+
         void destroyWindow();
 
+    private:
+#else
+        void createWindow();
+
+        void destroyWindow();
+#endif
         /**
          * @brief An array that stores key actions for every key. The size of the array corresponds to the max number
          * of keycodes(listed in Keys.hpp), this way we know that keyArr[Keys::W] will return the state of the W

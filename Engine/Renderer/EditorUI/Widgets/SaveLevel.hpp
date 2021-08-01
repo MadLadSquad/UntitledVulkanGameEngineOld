@@ -1,5 +1,5 @@
 // SaveLevel.hpp
-// Last update 6/7/2021 by Madman10K
+// Last update 1/8/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 #include <Renderer/Textures/Texture.hpp>
@@ -16,6 +16,6 @@ namespace UVK
 namespace SaveLevel
 {
     // Displays the SaveLevel widget
-    void display(bool& bOpen, std::string& location, std::string& name, UVK::FVector4& colour, UVK::Texture& insert, const std::string& cpFileLoc);
+    void display(bool& bOpen, std::string& location, UVK::FVector4& colour);
 }
 #endif

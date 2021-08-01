@@ -1,5 +1,5 @@
 // Editor.cpp
-// Last update 25/7/2021 by Madman10K
+// Last update 1/8/2021 by Madman10K
 #include <GL/glew.h>
 #include <imgui_impl_vulkan.h>
 #include "Editor.hpp"
@@ -22,6 +22,7 @@
 #include "Widgets/Help.hpp"
 #include "Widgets/RemoveFile.hpp"
 #include "Widgets/Ship.hpp"
+#include "Widgets/Warnings.hpp"
 #include <Engine/Core/Core/Global.hpp>
 #include <Renderer/OpenGL/Components/GLShader.hpp>
 #include <GameFramework/GameplayClasses/Level/Level.hpp>
@@ -62,32 +63,29 @@ void UVK::Editor::initEditor()
     logoTxt = Texture(static_cast<std::string>(pt.string() + "Engine/logo.png"));
     logoTxt.loadImgui();
 
-    insert = Texture(static_cast<std::string>(pt.string() + "Engine/insert.png"));
-    insert.loadImgui();
+    fileTextures[FS_ICON_AUDIO] = Texture(static_cast<std::string>(pt.string() + "Engine/audio.png"));
+    fileTextures[FS_ICON_AUDIO].loadImgui();
 
-    fileTextures[0] = Texture(static_cast<std::string>(pt.string() + "Engine/audio.png"));
-    fileTextures[0].loadImgui();
+    fileTextures[FS_ICON_IMAGE] = Texture(static_cast<std::string>(pt.string() + "Engine/image.png"));
+    fileTextures[FS_ICON_IMAGE].loadImgui();
 
-    fileTextures[1] = Texture(static_cast<std::string>(pt.string() + "Engine/image.png"));
-    fileTextures[1].loadImgui();
+    fileTextures[FS_ICON_VIDEO] = Texture(static_cast<std::string>(pt.string() + "Engine/video.png"));
+    fileTextures[FS_ICON_VIDEO].loadImgui();
 
-    fileTextures[2] = Texture(static_cast<std::string>(pt.string() + "Engine/video.png"));
-    fileTextures[2].loadImgui();
+    fileTextures[FS_ICON_FOLDER] = Texture(static_cast<std::string>(pt.string() + "Engine/folder.png"));
+    fileTextures[FS_ICON_FOLDER].loadImgui();
 
-    fileTextures[3] = Texture(static_cast<std::string>(pt.string() + "Engine/folder.png"));
-    fileTextures[3].loadImgui();
+    fileTextures[FS_ICON_FONT] = Texture(static_cast<std::string>(pt.string() + "Engine/font.png"));
+    fileTextures[FS_ICON_FONT].loadImgui();
 
-    fileTextures[4] = Texture(static_cast<std::string>(pt.string() + "Engine/font.png"));
-    fileTextures[4].loadImgui();
+    fileTextures[FS_ICON_MODEL] = Texture(static_cast<std::string>(pt.string() + "Engine/obj.png"));
+    fileTextures[FS_ICON_MODEL].loadImgui();
 
-    fileTextures[5] = Texture(static_cast<std::string>(pt.string() + "Engine/obj.png"));
-    fileTextures[5].loadImgui();
+    fileTextures[FS_ICON_UNKNOWN] = Texture(static_cast<std::string>(pt.string() + "Engine/unknown.png"));
+    fileTextures[FS_ICON_UNKNOWN].loadImgui();
 
-    fileTextures[6] = Texture(static_cast<std::string>(pt.string() + "Engine/unknown.png"));
-    fileTextures[6].loadImgui();
-
-    fileTextures[7] = Texture(static_cast<std::string>(pt.string() + "Engine/code.png"));
-    fileTextures[7].loadImgui();
+    fileTextures[FS_ICON_CODE] = Texture(static_cast<std::string>(pt.string() + "Engine/code.png"));
+    fileTextures[FS_ICON_CODE].loadImgui();
 
     sh->createFromFile(static_cast<std::string>(pt.string() + "Engine/defaultvshader.gl").c_str(), static_cast<std::string>(pt.string() + "/../Content/Engine/defaultfshader.gl").c_str());
 #else
@@ -96,9 +94,6 @@ void UVK::Editor::initEditor()
 
     logoTxt = Texture(static_cast<std::string>("../Content/Engine/logo.png"));
     logoTxt.loadImgui();
-
-    insert = Texture(static_cast<std::string>("../Content/Engine/insert.png"));
-    insert.loadImgui();
 
     fileTextures[0] = Texture(static_cast<std::string>("../Content/Engine/audio.png"));
     fileTextures[0].loadImgui();
@@ -300,7 +295,7 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
             if (ImGui::MenuItem("Save Level", "CTRL+S"))
             {
                 // TODO: Change this for file indexing :D
-                UVK::Level::save(global.levelLocation.c_str());
+                bShowDirectSaveWarning = true;
             }
 
             if (ImGui::MenuItem("Save Level As", "CTRL+SHIFT+S"))
@@ -330,17 +325,7 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
 
             if (ImGui::MenuItem("Regenerate files"))
             {
-                int lnt;
-#ifdef _WIN32
-                lnt = system("cd ../UVKBuildTool/build/ && UVKBuildTool.exe --generate && cd ../../");
-#else
-                lnt = system("cd ../UVKBuildTool/build/ && ./UVKBuildTool --generate && cd ../../");
-#endif
-
-                if (lnt)
-                {
-                    logger.consoleLog("Error when regenerating files!", UVK_LOG_TYPE_ERROR, lnt);
-                }
+                bShowGenerateWarning = true;
             }
 
             if (ImGui::MenuItem("Ship Project"))
@@ -350,7 +335,8 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
 
             if (ImGui::MenuItem("Exit", "CTRL+SHIFT+W"))
             {
-                glfwSetWindowShouldClose(global.window.getWindow(), GL_TRUE);
+                //glfwSetWindowShouldClose(global.window.getWindow(), GL_TRUE);
+                bShowExitWarning = true;
             }
             ImGui::EndMenu();
         }
@@ -437,6 +423,21 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
 
     ImGui::End();
 
+    if (bShowDirectSaveWarning)
+    {
+        Warnings::displaySaveWarning(bShowDirectSaveWarning);
+    }
+
+    if (bShowExitWarning)
+    {
+        Warnings::displayExitWarning(bShowExitWarning);
+    }
+
+    if (bShowGenerateWarning)
+    {
+        Warnings::displayGenerateWarning(bShowGenerateWarning);
+    }
+
     if (bShowSaveWarning)
     {
         NewLevel::display(bShowSaveWarning);
@@ -444,17 +445,17 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
 
     if (bShowSaveLevelWidget)
     {
-        SaveLevel::display(bShowSaveLevelWidget, location, global.levelName, colour, insert, cpFileLoc);
+        SaveLevel::display(bShowSaveLevelWidget, location, colour);
     }
 
     if (bShowOpenLevelWidget)
     {
-        OpenLevelWidget::display(openLevel, bShowOpenLevelWidget, frameTimeData[1], colour, global.levelName, insert, cpFileLoc);
+        OpenLevelWidget::display(openLevel, bShowOpenLevelWidget, frameTimeData[1], colour);
     }
 
     if (bShowCreateFile1)
     {
-        CreateFile::display(selectedFile, fileOutLocation, bShowCreateFile1, insert, cpFileLoc);
+        CreateFile::display(selectedFile, fileOutLocation, bShowCreateFile1);
     }
 
     if (bShowSceneHierarchy)
@@ -471,13 +472,13 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
 
     if (bShowDetailsPanel)
     {
-        DetailsPanel::display(selectedEntity, lvl, bShowDetailsPanel, bDestroyEntity, insert, cpFileLoc);
+        DetailsPanel::display(selectedEntity, lvl, bShowDetailsPanel, bDestroyEntity);
     }
 
 #ifndef __MINGW32__
     if (bShowFilesystem)
     {
-        Filesystem::display(pt, fileTextures, cpFileLoc, bShowFilesystem);
+        Filesystem::display(pt, fileTextures, bShowFilesystem);
     }
 #endif
     
@@ -492,7 +493,6 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
     {
         ImGui::Begin("Tools", &bShowTools);
         ImGui::Text("Coming soon!");
-
         ImGui::End();
     }
 
@@ -513,7 +513,7 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
 
     if (bShowWorldSettings)
     {
-        WorldSettings::display(colour, global.ambientLight, global.levelName, bShowWorldSettings, insert, cpFileLoc);
+        WorldSettings::display(colour, global.ambientLight, global.levelName, bShowWorldSettings);
     }
 
     if (bShowAboutUs)
@@ -528,7 +528,7 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
 
     if (bShowRemoveFile)
     {
-        RemoveFile::display(bShowRemoveFile, insert, cpFileLoc);
+        RemoveFile::display(bShowRemoveFile);
     }
 
     if (bShowShip)
@@ -587,7 +587,6 @@ void UVK::Editor::destroyContext()
 {
     play.destroy();
     logoTxt.destroy();
-    insert.destroy();
     for (auto& a : fileTextures)
     {
         a.destroy();

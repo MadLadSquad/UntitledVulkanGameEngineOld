@@ -1,5 +1,5 @@
 // Defines.hpp
-// Last update 18/5/2021 by Madman10K
+// Last update 1/8/2021 by Madman10K
 #pragma once
 #include <any>
 #include "Generated/BuildDef.hpp"
@@ -24,3 +24,20 @@
 #else
     #define ENABLE_FAST_IO(x) std::ios_base::sync_with_stdio(!x)
 #endif
+
+#define FS_ICON_AUDIO 0
+#define FS_ICON_IMAGE 1
+#define FS_ICON_VIDEO 2
+#define FS_ICON_FOLDER 3
+#define FS_ICON_FONT 4
+#define FS_ICON_MODEL 5
+#define FS_ICON_UNKNOWN 6
+#define FS_ICON_CODE 7
+
+#define FC_GAME_MODE 1
+#define FC_GAME_STATE 2
+#define FC_PLAYER_STATE 3
+#define FC_PLAYER_CONTROLLER 4
+#define FC_PAWN 5
+#define FC_LEVEL 6
+#define FC_SCRIPTABLE_OBJECT 7

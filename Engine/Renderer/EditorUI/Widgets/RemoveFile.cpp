@@ -1,91 +1,93 @@
 // RemoveFile.cpp
-// Last update 6/7/2021 by Madman10K
+// Last update 1/8/2021 by Madman10K
 #include "RemoveFile.hpp"
 #include <Core.hpp>
 #include <imgui.h>
 #include <cpp/imgui_stdlib.h>
 
 #ifndef PRODUCTION
-void RemoveFile::display(bool& bShow, UVK::Texture& insert, const std::string& cpFileLoc)
+void RemoveFile::display(bool& bShow)
 {
-    ImGui::Begin("RemoveFile", &bShow);
+    if (!ImGui::IsPopupOpen("Remove File"))
+        ImGui::OpenPopup("Remove File");
 
-    static std::string in;
-    bool bSO = false;
-
-    ImGui::Checkbox("Scriptable Object?", &bSO);
-    ImGui::InputTextWithHint("File to delete", "Location starts from the source folder, do not specify the file's extension, only the name", &in);
-    ImGui::SameLine();
-    if (ImGui::ImageButton((void*)(intptr_t)insert.getImage(), ImVec2(10.0f, 10.0f)))
+    if (ImGui::BeginPopupModal("Remove File", &bShow))
     {
-        in = cpFileLoc;
-    }
+        static std::string in;
+        bool bSO = false;
 
-    if (ImGui::Button("Close##delete"))
-    {
-        bShow = false;
-    }
+        ImGui::TextWrapped("Scriptable Object?");
+        ImGui::SameLine();
+        ImGui::Checkbox("##Scriptable Object?", &bSO);
 
-    ImGui::SameLine();
+        ImGui::TextWrapped("File Location: Source/");
+        ImGui::SameLine();
+        ImGui::InputText("##File to delete", &in);
 
-    if (ImGui::Button("Delete##delete"))
-    {
-        int8_t lnt = 0;
-        bool error = false;
-        if (bSO)
+        if (ImGui::Button("Close##delete"))
         {
+            bShow = false;
+        }
+
+        ImGui::SameLine();
+
+        if (ImGui::Button("Delete##delete"))
+        {
+            int8_t lnt = 0;
+            bool error = false;
+            if (bSO)
+            {
 
 #ifndef __MINGW32__
 
-            try
-            {
+                try
+                {
 #ifndef _WIN32
-                lnt = system(static_cast<std::string>("cd ../UVKBuildTool/build/ && ./UVKBuildTool --actor " + in + " --remove").c_str());
+                    lnt = system(static_cast<std::string>("cd ../UVKBuildTool/build/ && ./UVKBuildTool --actor " + in + " --remove").c_str());
 #else
-                lnt = system(static_cast<std::string>("cd ../UVKBuildTool/build/ && UVKBuildTool.exe --actor " + in + " --remove").c_str());
+                    lnt = system(static_cast<std::string>("cd ../UVKBuildTool/build/ && UVKBuildTool.exe --actor " + in + " --remove").c_str());
 #endif
-                std_filesystem::remove("../../Source/" + in + ".hpp");
-                std_filesystem::remove("../../Source/" + in + ".cpp");
-            }
-            catch (std_filesystem::filesystem_error&)
-            {
-                logger.consoleLog("Failed to delete files", UVK_LOG_TYPE_ERROR);
-                error = true;
-            }
+                    std_filesystem::remove("../../Source/" + in + ".hpp");
+                    std_filesystem::remove("../../Source/" + in + ".cpp");
+                }
+                catch (std_filesystem::filesystem_error&)
+                {
+                    logger.consoleLog("Failed to delete files", UVK_LOG_TYPE_ERROR);
+                    error = true;
+                }
 
-            if (!error)
-            {
-                bShow = false;
-            }
+                if (!error)
+                {
+                    bShow = false;
+                }
 #endif
-        }
-        else
-        {
+            }
+            else
+            {
 #ifndef __MINGW32__
-            try
-            {
-                std_filesystem::remove("../../Source/" + in + ".hpp");
-                std_filesystem::remove("../../Source/" + in + ".cpp");
-            }
-            catch (std_filesystem::filesystem_error&)
-            {
-                logger.consoleLog("Failed to delete files", UVK_LOG_TYPE_ERROR);
-                error = true;
-            }
+                try
+                {
+                    std_filesystem::remove("../../Source/" + in + ".hpp");
+                    std_filesystem::remove("../../Source/" + in + ".cpp");
+                }
+                catch (std_filesystem::filesystem_error&)
+                {
+                    logger.consoleLog("Failed to delete files", UVK_LOG_TYPE_ERROR);
+                    error = true;
+                }
 
-            if (!error)
-            {
-                bShow = false;
-            }
+                if (!error)
+                {
+                    bShow = false;
+                }
 #endif
-        }
-        if (lnt)
-        {
+            }
+            if (lnt)
+            {
 
+            }
         }
+        ImGui::EndPopup();
     }
-
-
-    ImGui::End();
 }
 #endif

@@ -1,5 +1,5 @@
 // Global.hpp
-// Last update 25/7/2021 by Madman10K
+// Last update 1/8/2021 by Madman10K
 #pragma once
 #include <Core/ECS.hpp>
 #include <Core.hpp>
@@ -9,6 +9,7 @@
 #include <GameFramework/Actors/ActorManager.hpp>
 #include <Renderer/UI/UI.hpp>
 #include <Events/Events.hpp>
+#include <Assets/AssetManager.hpp>
 
 namespace UVK
 {
@@ -34,13 +35,15 @@ namespace UVK
 
         bool& getEditor();
         Level* currentLevel = nullptr;
+        AssetManager assetManager;
 
         static void openLevelInternal(UVK::String name);
+
+        std::string levelLocation;
     private:
         RendererSettings rendererSettings;
 
         std::string levelName;
-        std::string levelLocation;
 
         FVector4 colour{};
         FVector4 ambientLight{};
@@ -61,6 +64,7 @@ namespace UVK
         friend class Math;
         friend class SettingsManager;
         friend class GameInstance;
+        friend class Assets;
         friend struct MeshComponentRaw;
 
         bool bEditor{};

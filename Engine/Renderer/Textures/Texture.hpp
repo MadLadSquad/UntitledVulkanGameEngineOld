@@ -1,5 +1,5 @@
 // Texture.hpp
-// Last update 17/7/2021 by Madman10K
+// Last update 1/8/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 
@@ -23,13 +23,13 @@ namespace UVK
         int& getWidth() { return width; }
         int& getHeight() { return height; }
         GLuint& getImage() { return image; };
-
+        void loadImgui();
     private:
         unsigned char* gen();
 
         friend class GLPipeline;
         friend class Editor;
-        void loadImgui();
+
         void useTexture() const;
 
         std::string location;

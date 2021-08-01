@@ -1,5 +1,5 @@
 // VKStructs.hpp
-// Last update 2/7/2021 by Madman10K
+// Last update 1/8/2021 by Madman10K
 #pragma once
 #ifdef __APPLE__
 namespace UVK
@@ -26,6 +26,7 @@ namespace UVK
     private:
         friend class Device;
         friend class VKSwapchain;
+        friend class VKShader;
 
         VkPhysicalDevice physicalDevice;
         VkDevice logicalDevice;
