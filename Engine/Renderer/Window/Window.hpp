@@ -46,19 +46,13 @@ namespace UVK
     {
     public:
         WindowInternal();
-    private:
+
         /**
          * @brief Getter for the internal GLFWwindow
          * @return A pointer to a standard GLFWwindow
          */
-#ifdef DEVELOPMENT
-    public:
         [[nodiscard]] GLFWwindow* getWindow() const;
-
     private:
-#else
-        [[nodiscard]] GLFWwindow* getWindow() const;
-#endif
         // Returns the frame-buffer width which in most cases is equal to the Window's internal rendering surface
         // width
         [[nodiscard]] int getBufferWidth() const;
