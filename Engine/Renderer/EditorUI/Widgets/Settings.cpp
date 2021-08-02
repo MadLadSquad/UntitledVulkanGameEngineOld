@@ -1,5 +1,5 @@
 // Settings.cpp
-// Last update 1/8/2021 by Madman10K
+// Last update 2/8/2021 by Madman10K
 #include <GL/glew.h>
 #include "Settings.hpp"
 #include <imgui.h>
@@ -386,6 +386,8 @@ void Settings::displayThemeEditor(bool& bOpen)
         ImGui::TextWrapped("Output Location: Config/Settings/");
         ImGui::SameLine();
         ImGui::InputText("##Output Location", &outName);
+        ImGui::SameLine();
+        ImGui::TextWrapped(".uvktheme");
 
         if (ImGui::Button("Close"))
         {
@@ -395,7 +397,7 @@ void Settings::displayThemeEditor(bool& bOpen)
         if (ImGui::Button("Save"))
         {
 #ifdef DEVELOPMENT
-            UVK::EditorTheme::save(static_cast<std::string>("../Config/Settings/" + outName).c_str(), static_cast<std::string>("../Content/" + fontLoc).c_str(), fontSize);
+            UVK::EditorTheme::save(static_cast<std::string>("../Config/Settings/" + outName + ".uvktheme").c_str(), static_cast<std::string>("../Content/" + fontLoc).c_str(), fontSize);
 #endif
         }
         ImGui::EndPopup();
@@ -423,6 +425,8 @@ void Settings::displayProjectSettings(std::string& name, std::string& ver, std::
         ImGui::TextWrapped("Startup Level Name");
         ImGui::SameLine();
         ImGui::InputText("##Startup Level Name", &startupLevel);
+        ImGui::SameLine();
+        ImGui::TextWrapped(".uvklevel");
 
         ImGui::TextWrapped("If you click \"Save\" your project's generated files will be regenerated!");
 

@@ -1,5 +1,5 @@
 // Editor.cpp
-// Last update 1/8/2021 by Madman10K
+// Last update 2/8/2021 by Madman10K
 #include <GL/glew.h>
 #include <imgui_impl_vulkan.h>
 #include "Editor.hpp"
@@ -478,7 +478,7 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
 #ifndef __MINGW32__
     if (bShowFilesystem)
     {
-        Filesystem::display(pt, fileTextures, bShowFilesystem);
+        Filesystem::display(pt, fileTextures, texturePreviews, bShowFilesystem);
     }
 #endif
     

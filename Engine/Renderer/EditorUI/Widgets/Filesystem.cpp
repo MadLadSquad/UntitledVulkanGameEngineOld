@@ -1,18 +1,48 @@
 // Filesystem.cpp
-// Last update 1/8/2021 by Madman10K
+// Last update 2/8/2021 by Madman10K
 #include <GL/glew.h>
 #include "Filesystem.hpp"
 #include "Assets/Asset.hpp"
 
 #ifndef PRODUCTION
 #ifndef __MINGW32__
-void Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, bool& bShow)
+void Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, std::unordered_map<std::string, UVK::Texture>& previews, bool& bShow)
 {
+    constexpr const char* audioExtensions[] = { ".wav", ".flac", ".m4a", ".ogg", ".mp3" };
+    constexpr const char* imageExtensions[] = { ".jpeg", ".jpg", ".tiff", ".gif", ".bmp", ".png", ".tga", ".psd", ".pic" };
+    constexpr const char* videoExtensions[] = { ".mov", ".m4v", ".mp4", ".mpeg", ".mkv", ".mpg", ".wmv", ".webm" };
+    constexpr const char* objExtensions[] = { ".obj", ".fbx", ".glb", ".gltf", ".mp3" };
+    constexpr const char* codeExtensions[] = { ".yaml", ".uvklevel", ".yml" };
+
     ImGui::Begin("Filesystem##Widget", &bShow);
 
     static float padding = 20.0f;
     static float imageSize = 50.0f;
     float cellSize = padding + imageSize;
+
+
+    /**
+     * The 2 static bools below this comment are used for displaying preview images. Preview images are stored
+     * in a map of locations and textures. When a user navigates a directory, bChangedDir is switched to true.
+     * This in the context of the "../" button will lead to a jump instruction(goto) being executed that skips the
+     * iteration of the current folder, while if the user navigated a folder in the filesystem it will just break the
+     * loop. The point is that once at L184 the program will loop back to itself which would clear the previews and
+     * activate bChangedLastFrame which will then load up a new preview for every image
+     */
+    static bool bChangedDir = false;
+    static bool bChangedLastFrame = false;
+
+    if (bChangedDir)
+    {
+        for (auto& a : previews)
+        {
+            a.second.destroy();
+        }
+
+        previews.clear();
+
+        bChangedLastFrame = true;
+    }
 
     ImGui::BeginChild("Explorer");
 
@@ -36,16 +66,12 @@ void Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, bool&
         if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
         {
             pt = pt.parent_path();
+            bChangedDir = true;
+            goto backsection;
         }
         ImGui::TextWrapped("../");
         ImGui::NextColumn();
     }
-
-    constexpr const char* audioExtensions[] = { ".wav", ".flac", ".m4a", ".ogg", ".mp3" };
-    constexpr const char* imageExtensions[] = { ".jpeg", ".jpg", ".tiff", ".gif", ".bmp", ".png", ".tga", ".psd", ".pic" };
-    constexpr const char* videoExtensions[] = { ".mov", ".m4v", ".mp4", ".mpeg", ".mkv", ".mpg", ".wmv", ".webm" };
-    constexpr const char* objExtensions[] = { ".obj", ".fbx", ".glb", ".gltf", ".mp3" };
-    constexpr const char* codeExtensions[] = { ".yaml", ".uvklevel", ".yml" };
 
     for (auto& a : std_filesystem::directory_iterator(pt))
     {
@@ -61,6 +87,8 @@ void Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, bool&
             if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
             {
                 pt /= path.filename();
+                bChangedDir = true;
+                break;
             }
 
             txt = nullptr;
@@ -72,6 +100,7 @@ void Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, bool&
                 if (path.filename().extension().string() == b)
                 {
                     txt = &textures[FS_ICON_AUDIO];
+                    break;
                 }
             }
 
@@ -81,36 +110,17 @@ void Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, bool&
                 {
                     if (path.filename().extension().string() == b)
                     {
-                        /*
-                        if (bChanged && bChangedTheChanged)
+                        if (bChangedLastFrame)
                         {
-                            auto temp = UVK::Texture();
-                            std::pair<std::string, UVK::Texture> pr;
-                            pr.first = path.string();
-                            pr.second = temp;
-                            texturePreviews.insert(pr);
-
-                            texturePreviews[path.string()] = UVK::Texture(path.string());
-                            texturePreviews[path.string()].loadImgui();
-                            txt = &texturePreviews[path.string()];
-
-                            std::cout << "load" << path.string() << std::endl;
-
+                            UVK::Texture tx;
+                            previews.insert(std::make_pair(path.string(), tx));
+                            auto& preview = previews[path.string()];
+                            preview = UVK::Texture(path.string());
+                            preview.loadImgui();
                         }
-                        else
-                        {
-                            //std::cout << "use" << path.string() << std::endl;
-                            txt = &texturePreviews[path.string()];
-                        }*/
-                        //std::cout << txt << std::endl;
-                        txt = &textures[FS_ICON_IMAGE];
-                        //for (auto& it : UVK::global.assetManager.data()[UVK::UVK_ASSET_TYPE_TEXTURE])
-                        //{
-                        //    if (it.location == path.filename().string())
-                        //    {
-                        //        txt = (UVK::Texture*)&it.data;
-                        //    }
-                        //}
+                        txt = &previews[path.string()];
+                        //txt = &textures[FS_ICON_IMAGE];
+                        break;
                     }
                 }
             }
@@ -122,6 +132,7 @@ void Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, bool&
                     if (path.filename().extension().string() == b)
                     {
                         txt = &textures[FS_ICON_VIDEO];
+                        break;
                     }
                 }
             }
@@ -133,6 +144,7 @@ void Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, bool&
                     if (path.filename().extension().string() == b)
                     {
                         txt = &textures[FS_ICON_MODEL];
+                        break;
                     }
                 }
             }
@@ -144,6 +156,7 @@ void Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, bool&
                     if (path.filename().extension().string() == b)
                     {
                         txt = &textures[FS_ICON_CODE];
+                        break;
                     }
                 }
             }
@@ -165,6 +178,16 @@ void Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, bool&
         // path.filename().c_str() shows only the first letter of a filename on Windows for some reason
         ImGui::TextWrapped("%s", path.filename().string().c_str());
         ImGui::NextColumn();
+    }
+backsection:
+    if (bChangedDir && !bChangedLastFrame)
+    {
+        bChangedLastFrame = true;
+    }
+
+    if (bChangedLastFrame)
+    {
+        bChangedLastFrame = false;
     }
     ImGui::Columns(1);
     ImGui::EndChild();

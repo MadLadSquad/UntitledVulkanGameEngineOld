@@ -1,5 +1,5 @@
 // Editor.hpp
-// Last update 1/8/2021 by Madman10K
+// Last update 2/8/2021 by Madman10K
 #pragma once
 #include <iostream>
 #include <utility>
@@ -40,6 +40,8 @@ namespace UVK
         Texture logoTxt;
 
         Texture fileTextures[8];
+
+        std::unordered_map<std::string, UVK::Texture> texturePreviews;
 
         int entNum = 0;
         int viewportWidth = 0, viewportHeight = 0;

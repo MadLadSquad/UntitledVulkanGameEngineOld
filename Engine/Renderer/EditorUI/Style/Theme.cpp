@@ -1,5 +1,5 @@
 // Theme.cpp
-// Last update 6/7/2021 by Madman10K
+// Last update 2/8/2021 by Madman10K
 #include <Core.hpp>
 #include "Theme.hpp"
 #include <yaml.h>
@@ -51,7 +51,7 @@ void UVK::EditorTheme::setTheme(UVK::String theme)
 
     try
     {
-        out = YAML::LoadFile(theme);
+        out = YAML::LoadFile("../Config/Settings/" + std::string(theme) + ".uvktheme");
     }
     catch (YAML::BadFile&)
     {
@@ -86,7 +86,7 @@ void UVK::EditorTheme::setTheme(UVK::String theme)
             menubarBG = out["menubarBg"].as<ImVec4>();
             popupBG = out["popupBg"].as<ImVec4>();
             windowRounding = out["window-rounding"].as<float>();
-            fontLoc = out["font"].as<std::string>();
+            fontLoc = "../Content/" + out["font"].as<std::string>();
             fontSize = out["font-size"].as<int>();
         }
     }

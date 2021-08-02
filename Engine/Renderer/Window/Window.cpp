@@ -1,5 +1,5 @@
 // Window.cpp
-// Last update 25/7/2021 by Madman10K
+// Last update 2/8/2021 by Madman10K
 #include <GL/glew.h>
 #include "Window.hpp"
 #include <glfw3.h>
@@ -179,7 +179,7 @@ void UVK::WindowInternal::openConfig()
     {
         if (out["image"])
         {
-            resources.image = out["image"].as<std::string>();
+            resources.image = "../Content/" + out["image"].as<std::string>();
         }
 
         if (out["width"] && out["height"])

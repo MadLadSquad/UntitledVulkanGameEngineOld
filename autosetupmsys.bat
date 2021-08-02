@@ -15,7 +15,7 @@ echo Compiled GLEW!
 echo Creating project file with default settings ...
 
 echo name: Game > "uvproj.yaml"
-echo startup-level: "lvl.yaml" >> "uvproj.yaml"
+echo startup-level: "lvl" >> "uvproj.yaml"
 echo version: 1.0.0 >> "uvproj.yaml"
 echo engine-version: 1.0.0 >> "uvproj.yaml"
 
@@ -26,7 +26,7 @@ cmake .. -G "Unix Makefiles" && make && UVKBuildTool --install
 cd ../../ && mkdir build && cd build && cmake .. && cd ..
 
 echo name: Game > "uvproj.yaml"
-echo startup-level: "lvl.yaml" >> "uvproj.yaml"
+echo startup-level: "lvl" >> "uvproj.yaml"
 echo version: 1.0.0 >> "uvproj.yaml"
 echo engine-version: 1.0.0 >> "uvproj.yaml"
 

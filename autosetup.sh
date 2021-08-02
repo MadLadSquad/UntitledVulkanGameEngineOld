@@ -28,7 +28,7 @@ echo "Creating project file with default settings ..."
 
 touch uvproj.yaml && echo "\
 name: Game
-startup-level: \"lvl.yaml\"
+startup-level: \"lvl\"
 version: 1.0.0
 engine-version: 1.0.0" > uvproj.yaml
 
@@ -49,7 +49,7 @@ cd .. || exit
 
 echo "\
 name: Game
-startup-level: \"lvl.yaml\"
+startup-level: \"lvl\"
 version: 1.0.0
 engine-version: 1.0.0" > uvproj.yaml
 
