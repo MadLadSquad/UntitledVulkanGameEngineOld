@@ -24,12 +24,9 @@ jobs:
       run: |
           git submodule sync --recursive
           git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
-    - name: Generated generated files
+    - name: Make Project
       shell: bash
       run: ./autosetup.sh
-    - name: Make build directory and cmake
-      shell: bash
-      run: ls Engine/ThirdParty/glew/include && cd build && cmake .. -G "Unix Makefiles" && make
   Windows:
     runs-on: windows-latest
     steps:
