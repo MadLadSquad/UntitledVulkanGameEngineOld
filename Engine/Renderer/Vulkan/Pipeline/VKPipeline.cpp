@@ -1,5 +1,5 @@
 // VKPipeline.cpp
-// Last update 1/8/2021 by Madman10K
+// Last update 12/8/2021 by Madman10K
 #include "VKPipeline.hpp"
 
 void UVK::VKPipeline::begin()
@@ -12,6 +12,7 @@ void UVK::VKPipeline::begin()
     device.set(&instance.getData(), &swapchain);
     swapchain.createSwapchain();
 
+    graphicsPipeline = VKGraphicsPipeline(&device.device);
     graphicsPipeline.create();
 }
 

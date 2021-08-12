@@ -1,6 +1,8 @@
 // About.cpp
-// Last update 1/8/2021 by Madman10K
+// Last update 12/8/2021 by Madman10K
+#include <GL/glew.h>
 #include "About.hpp"
+#include "AssetSlot.hpp"
 
 #ifndef PRODUCTION
 void About::display(std::string& engineVersion, std::string& projectName, std::string& projectVersion, UVK::Texture& logo, bool& bShow)
@@ -16,6 +18,18 @@ void About::display(std::string& engineVersion, std::string& projectName, std::s
         ImGui::TextWrapped("Project created and maintained by Stanislav Vasilev (Madman10K)");
         ImGui::Image((void*)(intptr_t)logo.getImage(), ImVec2((float)logo.getWidth() - 100, (float)logo.getHeight() - 100));
 
+        /*static bool first = true;
+        static UVK::Texture remove;
+        if (first)
+        {
+            remove = UVK::Texture("../Content/Engine/close.png");
+            remove.loadImgui();
+            first = false;
+        }
+
+
+        AssetSlot::displayTexture(0, logo, remove, &remove);
+        */
         if (ImGui::Button("Close##AboutUS"))
         {
             bShow = false;

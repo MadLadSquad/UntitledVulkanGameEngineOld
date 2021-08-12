@@ -1,5 +1,5 @@
 // VKShader.cpp
-// Last update 1/8/2021 by Madman10K
+// Last update 12/8/2021 by Madman10K
 #include "VKShader.hpp"
 #include "VKStructs.hpp"
 
@@ -10,9 +10,8 @@ void UVK::VKShader::useShader()
 
 void UVK::VKShader::createShader(const std::string& file)
 {
-    std::ifstream in(file, std::ios::binary | std::ios::ate);
+    std::ifstream in("../Generated/" + file + ".vk.spv", std::ios::binary | std::ios::ate);
     std::vector<char> buffer;
-
 
     bool err = !in.is_open();
     if (!err)
@@ -28,6 +27,7 @@ void UVK::VKShader::createShader(const std::string& file)
     else
     {
         logger.consoleLog("Couldn't create shader with name: ", UVK_LOG_TYPE_ERROR, file);
+        throw std::runtime_error(" ");
     }
 }
 
@@ -42,6 +42,7 @@ void UVK::VKShader::createShaderModule(const std::vector<char>& buffer)
     if (result != VK_SUCCESS)
     {
         logger.consoleLog("Error when creating a shader module!", UVK_LOG_TYPE_ERROR);
+        throw std::runtime_error(" ");
     }
 }
 

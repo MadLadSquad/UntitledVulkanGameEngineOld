@@ -1,5 +1,5 @@
 // TopToolbar.cpp
-// Last update 15/6/2021 by Madman10K
+// Last update 12/8/2021 by Madman10K
 #include "TopToolbar.hpp"
 #include <imgui.h>
 
@@ -10,7 +10,7 @@ void TopToolbar::display(UVK::Texture &play, bool& bShow)
 
     ImGui::Begin("Toolbar", &bShow);
 
-    if (ImGui::ImageButton((void*)(intptr_t)play.getImage(), ImVec2((float)play.getWidth(), (float)play.getHeight())))
+    if (ImGui::ImageButton((void*)(intptr_t)play.getImage(), ImVec2((float)50, (float)50), ImVec2(0.0f, 0.0f), ImVec2(1.0f, 1.0f), 0))
     {
 #ifdef _WIN32
         lnt = system("Game.exe");

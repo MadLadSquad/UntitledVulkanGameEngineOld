@@ -1,5 +1,5 @@
 // Window.cpp
-// Last update 2/8/2021 by Madman10K
+// Last update 12/8/2021 by Madman10K
 #include <GL/glew.h>
 #include "Window.hpp"
 #include <glfw3.h>
@@ -123,11 +123,7 @@ void UVK::WindowInternal::createWindow()
     resources.size.y = (float)tempy;
 
     glfwMakeContextCurrent(windowMain);
-    if (!global.bEditor)
-    {
-        glfwSwapInterval(0);
-    }
-
+    glfwSwapInterval(0);
     configureCallBacks();
 
     if (!global.bUsesVulkan)

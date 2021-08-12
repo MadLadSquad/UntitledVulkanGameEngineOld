@@ -1,5 +1,5 @@
 // Editor.cpp
-// Last update 2/8/2021 by Madman10K
+// Last update 12/8/2021 by Madman10K
 #include <GL/glew.h>
 #include <imgui_impl_vulkan.h>
 #include "Editor.hpp"
@@ -57,7 +57,7 @@ void UVK::Editor::initEditor()
     auto* sh = new GLShader();
 #ifndef __MINGW32__
 
-    play = Texture(static_cast<std::string>(pt.string() + "Engine/Play.png"));
+    play = Texture(static_cast<std::string>(pt.string() + "Engine/play.png"));
     play.loadImgui();
 
     logoTxt = Texture(static_cast<std::string>(pt.string() + "Engine/logo.png"));
@@ -89,7 +89,7 @@ void UVK::Editor::initEditor()
 
     sh->createFromFile(static_cast<std::string>(pt.string() + "Engine/defaultvshader.gl").c_str(), static_cast<std::string>(pt.string() + "/../Content/Engine/defaultfshader.gl").c_str());
 #else
-    play = Texture(static_cast<std::string>("../Content/Engine/Play.png"));
+    play = Texture(static_cast<std::string>("../Content/Engine/play.png"));
     play.loadImgui();
 
     logoTxt = Texture(static_cast<std::string>("../Content/Engine/logo.png"));
@@ -296,41 +296,49 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
             {
                 // TODO: Change this for file indexing :D
                 bShowDirectSaveWarning = true;
+                goto end1;
             }
 
             if (ImGui::MenuItem("Save Level As", "CTRL+SHIFT+S"))
             {
                 bShowSaveLevelWidget = true;
+                goto end1;
             }
 
             if (ImGui::MenuItem("New Level", "CTRL+N"))
             {
                 bShowSaveWarning = true;
+                goto end1;
             }
 
             if (ImGui::MenuItem("Open Level", "CTRL+O"))
             {
                 bShowOpenLevelWidget = true;
+                goto end1;
             }
 
             if (ImGui::MenuItem("New File", "CTRL+SHIFT+N"))
             {
                 bShowCreateFile1 = true;
+                goto end1;
             }
 
             if (ImGui::MenuItem("Remove File"))
             {
                 bShowRemoveFile = true;
+                goto end1;
             }
 
             if (ImGui::MenuItem("Regenerate files"))
             {
                 bShowGenerateWarning = true;
+                goto end1;
             }
 
             if (ImGui::MenuItem("Ship Project"))
             {
                 bShowShip = true;
+                goto end1;
             }
 
             if (ImGui::MenuItem("Exit", "CTRL+SHIFT+W"))
@@ -338,6 +346,8 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
                 //glfwSetWindowShouldClose(global.window.getWindow(), GL_TRUE);
                 bShowExitWarning = true;
             }
+end1:
+
             ImGui::EndMenu();
         }
         if (ImGui::BeginMenu("Edit"))
@@ -345,6 +355,7 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
             if (ImGui::MenuItem("Undo", "CTRL+Z"))
             {
 
+                goto end2;
             }
 
             if (ImGui::MenuItem("Redo", "CTRL+Y"))
@@ -352,6 +363,7 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
 
             }
 
+end2:
             ImGui::EndMenu();
         }
 
@@ -360,32 +372,38 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
             if (ImGui::MenuItem("Game Settings"))
             {
                 bShowGameSettings = true;
+                goto end3;
             }
 
             if (ImGui::MenuItem("Window Settings"))
             {
                 bShowWindowSettings = true;
+                goto end3;
             }
 
             if (ImGui::MenuItem("Renderer Settings"))
             {
                 bShowRendererSettings = true;
+                goto end3;
             }
 
             if (ImGui::MenuItem("Editor Keybind Settings"))
             {
                 bShowKeybindSettings = true;
+                goto end3;
             }
 
             if (ImGui::MenuItem("Game Keybind Settings"))
             {
                 bShowGameKeybinds = true;
+                goto end3;
             }
 
             if (ImGui::MenuItem("Theme Editor"))
             {
                 bShowThemeSettings = true;
             }
+end3:
             ImGui::EndMenu();
         }
         if (ImGui::BeginMenu("View"))
@@ -409,13 +427,14 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
             if (ImGui::MenuItem("About us"))
             {
                 bShowAboutUs = true;
+                goto end4;
             }
 
             if (ImGui::MenuItem("Help"))
             {
                 bShowHelp = true;
             }
-
+end4:
             ImGui::EndMenu();
         }
         ImGui::EndMenuBar();
@@ -481,7 +500,7 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
         Filesystem::display(pt, fileTextures, texturePreviews, bShowFilesystem);
     }
 #endif
-    
+
     if (bShowToolbar)
     {
         style.WindowPadding = ImVec2(0.0f, 0.0f);

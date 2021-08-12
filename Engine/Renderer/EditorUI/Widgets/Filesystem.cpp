@@ -1,5 +1,5 @@
 // Filesystem.cpp
-// Last update 2/8/2021 by Madman10K
+// Last update 12/8/2021 by Madman10K
 #include <GL/glew.h>
 #include "Filesystem.hpp"
 #include "Assets/Asset.hpp"
@@ -14,40 +14,15 @@ void Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, std::
     constexpr const char* objExtensions[] = { ".obj", ".fbx", ".glb", ".gltf", ".mp3" };
     constexpr const char* codeExtensions[] = { ".yaml", ".uvklevel", ".yml" };
 
-    ImGui::Begin("Filesystem##Widget", &bShow);
-
     static float padding = 20.0f;
     static float imageSize = 50.0f;
     float cellSize = padding + imageSize;
+    static bool bUsePreviews = true;
+    int columns;
 
-
-    /**
-     * The 2 static bools below this comment are used for displaying preview images. Preview images are stored
-     * in a map of locations and textures. When a user navigates a directory, bChangedDir is switched to true.
-     * This in the context of the "../" button will lead to a jump instruction(goto) being executed that skips the
-     * iteration of the current folder, while if the user navigated a folder in the filesystem it will just break the
-     * loop. The point is that once at L184 the program will loop back to itself which would clear the previews and
-     * activate bChangedLastFrame which will then load up a new preview for every image
-     */
-    static bool bChangedDir = false;
-    static bool bChangedLastFrame = false;
-
-    if (bChangedDir)
-    {
-        for (auto& a : previews)
-        {
-            a.second.destroy();
-        }
-
-        previews.clear();
-
-        bChangedLastFrame = true;
-    }
-
+    ImGui::Begin("Filesystem##Widget", &bShow);
     ImGui::BeginChild("Explorer");
-
-    // ImGui::GetContentRegionAvailWidth() marked as deprecated for some reason
-    auto columns = (int)(ImGui::GetContentRegionAvail().x / cellSize);
+    columns = (int)(ImGui::GetContentRegionAvail().x / cellSize);
     if (columns < 1)
     {
         columns = 1;
@@ -59,6 +34,7 @@ void Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, std::
     Utility::sanitiseFilepath(p, true);
     pt = std_filesystem::path(p);
 
+    ImGui::PushStyleColor(ImGuiCol_Button, { 0.0f, 0.0f, 0.0f, 0.0f });
     if (!(p == "../Content/" || p == "../Content"))
     {
         // WHY DO WE NEED TO DO THIS HACK!!!
@@ -66,8 +42,6 @@ void Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, std::
         if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
         {
             pt = pt.parent_path();
-            bChangedDir = true;
-            goto backsection;
         }
         ImGui::TextWrapped("../");
         ImGui::NextColumn();
@@ -77,7 +51,7 @@ void Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, std::
     {
         auto& path = a.path();
 
-        UVK::Texture* txt;
+        UVK::Texture* txt = nullptr;
 
         if (a.is_directory())
         {
@@ -87,7 +61,6 @@ void Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, std::
             if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
             {
                 pt /= path.filename();
-                bChangedDir = true;
                 break;
             }
 
@@ -100,7 +73,7 @@ void Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, std::
                 if (path.filename().extension().string() == b)
                 {
                     txt = &textures[FS_ICON_AUDIO];
-                    break;
+                    goto render_image;
                 }
             }
 
@@ -110,17 +83,25 @@ void Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, std::
                 {
                     if (path.filename().extension().string() == b)
                     {
-                        if (bChangedLastFrame)
+                        /*if (bUsePreviews)
                         {
-                            UVK::Texture tx;
-                            previews.insert(std::make_pair(path.string(), tx));
-                            auto& preview = previews[path.string()];
-                            preview = UVK::Texture(path.string());
-                            preview.loadImgui();
+                            if (bChangedLastFrame)
+                            {
+                                UVK::Texture tx;
+                                previews.insert(std::make_pair(path.filename().string(), tx));
+                                auto& preview = previews[path.filename().string()];
+                                preview = UVK::Texture(path.string());
+                                preview.loadImgui();
+                            }
+                            txt = &previews[path.filename().string()];
+
                         }
-                        txt = &previews[path.string()];
-                        //txt = &textures[FS_ICON_IMAGE];
-                        break;
+                        else
+                        {
+
+                        }*/
+                        txt = &textures[FS_ICON_IMAGE];
+                        goto render_image;
                     }
                 }
             }
@@ -132,7 +113,7 @@ void Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, std::
                     if (path.filename().extension().string() == b)
                     {
                         txt = &textures[FS_ICON_VIDEO];
-                        break;
+                        goto render_image;
                     }
                 }
             }
@@ -144,7 +125,7 @@ void Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, std::
                     if (path.filename().extension().string() == b)
                     {
                         txt = &textures[FS_ICON_MODEL];
-                        break;
+                        goto render_image;
                     }
                 }
             }
@@ -156,7 +137,7 @@ void Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, std::
                     if (path.filename().extension().string() == b)
                     {
                         txt = &textures[FS_ICON_CODE];
-                        break;
+                        goto render_image;
                     }
                 }
             }
@@ -164,12 +145,15 @@ void Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, std::
             if (txt == nullptr && path.filename().extension().string() == ".ttf")
             {
                 txt = &textures[FS_ICON_CODE];
+                goto render_image;
             }
 
             if (txt == nullptr)
             {
                 txt = &textures[FS_ICON_UNKNOWN];
             }
+
+render_image:
             //ImGui::BeginPopup()
             ImGui::ImageButton((void*)(intptr_t)txt->getImage(), ImVec2(imageSize, imageSize));
             txt = nullptr;
@@ -179,25 +163,29 @@ void Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, std::
         ImGui::TextWrapped("%s", path.filename().string().c_str());
         ImGui::NextColumn();
     }
-backsection:
-    if (bChangedDir && !bChangedLastFrame)
-    {
-        bChangedLastFrame = true;
-    }
+    ImGui::PopStyleColor();
 
-    if (bChangedLastFrame)
-    {
-        bChangedLastFrame = false;
-    }
     ImGui::Columns(1);
     ImGui::EndChild();
     ImGui::BeginGroup();
     ImGui::Separator();
-    ImGui::Columns(2, nullptr, false);
+    ImGui::Columns(3, nullptr, false);
 
-    ImGui::SliderFloat("Image size", &imageSize, 1.0f, 256.0f);
+    ImGui::TextWrapped("Image size");
+    ImGui::SameLine();
+    ImGui::SliderFloat("##Image size", &imageSize, 1.0f, 256.0f);
     ImGui::NextColumn();
-    ImGui::SliderFloat("Padding", &padding, 20.0f, 256.0f);
+
+    ImGui::TextWrapped("Padding");
+    ImGui::SameLine();
+    ImGui::SliderFloat("##Padding", &padding, 20.0f, 256.0f);
+    ImGui::NextColumn();
+
+    ImGui::TextWrapped("Display preview images");
+    ImGui::SameLine();
+    ImGui::Checkbox("##Display preview images", &bUsePreviews);
+    ImGui::NextColumn();
+
     ImGui::Columns(1);
     ImGui::EndGroup();
     ImGui::End();

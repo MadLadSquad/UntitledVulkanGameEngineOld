@@ -1,5 +1,5 @@
 // Asset.hpp
-// Last update 1/8/2021 by Madman10K
+// Last update 12/8/2021 by Madman10K
 #pragma once
 #include <Core/Types.hpp>
 
@@ -19,7 +19,7 @@ namespace UVK
     struct Asset
     {
     public:
-        String location;
+        std::string location;
         T* data;
     };
 }

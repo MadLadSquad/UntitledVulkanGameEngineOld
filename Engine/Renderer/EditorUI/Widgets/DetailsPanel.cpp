@@ -1,5 +1,5 @@
 // DetailsPanel.cpp
-// Last update 1/8/2021 by Madman10K
+// Last update 12/8/2021 by Madman10K
 #include <GL/glew.h>
 #include <imgui.h>
 #include <cpp/imgui_stdlib.h>
@@ -152,56 +152,53 @@ void DetailsPanel::display(UVK::Actor& ent, UVK::Level* lvl, bool& bShow, bool& 
     }
     ImGui::EndMenuBar();
 
-    if (ent.has<UVK::CoreComponent>())
+    auto& a = ent.get<UVK::CoreComponent>();
+
+    ImGui::TextWrapped("Name");
+    ImGui::SameLine();
+    ImGui::InputText("##Name##inputactorname", &a.name);
+
+    auto id = static_cast<int>(a.id);
+    ImGui::TextWrapped("ID");
+    ImGui::SameLine();
+    ImGui::InputInt("##ID##inputactoridentifier", &id);
+    if (id == 330 && a.name.find("Editor") == std::string::npos)
+        id += 1;
+    a.id = id;
+
+    ImGui::TextWrapped("Development Name");
+    ImGui::SameLine();
+    ImGui::InputText("##Development Name##devname", &a.devName);
+
+    if (a.name == lvl->gameMode->pawn->name && a.id == lvl->gameMode->pawn->id && a.devName == lvl->gameMode->pawn->devName)
     {
-        auto& a = ent.get<UVK::CoreComponent>();
+        ImGui::Separator();
 
-        ImGui::TextWrapped("Name");
+        static float FOV = lvl->gameMode->pawn->camera.projection().fov();
+        static UVK::FVector2 planes = lvl->gameMode->pawn->camera.projection().planes();
+        ImGui::TextWrapped("Camera FOV");
         ImGui::SameLine();
-        ImGui::InputText("##Name##inputactorname", &a.name);
-
-        auto id = static_cast<int>(a.id);
-        ImGui::TextWrapped("ID");
+        ImGui::SliderFloat("##Camera FOV fov", &FOV, 1.0f, 180.0f);
+        ImGui::TextWrapped("Near Plane");
         ImGui::SameLine();
-        ImGui::InputInt("##ID##inputactoridentifier", &id);
-        if (id == 330 && a.name.find("Editor") == std::string::npos)
-            id += 1;
-        a.id = id;
-
-        ImGui::TextWrapped("Development Name");
+        ImGui::SliderFloat("##Near Plane plane", &planes.x, 0.01f, 10000);
+        ImGui::TextWrapped("Far Plane");
         ImGui::SameLine();
-        ImGui::InputText("##Development Name##devname", &a.devName);
+        ImGui::SliderFloat("##Far Plane plane", &planes.y, 0.01f, 10000);
 
-        if (a.name == lvl->gameMode->pawn->name && a.id == lvl->gameMode->pawn->id && a.devName == lvl->gameMode->pawn->devName)
+        float& ar = lvl->gameMode->pawn->camera.projection().aspectRatio();
+        static UVK::FVector2 aspect = UVK::FVector2(ImGui::GetWindowWidth(), ImGui::GetWindowHeight());
+
+        ImGui::TextWrapped("Aspect Ratio");
+        ImGui::SameLine();
+        ImGui::DragFloat2("##Aspect Ratio ratio", glm::value_ptr(aspect), 1.0f, 0.01f);
+
+        if ((aspect.x / aspect.y) != ar || FOV != lvl->gameMode->pawn->camera.projection().fov() || planes != lvl->gameMode->pawn->camera.projection().planes())
         {
-            ImGui::Separator();
-
-            static float FOV = lvl->gameMode->pawn->camera.projection().fov();
-            static UVK::FVector2 planes = lvl->gameMode->pawn->camera.projection().planes();
-            ImGui::TextWrapped("Camera FOV");
-            ImGui::SameLine();
-            ImGui::SliderFloat("##Camera FOV fov", &FOV, 1.0f, 180.0f);
-            ImGui::TextWrapped("Near Plane");
-            ImGui::SameLine();
-            ImGui::SliderFloat("##Near Plane plane", &planes.x, 0.01f, 10000);
-            ImGui::TextWrapped("Far Plane");
-            ImGui::SameLine();
-            ImGui::SliderFloat("##Far Plane plane", &planes.y, 0.01f, 10000);
-
-            float& ar = lvl->gameMode->pawn->camera.projection().aspectRatio();
-            static UVK::FVector2 aspect = UVK::FVector2(ImGui::GetWindowWidth(), ImGui::GetWindowHeight());
-
-            ImGui::TextWrapped("Aspect Ratio");
-            ImGui::SameLine();
-            ImGui::DragFloat2("##Aspect Ratio ratio", glm::value_ptr(aspect), 1.0f, 0.01f);
-
-            if ((aspect.x / aspect.y) != ar || FOV != lvl->gameMode->pawn->camera.projection().fov() || planes != lvl->gameMode->pawn->camera.projection().planes())
-            {
-                lvl->gameMode->pawn->camera.projection().fov() = FOV;
-                lvl->gameMode->pawn->camera.projection().planes() = planes;
-                ar = aspect.x / aspect.y;
-                lvl->gameMode->pawn->camera.projection().recalculateRH();
-            }
+            lvl->gameMode->pawn->camera.projection().fov() = FOV;
+            lvl->gameMode->pawn->camera.projection().planes() = planes;
+            ar = aspect.x / aspect.y;
+            lvl->gameMode->pawn->camera.projection().recalculateRH();
         }
     }
 
@@ -209,13 +206,13 @@ void DetailsPanel::display(UVK::Actor& ent, UVK::Level* lvl, bool& bShow, bool& 
     {
         ImGui::Separator();
 
-        auto& a = ent.get<UVK::MeshComponentRaw>();
+        auto& cmp = ent.get<UVK::MeshComponentRaw>();
 
-        DrawVec3Control("Translation", a.translation, 0.0f, 100.0f);
-        glm::vec3 rotation = glm::degrees(a.rotation);
+        DrawVec3Control("Translation", cmp.translation, 0.0f, 100.0f);
+        glm::vec3 rotation = glm::degrees(cmp.rotation);
         DrawVec3Control("Rotation", rotation, 0.0f, 100.0f);
-        a.rotation = glm::radians(rotation);
-        DrawVec3Control("Scale", a.scale, 1.0f, 100.0f);
+        cmp.rotation = glm::radians(rotation);
+        DrawVec3Control("Scale", cmp.scale, 1.0f, 100.0f);
     }
 
 #ifndef __MINGW32__
@@ -223,8 +220,8 @@ void DetailsPanel::display(UVK::Actor& ent, UVK::Level* lvl, bool& bShow, bool& 
     {
         ImGui::Separator();
 
-        auto& a = ent.get<UVK::AudioComponent>();
-        UVK::AudioSourceData dt = a.data;
+        auto& cmp = ent.get<UVK::AudioComponent>();
+        UVK::AudioSourceData dt = cmp.data;
 
         ImGui::TextWrapped("Pitch");
         ImGui::SameLine();
@@ -242,7 +239,7 @@ void DetailsPanel::display(UVK::Actor& ent, UVK::Level* lvl, bool& bShow, bool& 
         ImGui::SameLine();
         ImGui::InputText("##File Location fl", &dt.location);
 
-        a.data = dt;
+        cmp.data = dt;
         if (ImGui::Button("Play") && !dt.location.empty())
         {
             ent.remove<UVK::AudioComponent>();
@@ -253,27 +250,27 @@ void DetailsPanel::display(UVK::Actor& ent, UVK::Level* lvl, bool& bShow, bool& 
         ImGui::SameLine();
         if (ImGui::Button("Resume"))
         {
-            a.resume();
+            cmp.resume();
         }
         ImGui::SameLine();
         if (ImGui::Button("Pause"))
         {
-            a.pause();
+            cmp.pause();
         }
         ImGui::SameLine();
         if (ImGui::Button("Stop"))
         {
-            a.stop();
+            cmp.stop();
         }
         ImGui::SameLine();
         if (ImGui::Button("Replay"))
         {
-            a.stop();
-            a.play();
+            cmp.stop();
+            cmp.play();
         }
 
-        DrawVec3Control("Position", a.data.position, 0.0f, 100.0f);
-        DrawVec3Control("Velocity", a.data.velocity, 0.0f, 100.0f);
+        DrawVec3Control("Position", cmp.data.position, 0.0f, 100.0f);
+        DrawVec3Control("Velocity", cmp.data.velocity, 0.0f, 100.0f);
     }
 #endif
     ImGui::End();

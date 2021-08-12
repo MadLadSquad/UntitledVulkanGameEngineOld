@@ -1,5 +1,5 @@
 // Defines.hpp
-// Last update 1/8/2021 by Madman10K
+// Last update 12/8/2021 by Madman10K
 #pragma once
 #include <any>
 #include "Generated/BuildDef.hpp"
@@ -41,3 +41,6 @@
 #define FC_PAWN 5
 #define FC_LEVEL 6
 #define FC_SCRIPTABLE_OBJECT 7
+
+#define VK_SHADER_STAGE_VERT 0
+#define VK_SHADER_STAGE_FRAG 1

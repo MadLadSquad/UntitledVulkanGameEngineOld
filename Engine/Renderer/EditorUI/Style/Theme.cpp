@@ -1,5 +1,5 @@
 // Theme.cpp
-// Last update 2/8/2021 by Madman10K
+// Last update 12/8/2021 by Madman10K
 #include <Core.hpp>
 #include "Theme.hpp"
 #include <yaml.h>
@@ -55,41 +55,38 @@ void UVK::EditorTheme::setTheme(UVK::String theme)
     }
     catch (YAML::BadFile&)
     {
-        bUseCustomTheme = false;
-
         logger.consoleLog("Invalid theme location or file", UVK_LOG_TYPE_ERROR);
+        return;
     }
 
-    if (bUseCustomTheme)
+    if (out["windowBg"] && out["header"] && out["headerHovered"] && out["headerActive"] && out["button"] && out["buttonHovered"] && out["buttonActive"] && out["frame"] && out["frameHovered"] && out["frameActive"] && out["tab"] && out["tabHovered"] && out["tabActive"] && out["tabUnfocused"] && out["tabUnfocusedActive"] && out["titleBg"] && out["titleBgCollapsed"] && out["titleBgActive"] && out["menubarBg"])
     {
-        if (out["windowBg"] && out["header"] && out["headerHovered"] && out["headerActive"] && out["button"] && out["buttonHovered"] && out["buttonActive"] && out["frame"] && out["frameHovered"] && out["frameActive"] && out["tab"] && out["tabHovered"] && out["tabActive"] && out["tabUnfocused"] && out["tabUnfocusedActive"] && out["titleBg"] && out["titleBgCollapsed"] && out["titleBgActive"] && out["menubarBg"])
-        {
-            textCol = out["textCol"].as<ImVec4>();
-            windowBg = out["windowBg"].as<ImVec4>();
-            header = out["header"].as<ImVec4>();
-            headerHovered = out["headerHovered"].as<ImVec4>();
-            headerActive = out["headerActive"].as<ImVec4>();
-            button = out["button"].as<ImVec4>();
-            buttonHovered = out["buttonHovered"].as<ImVec4>();
-            buttonActive = out["buttonActive"].as<ImVec4>();
-            frame = out["frame"].as<ImVec4>();
-            frameHovered = out["frameHovered"].as<ImVec4>();
-            frameActive = out["frameActive"].as<ImVec4>();
-            tab = out["tab"].as<ImVec4>();
-            tabHovered = out["tabHovered"].as<ImVec4>();
-            tabActive = out["tabActive"].as<ImVec4>();
-            tabUnfocused = out["tabUnfocused"].as<ImVec4>();
-            tabUnfocusedActive = out["tabUnfocusedActive"].as<ImVec4>();
-            titleBg = out["titleBg"].as<ImVec4>();
-            titleBgCollapsed = out["titleBgCollapsed"].as<ImVec4>();
-            titleBgActive = out["titleBgActive"].as<ImVec4>();
-            menubarBG = out["menubarBg"].as<ImVec4>();
-            popupBG = out["popupBg"].as<ImVec4>();
-            windowRounding = out["window-rounding"].as<float>();
-            fontLoc = "../Content/" + out["font"].as<std::string>();
-            fontSize = out["font-size"].as<int>();
-        }
+        textCol = out["textCol"].as<ImVec4>();
+        windowBg = out["windowBg"].as<ImVec4>();
+        header = out["header"].as<ImVec4>();
+        headerHovered = out["headerHovered"].as<ImVec4>();
+        headerActive = out["headerActive"].as<ImVec4>();
+        button = out["button"].as<ImVec4>();
+        buttonHovered = out["buttonHovered"].as<ImVec4>();
+        buttonActive = out["buttonActive"].as<ImVec4>();
+        frame = out["frame"].as<ImVec4>();
+        frameHovered = out["frameHovered"].as<ImVec4>();
+        frameActive = out["frameActive"].as<ImVec4>();
+        tab = out["tab"].as<ImVec4>();
+        tabHovered = out["tabHovered"].as<ImVec4>();
+        tabActive = out["tabActive"].as<ImVec4>();
+        tabUnfocused = out["tabUnfocused"].as<ImVec4>();
+        tabUnfocusedActive = out["tabUnfocusedActive"].as<ImVec4>();
+        titleBg = out["titleBg"].as<ImVec4>();
+        titleBgCollapsed = out["titleBgCollapsed"].as<ImVec4>();
+        titleBgActive = out["titleBgActive"].as<ImVec4>();
+        menubarBG = out["menubarBg"].as<ImVec4>();
+        popupBG = out["popupBg"].as<ImVec4>();
+        windowRounding = out["window-rounding"].as<float>();
+        fontLoc = "../Content/" + out["font"].as<std::string>();
+        fontSize = out["font-size"].as<int>();
     }
+
 }
 
 void UVK::EditorTheme::useTheme()

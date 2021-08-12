@@ -1,5 +1,5 @@
 // Audio.cpp
-// Last update 25/7/2021 by Madman10K
+// Last update 12/8/2021 by Madman10K
 #include "Audio.hpp"
 #include <sndfile.h>
 
@@ -11,6 +11,7 @@ void UVK::AudioManager::createDevice()
     if (!device)
     {
         logger.consoleLog("Failed to get sound device", UVK_LOG_TYPE_ERROR);
+        return;
     }
 
     context = alcCreateContext(device, nullptr);
@@ -18,10 +19,13 @@ void UVK::AudioManager::createDevice()
     if (!context)
     {
         logger.consoleLog("Failed to get sound context", UVK_LOG_TYPE_ERROR);
+        return;
     }
+
     if (!alcMakeContextCurrent(context))
     {
         logger.consoleLog("Failed to use the context", UVK_LOG_TYPE_ERROR);
+        return;
     }
 
     String name = nullptr;
@@ -33,6 +37,7 @@ void UVK::AudioManager::createDevice()
     if (!name || alcGetError(device) != AL_NO_ERROR)
     {
         name = alcGetString(device, ALC_DEVICE_SPECIFIER);
+        return;
     }
 
     logger.consoleLog("Loaded sound device \"", UVK_LOG_TYPE_SUCCESS, name, "\"");

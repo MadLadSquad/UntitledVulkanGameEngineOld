@@ -1,5 +1,5 @@
 // VKShader.hpp
-// Last update 1/8/2021 by Madman10K
+// Last update 12/8/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 #ifndef __APPLE__
@@ -23,6 +23,7 @@ namespace UVK
         void createShader(const std::string& file);
         void useShader();
     private:
+        friend class VKGraphicsPipeline;
         VKDevice* device;
         VkShaderModule shaderModule;
 

@@ -1,5 +1,5 @@
 // AssetManager.hpp
-// Last update 1/8/2021 by Madman10K
+// Last update 12/8/2021 by Madman10K
 #pragma once
 #include <unordered_map>
 #include "Asset.hpp"
@@ -30,6 +30,9 @@ namespace UVK
     class Assets
     {
     public:
+        static const std::vector<Asset<Texture>>& textures();
+        static const std::vector<Asset<GLShader>>& shaders();
+        static const std::vector<Asset<AudioSource>>& audio();
         //template<typename T>
         //static const std::vector<Asset<T>>& getAllAssetsOfType(AssetType type);
     };

@@ -1,5 +1,5 @@
 // AssetManager.cpp
-// Last update 1/8/2021 by Madman10K
+// Last update 12/8/2021 by Madman10K
 #include <GL/glew.h>
 #include "AssetManager.hpp"
 #include <Core/Defines.hpp>
@@ -40,8 +40,8 @@ void UVK::AssetManager::loadRaw()
                 {
                     if (a.path().extension().string() == b)
                     {
-                        Asset<Texture> textureAsset = {};
-                        textureAsset.location = a.path().extension().string().c_str();
+                        Asset<Texture> textureAsset;
+                        textureAsset.location = a.path().string();
                         textureAsset.data = nullptr;
 
                         textures.push_back(textureAsset);
@@ -51,7 +51,7 @@ void UVK::AssetManager::loadRaw()
         }
     }
 
-    for (auto& a : std_filesystem::directory_iterator(std_filesystem::path("../Generated/Shaders/")))
+    /*for (auto& a : std_filesystem::directory_iterator(std_filesystem::path("../Generated/Shaders/")))
     {
         if (!a.is_directory())
         {
@@ -60,7 +60,7 @@ void UVK::AssetManager::loadRaw()
 
             }
         }
-    }
+    }*/
     //for
 
     /*
@@ -160,4 +160,19 @@ void UVK::AssetManager::loadRaw()
 void UVK::AssetManager::loadArchive()
 {
     loadRaw();
+}
+
+const std::vector<UVK::Asset<UVK::Texture>>& UVK::Assets::textures()
+{
+    return global.assetManager.textures;
+}
+
+const std::vector<UVK::Asset<UVK::GLShader>>& UVK::Assets::shaders()
+{
+    return global.assetManager.shaders;
+}
+
+const std::vector<UVK::Asset<UVK::AudioSource>>& UVK::Assets::audio()
+{
+    return global.assetManager.audio;
 }

@@ -1,5 +1,5 @@
 // Level.cpp
-// Last update 1/8/2021 by Madman10K
+// Last update 12/8/2021 by Madman10K
 #include "../../Components/Components.hpp"
 #include "Engine/Core/Core/Actor.hpp"
 #include <Events/Events.hpp>
@@ -130,6 +130,17 @@ void UVK::Level::save(String location)
 
 void UVK::Level::openInternal(UVK::String location)
 {
+    YAML::Node out;
+    try
+    {
+        out = YAML::LoadFile(location + std::string(".uvklevel"));
+    }
+    catch (YAML::BadFile&)
+    {
+        logger.consoleLog("Invalid level file location of file!", UVK_LOG_TYPE_ERROR);
+        return;
+    }
+
     global.ecs.clear();
     global.ui.clear();
     if (!global.bEditor)
@@ -137,69 +148,55 @@ void UVK::Level::openInternal(UVK::String location)
         global.instance->events.callEnd();
         global.ui.clear();
     }
-
     global.instance->events.clear();
 
     logger.consoleLog("Opening level with location: ", UVK_LOG_TYPE_NOTE, location);
 
-    YAML::Node out;
-    bool bValid = true;
+    global.levelName = out["name"].as<std::string>();
+    global.levelLocation = location;
+    logger.consoleLog("Opened file with name: ", UVK_LOG_TYPE_SUCCESS, global.levelName);
+    global.colour = out["background-colour"].as<FVector4>();
+    global.ambientLight = out["ambient-light"].as<FVector4>();
 
-    try
+    auto entities = out["actors"];
+    if (entities)
     {
-        out = YAML::LoadFile(location + std::string(".uvklevel"));
-    }
-    catch (YAML::BadFile&)
-    {
-        bValid = false;
-        logger.consoleLog("Invalid level file location of file!", UVK_LOG_TYPE_ERROR);
-    }
+        logger.consoleLog("Iterating entities", UVK_LOG_TYPE_NOTE);
 
-    if (bValid)
-    {
-        global.levelName = out["name"].as<std::string>();
-        global.levelLocation = location;
-        logger.consoleLog("Opened file with name: ", UVK_LOG_TYPE_SUCCESS, global.levelName);
-        global.colour = out["background-colour"].as<FVector4>();
-        global.ambientLight = out["ambient-light"].as<FVector4>();
-        auto entities = out["actors"];
-        if (entities)
+        for (const YAML::Node& entity : entities)
         {
-            logger.consoleLog("Iterating entities", UVK_LOG_TYPE_NOTE);
+            auto name = entity["actor"].as<std::string>();
+            auto id = entity["id"].as<uint64_t>();
+            auto devName = entity["dev-name"].as<std::string>();
 
-            for (const YAML::Node& entity : entities)
+            if (id == 330 && name.find("Editor") == std::string::npos)
             {
-                auto name = entity["actor"].as<std::string>();
-                auto id = entity["id"].as<uint64_t>();
-                auto devName = entity["dev-name"].as<std::string>();
-                if (id == 330 && name.find("Editor") == std::string::npos)
-                {
-                    id = 331;
-                }
-                auto act = Actor(name, id, devName, true);
-
-                if (entity["audio-pitch"] && entity["audio-gain"] && entity["audio-location"])
-                {
-                    auto& a = act.add<UVK::AudioComponent>();
-
-                    UVK::AudioSourceData data;
-                    data.pitch = entity["audio-pitch"].as<float>();
-                    data.gain = entity["audio-gain"].as<float>();
-                    data.bLoop = entity["audio-loop"].as<bool>();
-                    data.position = entity["audio-location"].as<FVector>();
-                    data.velocity = entity["audio-velocity"].as<FVector>();
-                    data.location = entity["audio-file"].as<std::string>();
-
-                    a.init(data);
-                }
+                id = 331;
             }
-            logger.consoleLog("Iterated entities", UVK_LOG_TYPE_SUCCESS);
-        }
 
-        if (!global.bEditor)
-        {
-            global.instance->events.callBegin();
+            auto act = Actor(name, id, devName, true);
+
+            if (entity["audio-pitch"] && entity["audio-gain"] && entity["audio-location"])
+            {
+                auto& a = act.add<UVK::AudioComponent>();
+
+                UVK::AudioSourceData data;
+                data.pitch = entity["audio-pitch"].as<float>();
+                data.gain = entity["audio-gain"].as<float>();
+                data.bLoop = entity["audio-loop"].as<bool>();
+                data.position = entity["audio-location"].as<FVector>();
+                data.velocity = entity["audio-velocity"].as<FVector>();
+                data.location = entity["audio-file"].as<std::string>();
+
+                a.init(data);
+            }
         }
+        logger.consoleLog("Iterated entities", UVK_LOG_TYPE_SUCCESS);
+    }
+
+    if (!global.bEditor)
+    {
+        global.instance->events.callBegin();
     }
 }
 

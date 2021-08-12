@@ -1,12 +1,12 @@
 // Statistics.hpp
-// Last update 15/6/2021 by Madman10K
+// Last update 12/8/2021 by Madman10K
 #include "Statistics.hpp"
 
 #ifndef PRODUCTION
 Statistics::RollingBuffer::RollingBuffer()
 {
     Span = 1.0f;
-    Data.reserve(30);
+    Data.reserve(200);
 }
 
 void Statistics::RollingBuffer::AddPoint(float x, float y)
@@ -22,14 +22,19 @@ void Statistics::display(double* data, bool& bShow)
     ImGui::Begin("Statistics", &bShow);
 
     ImGui::Text("Performance: %.3f ms(%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-
+    static int frame = 0;
+    frame++;
     // I literally copy pasted this from the implot_demp.cpp because I do not understand anything because no docs
     ImGui::Text("Framerate Charts:");
     static RollingBuffer rdata, rdata2;
     static float t = 0;
     t += ImGui::GetIO().DeltaTime;
-    rdata.AddPoint(t, ImGui::GetIO().Framerate);
-    rdata2.AddPoint(t, 1000.0f / ImGui::GetIO().Framerate);
+    if (frame > (int)(ImGui::GetIO().Framerate / 60))
+    {
+        rdata.AddPoint(t, ImGui::GetIO().Framerate);
+        rdata2.AddPoint(t, 1000.0f / ImGui::GetIO().Framerate);
+        frame = 0;
+    }
 
     // NEVER MAKE THIS HIGHER THAN 1 SECOND. PERFORMANCE IMPACT CAN BE AS LARGE AS 97% LOWER FRAME TIMINGS
     rdata.Span = 0.5f;
