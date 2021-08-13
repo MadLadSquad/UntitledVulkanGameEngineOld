@@ -38,7 +38,7 @@ jobs:
           git submodule sync --recursive
           git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
     - name: Set MSBuild env
-      run: set PATH="%PATH%;C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/MSBuild/Current/Bin/amd64"
+      run: set PATH="%PATH%;C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/MSBuild/Current/Bin/"
     - name: Make
       run: bash autosetupci.sh
   #Windows:
