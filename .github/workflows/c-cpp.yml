@@ -27,24 +27,24 @@ jobs:
     - name: Make Project
       shell: bash
       run: ./autosetupci.sh
-  Windows:
-    runs-on: windows-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: Checkout submodules
-      run: |
-          git submodule sync --recursive
-          git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
-    - name: Compile GLEW
-      run: cd Engine/ThirdParty/glew/auto/ && mingw32-make && cd ../ && mingw32-make install && cd ../../../ && dir
-    - name: Create project
-      run: git clone https://github.com/MadLadSquad/UVKSampleProject.git && dir
-    - name: Extract project
-      run: xcopy /i /e /c /k /y /r UVKSampleProject .  
-    - name: Generated generated files
-      run: mkdir Generated && cd UVKBuildTool/ && mkdir build && cd build && cmake -G "Unix Makefiles" .. && mingw32-make && dir && ./UVKBuildTool.exe --install
-    - name: Make build directory and cmake
-      run: ls && mkdir build && cd build && cmake .. -G "Unix Makefiles" && mingw32-make
+  #Windows:
+  #  runs-on: windows-latest
+  #  steps:
+  #  - uses: actions/checkout@v2
+  #  - name: Checkout submodules
+  #    run: |
+  #        git submodule sync --recursive
+  #        git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
+  #  - name: Compile GLEW
+  #    run: cd Engine/ThirdParty/glew/auto/ && mingw32-make && cd ../ && mingw32-make install && cd ../../../ && dir
+  #  - name: Create project
+  #    run: git clone https://github.com/MadLadSquad/UVKSampleProject.git && dir
+  #  - name: Extract project
+  #    run: xcopy /i /e /c /k /y /r UVKSampleProject .  
+  #  - name: Generated generated files
+  #    run: mkdir Generated && cd UVKBuildTool/ && mkdir build && cd build && cmake -G "Unix Makefiles" .. && mingw32-make && dir && ./UVKBuildTool.exe --install
+  #  - name: Make build directory and cmake
+  #    run: ls && mkdir build && cd build && cmake .. -G "Unix Makefiles" && mingw32-make
   #Mac: 
   #  runs-on: macos-latest
   #  steps:
