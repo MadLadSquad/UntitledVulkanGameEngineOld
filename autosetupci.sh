@@ -1,7 +1,6 @@
 #!/bin/bash
 # shellcheck disable=SC2162
-read -p "Enter Your Application Name: " prjname # read the project name
-
+prjname="Game"
 cpus=$(grep -c processor /proc/cpuinfo) ## get the cpu threads for maximum performance when compiling
 echo -e "\x1B[32mCopiling with ${cpus} compute jobs!\033[0m"
 
