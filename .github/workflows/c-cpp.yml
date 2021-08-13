@@ -32,7 +32,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Check Program Files
-      run: ls "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/MSBuild/Current/"
+      run: ls "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/MSBuild/Current/Bin/"
     - name: Checkout submodules
       run: |
           git submodule sync --recursive
