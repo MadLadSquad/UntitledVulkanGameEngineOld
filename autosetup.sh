@@ -38,7 +38,7 @@ cd build || exit
 cmake .. || exit # Generate the UVKBuildTool project files
 
 # Try to run MSBuild first, if it fails we are either on a non-Windows system or the user doesn't have Visual Studio installed
-MSBuild.exe UVKBuildTool.sln -property:Configuration=Release -property:Platform=x64 -property:maxCpuCount=${cpus} || make -j "${cpus}" || exit
+MSBuild.exe UVKBuildTool.sln -property:Configuration=Release -property:Platform=x64 -property:maxCpuCount="${cpus}" || make -j "${cpus}" || exit
 
 # If on Windows copy the UVKBuildTool executable from the Release folder, this will absolutely fail on any non-Windows system in which
 # case we will just echo an empty message
@@ -60,7 +60,7 @@ echo " "
 cmake .. || exit # Generate build files for the project
 
 # Try to run MSBuild first, if it fails we are either on a non-windows system or the user doesn't have Visual Studio installed
-MSBuild.exe "${prjname}".sln -property:Configuration=Release -property:Platform=x64 -property:maxCpuCount=${cpus} || make -j "${cpus}" || exit
+MSBuild.exe "${prjname}".sln -property:Configuration=Release -property:Platform=x64 -property:maxCpuCount="${cpus}" || make -j "${cpus}" || exit
 
 echo " "
 echo -e "\x1B[32m--------------------------------------------------------------------------------\033[0m"
