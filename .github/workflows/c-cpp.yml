@@ -26,7 +26,7 @@ jobs:
           git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
     - name: Make Project
       shell: bash
-      run: ./autosetup.sh
+      run: ./autosetupci.sh
   Windows:
     runs-on: windows-latest
     steps:
