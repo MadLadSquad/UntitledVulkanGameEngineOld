@@ -12,7 +12,7 @@ void UVK::VKPipeline::begin()
     device.set(&instance.getData(), &swapchain);
     swapchain.createSwapchain();
 
-    graphicsPipeline = VKGraphicsPipeline(&device.device);
+    graphicsPipeline = VKGraphicsPipeline(&device.device, &swapchain);
     graphicsPipeline.create();
 }
 

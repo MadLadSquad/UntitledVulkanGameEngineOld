@@ -20,6 +20,7 @@ namespace UVK
         VKSwapchain() = default;
     private:
         friend class VKPipeline;
+        friend class VKGraphicsPipeline;
         friend class Device;
 
         void set(VKInstance* inst, Device* dev);
