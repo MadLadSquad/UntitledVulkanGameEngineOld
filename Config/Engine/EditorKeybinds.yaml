@@ -1,4 +1,47 @@
 bindings:
-  - key: NewAction0
+  - key: editor-move
+    val: 1
+  - key: editor-gizmos
+    val: 341
+  - key: editor-gizmo-none
+    val: 81
+  - key: editor-gizmo-translate
+    val: 87
+  - key: editor-gizmo-rotate
+    val: 69
+  - key: editor-gizmo-scale
+    val: 82
+  - key: editor-move-forward
+    val: 87
+  - key: editor-move-back
+    val: 83
+  - key: editor-move-right
+    val: 68
+  - key: editor-move-left
     val: 65
-
+  - key: editor-move-up
+    val: 69
+  - key: editor-move-down
+    val: 81
+  - key: editor-move-scroll-up
+    val: 8
+  - key: editor-move-scroll-down
+    val: 9
+  - key: editor-gizmo-snap
+    val: 341
+  - key: editor-bind-modifier
+    val: 341
+  - key: editor-level-save
+    val: 83
+  - key: editor-level-new
+    val: 78
+  - key: editor-level-saveas
+    val: 83
+  - key: editor-level-open
+    val: 79
+  - key: editor-new-file
+    val: 78
+  - key: editor-exit
+    val: 87
+  - key: editor-shift
+    val: 340

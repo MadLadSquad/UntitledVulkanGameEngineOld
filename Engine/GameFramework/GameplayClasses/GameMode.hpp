@@ -41,5 +41,5 @@ namespace UVK
         return gm;
     }
 
-    static void destroyGameMode(GameMode* gm);
+    void destroyGameMode(GameMode* gm);
 }

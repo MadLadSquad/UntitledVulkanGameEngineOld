@@ -4,10 +4,25 @@
 
 UVK::GameMode::~GameMode()
 {
-    delete gs;
-    delete ps;
-    delete pc;
-    delete pawn;
+    if (gs != nullptr)
+    {
+        delete gs;
+    }
+
+    if (ps != nullptr)
+    {
+        delete ps;
+    }
+
+    if (pc != nullptr)
+    {
+        delete pc;
+    }
+
+    if (pawn != nullptr)
+    {
+        delete pawn;
+    }
 }
 
 void UVK::GameMode::beginAutohandle() const

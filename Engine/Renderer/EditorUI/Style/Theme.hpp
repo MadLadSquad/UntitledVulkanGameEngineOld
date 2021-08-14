@@ -64,7 +64,7 @@ namespace UVK
         ImVec4 titleBgActive = ImVec4(0.15, 0.15, 0.15, 1.0);
 
         ImVec4 menubarBG = ImVec4(0.01, 0.01, 0.01, 1.0);
-        ImVec4 popupBG;
+        ImVec4 popupBG = ImVec4(0.1, 0.1, 0.1, 1.0);
 
         std::string fontLoc;
         int fontSize = 12;

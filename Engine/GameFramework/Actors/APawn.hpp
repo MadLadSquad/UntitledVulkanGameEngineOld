@@ -33,5 +33,5 @@ namespace UVK
         return pw;
     }
 
-    static void destroyPawn(APawn* pw);
+    void destroyPawn(APawn* pw);
 }

@@ -15,7 +15,7 @@ echo "\
 bindings:
   - key: NewAction0
     val: 65
-" > Engine/EditorKeybinds.yaml
+" > Engine/GameKeybinds.yaml
 cd .. || exit
 
 echo -e "\x1B[32mCreating project file with default settings ...\033[0m"

@@ -21,7 +21,10 @@ namespace UVK
         virtual void endPlay() = 0;
         virtual ~Level()
         {
-            delete gameMode;
+            if (gameMode != nullptr)
+            {
+                delete gameMode;
+            }
         }
 
         /**
