@@ -17,7 +17,9 @@
 >>Development status: Under heavy construction, we commit directly to master so there will be and possibly are countless bugs in the current master branch
 >>
 >
-
+>>Due to some unknown reason the CI for Windows doesn't work with the glew library. We have tested out the exact same automation script on multiple Windows machines and cannot replicate the problem, therefore it can be concluded that despite what the CI tells you the Windows version will compile
+>> 
+>
 ## Info
 The Untitled Vulkan Game Engine is a 3D, C++ game engine made for ease of use, simplicity and performance
 
