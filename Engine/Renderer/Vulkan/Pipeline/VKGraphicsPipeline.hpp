@@ -30,7 +30,7 @@ namespace UVK
         VkPipeline graphicsPipeline;
 
         void createShaderStage(const VkShaderModule& vertexModule, const VkShaderModule& fragmentModule);
-        void createViewportAndPipeline(VkPipelineShaderStageCreateInfo* shaderStages, VkPipelineInputAssemblyStateCreateInfo& inputAssembly, VkPipelineVertexInputStateCreateInfo& vertexInputStateCreateInfo);
+        void createViewportAndPipeline(VkPipelineShaderStageCreateInfo* shaderStages, const VkPipelineInputAssemblyStateCreateInfo& inputAssembly, VkPipelineVertexInputStateCreateInfo& vertexInputStateCreateInfo);
         void createRenderPass();
 
         void createPipelineLayout(VkViewport& viewport, VkRect2D& scissor, VkPipelineRasterizationStateCreateInfo& rasterizationStateCreateInfo, VkPipelineViewportStateCreateInfo& viewportStateCreateInfo, VkPipelineMultisampleStateCreateInfo& multisampleStateCreateInfo, VkPipelineColorBlendAttachmentState& colourState, VkPipelineColorBlendStateCreateInfo& colourBlendingCreateInfo, VkPipelineLayoutCreateInfo& pipelineLayoutCreateInfo);

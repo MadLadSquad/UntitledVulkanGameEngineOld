@@ -70,7 +70,7 @@ UVK::VKGraphicsPipeline::VKGraphicsPipeline(UVK::VKDevice* dev, VKSwapchain* swa
     swapchain = swap;
 }
 
-void UVK::VKGraphicsPipeline::createViewportAndPipeline(VkPipelineShaderStageCreateInfo* shaderStages, VkPipelineInputAssemblyStateCreateInfo& inputAssembly, VkPipelineVertexInputStateCreateInfo& vertexInputStateCreateInfo)
+void UVK::VKGraphicsPipeline::createViewportAndPipeline(VkPipelineShaderStageCreateInfo* shaderStages, const VkPipelineInputAssemblyStateCreateInfo& inputAssembly, VkPipelineVertexInputStateCreateInfo& vertexInputStateCreateInfo)
 {
     VkViewport viewport = {};
     viewport.x = 0.0f;
