@@ -17,7 +17,7 @@ namespace UVK
     {
     public:
         VKShader() = default;
-        VKShader(VKDevice* device);
+        explicit VKShader(VKDevice* device);
 
 
         void createShader(const std::string& file);
