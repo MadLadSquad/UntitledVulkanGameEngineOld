@@ -33,6 +33,16 @@ void UVK::VKGraphicsPipeline::destroy()
     vkDestroyRenderPass(device->logicalDevice, renderPass, nullptr);
 }
 
+VkPipeline& UVK::VKGraphicsPipeline::data()
+{
+    return graphicsPipeline;
+}
+
+VkRenderPass& UVK::VKGraphicsPipeline::getRenderPass()
+{
+    return renderPass;
+}
+
 void UVK::VKGraphicsPipeline::createShaderStage(const VkShaderModule& vertexModule, const VkShaderModule& fragmentModule)
 {
     VkPipelineShaderStageCreateInfo shaderStages[2];

@@ -8,6 +8,8 @@
 #include <GLFW/glfw3.h>
 #include "VKSwapchain.hpp"
 #include "VKDevice.hpp"
+#include <GameFramework/GameplayClasses/Level/Level.hpp>
+
 
 void UVK::VKSwapchain::createSurface()
 {
@@ -82,10 +84,11 @@ void UVK::VKSwapchain::createSwapchain()
 
     uint32_t swapchainImageCount;
     vkGetSwapchainImagesKHR(device->getDevice().logicalDevice, swapchain, &swapchainImageCount, nullptr);
-    std::vector<VkImage> imgs(swapchainImageCount);
+    std::vector<VkImage> imgs;
+    imgs.resize(swapchainImageCount);
     vkGetSwapchainImagesKHR(device->getDevice().logicalDevice, swapchain, &swapchainImageCount, imgs.data());
 
-    for (auto& a : imgs)
+    for (VkImage a : imgs)
     {
         VKSwapchainImage swapchainImage = {};
         swapchainImage.image = a;
@@ -102,6 +105,106 @@ void UVK::VKSwapchain::destroySwapchain()
         vkDestroyImageView(device->getDevice().logicalDevice, a.imageView, nullptr);
     }
     vkDestroySwapchainKHR(device->getDevice().logicalDevice, swapchain, nullptr);
+}
+
+void UVK::VKSwapchain::createCommandPool()
+{
+    auto queueFamilyIndices = device->getQueueFamilies();
+
+    VkCommandPoolCreateInfo poolInfo = {};
+    poolInfo.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
+    poolInfo.queueFamilyIndex = queueFamilyIndices.graphicsFamily;
+
+    VkResult result = vkCreateCommandPool(device->device.logicalDevice, &poolInfo, nullptr, &commandPool);
+    if (result != VK_SUCCESS)
+    {
+        logger.consoleLog("Failed to create a Vulkan Command Pool!", UVK_LOG_TYPE_ERROR);
+        throw std::runtime_error(" ");
+    }
+}
+
+void UVK::VKSwapchain::destroyCommandPool()
+{
+    vkDestroyCommandPool(device->device.logicalDevice, commandPool, nullptr);
+}
+
+void UVK::VKSwapchain::createFramebuffers()
+{
+    framebuffers.resize(images.size());
+    for (auto i = 0; i < images.size(); i++)
+    {
+        framebuffers[i].init(images[i].imageView, *renderPass, { (float)swapchainExtent.width, (float)swapchainExtent.height }, &device->device);
+    }
+}
+
+void UVK::VKSwapchain::destroyFramebuffers()
+{
+    for (auto i = 0; i < framebuffers.size(); i++)
+    {
+        framebuffers[i].destroy();
+    }
+}
+
+void UVK::VKSwapchain::createCommandbuffers()
+{
+    commandbuffers.resize(framebuffers.size());
+    
+    VkCommandBufferAllocateInfo commandBufferAllocateInfo = {};
+    commandBufferAllocateInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+    commandBufferAllocateInfo.commandPool = commandPool;
+    commandBufferAllocateInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+    commandBufferAllocateInfo.commandBufferCount = static_cast<uint32_t>(commandbuffers.size());
+
+    auto result = vkAllocateCommandBuffers(device->device.logicalDevice, &commandBufferAllocateInfo, commandbuffers.data());
+    if (result != VK_SUCCESS)
+    {
+        logger.consoleLog("Failed to allocate Vulkan Command Buffers", UVK_LOG_TYPE_ERROR);
+        throw std::runtime_error(" ");
+    }
+}
+
+void UVK::VKSwapchain::recordCommands()
+{
+    VkCommandBufferBeginInfo commandBufferBeginInfo = {};
+    commandBufferBeginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+    commandBufferBeginInfo.flags = VK_COMMAND_BUFFER_USAGE_SIMULTANEOUS_USE_BIT;
+
+    // Set up the clear colour, TODO: Add depth attachment
+    VkClearValue clearValues[] = { { Level::getSceneColour().x, Level::getSceneColour().y, Level::getSceneColour().z, Level::getSceneColour().w } };
+
+    VkRenderPassBeginInfo renderPassBeginInfo = {};
+    renderPassBeginInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
+    renderPassBeginInfo.renderArea.offset = { 0, 0 };
+    renderPassBeginInfo.renderArea.extent = swapchainExtent;
+    renderPassBeginInfo.pClearValues = clearValues;
+    renderPassBeginInfo.clearValueCount = 1;
+    
+
+    for (auto i = 0; i < commandbuffers.size(); i++)
+    {
+        renderPassBeginInfo.framebuffer = framebuffers[i].framebuffer;
+
+        auto result = vkBeginCommandBuffer(commandbuffers[i], &commandBufferBeginInfo);
+        if (result != VK_SUCCESS)
+        {
+            logger.consoleLog("Failed to start recording the Vulkan Command Buffer", UVK_LOG_TYPE_ERROR);
+            throw std::runtime_error(" ");
+        }
+
+        vkCmdBeginRenderPass(commandbuffers[i], &renderPassBeginInfo, VK_SUBPASS_CONTENTS_INLINE);;
+
+        vkCmdBindPipeline(commandbuffers[i], VK_PIPELINE_BIND_POINT_GRAPHICS, *graphicsPipeline);
+        vkCmdDraw(commandbuffers[i], 3, 1, 0, 0);
+
+        vkCmdEndRenderPass(commandbuffers[i]);
+
+        result = vkEndCommandBuffer(commandbuffers[i]);
+        if (result != VK_SUCCESS)
+        {
+            logger.consoleLog("Failed to end the Vulkan Command Buffer recording!", UVK_LOG_TYPE_ERROR);
+            throw std::runtime_error(" ");
+        }
+    }
 }
 
 UVK::VKSwapchainSettings UVK::VKSwapchain::getSwapchainSettings()
@@ -134,6 +237,12 @@ void UVK::VKSwapchain::set(UVK::VKInstance* inst, UVK::Device* dev)
 {
     instance = inst;
     device = dev;
+}
+
+void UVK::VKSwapchain::addRenderPassPointer(VkRenderPass* rp, VkPipeline* gp)
+{
+    renderPass = rp;
+    graphicsPipeline = gp;
 }
 
 VkSurfaceFormatKHR UVK::VKSwapchain::findSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& formats)

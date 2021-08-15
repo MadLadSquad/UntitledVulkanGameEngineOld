@@ -24,13 +24,12 @@ namespace UVK
         int& getHeight() { return height; }
         GLuint& getImage() { return image; };
         void loadImgui();
+        void useTexture() const;
     private:
         unsigned char* gen();
 
         friend class GLPipeline;
         friend class Editor;
-
-        void useTexture() const;
 
         std::string location;
         int width = 0;

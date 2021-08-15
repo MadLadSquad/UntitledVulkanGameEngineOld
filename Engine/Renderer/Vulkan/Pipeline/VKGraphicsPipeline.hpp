@@ -21,6 +21,9 @@ namespace UVK
 
         void create();
         void destroy();
+
+        VkPipeline& data();
+        VkRenderPass& getRenderPass();
     private:
         VKSwapchain* swapchain;
         VKDevice* device;

@@ -24,6 +24,7 @@ namespace UVK
     struct VKDevice
     {
     private:
+        friend class VKFramebuffer;
         friend class Device;
         friend class VKSwapchain;
         friend class VKShader;

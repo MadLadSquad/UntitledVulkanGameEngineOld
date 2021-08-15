@@ -14,6 +14,11 @@ void UVK::VKPipeline::begin()
 
     graphicsPipeline = VKGraphicsPipeline(&device.device, &swapchain);
     graphicsPipeline.create();
+
+    swapchain.addRenderPassPointer(&graphicsPipeline.getRenderPass(), &graphicsPipeline.data());
+    swapchain.createFramebuffers();
+    swapchain.createCommandPool();
+    swapchain.createCommandbuffers();
 }
 
 void UVK::VKPipeline::tick()
@@ -23,6 +28,8 @@ void UVK::VKPipeline::tick()
 
 void UVK::VKPipeline::end()
 {
+    swapchain.destroyCommandPool();
+    swapchain.destroyFramebuffers();
     graphicsPipeline.destroy();
     swapchain.destroySwapchain();
     swapchain.destroySurface();

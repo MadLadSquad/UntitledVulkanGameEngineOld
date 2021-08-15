@@ -9,15 +9,24 @@
 
 namespace UVK
 {
+    class VKDevice;
+
     /**
      * @brief Vulkan specific framebuffer class
      */
     class VKFramebuffer
     {
     public:
-        void init(int width, int height);
+        VKFramebuffer() = default;
+
+        void init(VkImageView& imageView, const VkRenderPass& renderPass, FVector2 windowSize, VKDevice* dev);
         void use();
+        void destroy();
         Texture getTexture();
     private:
+        VKDevice* device;
+
+        friend class VKSwapchain;
+        VkFramebuffer framebuffer;
     };
 }

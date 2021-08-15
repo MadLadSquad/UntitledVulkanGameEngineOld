@@ -56,8 +56,9 @@ void UVK::Texture::useTexture() const
     glBindTexture(GL_TEXTURE_2D, image);
 }
 
-unsigned char* UVK::Texture::gen() {
-    unsigned char* img = stbi_load(location.c_str(), &width, &height, nullptr, 4);
+unsigned char* UVK::Texture::gen() 
+{
+    unsigned char* img = stbi_load(static_cast<std::string>("../Content/" + location).c_str() , &width, &height, nullptr, 4);
 
     if (img == nullptr)
         return nullptr;
