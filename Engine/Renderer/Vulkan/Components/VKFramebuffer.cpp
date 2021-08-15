@@ -3,7 +3,7 @@
 #include "VKFramebuffer.hpp"
 #include "VKStructs.hpp"
 
-void UVK::VKFramebuffer::init(VkImageView& imageView, const VkRenderPass& renderPass, FVector2 windowSize, VKDevice* dev)
+void UVK::VKFramebuffer::init(const VkImageView& imageView, const VkRenderPass& renderPass, FVector2 windowSize, VKDevice* dev)
 {
     device = dev;
     VkImageView attachments[1] = { imageView };

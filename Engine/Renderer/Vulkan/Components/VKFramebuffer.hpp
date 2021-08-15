@@ -19,7 +19,7 @@ namespace UVK
     public:
         VKFramebuffer() = default;
 
-        void init(VkImageView& imageView, const VkRenderPass& renderPass, FVector2 windowSize, VKDevice* dev);
+        void init(const VkImageView& imageView, const VkRenderPass& renderPass, FVector2 windowSize, VKDevice* dev);
         void use();
         void destroy();
         Texture getTexture();
