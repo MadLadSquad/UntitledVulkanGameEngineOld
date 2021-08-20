@@ -6,6 +6,7 @@
 #include <yaml.h>
 #include <Engine/Core/Core/Global.hpp>
 #include <stb/stb_image.h>
+#include "../Renderer.hpp"
 
 double UVK::WindowInternal::getYMousePositionChange()
 {
@@ -123,7 +124,16 @@ void UVK::WindowInternal::createWindow()
     resources.size.y = (float)tempy;
 
     glfwMakeContextCurrent(windowMain);
-    glfwSwapInterval(0);
+
+    if ((Renderer::getVSync() || global.bEditor) && !global.bUsesVulkan)
+    {
+        glfwSwapInterval(1);
+    }
+    else
+    {
+        glfwSwapInterval(0);
+    }
+
     configureCallBacks();
 
     if (!global.bUsesVulkan)

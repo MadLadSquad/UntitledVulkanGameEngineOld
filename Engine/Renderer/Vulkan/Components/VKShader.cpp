@@ -1,5 +1,5 @@
 // VKShader.cpp
-// Last update 12/8/2021 by Madman10K
+// Last update 16/8/2021 by Madman10K
 #include "VKShader.hpp"
 #include "VKStructs.hpp"
 
@@ -33,10 +33,12 @@ void UVK::VKShader::createShader(const std::string& file)
 
 void UVK::VKShader::createShaderModule(const std::vector<char>& buffer)
 {
-    VkShaderModuleCreateInfo moduleCreateInfo = {};
-    moduleCreateInfo.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
-    moduleCreateInfo.codeSize = buffer.size();
-    moduleCreateInfo.pCode = (uint32_t*)buffer.data();
+    VkShaderModuleCreateInfo moduleCreateInfo =
+    {
+        .sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO,
+        .codeSize = buffer.size(),
+        .pCode = (uint32_t*)buffer.data()
+    };
 
     auto result = vkCreateShaderModule(device->logicalDevice, &moduleCreateInfo, nullptr, &shaderModule);
     if (result != VK_SUCCESS)

@@ -11,8 +11,12 @@ UVK::Renderer::Renderer(UVK::Level* lvl, bool bUsesEditor)
 
 void UVK::Renderer::switchRenderer()
 {
-    if (rs->bVulkan) rs->bVulkan = false;
-    else rs->bVulkan = true;
+    if (global.bUsesVulkan) global.bUsesVulkan = false;
+    else global.bUsesVulkan = true;
+
+    global.rendererSettings.saveSettings();
+
+    GameInstance::exit();
 }
 
 void UVK::RendererSettings::saveSettings() const
@@ -20,8 +24,10 @@ void UVK::RendererSettings::saveSettings() const
     YAML::Emitter out;
     out << YAML::BeginMap;
 
-    out << YAML::Key << "vulkan" << YAML::Value << bVulkan;
+    out << YAML::Key << "vulkan" << YAML::Value << global.bUsesVulkan;
     out << YAML::Key << "theme" << YAML::Value << themeLoc;
+    out << YAML::Key << "v-sync" << YAML::Value << bVsync;
+    out << YAML::Key << "v-sync-immediate" << YAML::Value << bVsyncImmediate;
 
     out << YAML::EndMap;
 
@@ -33,8 +39,7 @@ void UVK::Renderer::startRenderer(UVK::Level* lvl, bool bUsesEditor)
 {
     loadSettings();
 
-    global.bUsesVulkan = rs->bVulkan;
-    if (rs->bVulkan)
+    if (global.bUsesVulkan)
     {
         VulkanRenderer renderer{};
         renderer.run();
@@ -67,16 +72,41 @@ void UVK::Renderer::loadSettings()
     {
         if (a["vulkan"])
         {
-            rs->bVulkan = a["vulkan"].as<bool>();
+            global.bUsesVulkan = a["vulkan"].as<bool>();
         }
 
         if (a["theme"])
         {
             rs->themeLoc = a["theme"].as<std::string>();
         }
+
+        if (a["v-sync"])
+        {
+            rs->bVsync = a["v-sync"].as<bool>();
+        }
+
+        if (a["v-sync-immediate"])
+        {
+            rs->bVsyncImmediate = a["v-sync-immediate"].as<bool>();
+        }
     }
     else
     {
-        rs->bVulkan = false;
+        global.bUsesVulkan = false;
     }
+}
+
+bool& UVK::Renderer::getVSync()
+{
+    return global.rendererSettings.bVsync;
+}
+
+void UVK::Renderer::saveSettings()
+{
+    global.rendererSettings.saveSettings();
+}
+
+bool& UVK::Renderer::getVSyncImmediate()
+{
+    return global.rendererSettings.bVsyncImmediate;
 }

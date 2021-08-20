@@ -1,5 +1,5 @@
 // VKDevice.hpp
-// Last update 2/7/2021 by Madman10K
+// Last update 16/8/2021 by Madman10K
 #pragma once
 #ifndef __APPLE__
     #include <vulkan/vulkan.h>
@@ -16,8 +16,10 @@ namespace UVK
     public:
         Device() = default;
     private:
+        friend class VKCommandBuffers;
         friend class VKPipeline;
         friend class VKSwapchain;
+        friend class VKDraw;
 
         void set(VkInstance* inst, VKSwapchain* swap);
         void destroyLogicalDevice() const;

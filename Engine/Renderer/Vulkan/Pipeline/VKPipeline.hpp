@@ -1,5 +1,5 @@
 // VKPipeline.hpp
-// Last update 2/7/2021 by Madman10K
+// Last update 16/8/2021 by Madman10K
 #pragma once
 #ifndef __APPLE__
     #include <vulkan/vulkan.h>
@@ -9,7 +9,10 @@
 #include "VKGraphicsPipeline.hpp"
 #include "VKPushConstant.hpp"
 #include "VKSwapchain.hpp"
+#include "VKCommandBuffers.hpp"
 #include "../Components/VKStructs.hpp"
+#include "VKDraw.hpp"
+#include "../Components/VKMesh.hpp"
 
 namespace UVK
 {
@@ -34,6 +37,10 @@ namespace UVK
 
         VKPushConstant pushConstant;
         VKSwapchain swapchain;
+        VKCommandBuffers commandBuffers;
+
+        VKDraw draw;
+        VKMesh mesh1;
 #endif
     };
 }

@@ -1,5 +1,5 @@
 // VKFramebuffer.cpp
-// Last update 2/7/2021 by Madman10K
+// Last update 16/8/2021 by Madman10K
 #include "VKFramebuffer.hpp"
 #include "VKStructs.hpp"
 
@@ -8,14 +8,16 @@ void UVK::VKFramebuffer::init(const VkImageView& imageView, const VkRenderPass& 
     device = dev;
     VkImageView attachments[1] = { imageView };
 
-    VkFramebufferCreateInfo framebufferCreateInfo = {};
-    framebufferCreateInfo.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
-    framebufferCreateInfo.renderPass = renderPass;
-    framebufferCreateInfo.attachmentCount = 1;
-    framebufferCreateInfo.pAttachments = attachments;
-    framebufferCreateInfo.width = windowSize.x;
-    framebufferCreateInfo.height = windowSize.y;
-    framebufferCreateInfo.layers = 1;
+    VkFramebufferCreateInfo framebufferCreateInfo =
+    {
+        .sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO,
+        .renderPass = renderPass,
+        .attachmentCount = 1,
+        .pAttachments = attachments,
+        .width = static_cast<uint32_t>(windowSize.x),
+        .height = static_cast<uint32_t>(windowSize.y),
+        .layers = 1
+    };
 
     auto result = vkCreateFramebuffer(device->logicalDevice, &framebufferCreateInfo, nullptr, &framebuffer);
     if (result != VK_SUCCESS)

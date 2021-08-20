@@ -1,5 +1,5 @@
 // VulkanRenderer.cpp
-// Last update 2/7/2021 by Madman10K
+// Last update 16/8/2021 by Madman10K
 #ifndef __APPLE__
 #define GLFW_INCLUDE_VULKAN
 #include <GL/glew.h>
@@ -28,10 +28,14 @@ void UVK::VulkanRenderer::cleanup()
 
 void UVK::VulkanRenderer::run()
 {
+    Timer setup;
+    setup.startRecording();
     start();
 
     float deltaTime;
     float lastTime = 0;
+    setup.stopRecording();
+    logger.consoleLog("Starting the Vulkan renderer took ", UVK_LOG_TYPE_NOTE, setup.getDuration(), "ms");
 
     while (!glfwWindowShouldClose(global.window.getWindow()))
     {
@@ -41,9 +45,16 @@ void UVK::VulkanRenderer::run()
         deltaTime = now - lastTime;
         lastTime = now;
 
+        if (UVK::Input::getKey(Keys::W) == Keys::KeyPressed)
+        {
+            std::cout << deltaTime << std::endl;
+        }
         render();
     }
-
+    Timer clean;
+    clean.startRecording();
     cleanup();
+    clean.stopRecording();
+    logger.consoleLog("Closing the Vulkan renderer took ", UVK_LOG_TYPE_NOTE, clean.getDuration(), "ms");
 }
 #endif

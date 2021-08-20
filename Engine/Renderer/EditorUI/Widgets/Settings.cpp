@@ -60,7 +60,7 @@ void Settings::displayRenderer(bool& bOpen)
 
         ImGui::TextWrapped("Vulkan");
         ImGui::SameLine();
-        ImGui::Checkbox("##Vulkan", &UVK::SettingsManager::getRendererSettings().bVulkan);
+        ImGui::Checkbox("##Vulkan", &UVK::global.bUsesVulkan);
 
         ImGui::TextWrapped("Theme Location");
         ImGui::SameLine();

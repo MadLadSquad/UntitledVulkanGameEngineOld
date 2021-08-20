@@ -1,5 +1,5 @@
 // VKMesh.hpp
-// Last update 2/7/2021 by Madman10K
+// Last update 16/8/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 #ifndef __APPLE__
@@ -8,6 +8,21 @@
 
 namespace UVK
 {
+    class VKDevice;
+
+    struct VKVertex
+    {
+        VKVertex() = default;
+        VKVertex(FVector4 l, FVector4 c)
+        {
+            loc = l;
+            colour = c;
+        }
+
+        FVector4 loc{};
+        FVector4 colour{};
+    };
+
     /**
      * @brief Vulkan specific mesh class
      */
@@ -15,10 +30,23 @@ namespace UVK
     {
     public:
         VKMesh() = default;
-        void create();
-        void render();
-        void clear();
-    private:
+        VKMesh(VKDevice* dev, VkQueue& transQueue, VkCommandPool& transCommandPool, std::vector<VKVertex> vert, std::vector<uint32_t> index);
 
+        void create();
+        void render(const std::vector<VkCommandBuffer>& commandbuffers, const int& index);
+        void clear();
+
+        VkBuffer& data();
+    private:
+        VKDevice* device;
+        VkBuffer vertexBuffer{};
+        VkBuffer indexBuffer{};
+        VkDeviceMemory deviceMemory{};
+        VkDeviceMemory indexMemory{};
+        VkQueue* transferQueue = nullptr;
+        VkCommandPool* transferCommandPool;
+
+        std::vector<VKVertex> vertices;
+        std::vector<uint32_t> indices;
     };
 }

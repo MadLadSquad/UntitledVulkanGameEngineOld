@@ -1,12 +1,11 @@
 // VKSwapchain.hpp
-// Last update 2/7/2021 by Madman10K
+// Last update 16/8/2021 by Madman10K
 #pragma once
 #ifndef __APPLE__
 #include <vulkan/vulkan.h>
 #include "../Components/VKStructs.hpp"
 #include "VKInstance.hpp"
 #include <Renderer/Vulkan/Components/VKFramebuffer.hpp>
-#include <Renderer/Vulkan/Components/VKCommandBuffer.hpp>
 
 namespace UVK
 {
@@ -23,6 +22,7 @@ namespace UVK
         friend class VKPipeline;
         friend class VKGraphicsPipeline;
         friend class Device;
+        friend class VKDraw;
 
         void set(VKInstance* inst, Device* dev);
         void addRenderPassPointer(VkRenderPass* rp, VkPipeline* gp);
@@ -33,15 +33,8 @@ namespace UVK
         void createSwapchain();
         void destroySwapchain();
 
-        void createCommandPool();
-        void destroyCommandPool();
-
         void createFramebuffers();
         void destroyFramebuffers();
-
-        void createCommandbuffers();
-
-        void recordCommands();
 
         VKSwapchainSettings getSwapchainSettings();
 
@@ -61,15 +54,12 @@ namespace UVK
 
         VkRenderPass* renderPass;
 
-        VkCommandPool commandPool;
-
         VKInstance* instance;
         Device* device;
         VkPipeline* graphicsPipeline;
 
         std::vector<VKSwapchainImage> images;
         std::vector<VKFramebuffer> framebuffers;
-        std::vector<VkCommandBuffer> commandbuffers;
     };
 }
 #endif

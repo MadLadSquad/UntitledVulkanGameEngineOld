@@ -1,5 +1,5 @@
 // VKDevice.cpp
-// Last update 2/7/2021 by Madman10K
+// Last update 16/8/2021 by Madman10K
 #include "VKDevice.hpp"
 #include <Core.hpp>
 #ifndef __APPLE__
@@ -12,7 +12,8 @@ void UVK::Device::getPhysicalDevice()
     // if doesn't support vulkan or no devices
     if (deviceCount == 0)
     {
-        logger.consoleLog("Couldn't find any devices or any that support Vulkan", UVK_LOG_TYPE_ERROR);
+        logger.consoleLog("Couldn't find any devices or any that support Vulkan!", UVK_LOG_TYPE_ERROR);
+        throw std::runtime_error(" ");
     }
 
     std::vector<VkPhysicalDevice> deviceList(deviceCount);
@@ -35,33 +36,37 @@ void UVK::Device::createLogicalDevice()
     float priority = 1.0f;
     VKQueueFamilyLocation location = getQueueFamilies();
 
-    //idk
     std::vector<VkDeviceQueueCreateInfo> queueCreateInfoArr;
     std::set<int> queueFamilyIndices = { location.graphicsFamily, location.presentationFamily };
 
     for (auto& i : queueFamilyIndices)
     {
-        VkDeviceQueueCreateInfo queueCreateInfo = {};
-        queueCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
-        queueCreateInfo.queueFamilyIndex = i;
-        queueCreateInfo.queueCount = 1;
-        queueCreateInfo.pQueuePriorities = &priority; // highest priority
-        queueCreateInfoArr.push_back(queueCreateInfo);
+        queueCreateInfoArr.push_back
+        (
+            {
+                .sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO,
+                .queueFamilyIndex = static_cast<uint32_t>(i),
+                .queueCount = 1,
+                .pQueuePriorities = &priority
+            }
+        );
     }
 
     VkPhysicalDeviceFeatures deviceFeatures = {};
-    VkDeviceCreateInfo deviceCreateInfo = {};
-    deviceCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
-    deviceCreateInfo.queueCreateInfoCount = static_cast<uint32_t>(queueCreateInfoArr.size());
-    deviceCreateInfo.pQueueCreateInfos = queueCreateInfoArr.data();
-    deviceCreateInfo.enabledExtensionCount = static_cast<uint32_t>(deviceExtensions.size());
-    deviceCreateInfo.ppEnabledExtensionNames = deviceExtensions.data();
-    deviceCreateInfo.pEnabledFeatures = &deviceFeatures;
+    VkDeviceCreateInfo deviceCreateInfo =
+    {
+        .sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO,
+        .queueCreateInfoCount = static_cast<uint32_t>(queueCreateInfoArr.size()),
+        .pQueueCreateInfos = queueCreateInfoArr.data(),
+        .enabledExtensionCount = static_cast<uint32_t>(deviceExtensions.size()),
+        .ppEnabledExtensionNames = deviceExtensions.data(),
+        .pEnabledFeatures = &deviceFeatures,
+    };
 
-    VkResult result = vkCreateDevice(device.physicalDevice, &deviceCreateInfo, nullptr, &device.logicalDevice);
-    if (result != VK_SUCCESS)
+    if (vkCreateDevice(device.physicalDevice, &deviceCreateInfo, nullptr, &device.logicalDevice) != VK_SUCCESS)
     {
         logger.consoleLog("Failed to create a Vulkan logical device", UVK_LOG_TYPE_ERROR);
+        throw std::runtime_error(" ");
     }
 
     // get global class access to queue
@@ -91,11 +96,11 @@ void UVK::Device::set(VkInstance* inst, VKSwapchain* swap)
 bool UVK::Device::checkDeviceSuitability(const VkPhysicalDevice& physicalDevice)
 {
     // Check for properties
-    VkPhysicalDeviceProperties deviceProperties;
+    VkPhysicalDeviceProperties deviceProperties = {};
     vkGetPhysicalDeviceProperties(physicalDevice, &deviceProperties);
 
     // Check for features
-    VkPhysicalDeviceFeatures deviceFeatures;
+    VkPhysicalDeviceFeatures deviceFeatures = {};
     vkGetPhysicalDeviceFeatures(physicalDevice, &deviceFeatures);
 
     VKQueueFamilyLocation location = getQueueFamilies();

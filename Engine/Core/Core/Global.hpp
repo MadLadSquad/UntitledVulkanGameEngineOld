@@ -17,7 +17,8 @@ namespace UVK
     {
         RendererSettings() = default;
         std::string themeLoc;
-        bool bVulkan = false;
+        bool bVsync = false;
+        bool bVsyncImmediate = true;
 
         void saveSettings() const;
     };
@@ -40,6 +41,7 @@ namespace UVK
         static void openLevelInternal(UVK::String name);
 
         std::string levelLocation;
+        bool bUsesVulkan{};
     private:
         RendererSettings rendererSettings;
 
@@ -47,6 +49,21 @@ namespace UVK
 
         FVector4 colour{};
         FVector4 ambientLight{};
+
+        bool bEditor{};
+        ECSManager ecs;
+
+        std::vector<InputAction> inputActionList;
+        UIInternal ui;
+
+        /**
+         * @note detailed description of this function and the whole Level opening system
+         * can be found in Core/Core/Utility.hpp
+         */
+        void finalizeOpening();
+        std::vector<InputAction>& getActions();
+
+        std::function<void(void)> openFunction = [=](){};
 
         friend class Renderer;
         friend class Camera;
@@ -66,22 +83,7 @@ namespace UVK
         friend class GameInstance;
         friend class Assets;
         friend struct MeshComponentRaw;
-
-        bool bEditor{};
-        bool bUsesVulkan{};
-        ECSManager ecs;
-
-        std::vector<InputAction> inputActionList;
-        UIInternal ui;
-
-        /**
-         * @note detailed description of this function and the whole Level opening system
-         * can be found in Core/Core/Utility.hpp
-         */
-        void finalizeOpening();
-        std::vector<InputAction>& getActions();
-
-        std::function<void(void)> openFunction = [=](){};
+        friend struct RendererSettings;
     };
 
     inline UVKGlobal global;

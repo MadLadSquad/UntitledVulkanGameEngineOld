@@ -1,5 +1,5 @@
 // VKGraphicsPipeline.hpp
-// Last update 12/8/2021 by Madman10K
+// Last update 16/8/2021 by Madman10K
 #pragma once
 #ifndef __APPLE__
     #include <vulkan/vulkan.h>
@@ -28,9 +28,9 @@ namespace UVK
         VKSwapchain* swapchain;
         VKDevice* device;
 
-        VkPipelineLayout layout;
-        VkRenderPass renderPass;
-        VkPipeline graphicsPipeline;
+        VkPipelineLayout layout{};
+        VkRenderPass renderPass{};
+        VkPipeline graphicsPipeline{};
 
         void createShaderStage(const VkShaderModule& vertexModule, const VkShaderModule& fragmentModule);
         void createViewportAndPipeline(VkPipelineShaderStageCreateInfo* shaderStages, const VkPipelineInputAssemblyStateCreateInfo& inputAssembly, VkPipelineVertexInputStateCreateInfo& vertexInputStateCreateInfo);

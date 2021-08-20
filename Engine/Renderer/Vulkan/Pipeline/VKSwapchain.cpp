@@ -1,5 +1,5 @@
 // VKSwapchain.cpp
-// Last update 18/7/2021 by Madman10K
+// Last update 16/8/2021 by Madman10K
 #ifndef __APPLE__
 #include <GL/glew.h>
 #define GLFW_INCLUDE_VULKAN
@@ -9,7 +9,7 @@
 #include "VKSwapchain.hpp"
 #include "VKDevice.hpp"
 #include <GameFramework/GameplayClasses/Level/Level.hpp>
-
+#include <Renderer/Renderer.hpp>
 
 void UVK::VKSwapchain::createSurface()
 {
@@ -17,6 +17,7 @@ void UVK::VKSwapchain::createSurface()
     if (result != VK_SUCCESS)
     {
         logger.consoleLog("Couldn't create a Vulkan surface!", UVK_LOG_TYPE_ERROR);
+        throw std::runtime_error(" ");
     }
 }
 
@@ -40,19 +41,21 @@ void UVK::VKSwapchain::createSwapchain()
         --minImageCount;
     }
 
-    VkSwapchainCreateInfoKHR swapchainCreateInfo = {};
-    swapchainCreateInfo.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
-    swapchainCreateInfo.surface = surface;
-    swapchainCreateInfo.imageFormat = surfaceFormat.format;
-    swapchainCreateInfo.imageColorSpace = surfaceFormat.colorSpace;
-    swapchainCreateInfo.presentMode = presentMode;
-    swapchainCreateInfo.imageExtent = extent;
-    swapchainCreateInfo.minImageCount = minImageCount;
-    swapchainCreateInfo.imageArrayLayers = 1;
-    swapchainCreateInfo.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
-    swapchainCreateInfo.preTransform = settings.surfaceCapabilities.currentTransform;
-    swapchainCreateInfo.compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;
-    swapchainCreateInfo.clipped = VK_TRUE;
+    VkSwapchainCreateInfoKHR swapchainCreateInfo =
+    {
+        .sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR,
+        .surface = surface,
+        .minImageCount = minImageCount,
+        .imageFormat = surfaceFormat.format,
+        .imageColorSpace = surfaceFormat.colorSpace,
+        .imageExtent = extent,
+        .imageArrayLayers = 1,
+        .imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT,
+        .preTransform = settings.surfaceCapabilities.currentTransform,
+        .compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR,
+        .presentMode = presentMode,
+        .clipped = VK_TRUE
+    };
 
     auto location = device->getQueueFamilies();
 
@@ -73,10 +76,10 @@ void UVK::VKSwapchain::createSwapchain()
 
     swapchainCreateInfo.oldSwapchain = VK_NULL_HANDLE;
 
-    auto result = vkCreateSwapchainKHR(device->getDevice().logicalDevice, &swapchainCreateInfo, nullptr, &swapchain);
-    if (result != VK_SUCCESS)
+    if (vkCreateSwapchainKHR(device->getDevice().logicalDevice, &swapchainCreateInfo, nullptr, &swapchain) != VK_SUCCESS)
     {
         logger.consoleLog("Failed to create the Vulkan swapchain!", UVK_LOG_TYPE_ERROR);
+        throw std::runtime_error(" ");
     }
 
     swapchainFormat = surfaceFormat.format;
@@ -104,28 +107,10 @@ void UVK::VKSwapchain::destroySwapchain()
     {
         vkDestroyImageView(device->getDevice().logicalDevice, a.imageView, nullptr);
     }
+
+    images.clear();
+
     vkDestroySwapchainKHR(device->getDevice().logicalDevice, swapchain, nullptr);
-}
-
-void UVK::VKSwapchain::createCommandPool()
-{
-    auto queueFamilyIndices = device->getQueueFamilies();
-
-    VkCommandPoolCreateInfo poolInfo = {};
-    poolInfo.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
-    poolInfo.queueFamilyIndex = queueFamilyIndices.graphicsFamily;
-
-    VkResult result = vkCreateCommandPool(device->device.logicalDevice, &poolInfo, nullptr, &commandPool);
-    if (result != VK_SUCCESS)
-    {
-        logger.consoleLog("Failed to create a Vulkan Command Pool!", UVK_LOG_TYPE_ERROR);
-        throw std::runtime_error(" ");
-    }
-}
-
-void UVK::VKSwapchain::destroyCommandPool()
-{
-    vkDestroyCommandPool(device->device.logicalDevice, commandPool, nullptr);
 }
 
 void UVK::VKSwapchain::createFramebuffers()
@@ -139,71 +124,9 @@ void UVK::VKSwapchain::createFramebuffers()
 
 void UVK::VKSwapchain::destroyFramebuffers()
 {
-    for (auto i = 0; i < framebuffers.size(); i++)
+    for (auto& framebuffer : framebuffers)
     {
-        framebuffers[i].destroy();
-    }
-}
-
-void UVK::VKSwapchain::createCommandbuffers()
-{
-    commandbuffers.resize(framebuffers.size());
-    
-    VkCommandBufferAllocateInfo commandBufferAllocateInfo = {};
-    commandBufferAllocateInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
-    commandBufferAllocateInfo.commandPool = commandPool;
-    commandBufferAllocateInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
-    commandBufferAllocateInfo.commandBufferCount = static_cast<uint32_t>(commandbuffers.size());
-
-    auto result = vkAllocateCommandBuffers(device->device.logicalDevice, &commandBufferAllocateInfo, commandbuffers.data());
-    if (result != VK_SUCCESS)
-    {
-        logger.consoleLog("Failed to allocate Vulkan Command Buffers", UVK_LOG_TYPE_ERROR);
-        throw std::runtime_error(" ");
-    }
-}
-
-void UVK::VKSwapchain::recordCommands()
-{
-    VkCommandBufferBeginInfo commandBufferBeginInfo = {};
-    commandBufferBeginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
-    commandBufferBeginInfo.flags = VK_COMMAND_BUFFER_USAGE_SIMULTANEOUS_USE_BIT;
-
-    // Set up the clear colour, TODO: Add depth attachment
-    VkClearValue clearValues[] = { { Level::getSceneColour().x, Level::getSceneColour().y, Level::getSceneColour().z, Level::getSceneColour().w } };
-
-    VkRenderPassBeginInfo renderPassBeginInfo = {};
-    renderPassBeginInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
-    renderPassBeginInfo.renderArea.offset = { 0, 0 };
-    renderPassBeginInfo.renderArea.extent = swapchainExtent;
-    renderPassBeginInfo.pClearValues = clearValues;
-    renderPassBeginInfo.clearValueCount = 1;
-    
-
-    for (auto i = 0; i < commandbuffers.size(); i++)
-    {
-        renderPassBeginInfo.framebuffer = framebuffers[i].framebuffer;
-
-        auto result = vkBeginCommandBuffer(commandbuffers[i], &commandBufferBeginInfo);
-        if (result != VK_SUCCESS)
-        {
-            logger.consoleLog("Failed to start recording the Vulkan Command Buffer", UVK_LOG_TYPE_ERROR);
-            throw std::runtime_error(" ");
-        }
-
-        vkCmdBeginRenderPass(commandbuffers[i], &renderPassBeginInfo, VK_SUBPASS_CONTENTS_INLINE);;
-
-        vkCmdBindPipeline(commandbuffers[i], VK_PIPELINE_BIND_POINT_GRAPHICS, *graphicsPipeline);
-        vkCmdDraw(commandbuffers[i], 3, 1, 0, 0);
-
-        vkCmdEndRenderPass(commandbuffers[i]);
-
-        result = vkEndCommandBuffer(commandbuffers[i]);
-        if (result != VK_SUCCESS)
-        {
-            logger.consoleLog("Failed to end the Vulkan Command Buffer recording!", UVK_LOG_TYPE_ERROR);
-            throw std::runtime_error(" ");
-        }
+        framebuffer.destroy();
     }
 }
 
@@ -279,15 +202,40 @@ VkPresentModeKHR UVK::VKSwapchain::findPresentationMode(const std::vector<VkPres
 {
     for (const auto& mode : modes)
     {
-        // Best mode type
-        if (mode == VK_PRESENT_MODE_MAILBOX_KHR)
+        if (Renderer::getVSync())
         {
-            return mode;
+            if (mode == VK_PRESENT_MODE_MAILBOX_KHR)
+            {
+                return mode;
+            }
+        }
+        else
+        {
+            if (Renderer::getVSyncImmediate())
+            {
+                if (mode == VK_PRESENT_MODE_IMMEDIATE_KHR)
+                {
+                    return mode;
+                }
+            }
+            else
+            {
+                if (mode == VK_PRESENT_MODE_FIFO_RELAXED_KHR)
+                {
+                    return mode;
+                }
+            }
         }
     }
 
-    // Always available if the device supports Vulkan
-    return VK_PRESENT_MODE_FIFO_KHR;
+    if (Renderer::getVSync())
+    {
+        return VK_PRESENT_MODE_FIFO_KHR;
+    }
+    else
+    {
+        return VK_PRESENT_MODE_IMMEDIATE_KHR;
+    }
 }
 
 VkExtent2D UVK::VKSwapchain::findSwapchainExtent(const VkSurfaceCapabilitiesKHR& surfaceCapabilities)
@@ -297,9 +245,11 @@ VkExtent2D UVK::VKSwapchain::findSwapchainExtent(const VkSurfaceCapabilitiesKHR&
         return surfaceCapabilities.currentExtent;
     }
 
-    VkExtent2D extent;
-    extent.width = global.window.getBufferWidth();
-    extent.height = global.window.getBufferHeight();
+    VkExtent2D extent =
+    {
+        .width = static_cast<uint32_t>(global.window.getBufferWidth()),
+        .height = static_cast<uint32_t>(global.window.getBufferHeight())
+    };
 
     extent.width = std::max(surfaceCapabilities.minImageExtent.width, std::min(surfaceCapabilities.maxImageExtent.width, extent.width));
     extent.height = std::max(surfaceCapabilities.minImageExtent.height, std::min(surfaceCapabilities.maxImageExtent.height, extent.height));
@@ -309,26 +259,34 @@ VkExtent2D UVK::VKSwapchain::findSwapchainExtent(const VkSurfaceCapabilitiesKHR&
 
 VkImageView UVK::VKSwapchain::createImageView(VkImage image, VkFormat format, VkImageAspectFlags aspectFlags)
 {
-    VkImageViewCreateInfo viewCreateInfo = {};
-    viewCreateInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
-    viewCreateInfo.format = format;
-    viewCreateInfo.image = image;
-    viewCreateInfo.viewType = VK_IMAGE_VIEW_TYPE_2D;
-    viewCreateInfo.components.r = VK_COMPONENT_SWIZZLE_IDENTITY;
-    viewCreateInfo.components.g = VK_COMPONENT_SWIZZLE_IDENTITY;
-    viewCreateInfo.components.b = VK_COMPONENT_SWIZZLE_IDENTITY;
-    viewCreateInfo.components.a = VK_COMPONENT_SWIZZLE_IDENTITY;
-    viewCreateInfo.subresourceRange.aspectMask = aspectFlags;
-    viewCreateInfo.subresourceRange.baseArrayLayer = 0;
-    viewCreateInfo.subresourceRange.baseMipLevel = 0;
-    viewCreateInfo.subresourceRange.layerCount = 1;
-    viewCreateInfo.subresourceRange.levelCount = 1;
+    VkImageViewCreateInfo viewCreateInfo =
+    {
+        .sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO,
+        .image = image,
+        .viewType = VK_IMAGE_VIEW_TYPE_2D,
+        .format = format,
+        .components =
+        {
+            .r = VK_COMPONENT_SWIZZLE_IDENTITY,
+            .g = VK_COMPONENT_SWIZZLE_IDENTITY,
+            .b = VK_COMPONENT_SWIZZLE_IDENTITY,
+            .a = VK_COMPONENT_SWIZZLE_IDENTITY,
+        },
+        .subresourceRange =
+        {
+            .aspectMask = aspectFlags,
+            .baseMipLevel = 0,
+            .levelCount = 1,
+            .baseArrayLayer = 0,
+            .layerCount = 1,
+        }
+    };
 
     VkImageView imageView;
-    auto result = vkCreateImageView(device->getDevice().logicalDevice, &viewCreateInfo, nullptr, &imageView);
-    if (result != VK_SUCCESS)
+    if (vkCreateImageView(device->getDevice().logicalDevice, &viewCreateInfo, nullptr, &imageView) != VK_SUCCESS)
     {
         logger.consoleLog("Failed to create a Vulkan image view", UVK_LOG_TYPE_ERROR);
+        throw std::runtime_error(" ");
     }
 
     return imageView;

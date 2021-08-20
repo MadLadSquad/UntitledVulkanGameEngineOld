@@ -1,5 +1,5 @@
 // VKFramebuffer.hpp
-// Last update 2/7/2021 by Madman10K
+// Last update 16/8/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 #ifndef __APPLE__
@@ -27,6 +27,7 @@ namespace UVK
         VKDevice* device;
 
         friend class VKSwapchain;
+        friend class VKCommandBuffers;
         VkFramebuffer framebuffer;
     };
 }
