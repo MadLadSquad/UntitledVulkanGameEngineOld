@@ -80,8 +80,8 @@ namespace UVK
         VKSwapchainImage(VkImage img, VkImageView imgView)
             : image(img), imageView(imgView)
         {
-            image = img;
-            imageView = imgView;
+            //image = img;
+            //imageView = imgView;
         }
 
         friend class VKSwapchain;

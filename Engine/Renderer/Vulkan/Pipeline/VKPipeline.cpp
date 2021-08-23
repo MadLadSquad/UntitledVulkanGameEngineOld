@@ -65,7 +65,7 @@ void UVK::VKPipeline::begin()
 void UVK::VKPipeline::tick()
 {
     //commandBuffers.recordCommands(mesh1);
-    auto a = draw.getNextImage(mesh1);
+    draw.getNextImage(mesh1);
     /*if (!a)
     {
         //vkDeviceWaitIdle(device.device.logicalDevice);
