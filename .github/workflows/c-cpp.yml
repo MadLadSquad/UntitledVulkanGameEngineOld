@@ -13,9 +13,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Check GCC version
-      shell: bash
-      run: gcc --version
     - name: Get dependencies
       shell: bash
       run: sudo apt-get update && sudo apt-get upgrade && sudo apt-get install x11-xserver-utils libgl1-mesa-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev gcc make g++ libxmu-dev libxi-dev libgl-dev libglu1-mesa-dev libvulkan1 mesa-vulkan-drivers vulkan-utils libvulkan-dev libasound2-dev libflac-dev libogg-dev libtool libvorbis-dev libopus-dev libsndfile1-dev libglew-dev
@@ -31,18 +28,12 @@ jobs:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Check Program Files
-      run: ls "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/MSBuild/Current/Bin/"
     - name: Checkout submodules
       run: |
           git submodule sync --recursive
           git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
     - name: Set MSBuild env
       run: echo "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/MSBuild/Current/Bin/amd64/" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-      #run: echo "##[add-path]C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/MSBuild/Current/Bin/amd64/"
-      #run: setx /M path "%PATH%;C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/MSBuild/Current/Bin/"
-    - name: Check env
-      run: echo %path%
     - name: Make
       run: bash autosetupci.sh
   #Windows:
