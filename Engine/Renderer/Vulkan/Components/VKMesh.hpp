@@ -15,9 +15,8 @@ namespace UVK
     {
         VKVertex() = default;
         VKVertex(FVector4 l, FVector4 c)
+            : loc(l), colour(c)
         {
-            loc = l;
-            colour = c;
         }
 
         FVector4 loc{};
