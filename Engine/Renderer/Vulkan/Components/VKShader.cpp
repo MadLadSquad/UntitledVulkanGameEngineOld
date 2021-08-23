@@ -33,7 +33,7 @@ void UVK::VKShader::createShader(const std::string& file)
 
 void UVK::VKShader::createShaderModule(const std::vector<char>& buffer)
 {
-    VkShaderModuleCreateInfo moduleCreateInfo =
+    const VkShaderModuleCreateInfo moduleCreateInfo =
     {
         .sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO,
         .codeSize = buffer.size(),

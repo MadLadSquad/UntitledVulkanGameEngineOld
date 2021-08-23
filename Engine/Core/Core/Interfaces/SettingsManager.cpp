@@ -6,6 +6,7 @@
 
 void UVK::SettingsManager::saveSettings()
 {
+    saveWindowSettings();
     saveRendererSettings();
     saveEditorKeybindSettings();
     saveKeybindSettings();

@@ -106,7 +106,7 @@ void UVK::Renderer::saveSettings()
     global.rendererSettings.saveSettings();
 }
 
-bool& UVK::Renderer::getVSyncImmediate()
+bool& UVK::Renderer::getImmediateRender()
 {
     return global.rendererSettings.bVsyncImmediate;
 }

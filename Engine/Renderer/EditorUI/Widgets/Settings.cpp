@@ -7,6 +7,7 @@
 #include <Core/Global.hpp>
 #include <Renderer/EditorUI/Style/Theme.hpp>
 #include <Core/Interfaces/SettingsManager.hpp>
+#include <Renderer/Renderer.hpp>
 
 void Settings::displayWindow(bool& bOpen)
 {
@@ -58,13 +59,30 @@ void Settings::displayRenderer(bool& bOpen)
     {
         ImGui::TextWrapped("DISCLAIMER: The editor needs to be reloaded for changes to appear!");
 
+        static bool bVulkan = false;
+        static bool first = false;
+
+        if (!first)
+        {
+            bVulkan = UVK::global.bUsesVulkan;
+            first = true;
+        }
+
         ImGui::TextWrapped("Vulkan");
         ImGui::SameLine();
-        ImGui::Checkbox("##Vulkan", &UVK::global.bUsesVulkan);
+        ImGui::Checkbox("##Vulkan", &bVulkan);
 
         ImGui::TextWrapped("Theme Location");
         ImGui::SameLine();
         ImGui::InputText("##Theme Location", &UVK::SettingsManager::getRendererSettings().themeLoc);
+
+        ImGui::TextWrapped("V-Sync");
+        ImGui::SameLine();
+        ImGui::Checkbox("##V-Sync", &UVK::Renderer::getVSync());
+
+        ImGui::TextWrapped("Immediate frame display");
+        ImGui::SameLine();
+        ImGui::Checkbox("##V-Sync immediate", &UVK::Renderer::getImmediateRender());
 
         if (ImGui::Button("Close"))
         {
@@ -73,7 +91,10 @@ void Settings::displayRenderer(bool& bOpen)
         ImGui::SameLine();
         if (ImGui::Button("Save"))
         {
+            bool temp = UVK::global.bUsesVulkan;
+            UVK::global.bUsesVulkan = bVulkan;
             UVK::SettingsManager::saveRendererSettings();
+            UVK::global.bUsesVulkan = temp;
         }
         ImGui::EndPopup();
     }

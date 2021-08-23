@@ -26,13 +26,12 @@ void UVK::VKSwapchain::destroySurface()
     vkDestroySurfaceKHR(instance->getData(), surface, nullptr);
 }
 
-void UVK::VKSwapchain::createSwapchain()
+void UVK::VKSwapchain::createSwapchain(VkSwapchainKHR destroyedSwapchain)
 {
     auto settings = getSwapchainSettings();
-
     auto surfaceFormat = findSurfaceFormat(settings.formats);
-    auto presentMode = findPresentationMode(settings.presentationModes);
     auto extent = findSwapchainExtent(settings.surfaceCapabilities);
+    auto presentMode = findPresentationMode(settings.presentationModes);
 
     // +1 to allow for triple buffering
     uint32_t minImageCount = settings.surfaceCapabilities.minImageCount + 1;
@@ -54,7 +53,8 @@ void UVK::VKSwapchain::createSwapchain()
         .preTransform = settings.surfaceCapabilities.currentTransform,
         .compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR,
         .presentMode = presentMode,
-        .clipped = VK_TRUE
+        .clipped = VK_TRUE,
+        .oldSwapchain = VK_NULL_HANDLE
     };
 
     auto location = device->getQueueFamilies();
@@ -74,9 +74,7 @@ void UVK::VKSwapchain::createSwapchain()
         swapchainCreateInfo.pQueueFamilyIndices = nullptr;
     }
 
-    swapchainCreateInfo.oldSwapchain = VK_NULL_HANDLE;
-
-    if (vkCreateSwapchainKHR(device->getDevice().logicalDevice, &swapchainCreateInfo, nullptr, &swapchain) != VK_SUCCESS)
+    if (vkCreateSwapchainKHR(device->getDevice().logicalDevice, &swapchainCreateInfo, nullptr, &swapchain) != VK_SUCCESS) // 35.7ms
     {
         logger.consoleLog("Failed to create the Vulkan swapchain!", UVK_LOG_TYPE_ERROR);
         throw std::runtime_error(" ");
@@ -87,17 +85,12 @@ void UVK::VKSwapchain::createSwapchain()
 
     uint32_t swapchainImageCount;
     vkGetSwapchainImagesKHR(device->getDevice().logicalDevice, swapchain, &swapchainImageCount, nullptr);
-    std::vector<VkImage> imgs;
-    imgs.resize(swapchainImageCount);
+    std::vector<VkImage> imgs(swapchainImageCount);
     vkGetSwapchainImagesKHR(device->getDevice().logicalDevice, swapchain, &swapchainImageCount, imgs.data());
 
     for (VkImage a : imgs)
     {
-        VKSwapchainImage swapchainImage = {};
-        swapchainImage.image = a;
-        swapchainImage.imageView = createImageView(swapchainImage.image, swapchainFormat, VK_IMAGE_ASPECT_COLOR_BIT);
-
-        images.push_back(swapchainImage);
+        images.push_back(VKSwapchainImage(a, createImageView(a, swapchainFormat, VK_IMAGE_ASPECT_COLOR_BIT)));
     }
 }
 
@@ -211,7 +204,7 @@ VkPresentModeKHR UVK::VKSwapchain::findPresentationMode(const std::vector<VkPres
         }
         else
         {
-            if (Renderer::getVSyncImmediate())
+            if (Renderer::getImmediateRender())
             {
                 if (mode == VK_PRESENT_MODE_IMMEDIATE_KHR)
                 {
@@ -247,8 +240,8 @@ VkExtent2D UVK::VKSwapchain::findSwapchainExtent(const VkSurfaceCapabilitiesKHR&
 
     VkExtent2D extent =
     {
-        .width = static_cast<uint32_t>(global.window.getBufferWidth()),
-        .height = static_cast<uint32_t>(global.window.getBufferHeight())
+        .width = static_cast<uint32_t>(global.window.data().size.x),
+        .height = static_cast<uint32_t>(global.window.data().size.y)
     };
 
     extent.width = std::max(surfaceCapabilities.minImageExtent.width, std::min(surfaceCapabilities.maxImageExtent.width, extent.width));
@@ -259,7 +252,7 @@ VkExtent2D UVK::VKSwapchain::findSwapchainExtent(const VkSurfaceCapabilitiesKHR&
 
 VkImageView UVK::VKSwapchain::createImageView(VkImage image, VkFormat format, VkImageAspectFlags aspectFlags)
 {
-    VkImageViewCreateInfo viewCreateInfo =
+    const VkImageViewCreateInfo viewCreateInfo =
     {
         .sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO,
         .image = image,

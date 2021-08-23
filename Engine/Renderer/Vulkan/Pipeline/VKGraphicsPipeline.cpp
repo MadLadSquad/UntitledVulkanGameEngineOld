@@ -62,14 +62,14 @@ void UVK::VKGraphicsPipeline::createShaderStage(const VkShaderModule& vertexModu
         }
     };
 
-    VkVertexInputBindingDescription vertexInputBindingDescription =
+    constexpr VkVertexInputBindingDescription vertexInputBindingDescription =
     {
         .binding = 0,
         .stride = sizeof(VKVertex), // set the stride to the size of a 4D vector
         .inputRate = VK_VERTEX_INPUT_RATE_VERTEX
     };
 
-    VkVertexInputAttributeDescription attributeDescriptions[2] =
+    const VkVertexInputAttributeDescription attributeDescriptions[2] =
     {
         {
             .location = 0,
@@ -94,7 +94,7 @@ void UVK::VKGraphicsPipeline::createShaderStage(const VkShaderModule& vertexModu
         .pVertexAttributeDescriptions = attributeDescriptions
     };
 
-    VkPipelineInputAssemblyStateCreateInfo inputAssembly =
+    constexpr VkPipelineInputAssemblyStateCreateInfo inputAssembly =
     {
         .sType = VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO,
         .topology = VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST,
@@ -104,10 +104,11 @@ void UVK::VKGraphicsPipeline::createShaderStage(const VkShaderModule& vertexModu
     createViewportAndPipeline(shaderStages, inputAssembly, vertexInputStateCreateInfo);
 }
 
-UVK::VKGraphicsPipeline::VKGraphicsPipeline(UVK::VKDevice* dev, VKSwapchain* swap)
+UVK::VKGraphicsPipeline::VKGraphicsPipeline(UVK::VKDevice* dev, VKSwapchain* swap, VkDescriptorSetLayout* descriptorSetL)
 {
     device = dev;
     swapchain = swap;
+    descriptorSetLayout = descriptorSetL;
 }
 
 void UVK::VKGraphicsPipeline::createViewportAndPipeline(VkPipelineShaderStageCreateInfo* shaderStages, const VkPipelineInputAssemblyStateCreateInfo& inputAssembly, VkPipelineVertexInputStateCreateInfo& vertexInputStateCreateInfo)
@@ -152,14 +153,14 @@ void UVK::VKGraphicsPipeline::createPipelineLayout(VkViewport& viewport, VkRect2
 
     rasterizationStateCreateInfo =
     {
-            .sType = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO,
-            .depthClampEnable = VK_FALSE,
-            .rasterizerDiscardEnable = VK_FALSE,
-            .polygonMode = VK_POLYGON_MODE_FILL,
-            .cullMode = VK_CULL_MODE_BACK_BIT,
-            .frontFace = VK_FRONT_FACE_CLOCKWISE,
-            .depthBiasEnable = VK_FALSE,
-            .lineWidth = 1.0f
+        .sType = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO,
+        .depthClampEnable = VK_FALSE,
+        .rasterizerDiscardEnable = VK_FALSE,
+        .polygonMode = VK_POLYGON_MODE_FILL,
+        .cullMode = VK_CULL_MODE_BACK_BIT,
+        .frontFace = VK_FRONT_FACE_CLOCKWISE,
+        .depthBiasEnable = VK_FALSE,
+        .lineWidth = 1.0f
     };
 
     // TODO: Implement multisampling
@@ -173,14 +174,14 @@ void UVK::VKGraphicsPipeline::createPipelineLayout(VkViewport& viewport, VkRect2
     // TODO: Blending
     colourState =
     {
-            .blendEnable = VK_TRUE,
-            .srcColorBlendFactor = VK_BLEND_FACTOR_SRC_ALPHA,
-            .dstColorBlendFactor = VK_BLEND_FACTOR_ONE_MINUS_SRC_ALPHA,
-            .colorBlendOp = VK_BLEND_OP_ADD,
-            .srcAlphaBlendFactor = VK_BLEND_FACTOR_ONE,
-            .dstAlphaBlendFactor = VK_BLEND_FACTOR_ZERO,
-            .alphaBlendOp = VK_BLEND_OP_ADD,
-            .colorWriteMask = VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT | VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT
+        .blendEnable = VK_TRUE,
+        .srcColorBlendFactor = VK_BLEND_FACTOR_SRC_ALPHA,
+        .dstColorBlendFactor = VK_BLEND_FACTOR_ONE_MINUS_SRC_ALPHA,
+        .colorBlendOp = VK_BLEND_OP_ADD,
+        .srcAlphaBlendFactor = VK_BLEND_FACTOR_ONE,
+        .dstAlphaBlendFactor = VK_BLEND_FACTOR_ZERO,
+        .alphaBlendOp = VK_BLEND_OP_ADD,
+        .colorWriteMask = VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT | VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT
     };
 
 
@@ -195,8 +196,8 @@ void UVK::VKGraphicsPipeline::createPipelineLayout(VkViewport& viewport, VkRect2
     pipelineLayoutCreateInfo =
     {
         .sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO,
-        .setLayoutCount = 0,
-        .pSetLayouts = nullptr,
+        .setLayoutCount = 1,
+        .pSetLayouts = descriptorSetLayout,
         .pushConstantRangeCount = 0,
         .pPushConstantRanges = nullptr,
     };
@@ -212,7 +213,7 @@ void UVK::VKGraphicsPipeline::createPipelineLayout(VkViewport& viewport, VkRect2
 
 void UVK::VKGraphicsPipeline::createRenderPass()
 {
-    VkAttachmentDescription colourAttachment =
+    const VkAttachmentDescription colourAttachment =
     {
         .format = swapchain->swapchainFormat,
         .samples = VK_SAMPLE_COUNT_1_BIT,
@@ -224,20 +225,20 @@ void UVK::VKGraphicsPipeline::createRenderPass()
         .finalLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR
     };
 
-    VkAttachmentReference colourAttachmentReference =
+    constexpr VkAttachmentReference colourAttachmentReference =
     {
         .attachment = 0,
         .layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL
     };
 
-    VkSubpassDescription subpass =
+    const VkSubpassDescription subpass =
     {
         .pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS,
         .colorAttachmentCount = 1,
         .pColorAttachments = &colourAttachmentReference
     };
 
-    VkSubpassDependency subpassDependencies[2] =
+    constexpr VkSubpassDependency subpassDependencies[2] =
     {
         {
             .srcSubpass = VK_SUBPASS_EXTERNAL,
@@ -259,7 +260,7 @@ void UVK::VKGraphicsPipeline::createRenderPass()
         }
     };
 
-    VkRenderPassCreateInfo renderPassCreateInfo =
+    const VkRenderPassCreateInfo renderPassCreateInfo =
     {
         .sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO,
         .attachmentCount = 1,
@@ -280,7 +281,7 @@ void UVK::VKGraphicsPipeline::createRenderPass()
 
 void UVK::VKGraphicsPipeline::createPipeline(VkPipelineShaderStageCreateInfo* shaderStages, const VkPipelineInputAssemblyStateCreateInfo& inputAssembly, VkPipelineVertexInputStateCreateInfo& vertexInputStateCreateInfo, const VkPipelineViewportStateCreateInfo& viewportStateCreateInfo, const VkPipelineRasterizationStateCreateInfo& rasterizationStateCreateInfo, const VkPipelineMultisampleStateCreateInfo& multisampleStateCreateInfo, const VkPipelineColorBlendStateCreateInfo& colourBlendingCreateInfo)
 {
-    VkGraphicsPipelineCreateInfo pipelineCreateInfo =
+    const VkGraphicsPipelineCreateInfo pipelineCreateInfo =
     {
         .sType = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO,
         .stageCount = 2,
@@ -306,4 +307,9 @@ void UVK::VKGraphicsPipeline::createPipeline(VkPipelineShaderStageCreateInfo* sh
         logger.consoleLog("Failed to create a Vulkan Graphics Pipeline!", UVK_LOG_TYPE_ERROR);
         throw std::runtime_error(" ");
     }
+}
+
+VkPipelineLayout &UVK::VKGraphicsPipeline::pipelineLayout()
+{
+    return layout;
 }

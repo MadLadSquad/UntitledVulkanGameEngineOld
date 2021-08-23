@@ -24,9 +24,6 @@ namespace UVK
         friend class Renderer;
 
         void run();
-        void start();
-        void render();
-        void cleanup();
 
         VKPipeline pipeline;
 #ifndef __APPLE__

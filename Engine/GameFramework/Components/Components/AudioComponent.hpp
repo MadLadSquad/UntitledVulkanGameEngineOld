@@ -1,5 +1,6 @@
 // AudioComponent.hpp
 // Last update 6/7/2021 by Madman10K
+#pragma once
 #include <Core.hpp>
 #include <Audio/Audio.hpp>
 

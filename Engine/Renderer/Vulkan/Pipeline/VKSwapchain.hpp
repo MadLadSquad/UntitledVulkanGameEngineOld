@@ -10,6 +10,8 @@
 namespace UVK
 {
     class Device;
+    class VKFramebuffer;
+    struct VKSwapchainImage;
 
     /**
      * @brief Manages a Vulkan swapchain
@@ -23,6 +25,7 @@ namespace UVK
         friend class VKGraphicsPipeline;
         friend class Device;
         friend class VKDraw;
+        friend class VKDescriptorSets;
 
         void set(VKInstance* inst, Device* dev);
         void addRenderPassPointer(VkRenderPass* rp, VkPipeline* gp);
@@ -30,7 +33,7 @@ namespace UVK
         void createSurface();
         void destroySurface();
 
-        void createSwapchain();
+        void createSwapchain(VkSwapchainKHR destroyedSwapchain);
         void destroySwapchain();
 
         void createFramebuffers();
@@ -50,7 +53,7 @@ namespace UVK
         VkSurfaceKHR surface;
         VkFormat swapchainFormat;
         VkExtent2D swapchainExtent;
-        VkSwapchainKHR swapchain;
+        VkSwapchainKHR swapchain = VK_NULL_HANDLE;
 
         VkRenderPass* renderPass;
 

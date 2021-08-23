@@ -6,12 +6,12 @@
 #include <vector>
 #include "VKCommandBuffers.hpp"
 
-
 namespace UVK
 {
     class Device;
     class VKSwapchain;
     class VKCommandBuffers;
+    class VKMesh;
 
     class VKDraw
     {
@@ -22,7 +22,7 @@ namespace UVK
         void createSynchronisation();
         void destroySynchronisasion();
 
-        void getNextImage();
+        bool getNextImage(UVK::VKMesh& mesh1);
     private:
         int currentFrame = 0;
         Device* device;

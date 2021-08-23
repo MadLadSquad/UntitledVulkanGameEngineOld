@@ -11,7 +11,7 @@ namespace UVK
 }
 #else
 #include <vulkan/vulkan.h>
-#include <Core.hpp>
+#include <Core/Types.hpp>
 
 namespace UVK
 {
@@ -24,6 +24,7 @@ namespace UVK
     struct VKDevice
     {
     private:
+        friend class VKPipeline;
         friend class VKCommandBuffers;
         friend class VKFramebuffer;
         friend class Device;
@@ -33,6 +34,7 @@ namespace UVK
         friend class VKDraw;
         friend class VKMesh;
         friend class VKBuffer;
+        friend class VKDescriptorSets;
 
         VkPhysicalDevice physicalDevice;
         VkDevice logicalDevice;
@@ -74,6 +76,14 @@ namespace UVK
     struct VKSwapchainImage
     {
     private:
+        VKSwapchainImage() = default;
+        VKSwapchainImage(VkImage img, VkImageView imgView)
+            : image(img), imageView(imgView)
+        {
+            image = img;
+            imageView = imgView;
+        }
+
         friend class VKSwapchain;
 
         VkImage image;

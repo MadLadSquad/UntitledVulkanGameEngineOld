@@ -16,15 +16,15 @@ namespace UVK
         virtual void tick(float deltaTime) = 0;
         virtual void endPlay() = 0;
 
+        template<typename T>
+        static PlayerState* makePlayerState()
+        {
+            T* ps = new T();
+            return ps;
+        }
+
+        static void destroyPlayerState(PlayerState* ps);
+
         virtual ~PlayerState() = default;
     };
-
-    template<typename T>
-    static PlayerState* makePlayerState()
-    {
-        T* ps = new T();
-        return ps;
-    }
-
-    static void destroyPlayerState(PlayerState* ps);
 }

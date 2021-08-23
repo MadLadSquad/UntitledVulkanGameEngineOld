@@ -52,6 +52,8 @@ namespace UVK
          * @return A pointer to a standard GLFWwindow
          */
         [[nodiscard]] GLFWwindow* getWindow() const;
+
+        bool& getVulkanResized();
     private:
         // Returns the frame-buffer width which in most cases is equal to the Window's internal rendering surface
         // width
@@ -145,6 +147,7 @@ namespace UVK
         GLFWwindow* windowMain = nullptr;
 
         bool bFirstMove = true;
+        bool bVulkanResized = false;
 
         double posX = 0;
         double posY = 0;
@@ -164,7 +167,7 @@ namespace UVK
     {
     public:
         // Given a valid keyboard key from the Keys namespace it will return weather the key was pressed
-        static uint16_t getKey(uint16_t key);
+        static uint8_t getKey(uint16_t key);
 
         // Input actions are a way of handling key input events by assigning a name to a key.
         // This name and key is stored in a config file, which enables you and your users to rebind key actions

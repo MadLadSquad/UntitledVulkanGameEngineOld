@@ -1,12 +1,13 @@
 // Types.hpp
 // Last update 18/7/2021 by Madman10K
+#pragma once
 #define GLM_FORCE_DEPTH_ZERO_TO_ONE
 #include <vector>
 #include <glm/glm.hpp>
-#include <glm/mat3x4.hpp>
-#include <glm/vec3.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
+//#include <glm/mat3x4.hpp>
+//#include <glm/vec3.hpp>
+//#include <glm/gtc/matrix_transform.hpp>
+//#include <glm/gtc/type_ptr.hpp>
 #include "Engine/ThirdParty/entt/src/entt/entt.hpp"
 
 namespace UVK

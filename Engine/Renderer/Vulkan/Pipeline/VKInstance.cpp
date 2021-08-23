@@ -1,11 +1,15 @@
 // VKInstance.cpp
 // Last update 2/7/2021 by Madman10K
 #include "VKInstance.hpp"
+#include <GLFW/glfw3.h>
+#include "UVKLog.h"
+#include <cstring>
+
 #ifndef __APPLE__
 void UVK::VKInstance::create()
 {
     // Setup versions, name, etc
-    VkApplicationInfo appInfo =
+    constexpr VkApplicationInfo appInfo =
     {
         .sType = VK_STRUCTURE_TYPE_APPLICATION_INFO,
         .pNext = nullptr,
@@ -20,7 +24,9 @@ void UVK::VKInstance::create()
     VkInstanceCreateInfo createInfo =
     {
         .sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO,
-        .pApplicationInfo = &appInfo
+        .pApplicationInfo = &appInfo,
+        .enabledLayerCount = 0,
+        .ppEnabledLayerNames = nullptr
     };
 
     // Array of extensions
@@ -31,7 +37,7 @@ void UVK::VKInstance::create()
     UVK::String* extensions;
 
     // Get all of the extensions
-    extensions = glfwGetRequiredInstanceExtensions(&extensionCount);
+    extensions = glfwGetRequiredInstanceExtensions(&extensionCount); // ~20ms
 
     // Add extensions to the list of extensions
     for(size_t i = 0; i < extensionCount; i++)
@@ -39,11 +45,8 @@ void UVK::VKInstance::create()
         instanceExtensions.push_back(extensions[i]);
     }
 
-    // This extension doesn't work on latest NVidia and AMD, and doesn't work at all on Linux, Mac, iOS and Android
-    //instanceExtensions.push_back(VK_EXT_SWAPCHAIN_COLOR_SPACE_EXTENSION_NAME);
-
     // Check if instance extensions are supported
-    if (!checkExtensionSupport(&instanceExtensions))
+    if (!checkExtensionSupport(&instanceExtensions)) // 0.25ms
     {
         logger.consoleLog("Vulkan instance does not a support the required instance extensions", UVK_LOG_TYPE_ERROR);
         throw std::runtime_error(" ");
@@ -51,10 +54,7 @@ void UVK::VKInstance::create()
 
     createInfo.enabledExtensionCount = static_cast<uint32_t>(instanceExtensions.size());
     createInfo.ppEnabledExtensionNames = instanceExtensions.data();
-    createInfo.enabledLayerCount = 0;
-    createInfo.ppEnabledLayerNames = nullptr;
-
-    if (vkCreateInstance(&createInfo, nullptr, &instance) != VK_SUCCESS)
+    if (vkCreateInstance(&createInfo, nullptr, &instance) != VK_SUCCESS) // ~10ms
     {
         logger.consoleLog("Failed to create a Vulkan Instance", UVK_LOG_TYPE_ERROR);
         throw std::runtime_error(" ");
@@ -82,7 +82,7 @@ bool UVK::VKInstance::checkExtensionSupport(std::vector<UVK::String>* extensions
 
         for (const auto& extension : extensionsList)
         {
-            if (strcmp(extensionCheck, extension.extensionName) == 0)
+            if (std::strcmp(extensionCheck, extension.extensionName) == 0)
             {
                 hasExtension = true;
                 break;

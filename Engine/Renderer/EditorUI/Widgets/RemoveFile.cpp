@@ -14,7 +14,7 @@ void RemoveFile::display(bool& bShow)
     if (ImGui::BeginPopupModal("Remove File", &bShow))
     {
         static std::string in;
-        bool bSO = false;
+        static bool bSO = false;
 
         ImGui::TextWrapped("Scriptable Object?");
         ImGui::SameLine();

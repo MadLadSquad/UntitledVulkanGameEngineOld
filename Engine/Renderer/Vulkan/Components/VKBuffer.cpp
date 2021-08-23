@@ -2,10 +2,11 @@
 // Last update 19/8/2021 by Madman10K
 #include "VKBuffer.hpp"
 #include "VKStructs.hpp"
+#include "UVKLog.h"
 
 void UVK::VKBuffer::createBuffer(const UVK::VKDevice& device, uint64_t bufferSize, VkBufferUsageFlags bufferUsageFlags, VkMemoryPropertyFlags propertyFlags, VkBuffer& buffer, VkDeviceMemory& memory)
 {
-    VkBufferCreateInfo bufferInfo =
+    const VkBufferCreateInfo bufferInfo =
     {
         .sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO,
         .size = bufferSize,
@@ -22,11 +23,11 @@ void UVK::VKBuffer::createBuffer(const UVK::VKDevice& device, uint64_t bufferSiz
     VkMemoryRequirements memoryRequirements = {};
     vkGetBufferMemoryRequirements(device.logicalDevice, buffer, &memoryRequirements);
 
-    VkMemoryAllocateInfo memoryAllocateInfo =
+    const VkMemoryAllocateInfo memoryAllocateInfo =
     {
-            .sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO,
-            .allocationSize = memoryRequirements.size,
-            .memoryTypeIndex = calculateMemoryTypeIndex(device, memoryRequirements.memoryTypeBits, propertyFlags)
+        .sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO,
+        .allocationSize = memoryRequirements.size,
+        .memoryTypeIndex = calculateMemoryTypeIndex(device, memoryRequirements.memoryTypeBits, propertyFlags)
     };
 
     if (vkAllocateMemory(device.logicalDevice, &memoryAllocateInfo, nullptr, &memory) != VK_SUCCESS)
@@ -58,7 +59,7 @@ uint32_t UVK::VKBuffer::calculateMemoryTypeIndex(const UVK::VKDevice& device, ui
 void UVK::VKBuffer::copyBuffer(const UVK::VKDevice& device, VkQueue& transferQueue, VkCommandPool& transferCommandPool, VkBuffer& srcbuf, VkBuffer& dstbuf, VkDeviceSize bufferSize)
 {
     VkCommandBuffer transferCommandBuffer;
-    VkCommandBufferAllocateInfo allocateInfo =
+    const VkCommandBufferAllocateInfo allocateInfo =
     {
         .sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO,
         .commandPool = transferCommandPool,
@@ -68,7 +69,7 @@ void UVK::VKBuffer::copyBuffer(const UVK::VKDevice& device, VkQueue& transferQue
 
     vkAllocateCommandBuffers(device.logicalDevice, &allocateInfo, &transferCommandBuffer);
 
-    VkCommandBufferBeginInfo beginInfo =
+    constexpr VkCommandBufferBeginInfo beginInfo =
     {
         .sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO,
         .flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT
@@ -76,7 +77,7 @@ void UVK::VKBuffer::copyBuffer(const UVK::VKDevice& device, VkQueue& transferQue
 
     vkBeginCommandBuffer(transferCommandBuffer, &beginInfo);
 
-    VkBufferCopy bufferCopyRegion =
+    const VkBufferCopy bufferCopyRegion =
     {
         .srcOffset = 0,
         .dstOffset = 0,
@@ -86,7 +87,7 @@ void UVK::VKBuffer::copyBuffer(const UVK::VKDevice& device, VkQueue& transferQue
     vkCmdCopyBuffer(transferCommandBuffer, srcbuf, dstbuf, 1, &bufferCopyRegion);
     vkEndCommandBuffer(transferCommandBuffer);
 
-    VkSubmitInfo submitInfo =
+    const VkSubmitInfo submitInfo =
     {
         .sType = VK_STRUCTURE_TYPE_SUBMIT_INFO,
         .commandBufferCount = 1,

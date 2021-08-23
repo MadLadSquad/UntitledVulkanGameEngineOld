@@ -26,7 +26,7 @@ namespace UVK
         // setting this boolean to true will not always result in the desired effect. You can read about what the
         // presentation modes do here:
         // https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/VkPresentModeKHR.html#_description
-        static bool& getVSyncImmediate();
+        static bool& getImmediateRender();
         static bool& getVSync();
         static void saveSettings();
     private:

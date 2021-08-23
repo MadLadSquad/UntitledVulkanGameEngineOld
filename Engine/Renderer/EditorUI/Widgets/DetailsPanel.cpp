@@ -7,6 +7,7 @@
 #include "DetailsPanel.hpp"
 #include <Core/Actor.hpp>
 #include <GameFramework/GameplayClasses/Level/Level.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 #ifndef PRODUCTION
 void DetailsPanel::DrawVec3Control(const std::string &label, glm::vec3 &values, float resetValue, float columnWidth)

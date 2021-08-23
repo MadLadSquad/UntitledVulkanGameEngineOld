@@ -1,7 +1,6 @@
 // VKFramebuffer.hpp
 // Last update 16/8/2021 by Madman10K
 #pragma once
-#include <Core.hpp>
 #ifndef __APPLE__
     #include <vulkan/vulkan.h>
 #endif
@@ -10,6 +9,7 @@
 namespace UVK
 {
     class VKDevice;
+    class Texture;
 
     /**
      * @brief Vulkan specific framebuffer class

@@ -17,16 +17,18 @@ namespace UVK
     {
     public:
         VKGraphicsPipeline() = default;
-        VKGraphicsPipeline(VKDevice* dev, VKSwapchain* swap);
+        VKGraphicsPipeline(VKDevice* dev, VKSwapchain* swap, VkDescriptorSetLayout* descriptorSetL);
 
         void create();
         void destroy();
 
         VkPipeline& data();
         VkRenderPass& getRenderPass();
+        VkPipelineLayout& pipelineLayout();
     private:
         VKSwapchain* swapchain;
         VKDevice* device;
+        VkDescriptorSetLayout* descriptorSetLayout;
 
         VkPipelineLayout layout{};
         VkRenderPass renderPass{};

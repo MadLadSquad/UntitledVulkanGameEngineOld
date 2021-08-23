@@ -9,29 +9,12 @@
 #include "Components/VKMesh.hpp"
 #include "Components/VKShader.hpp"
 
-void UVK::VulkanRenderer::start()
-{
-    global.window.createWindow();
-
-    pipeline.begin();
-}
-
-void UVK::VulkanRenderer::render()
-{
-    pipeline.tick();
-}
-
-void UVK::VulkanRenderer::cleanup()
-{
-    pipeline.end();
-}
-
 void UVK::VulkanRenderer::run()
 {
     Timer setup;
     setup.startRecording();
-    start();
-
+    global.window.createWindow();
+    pipeline.begin();
     float deltaTime;
     float lastTime = 0;
     setup.stopRecording();
@@ -39,8 +22,6 @@ void UVK::VulkanRenderer::run()
 
     while (!glfwWindowShouldClose(global.window.getWindow()))
     {
-        glfwPollEvents();
-
         auto now = (float)glfwGetTime();
         deltaTime = now - lastTime;
         lastTime = now;
@@ -49,11 +30,12 @@ void UVK::VulkanRenderer::run()
         {
             std::cout << deltaTime << std::endl;
         }
-        render();
+        pipeline.tick();
+        glfwPollEvents();
     }
     Timer clean;
     clean.startRecording();
-    cleanup();
+    pipeline.end();
     clean.stopRecording();
     logger.consoleLog("Closing the Vulkan renderer took ", UVK_LOG_TYPE_NOTE, clean.getDuration(), "ms");
 }

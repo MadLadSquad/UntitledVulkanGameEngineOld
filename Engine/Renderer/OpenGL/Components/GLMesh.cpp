@@ -1,8 +1,9 @@
 // GLMesh.cpp
 // Last update 2/7/2021 by Madman10K
+#include <GL/glew.h>
 #include "GLMesh.hpp"
 
-void UVK::GLMesh::createMesh(GLfloat* vertices, uint32_t* indices, uint32_t vertexNum, uint32_t indexNum)
+void UVK::GLMesh::createMesh(float* vertices, uint32_t* indices, uint32_t vertexNum, uint32_t indexNum)
 {
 	indexCount = static_cast<int>(indexNum);
 

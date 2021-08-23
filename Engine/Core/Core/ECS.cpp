@@ -1,5 +1,6 @@
 // ECS.cpp
 // Last update 2/7/2021 by Madman10K
+#include <GL/glew.h>
 #include "ECS.hpp"
 
 #include <utility>

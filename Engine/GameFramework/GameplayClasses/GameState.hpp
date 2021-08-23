@@ -16,14 +16,14 @@ namespace UVK
         virtual void endPlay() = 0;
 
         virtual ~GameState() = default;
+
+        template<typename T>
+        static GameState* makeGameState()
+        {
+            T* gs = new T();
+            return gs;
+        }
+
+        static void destroyGameState(GameState* gs);
     };
-
-    template<typename T>
-    static GameState* makeGameState()
-    {
-        T* gs = new T();
-        return gs;
-    }
-
-    static void destroyGameState(GameState* gs);
 }

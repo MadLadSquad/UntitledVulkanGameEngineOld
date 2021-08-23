@@ -1,7 +1,7 @@
 // Texture.hpp
 // Last update 1/8/2021 by Madman10K
 #pragma once
-#include <Core.hpp>
+#include <Core/Types.hpp>
 
 namespace UVK
 {
@@ -18,11 +18,10 @@ namespace UVK
 
         void destroy();
 
-
         [[maybe_unused]] std::string& getLocation() { return location; }
         int& getWidth() { return width; }
         int& getHeight() { return height; }
-        GLuint& getImage() { return image; };
+        uint32_t& getImage() { return image; };
         void loadImgui();
         void useTexture() const;
     private:
@@ -34,7 +33,7 @@ namespace UVK
         std::string location;
         int width = 0;
         int height = 0;
-        GLuint image = 0;
+        uint32_t image = 0;
     };
 }
 

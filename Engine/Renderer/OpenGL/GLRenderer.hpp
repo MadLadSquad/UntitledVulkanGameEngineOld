@@ -1,12 +1,7 @@
 // GLRenderer.hpp
 // Last update 6/7/2021 by Madman10K
 #pragma once
-#include <Core.hpp>
-#include <utility>
-#include "../EditorUI/Editor.hpp"
-#include "Components/GLFrameBuffer.hpp"
-#include "Engine/Renderer/Window/Window.hpp"
-#include "UVKLog.h"
+#include <Core/Types.hpp>
 
 namespace UVK
 {

@@ -1,7 +1,6 @@
 // GLShader.hpp
 // Last update 2/7/2021 by Madman10K
 #pragma once
-#include <GL/glew.h>
 #include <iostream>
 #include <fstream>
 #include <UVKLog.h>
@@ -40,20 +39,20 @@ namespace UVK
 		void createFromString(UVK::String vertex, UVK::String fragment);
 		void createFromFile(UVK::String vLocation, UVK::String fLocation);
 
-		[[nodiscard]] GLuint getProjectionLocation() const;
-		[[nodiscard]] GLuint getModelLocation() const;
-		[[nodiscard]] GLuint getViewLocation() const;
+		[[nodiscard]] uint32_t getProjectionLocation() const;
+		[[nodiscard]] uint32_t getModelLocation() const;
+		[[nodiscard]] uint32_t getViewLocation() const;
 
 		void useShader() const;
 		void clearShader();
 
 	private:
-		GLuint shaderID, uniformProjection, uniformModel, uniformView;
-		
+        uint32_t shaderID, uniformProjection, uniformModel, uniformView;
+
 		static std::string readFile(UVK::String location);
 		
 		void compileShader(UVK::String vertex, UVK::String fragment);
-		static void addShader(GLuint program, const std::string& shader, GLenum shaderType);
+		static void addShader(uint32_t program, const std::string& shader, uint32_t shaderType);
     };
 
     /**
@@ -76,12 +75,12 @@ namespace UVK
             return buffer;
         }
 
-        GLuint& getID()
+        uint32_t& getID()
         {
             return shaderID;
         }
     private:
-        GLuint shaderID = 0;
+        uint32_t shaderID = 0;
         std::vector<uint32_t> buffer{};
         ShaderFormat format;
 

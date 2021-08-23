@@ -1,9 +1,9 @@
 // Actor.hpp
 // Last update 25/7/2021 by Madman10K
+#pragma once
 #include <Core/Global.hpp>
 #include <GameFramework/Actors/ScriptableObject.hpp>
 #include <GameFramework/GameplayClasses/GameInstance.hpp>
-
 
 namespace UVK
 {

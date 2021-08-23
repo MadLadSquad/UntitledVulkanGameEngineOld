@@ -57,10 +57,19 @@ void UVK::WindowInternal::configureCallBacks()
 void UVK::WindowInternal::framebufferSizeCallback(GLFWwindow* window, int width, int height)
 {
     auto* windowInst = static_cast<WindowInternal*>(glfwGetWindowUserPointer(window));
+
     windowInst->data().size.x = (float)width;
     windowInst->data().size.y = (float)height;
 
-    glViewport(0, 0, width, height);
+    if (global.bUsesVulkan)
+    {
+
+        windowInst->bVulkanResized = true;
+    }
+    else
+    {
+        glViewport(0, 0, width, height);
+    }
 }
 
 void UVK::WindowInternal::createWindow()
@@ -89,7 +98,7 @@ void UVK::WindowInternal::createWindow()
         // because it's vulkan
         glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
         // Vulkan framebuffer resizing is not done
-        glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+        glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
     }
 
     logger.consoleLog("Window settings configured", UVK_LOG_TYPE_NOTE);
@@ -426,6 +435,11 @@ void UVK::WindowInternal::saveWindowSettings()
     fileout.close();
 }
 
+bool& UVK::WindowInternal::getVulkanResized()
+{
+    return bVulkanResized;
+}
+
 UVK::FVector2 UVK::Input::getLastMousePosition()
 {
     return global.window.getLastMousePosition();
@@ -460,7 +474,7 @@ const UVK::InputAction& UVK::Input::getAction(const std::string& name)
     throw std::runtime_error(" ");
 }
 
-uint16_t UVK::Input::getKey(uint16_t key)
+uint8_t UVK::Input::getKey(uint16_t key)
 {
     return global.window.getKeys()[key];
 }

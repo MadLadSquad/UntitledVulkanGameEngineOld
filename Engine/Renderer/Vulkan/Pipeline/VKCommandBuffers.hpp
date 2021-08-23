@@ -22,9 +22,11 @@ namespace UVK
         void destroyCommandPool();
 
         void createCommandbuffers();
-        void recordCommands(VKMesh& mesh);
+        void recordCommands(VKMesh& mesh, const std::vector<VkDescriptorSet>& descriptorSets);
 
         VkCommandPool& getCommandPool();
+
+        std::vector<VkCommandBuffer>& getCommandBuffers();
     private:
         friend class VKDraw;
 

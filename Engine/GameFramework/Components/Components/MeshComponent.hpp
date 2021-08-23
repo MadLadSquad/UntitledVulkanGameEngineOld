@@ -1,6 +1,6 @@
 // MeshComponent.hpp
 // Last update 17/7/2021 by Madman10K
-
+#pragma once
 #include <../Renderer/OpenGL/Components/GLMesh.hpp>
 #include <Renderer/Camera/Camera.hpp>
 

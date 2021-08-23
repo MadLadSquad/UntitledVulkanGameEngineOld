@@ -2,6 +2,7 @@
 // Last update 25/7/2021 by Madman10K
 #pragma once
 #include "Projection.hpp"
+#include <Core/Interfaces/WindowInterface.hpp>
 
 namespace UVK
 {
@@ -23,6 +24,8 @@ namespace UVK
 
         Projection& projection();
 
+        static Camera makeCamera(FVector position = FVector(0.0f, 0.0f, 0.0f), FVector up = FVector(0.0f, 0.0f, 0.0f), FVector rotation = FVector(), FVector2 planes = FVector2(0.1f, 100.0f), float fov = 90.0f, float aspectRatio = Window::windowSize().x / Window::windowSize().y);
+
         FVector position{};
         FVector front{};
         FVector up{};
@@ -32,6 +35,4 @@ namespace UVK
     private:
         Projection proj;
     };
-
-    Camera makeCamera(FVector position = FVector(0.0f, 0.0f, 0.0f), FVector up = FVector(0.0f, 0.0f, 0.0f), FVector rotation = FVector(), FVector2 planes = FVector2(0.1f, 100.0f), float fov = 90.0f, float aspectRatio = Window::windowSize().x / Window::windowSize().y);
 }

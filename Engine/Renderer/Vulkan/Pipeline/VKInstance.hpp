@@ -1,7 +1,7 @@
 // VulkanRenderer.cpp
 // Last update 2/7/2021 by Madman10K
 #pragma once
-#include <Core.hpp>
+#include <Core/Types.hpp>
 #ifndef __APPLE__
 #include <vulkan/vulkan.h>
 

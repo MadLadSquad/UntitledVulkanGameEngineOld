@@ -31,15 +31,15 @@ namespace UVK
         void beginAutohandle() const;
         void tickAutohandle(float deltaTime) const;
         void endAutohandle() const;
+
+        template<typename T>
+        static GameMode* makeGameMode()
+        {
+            T* gm = new T();
+            return gm;
+        }
+
+        static void destroyGameMode(GameMode* gm);
     private:
     };
-
-    template<typename T>
-    static GameMode* makeGameMode()
-    {
-        T* gm = new T();
-        return gm;
-    }
-
-    void destroyGameMode(GameMode* gm);
 }

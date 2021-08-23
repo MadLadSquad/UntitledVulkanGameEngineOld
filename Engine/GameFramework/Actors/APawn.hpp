@@ -22,16 +22,18 @@ namespace UVK
         std::string name;
         int64_t id;
         std::string devName;
+
+        template<typename T>
+        static APawn* makePawn()
+        {
+            T* pw = new T();
+            return pw;
+        }
+
+        static void destroyPawn(APawn* pw);
     private:
 
     };
 
-    template<typename T>
-    static APawn* makePawn()
-    {
-        T* pw = new T();
-        return pw;
-    }
 
-    void destroyPawn(APawn* pw);
 }

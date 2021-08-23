@@ -1,7 +1,6 @@
 // Keys.hpp
 // Last update 19/6/2021 by Madman10K
 #pragma once
-#include <glfw3.h>
 
 /**
  * @brief A namespace of keys to be used for input. Also includes mouse keys

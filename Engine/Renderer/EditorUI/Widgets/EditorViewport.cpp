@@ -8,6 +8,7 @@
 #include <imguiex/imguizmo/ImGuizmo.h>
 #include <Core/Actor.hpp>
 #include <GameFramework/Components/Components.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 #ifndef PRODUCTION
 void EditorViewport::display(UVK::GLFrameBuffer& fb, int& viewportWidth, int& viewportHeight, bool& bShow, UVK::Camera& camera, UVK::Actor& entity, glm::mat4& projection)

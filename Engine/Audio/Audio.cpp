@@ -1,5 +1,6 @@
 // Audio.cpp
 // Last update 12/8/2021 by Madman10K
+#include <GL/glew.h>
 #include "Audio.hpp"
 #include <sndfile.h>
 

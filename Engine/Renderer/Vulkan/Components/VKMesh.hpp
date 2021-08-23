@@ -1,7 +1,8 @@
 // VKMesh.hpp
 // Last update 16/8/2021 by Madman10K
 #pragma once
-#include <Core.hpp>
+#include <Core/Types.hpp>
+//#include <Core.hpp>
 #ifndef __APPLE__
     #include <vulkan/vulkan.h>
 #endif
@@ -30,15 +31,16 @@ namespace UVK
     {
     public:
         VKMesh() = default;
-        VKMesh(VKDevice* dev, VkQueue& transQueue, VkCommandPool& transCommandPool, std::vector<VKVertex> vert, std::vector<uint32_t> index);
+        VKMesh(VKDevice* dev, VkQueue& transQueue, VkCommandPool& transCommandPool, std::vector<VKVertex> vert, std::vector<uint32_t> index, VkPipelineLayout& pipelineL);
 
         void create();
-        void render(const std::vector<VkCommandBuffer>& commandbuffers, const int& index);
+        void render(const std::vector<VkCommandBuffer>& commandbuffers, const int& index, const std::vector<VkDescriptorSet>& descriptorSets);
         void clear();
 
         VkBuffer& data();
     private:
         VKDevice* device;
+        VkPipelineLayout* pipelineLayout;
         VkBuffer vertexBuffer{};
         VkBuffer indexBuffer{};
         VkDeviceMemory deviceMemory{};

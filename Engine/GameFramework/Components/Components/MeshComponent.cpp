@@ -1,7 +1,9 @@
 // MeshComponent.cpp
 // Last update 17/7/2021 by Madman10K
+#include <GL/glew.h>
 #include "MeshComponent.hpp"
 #include <glm/gtx/quaternion.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 void UVK::MeshComponent::createMesh(UVK::String modelLocation, UVK::String vertexShader, UVK::String fragmentShader, ShaderImportType type)
 {

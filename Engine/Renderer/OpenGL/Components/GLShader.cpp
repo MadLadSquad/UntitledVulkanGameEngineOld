@@ -1,5 +1,6 @@
 // GLShader.cpp
 // Last update 2/7/2021 by Madman10K
+#include <GL/glew.h>
 #include "GLShader.hpp"
 
 void UVK::GLShader::createFromString(UVK::String vertex, UVK::String fragment)
@@ -33,17 +34,17 @@ std::string UVK::GLShader::readFile(UVK::String location)
 	return content;
 }
 
-GLuint UVK::GLShader::getProjectionLocation() const
+uint32_t UVK::GLShader::getProjectionLocation() const
 {
 	return uniformProjection;
 }
 
-GLuint UVK::GLShader::getModelLocation() const
+uint32_t UVK::GLShader::getModelLocation() const
 {
 	return uniformModel;
 }
 
-GLuint UVK::GLShader::getViewLocation() const
+uint32_t UVK::GLShader::getViewLocation() const
 {
 	return uniformView;
 }

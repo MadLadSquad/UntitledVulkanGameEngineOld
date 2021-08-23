@@ -1,7 +1,7 @@
 // Projection.hpp
 // Last update 25/7/2021 by Madman10K
 #pragma once
-#include <Core.hpp>
+#include <Core/Types.hpp>
 
 namespace UVK
 {
@@ -23,7 +23,7 @@ namespace UVK
         void recalculateRH();
     private:
         float FOV = 90;
-        float aspectRatioI;
+        float aspectRatioI{};
         FVector2 plane = { 0.1f, 100.0f };
 
         glm::mat4 projection{};

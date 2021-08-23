@@ -1,6 +1,8 @@
 // Projection.hpp
 // Last update 25/7/2021 by Madman10K
 #include "Projection.hpp"
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 glm::mat4& UVK::Projection::data()
 {
@@ -31,10 +33,10 @@ UVK::FVector2& UVK::Projection::planes()
 
 void UVK::Projection::recalculateLH()
 {
-    projection = glm::perspectiveLH(FOV, aspectRatioI, plane.x, plane.y);
+    projection = glm::perspectiveLH(glm::radians(FOV), aspectRatioI, plane.x, plane.y);
 }
 
 void UVK::Projection::recalculateRH()
 {
-    projection = glm::perspectiveRH(FOV, aspectRatioI, plane.x, plane.y);
+    projection = glm::perspectiveRH(glm::radians(FOV), aspectRatioI, plane.x, plane.y);
 }

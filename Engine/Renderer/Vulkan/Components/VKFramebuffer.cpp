@@ -2,13 +2,14 @@
 // Last update 16/8/2021 by Madman10K
 #include "VKFramebuffer.hpp"
 #include "VKStructs.hpp"
+#include "UVKLog.h"
 
 void UVK::VKFramebuffer::init(const VkImageView& imageView, const VkRenderPass& renderPass, FVector2 windowSize, VKDevice* dev)
 {
     device = dev;
     VkImageView attachments[1] = { imageView };
 
-    VkFramebufferCreateInfo framebufferCreateInfo =
+    const VkFramebufferCreateInfo framebufferCreateInfo =
     {
         .sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO,
         .renderPass = renderPass,

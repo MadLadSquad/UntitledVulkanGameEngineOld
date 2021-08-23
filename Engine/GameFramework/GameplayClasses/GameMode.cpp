@@ -1,28 +1,14 @@
 // GameMode.cpp
 // Last update 19/7/2021 by Madman10K
+#include <GL/glew.h>
 #include "GameMode.hpp"
 
 UVK::GameMode::~GameMode()
 {
-    if (gs != nullptr)
-    {
-        delete gs;
-    }
-
-    if (ps != nullptr)
-    {
-        delete ps;
-    }
-
-    if (pc != nullptr)
-    {
-        delete pc;
-    }
-
-    if (pawn != nullptr)
-    {
-        delete pawn;
-    }
+    delete gs;
+    delete ps;
+    delete pc;
+    delete pawn;
 }
 
 void UVK::GameMode::beginAutohandle() const
@@ -49,7 +35,7 @@ void UVK::GameMode::endAutohandle() const
     pawn->endPlay();
 }
 
-void UVK::destroyGameMode(GameMode* gm)
+void UVK::GameMode::destroyGameMode(GameMode* gm)
 {
     gm->endPlay();
     delete gm;

@@ -4,6 +4,8 @@
 #include <glm/gtx/quaternion.hpp>
 #include <../Renderer/OpenGL/Components/GLMesh.hpp>
 #include <Renderer/Camera/Camera.hpp>
+#include <Renderer/Vulkan/Components/VKMesh.hpp>
+#include <Renderer/Vulkan/Components/VKStructs.hpp>
 
 namespace UVK
 {
@@ -35,5 +37,20 @@ namespace UVK
 
         GLMesh mesh;
         GLShader shader;
+    };
+
+    struct MeshComponentRawVK
+    {
+        void start(UVK::VKDevice& device, VkQueue& transQueue, VkCommandPool& transCommandPool, const std::vector<VKVertex>& vert, const std::vector<uint32_t>& index);
+        void render(const std::vector<VkCommandBuffer>& commandBuffers, const int32_t& index);
+        void destroy();
+
+        glm::mat4 mat;
+
+        FVector rotation;
+        FVector translation;
+        FVector scale;
+    private:
+        VKMesh mesh;
     };
 }

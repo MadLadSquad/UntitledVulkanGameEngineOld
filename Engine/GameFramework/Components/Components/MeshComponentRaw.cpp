@@ -3,6 +3,7 @@
 #include <GL/glew.h>
 #include "MeshComponentRaw.hpp"
 #include <Engine/Core/Core/Global.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 void UVK::MeshComponentRaw::createMesh(GLfloat* vertices, uint32_t* indices, uint32_t vertexNum, uint32_t indexNum, UVK::String vertexShader, UVK::String fragmentShader, ShaderImportType type)
 {
@@ -67,4 +68,26 @@ void UVK::MeshComponentRaw::clearMesh()
 
     index.clear();
     vertex.clear();
+}
+
+void UVK::MeshComponentRawVK::start(UVK::VKDevice& device, VkQueue& transQueue, VkCommandPool& transCommandPool, const std::vector<VKVertex>& vert, const std::vector<uint32_t>& index)
+{
+    //mesh = VKMesh(&device, transQueue, transCommandPool, vert, index);
+    mesh.create();
+}
+
+void UVK::MeshComponentRawVK::render(const std::vector<VkCommandBuffer>& commandBuffers, const int32_t& index)
+{
+    mat = glm::mat4(1.0f);
+
+    Math::translate(mat, translation);
+    Math::rotate(mat, rotation);
+    Math::scale(mat, scale);
+
+    //mesh.render(commandBuffers, index);
+}
+
+void UVK::MeshComponentRawVK::destroy()
+{
+    mesh.clear();
 }

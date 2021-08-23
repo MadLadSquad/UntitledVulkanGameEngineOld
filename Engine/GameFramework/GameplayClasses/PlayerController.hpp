@@ -24,15 +24,15 @@ namespace UVK
         APawn* currentPawn{};
 
         virtual ~PlayerController();
+
+        template<typename T>
+        static PlayerController* makePlayerController()
+        {
+            T* pc = new T();
+            return pc;
+        }
+
+        static void destroyPlayerController(PlayerController* pc);
     private:
     };
-
-    template<typename T>
-    static PlayerController* makePlayerController()
-    {
-        T* pc = new T();
-        return pc;
-    }
-
-    static void destroyPlayerController(PlayerController* pc);
 }

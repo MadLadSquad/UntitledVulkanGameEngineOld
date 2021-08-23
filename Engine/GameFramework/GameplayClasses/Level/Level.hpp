@@ -1,5 +1,6 @@
 // Level.hpp
 // Last update 25/7/2021 by Madman10K
+#pragma once
 #include <Core.hpp>
 #include "../GameMode.hpp"
 #include "../GameInstance.hpp"
@@ -72,8 +73,6 @@ namespace UVK
          */
         void endAutohandle() const;
 
-
-
         static FVector4& getAmbientLighting();
         static FVector4& getSceneColour();
         static std::string& getLevelName();
@@ -87,6 +86,5 @@ namespace UVK
          * @param act actor to be saved
          */
         static void saveEntity(YAML::Emitter& out, entt::entity act);
-
     };
 }

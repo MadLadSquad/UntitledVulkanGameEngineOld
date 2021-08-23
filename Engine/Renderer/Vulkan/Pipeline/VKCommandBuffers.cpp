@@ -13,7 +13,7 @@ void UVK::VKCommandBuffers::createCommandPool()
 {
     auto queueFamilyIndices = device->getQueueFamilies();
 
-    VkCommandPoolCreateInfo poolInfo =
+    const VkCommandPoolCreateInfo poolInfo =
     {
         .sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO,
         .queueFamilyIndex = static_cast<uint32_t>(queueFamilyIndices.graphicsFamily),
@@ -35,7 +35,7 @@ void UVK::VKCommandBuffers::createCommandbuffers()
 {
     commandbuffers.resize(framebuffers->size());
 
-    VkCommandBufferAllocateInfo commandBufferAllocateInfo =
+    const VkCommandBufferAllocateInfo commandBufferAllocateInfo =
     {
         .sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO,
         .commandPool = commandPool,
@@ -50,12 +50,12 @@ void UVK::VKCommandBuffers::createCommandbuffers()
     }
 }
 
-void UVK::VKCommandBuffers::recordCommands(VKMesh& mesh)
+void UVK::VKCommandBuffers::recordCommands(VKMesh& mesh, const std::vector<VkDescriptorSet>& descriptorSets)
 {
-    VkCommandBufferBeginInfo commandBufferBeginInfo = { VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO };
+    constexpr VkCommandBufferBeginInfo commandBufferBeginInfo = { VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO };
 
     // Set up the clear colour, TODO: Add depth attachment
-    VkClearValue clearValues[1] = { { Level::getSceneColour().x, Level::getSceneColour().y, Level::getSceneColour().z, Level::getSceneColour().w } };
+    const VkClearValue clearValues[1] = { { Level::getSceneColour().x, Level::getSceneColour().y, Level::getSceneColour().z, Level::getSceneColour().w } };
 
     VkRenderPassBeginInfo renderPassBeginInfo =
     {
@@ -84,7 +84,7 @@ void UVK::VKCommandBuffers::recordCommands(VKMesh& mesh)
 
         vkCmdBindPipeline(commandbuffers[i], VK_PIPELINE_BIND_POINT_GRAPHICS, *graphicsPipeline);
 
-        mesh.render(commandbuffers, i);
+        mesh.render(commandbuffers, i, descriptorSets);
 
         vkCmdEndRenderPass(commandbuffers[i]);
 
@@ -107,6 +107,11 @@ UVK::VKCommandBuffers::VKCommandBuffers(UVK::Device* dev, std::vector<VKFramebuf
 VkCommandPool& UVK::VKCommandBuffers::getCommandPool()
 {
     return commandPool;
+}
+
+std::vector<VkCommandBuffer>& UVK::VKCommandBuffers::getCommandBuffers()
+{
+    return commandbuffers;
 }
 
 #endif

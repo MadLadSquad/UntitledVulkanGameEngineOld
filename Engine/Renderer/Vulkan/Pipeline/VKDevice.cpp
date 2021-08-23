@@ -9,7 +9,7 @@ void UVK::Device::getPhysicalDevice()
 
     vkEnumeratePhysicalDevices(*instance, &deviceCount, nullptr);
 
-    // if doesn't support vulkan or no devices
+    // if the device doesn't support vulkan or no devices
     if (deviceCount == 0)
     {
         logger.consoleLog("Couldn't find any devices or any that support Vulkan!", UVK_LOG_TYPE_ERROR);
@@ -33,8 +33,8 @@ void UVK::Device::getPhysicalDevice()
 
 void UVK::Device::createLogicalDevice()
 {
-    float priority = 1.0f;
-    VKQueueFamilyLocation location = getQueueFamilies();
+    constexpr float priority = 1.0f;
+    const VKQueueFamilyLocation location = getQueueFamilies();
 
     std::vector<VkDeviceQueueCreateInfo> queueCreateInfoArr;
     std::set<int> queueFamilyIndices = { location.graphicsFamily, location.presentationFamily };
@@ -52,8 +52,8 @@ void UVK::Device::createLogicalDevice()
         );
     }
 
-    VkPhysicalDeviceFeatures deviceFeatures = {};
-    VkDeviceCreateInfo deviceCreateInfo =
+    constexpr VkPhysicalDeviceFeatures deviceFeatures = {};
+    const VkDeviceCreateInfo deviceCreateInfo =
     {
         .sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO,
         .queueCreateInfoCount = static_cast<uint32_t>(queueCreateInfoArr.size()),
@@ -103,11 +103,11 @@ bool UVK::Device::checkDeviceSuitability(const VkPhysicalDevice& physicalDevice)
     VkPhysicalDeviceFeatures deviceFeatures = {};
     vkGetPhysicalDeviceFeatures(physicalDevice, &deviceFeatures);
 
-    VKQueueFamilyLocation location = getQueueFamilies();
+    const VKQueueFamilyLocation location = getQueueFamilies();
     bool bExtensionsSupported = checkDeviceExtensionSupport();
     bool bSwapChainValid;
 
-    VKSwapchainSettings swapchainSettings = swapchain->getSwapchainSettings();
+    const VKSwapchainSettings swapchainSettings = swapchain->getSwapchainSettings();
     bSwapChainValid = !swapchainSettings.presentationModes.empty() && !swapchainSettings.formats.empty();
 
     return location.isValid() && bExtensionsSupported && bSwapChainValid;
