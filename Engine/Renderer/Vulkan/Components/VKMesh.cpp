@@ -63,10 +63,9 @@ void UVK::VKMesh::clear()
 }
 
 UVK::VKMesh::VKMesh(VKDevice* dev, VkQueue& transQueue, VkCommandPool& transCommandPool, std::vector<VKVertex> vert, std::vector<uint32_t> index, VkPipelineLayout& pipelineL)
+    : vertices(std::move(vert)), indices(std::move(index))
 {
     device = dev;
-    vertices = std::move(vert);
-    indices = std::move(index);
     transferCommandPool = &transCommandPool;
     transferQueue = &transQueue;
     pipelineLayout = &pipelineL;
