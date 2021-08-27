@@ -1,5 +1,5 @@
 // GameInstance.hpp
-// Last update 25/7/2021 by Madman10K
+// Last update 27/8/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 #include <GameFramework/Actors/ActorManager.hpp>
@@ -20,6 +20,12 @@ namespace UVK
 
         // Shutdown your game
         static void exit();
+
+        template<typename T>
+        static T* cast(GameInstance* gi)
+        {
+            return static_cast<T*>(gi);
+        }
 
         virtual ~GameInstance();
     private:

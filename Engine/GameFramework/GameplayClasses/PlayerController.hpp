@@ -1,8 +1,8 @@
 // PlayerController.hpp
-// Last update 2/7/2021 by Madman10K
+// Last update 27/8/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
-#include "../Actors/APawn.hpp"
+#include "../Actors/Pawn.hpp"
 
 namespace UVK
 {
@@ -19,9 +19,9 @@ namespace UVK
         virtual void tick(float deltaTime) = 0;
         virtual void endPlay() = 0;
 
-        void possess(APawn* pawn);
+        void possess(Pawn* pw);
 
-        APawn* currentPawn{};
+        Pawn* pawn{};
 
         virtual ~PlayerController();
 
@@ -32,7 +32,17 @@ namespace UVK
             return pc;
         }
 
+        template<typename T>
+        static T* cast(PlayerController* pc)
+        {
+            return static_cast<T*>(pc);
+        }
+
         static void destroyPlayerController(PlayerController* pc);
+
+        void beginAutohandle() const;
+        void tickAutohandle(float deltaTime) const;
+        void endAutohandle() const;
     private:
     };
 }

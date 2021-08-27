@@ -1,6 +1,5 @@
 // Events.cpp
-// Last update 2/7/2021 by Madman10K
-#include <GL/glew.h>
+// Last update 27/8/2021 by Madman10K
 #include "Events.hpp"
 #include <GameFramework/Actors/ScriptableObject.hpp>
 

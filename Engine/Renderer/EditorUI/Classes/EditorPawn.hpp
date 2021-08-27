@@ -1,20 +1,20 @@
 // EditorPawn.hpp
-// Last update 25/7/2021 by Madman10K
+// Last update 27/8/2021 by Madman10K
 #pragma once
-#include <GL/glew.h>
 #include <Engine/Core/Core/Global.hpp>
-#include <GameFramework/Actors/APawn.hpp>
+#include <GameFramework/Actors/Pawn.hpp>
 #include <Renderer/Window/Window.hpp>
 
 #ifndef PRODUCTION
 namespace UVK
 {
-    class EditorPawn : public APawn
+    class EditorPawn : public Pawn
     {
     public:
         EditorPawn()
         {
             camera = Camera::makeCamera(FVector(0.0f, 0.0f, 0.0f), FVector(0.0f, 1.0f, 0.0f), FVector(0.0f, 0.0f, 0.0f), FVector2(0.1f, 100.0f), 90.0f, Window::windowSize().x / Window::windowSize().y);
+            //camera = Camera::makeCamera();
             name = "Editor Pawn";
             id = 330;
             devName = "EditorPawn";

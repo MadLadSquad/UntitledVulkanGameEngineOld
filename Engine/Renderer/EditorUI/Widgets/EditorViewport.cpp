@@ -1,5 +1,5 @@
 // EditorViewport.cpp
-// Last update 2/7/2021 by Madman10K
+// Last update 27/8/2021 by Madman10K
 #include <GL/glew.h>
 #include <Engine/Core/Core/Global.hpp>
 #include <Renderer/Window/Window.hpp>
@@ -9,6 +9,7 @@
 #include <Core/Actor.hpp>
 #include <GameFramework/Components/Components.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <GameFramework/GameplayClasses/Level/Level.hpp>
 
 #ifndef PRODUCTION
 void EditorViewport::display(UVK::GLFrameBuffer& fb, int& viewportWidth, int& viewportHeight, bool& bShow, UVK::Camera& camera, UVK::Actor& entity, glm::mat4& projection)
@@ -24,6 +25,7 @@ void EditorViewport::display(UVK::GLFrameBuffer& fb, int& viewportWidth, int& vi
         fb.init((int)ImGui::GetWindowWidth(), (int)ImGui::GetWindowHeight());
         viewportWidth = (int)ImGui::GetWindowWidth();
         viewportHeight = (int)ImGui::GetWindowHeight();
+        UVK::Level::getPawn(UVK::global.currentLevel)->camera.projection().aspectRatio() = ImGui::GetWindowWidth() / ImGui::GetWindowHeight();
     }
     ImGui::Image((void*)(intptr_t)fb.getFramebufferTexture(), ImVec2((float)viewportWidth, (float)viewportHeight), ImVec2(0, 1), ImVec2(1, 0));
 

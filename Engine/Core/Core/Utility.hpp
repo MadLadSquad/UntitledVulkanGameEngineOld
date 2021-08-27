@@ -1,5 +1,5 @@
 // Utility.hpp
-// Last update 25/7/2021 by Madman10K
+// Last update 27/8/2021 by Madman10K
 #pragma once
 #include <iostream>
 #include "Types.hpp"
@@ -9,6 +9,7 @@
  */
 namespace Utility
 {
+
     static void toLower(std::string& str)
     {
         std::transform(str.begin(), str.end(), str.begin(), ::tolower);

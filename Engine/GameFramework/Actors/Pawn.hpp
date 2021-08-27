@@ -1,5 +1,5 @@
-// APawn.hpp
-// Last update 21/7/2021 by Madman10K
+// Pawn.hpp
+// Last update 27/8/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 #include <Renderer/Camera/Camera.hpp>
@@ -9,14 +9,14 @@ namespace UVK
     /**
      * @brief an actor that the player can control
      */
-    class APawn
+    class Pawn
     {
     public:
         virtual void beginPlay() = 0;
         virtual void tick(float deltaTime) = 0;
         virtual void endPlay() = 0;
 
-        virtual ~APawn() = default;
+        virtual ~Pawn() = default;
         Camera camera;
 
         std::string name;
@@ -24,13 +24,19 @@ namespace UVK
         std::string devName;
 
         template<typename T>
-        static APawn* makePawn()
+        static Pawn* makePawn()
         {
             T* pw = new T();
             return pw;
         }
 
-        static void destroyPawn(APawn* pw);
+        template<typename T>
+        static T* cast(Pawn* pw)
+        {
+            return static_cast<T*>(pw);
+        }
+
+        static void destroyPawn(Pawn* pw);
     private:
 
     };

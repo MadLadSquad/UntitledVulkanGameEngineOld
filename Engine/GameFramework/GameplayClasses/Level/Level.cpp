@@ -1,5 +1,5 @@
 // Level.cpp
-// Last update 12/8/2021 by Madman10K
+// Last update 27/8/2021 by Madman10K
 #include "../../Components/Components.hpp"
 #include "Engine/Core/Core/Actor.hpp"
 #include <Events/Events.hpp>
@@ -146,7 +146,6 @@ void UVK::Level::openInternal(UVK::String location)
     if (!global.bEditor)
     {
         global.instance->events.callEnd();
-        global.ui.clear();
     }
     global.instance->events.clear();
 
@@ -228,4 +227,24 @@ void UVK::Level::tickAutohandle(float deltaTime) const
 void UVK::Level::beginAutohandle() const
 {
     gameMode->beginPlay();
+}
+
+UVK::PlayerController* UVK::Level::getPlayerController(UVK::Level* lvl)
+{
+    return lvl->gameMode->playerController;
+}
+
+UVK::Pawn* UVK::Level::getPawn(UVK::Level* lvl)
+{
+    return lvl->gameMode->playerController->pawn;
+}
+
+UVK::GameState* UVK::Level::getGameState(UVK::Level* lvl)
+{
+    return lvl->gameMode->gameState;
+}
+
+UVK::PlayerState* UVK::Level::getPlayerState(UVK::Level* lvl)
+{
+    return lvl->gameMode->playerState;
 }

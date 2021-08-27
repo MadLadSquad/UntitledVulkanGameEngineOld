@@ -1,8 +1,8 @@
 // PlayerState.hpp
-// Last update 19/7/2021 by Madman10K
+// Last update 27/8/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
-#include "../Actors/APawn.hpp"
+#include "../Actors/Pawn.hpp"
 
 namespace UVK
 {
@@ -21,6 +21,12 @@ namespace UVK
         {
             T* ps = new T();
             return ps;
+        }
+
+        template<typename T>
+        static T* cast(PlayerState* ps)
+        {
+            return static_cast<T*>(ps);
         }
 
         static void destroyPlayerState(PlayerState* ps);

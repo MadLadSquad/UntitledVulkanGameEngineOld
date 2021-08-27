@@ -1,5 +1,5 @@
 // DetailsPanel.cpp
-// Last update 12/8/2021 by Madman10K
+// Last update 27/8/2021 by Madman10K
 #include <GL/glew.h>
 #include <imgui.h>
 #include <cpp/imgui_stdlib.h>
@@ -171,12 +171,12 @@ void DetailsPanel::display(UVK::Actor& ent, UVK::Level* lvl, bool& bShow, bool& 
     ImGui::SameLine();
     ImGui::InputText("##Development Name##devname", &a.devName);
 
-    if (a.name == lvl->gameMode->pawn->name && a.id == lvl->gameMode->pawn->id && a.devName == lvl->gameMode->pawn->devName)
+    if (a.name == UVK::Level::getPawn(lvl)->name && a.id == UVK::Level::getPawn(lvl)->id && a.devName == UVK::Level::getPawn(lvl)->devName)
     {
         ImGui::Separator();
 
-        static float FOV = lvl->gameMode->pawn->camera.projection().fov();
-        static UVK::FVector2 planes = lvl->gameMode->pawn->camera.projection().planes();
+        static float FOV = UVK::Level::getPawn(lvl)->camera.projection().fov();
+        static UVK::FVector2 planes = UVK::Level::getPawn(lvl)->camera.projection().planes();
         ImGui::TextWrapped("Camera FOV");
         ImGui::SameLine();
         ImGui::SliderFloat("##Camera FOV fov", &FOV, 1.0f, 180.0f);
@@ -187,19 +187,19 @@ void DetailsPanel::display(UVK::Actor& ent, UVK::Level* lvl, bool& bShow, bool& 
         ImGui::SameLine();
         ImGui::SliderFloat("##Far Plane plane", &planes.y, 0.01f, 10000);
 
-        float& ar = lvl->gameMode->pawn->camera.projection().aspectRatio();
+        float& ar = UVK::Level::getPawn(lvl)->camera.projection().aspectRatio();
         static UVK::FVector2 aspect = UVK::FVector2(ImGui::GetWindowWidth(), ImGui::GetWindowHeight());
 
         ImGui::TextWrapped("Aspect Ratio");
         ImGui::SameLine();
         ImGui::DragFloat2("##Aspect Ratio ratio", glm::value_ptr(aspect), 1.0f, 0.01f);
 
-        if ((aspect.x / aspect.y) != ar || FOV != lvl->gameMode->pawn->camera.projection().fov() || planes != lvl->gameMode->pawn->camera.projection().planes())
+        if ((aspect.x / aspect.y) != ar || FOV != UVK::Level::getPawn(lvl)->camera.projection().fov() || planes != UVK::Level::getPawn(lvl)->camera.projection().planes())
         {
-            lvl->gameMode->pawn->camera.projection().fov() = FOV;
-            lvl->gameMode->pawn->camera.projection().planes() = planes;
+            UVK::Level::getPawn(lvl)->camera.projection().fov() = FOV;
+            UVK::Level::getPawn(lvl)->camera.projection().planes() = planes;
             ar = aspect.x / aspect.y;
-            lvl->gameMode->pawn->camera.projection().recalculateRH();
+            UVK::Level::getPawn(lvl)->camera.projection().recalculateRH();
         }
     }
 

@@ -1,5 +1,5 @@
 // Editor.cpp
-// Last update 12/8/2021 by Madman10K
+// Last update 27/8/2021 by Madman10K
 #include <GL/glew.h>
 #include <imgui_impl_vulkan.h>
 #include "Editor.hpp"
@@ -485,7 +485,7 @@ end4:
     if (bShowViewport)
     {
         style.WindowPadding = ImVec2(0.0f, 0.0f);
-        EditorViewport::display(fb, viewportWidth, viewportHeight, bShowViewport, camera, selectedEntity, lvl->gameMode->pawn->camera.projection().data());
+        EditorViewport::display(fb, viewportWidth, viewportHeight, bShowViewport, camera, selectedEntity, UVK::Level::getPawn(lvl)->camera.projection().data());
         style.WindowPadding = ImVec2(8.0f, 8.0f);
     }
 

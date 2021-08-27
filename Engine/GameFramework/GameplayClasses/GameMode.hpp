@@ -1,11 +1,11 @@
 // GameMode.hpp
-// Last update 19/7/2021 by Madman10K
+// Last update 27/8/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 #include "GameState.hpp"
 #include "PlayerState.hpp"
 #include "PlayerController.hpp"
-#include "../Actors/APawn.hpp"
+#include "../Actors/Pawn.hpp"
 
 namespace UVK
 {
@@ -21,16 +21,17 @@ namespace UVK
         virtual void tick(float deltaTime) = 0;
         virtual void endPlay() = 0;
 
-        GameState* gs = nullptr;
-        PlayerState* ps = nullptr;
-        PlayerController* pc = nullptr;
-        APawn* pawn = nullptr;
+        GameState* gameState = nullptr;
+        PlayerState* playerState = nullptr;
+        PlayerController* playerController = nullptr;
 
         virtual ~GameMode();
 
         void beginAutohandle() const;
         void tickAutohandle(float deltaTime) const;
         void endAutohandle() const;
+
+        static Pawn* getPawn(UVK::GameMode* gm);
 
         template<typename T>
         static GameMode* makeGameMode()
@@ -40,6 +41,12 @@ namespace UVK
         }
 
         static void destroyGameMode(GameMode* gm);
+
+        template<typename T>
+        static T* cast(GameMode* gm)
+        {
+            return static_cast<T*>(gm);
+        }
     private:
     };
 }

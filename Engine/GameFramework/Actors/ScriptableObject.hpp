@@ -1,5 +1,5 @@
 // ScriptableObject.hpp
-// Last update 2/7/2021 by Madman10K
+// Last update 27/8/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 
@@ -16,6 +16,12 @@ namespace UVK
         virtual void beginPlay() = 0;
         virtual void endPlay() = 0;
         virtual ~ScriptableObject() = default;
+
+        template<typename T>
+        static T* cast(ScriptableObject* so)
+        {
+            return static_cast<T*>(so);
+        }
 
         std::string name;
         std::string devname;

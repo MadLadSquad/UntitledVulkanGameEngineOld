@@ -1,5 +1,5 @@
 // Level.hpp
-// Last update 25/7/2021 by Madman10K
+// Last update 27/8/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 #include "../GameMode.hpp"
@@ -22,10 +22,7 @@ namespace UVK
         virtual void endPlay() = 0;
         virtual ~Level()
         {
-            if (gameMode != nullptr)
-            {
-                delete gameMode;
-            }
+            delete gameMode;
         }
 
         /**
@@ -56,6 +53,12 @@ namespace UVK
             };
         }
 
+        template<typename T>
+        static T* cast(Level* lvl)
+        {
+            return static_cast<T*>(lvl);
+        }
+
         GameMode* gameMode = nullptr;
 
         /**
@@ -76,6 +79,11 @@ namespace UVK
         static FVector4& getAmbientLighting();
         static FVector4& getSceneColour();
         static std::string& getLevelName();
+
+        static PlayerController* getPlayerController(Level* lvl);
+        static Pawn* getPawn(Level* lvl);
+        static GameState* getGameState(Level* lvl);
+        static PlayerState* getPlayerState(Level* lvl);
     private:
         friend class UVKGlobal;
 

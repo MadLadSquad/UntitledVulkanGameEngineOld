@@ -1,5 +1,5 @@
 // EditorLevel.hpp
-// Last update 25/7/2021 by Madman10K
+// Last update 27/8/2021 by Madman10K
 #pragma once
 #include "EditorGameMode.hpp"
 #include <GameFramework/GameplayClasses/Level/Level.hpp>
@@ -14,8 +14,7 @@ namespace UVK
     public:
         EditorLevel()
         {
-            auto* game = new EditorGameMode();
-            gameMode = game;
+            gameMode = GameMode::makeGameMode<EditorGameMode>();
         }
 
         virtual void beginPlay() override;
