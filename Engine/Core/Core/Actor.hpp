@@ -12,9 +12,9 @@ namespace UVK
     public:
         Actor() = default;
 
-        Actor(const std::string &nameN, uint64_t idN, const std::string &devNameN, bool bCreatedByLevel = false);
+        Actor(const std::string& nameN, uint64_t idN, const std::string& devNameN, bool bCreatedByLevel = false);
 
-        void create(const std::string &nameN, uint64_t idN, const std::string &devNameN, bool bCreatedByLevel);
+        void create(const std::string& nameN, uint64_t idN, const std::string& devNameN, bool bCreatedByLevel);
 
         template<typename T>
         auto& get()

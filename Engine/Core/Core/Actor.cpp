@@ -25,6 +25,7 @@ void UVK::Actor::create(const std::string& nameN, uint64_t idN, const std::strin
     a.id = idN;
     a.devName = devNameN;
 
+    // TODO: probably find a way to connect actors and scriptable objects together
     for (auto& b : global.instance->actorManager.data())
     {
         if (b->name == nameN && b->id == idN && b->devname == devNameN)
@@ -41,6 +42,8 @@ void UVK::Actor::destroy()
 
     std::vector<ScriptableObject*> temp;
     bool tested = false;
+
+    // TODO: Destroy Scriptable Object
     for (auto& a : global.instance->events.data())
     {
         if (a->id == component.id && a->name == component.name && a->devname == component.devName && !tested)

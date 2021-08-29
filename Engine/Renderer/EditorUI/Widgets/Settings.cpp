@@ -106,6 +106,7 @@ void Settings::displayKeybindEditor(bool& bOpen)
         ImGui::OpenPopup("Editor Keybinds");
     if (ImGui::BeginPopupModal("Editor Keybinds", &bOpen))
     {
+        int i = 0;
         for (auto& a : UVK::InputActions::getActions())
         {
             if (a.name.find("editor-") != std::string::npos)
@@ -116,13 +117,11 @@ void Settings::displayKeybindEditor(bool& bOpen)
                 ImGui::SameLine();
                 ImGui::InputText(static_cast<std::string>("##Name##" + a.name + std::to_string(a.keyCode)).c_str(), &a.name);
 
-                int i = a.keyCode;
-
                 ImGui::TextWrapped("Keycode");
                 ImGui::SameLine();
-                ImGui::InputInt("##Keycode", &i);
-                a.keyCode = i;
+                showKeySelect(static_cast<std::string>("##Name##" + a.name + std::to_string(a.keyCode) + std::to_string(i)).c_str(), a.keyCode);
                 ImGui::Separator();
+                i++;
             }
         }
 
@@ -162,6 +161,7 @@ void Settings::displayKeybindGame(bool& bOpen)
 
         ImGui::EndMenuBar();
 
+        int j = 0;
         for (int i = 0; i < UVK::InputActions::getActions().size(); i++)
         {
             if (UVK::InputActions::getActions()[i].name.find("editor-") == std::string::npos)
@@ -179,12 +179,11 @@ void Settings::displayKeybindGame(bool& bOpen)
                     ImGui::SameLine();
                     ImGui::InputText(static_cast<std::string>("##Name##" + UVK::InputActions::getActions()[i].name + std::to_string(UVK::InputActions::getActions()[i].keyCode)).c_str(), &UVK::InputActions::getActions()[i].name);
 
-                    int a = UVK::InputActions::getActions()[i].keyCode;
                     ImGui::TextWrapped("Keycode");
                     ImGui::SameLine();
-                    ImGui::InputInt(static_cast<std::string>("##Keycode##" + UVK::InputActions::getActions()[i].name + std::to_string(UVK::InputActions::getActions()[i].keyCode)).c_str(), &a);
-                    UVK::InputActions::getActions()[i].keyCode = a;
+                    showKeySelect(static_cast<std::string>("##Keycode##" + UVK::InputActions::getActions()[i].name + std::to_string(UVK::InputActions::getActions()[i].keyCode) + std::to_string(j)).c_str(), UVK::InputActions::getActions()[i].keyCode);
                     ImGui::Separator();
+                    j++;
                 }
             }
         }
@@ -480,5 +479,550 @@ void Settings::displayProjectSettings(std::string& name, std::string& ver, std::
             }
         }
         ImGui::EndPopup();
+    }
+}
+
+void Settings::showKeySelect(const char* name, uint16_t& key)
+{
+    static std::string text;
+    switch (key)
+    {
+    case Keys::UnknownKey:
+        text = "Unknown Key";
+        break;
+    case Keys::Space:
+        text = "Space";
+        break;
+    case Keys::Apostrophe:
+        text = "Apostrophe";
+        break;
+    case Keys::Comma:
+        text = "Comma";
+        break;
+    case Keys::Minus:
+        text = "Minus";
+        break;
+    case Keys::Period:
+        text = "Period";
+        break;
+    case Keys::Slash:
+        text = "Slash";
+        break;
+    case Keys::Zero:
+        text = "Zero";
+        break;
+    case Keys::One:
+        text = "One";
+        break;
+    case Keys::Two:
+        text = "Two";
+        break;
+    case Keys::Three:
+        text = "Three";
+        break;
+    case Keys::Four:
+        text = "Four";
+        break;
+    case Keys::Five:
+        text = "Five";
+        break;
+    case Keys::Six:
+        text = "Six";
+        break;
+    case Keys::Seven:
+        text = "Seven";
+        break;
+    case Keys::Eight:
+        text = "Eight";
+        break;
+    case Keys::Nine:
+        text = "Nine";
+        break;
+    case Keys::Semicolon:
+        text = "Semicolon";
+        break;
+    case Keys::Equal:
+        text = "Equal";
+        break;
+    case Keys::A:
+        text = "A";
+        break;
+    case Keys::B:
+        text = "B";
+        break;
+    case Keys::C:
+        text = "C";
+        break;
+    case Keys::D:
+        text = "D";
+        break;
+    case Keys::E:
+        text = "E";
+        break;
+    case Keys::F:
+        text = "F";
+        break;
+    case Keys::G:
+        text = "G";
+        break;
+    case Keys::H:
+        text = "H";
+        break;
+    case Keys::I:
+        text = "I";
+        break;
+    case Keys::J:
+        text = "J";
+        break;
+    case Keys::K:
+        text = "K";
+        break;
+    case Keys::L:
+        text = "M";
+        break;
+    case Keys::M:
+        text = "M";
+        break;
+    case Keys::N:
+        text = "N";
+        break;
+    case Keys::O:
+        text = "O";
+        break;
+    case Keys::P:
+        text = "P";
+        break;
+    case Keys::Q:
+        text = "Q";
+        break;
+    case Keys::R:
+        text = "R";
+        break;
+    case Keys::S:
+        text = "S";
+        break;
+    case Keys::T:
+        text = "T";
+        break;
+    case Keys::U:
+        text = "U";
+        break;
+    case Keys::V:
+        text = "V";
+        break;
+    case Keys::W:
+        text = "W";
+        break;
+    case Keys::X:
+        text = "X";
+        break;
+    case Keys::Y:
+        text = "Y";
+        break;
+    case Keys::Z:
+        text = "Z";
+        break;
+    case Keys::LeftBracket:
+        text = "Left Bracket";
+        break;
+    case Keys::Backslash:
+        text = "Backslash";
+        break;
+    case Keys::RightBracket:
+        text = "Right Bracket";
+        break;
+    case Keys::GraveAccent:
+        text = "GraveAccent";
+        break;
+    case Keys::WorldOne:
+        text = "World One";
+        break;
+    case Keys::WorldTwo:
+        text = "World Two";
+        break;
+    case Keys::Escape:
+        text = "Escape";
+        break;
+    case Keys::Enter:
+        text = "Enter";
+        break;
+    case Keys::Tab:
+        text = "Tab";
+        break;
+    case Keys::Backspace:
+        text = "Backspace";
+        break;
+    case Keys::Insert:
+        text = "Insert";
+        break;
+    case Keys::Delete:
+        text = "Delete";
+        break;
+    case Keys::RightArrow:
+        text = "Right Arrow";
+        break;
+    case Keys::LeftArrow:
+        text = "Left Arrow";
+        break;
+    case Keys::DownArrow:
+        text = "Down Arrow";
+        break;
+    case Keys::UpArrow:
+        text = "Up Arrow";
+        break;
+    case Keys::PageUp:
+        text = "Page Up";
+        break;
+    case Keys::PageDown:
+        text = "Page Down";
+        break;
+    case Keys::Home:
+        text = "World Two";
+        break;
+    case Keys::End:
+        text = "End";
+        break;
+    case Keys::CapsLock:
+        text = "Caps Lock";
+        break;
+    case Keys::ScrollLock:
+        text = "Scroll Lock";
+        break;
+    case Keys::NumLock:
+        text = "Num Lock";
+        break;
+    case Keys::PrintScreen:
+        text = "Print Screen";
+        break;
+    case Keys::Pause:
+        text = "Pause";
+        break;
+    case Keys::F1:
+        text = "F1";
+        break;
+    case Keys::F2:
+        text = "F2";
+        break;
+    case Keys::F3:
+        text = "F3";
+        break;
+    case Keys::F4:
+        text = "F4";
+        break;
+    case Keys::F5:
+        text = "F5";
+        break;
+    case Keys::F6:
+        text = "F6";
+        break;
+    case Keys::F7:
+        text = "F7";
+        break;
+    case Keys::F8:
+        text = "F8";
+        break;
+    case Keys::F9:
+        text = "F9";
+        break;
+    case Keys::F10:
+        text = "F10";
+        break;
+    case Keys::F11:
+        text = "F11";
+        break;
+    case Keys::F12:
+        text = "F12";
+        break;
+    case Keys::F13:
+        text = "F13";
+        break;
+    case Keys::F14:
+        text = "F14";
+        break;
+    case Keys::F15:
+        text = "F15";
+        break;
+    case Keys::F16:
+        text = "F16";
+        break;
+    case Keys::F17:
+        text = "F17";
+        break;
+    case Keys::F18:
+        text = "F18";
+        break;
+    case Keys::F19:
+        text = "F19";
+        break;
+    case Keys::F20:
+        text = "F20";
+        break;
+    case Keys::F21:
+        text = "F21";
+        break;
+    case Keys::F22:
+        text = "F22";
+        break;
+    case Keys::F23:
+        text = "F23";
+        break;
+    case Keys::F24:
+        text = "F24";
+        break;
+    case Keys::F25:
+        text = "F25";
+        break;
+    case Keys::NumPadZero:
+        text = "Numpad Zero";
+        break;
+    case Keys::NumPadOne:
+        text = "Numpad One";
+        break;
+    case Keys::NumPadTwo:
+        text = "Numpad Two";
+        break;
+    case Keys::NumPadThree:
+        text = "Numpad Three";
+        break;
+    case Keys::NumPadFour:
+        text = "Numpad Four";
+        break;
+    case Keys::NumPadFive:
+        text = "Numpad Five";
+        break;
+    case Keys::NumPadSix:
+        text = "Numpad Six";
+        break;
+    case Keys::NumPadSeven:
+        text = "Numpad Seven";
+        break;
+    case Keys::NumPadEight:
+        text = "Numpad Eight";
+        break;
+    case Keys::NumPadNine:
+        text = "Numpad Nine";
+        break;
+    case Keys::NumPadDecimal:
+        text = "Numpad Decimal";
+        break;
+    case Keys::NumPadDivide:
+        text = "Numpad Divide";
+        break;
+    case Keys::NumPadMultiply:
+        text = "Numpad Multiply";
+        break;
+    case Keys::NumPadSubtract:
+        text = "Numpad Subtract";
+        break;
+    case Keys::NumPadAdd:
+        text = "Numpad Add";
+        break;
+    case Keys::NumPadEnter:
+        text = "Numpad Enter";
+        break;
+    case Keys::NumPadEqual:
+        text = "Numpad Equal";
+        break;
+    case Keys::LeftShift:
+        text = "Left Shift";
+        break;
+    case Keys::LeftAlt:
+        text = "Left Alt";
+        break;
+    case Keys::LeftControl:
+        text = "Left Control";
+        break;
+    case Keys::LeftSuper:
+        text = "Left Super/CMD/Windows";
+        break;
+    case Keys::RightShift:
+        text = "Right Shift";
+        break;
+    case Keys::RightControl:
+        text = "Right Control";
+        break;
+    case Keys::RightAlt:
+        text = "Right Alt";
+        break;
+    case Keys::RightSuper:
+        text = "Right Super/CMD/Windows";
+        break;
+    case Keys::Menu:
+        text = "Menu";
+        break;
+    case Keys::MouseButtonLeft:
+        text = "Mouse Button 1/Left";
+        break;
+    case Keys::MouseButtonRight:
+        text = "Mouse Button 2/Right";
+        break;
+    case Keys::MouseButtonMiddle:
+        text = "Mouse Button 3/Middle";
+        break;
+    case Keys::MouseButton4:
+        text = "Mouse Button 4";
+        break;
+    case Keys::MouseButton5:
+        text = "Mouse Button 5";
+        break;
+    case Keys::MouseButton6:
+        text = "Mouse Button 6";
+        break;
+    case Keys::MouseButton7:
+        text = "Mouse Button 7";
+        break;
+    case Keys::MouseButton8:
+        text = "Mouse Button 8/Last";
+        break;
+    default:
+        text = "Unknown Key";
+        break;
+    }
+
+    if (ImGui::BeginCombo(name, text.c_str()))
+    {
+        if (ImGui::MenuItem("Unknown Key")) key = Keys::UnknownKey;
+        if (ImGui::MenuItem("Space")) key = Keys::Space;
+        if (ImGui::MenuItem("Apostrophe")) key = Keys::Apostrophe;
+        if (ImGui::MenuItem("Comma")) key = Keys::Comma;
+        if (ImGui::MenuItem("Minus")) key = Keys::Minus;
+        if (ImGui::MenuItem("Period")) key = Keys::Period;
+        if (ImGui::MenuItem("Slash")) key = Keys::Slash;
+        if (ImGui::MenuItem("Zero")) key = Keys::Zero;
+        if (ImGui::MenuItem("One")) key = Keys::One;
+        if (ImGui::MenuItem("Two")) key = Keys::Two;
+        if (ImGui::MenuItem("Three")) key = Keys::Three;
+        if (ImGui::MenuItem("Four")) key = Keys::Four;
+        if (ImGui::MenuItem("Five")) key = Keys::Five;
+        if (ImGui::MenuItem("Six")) key = Keys::Six;
+        if (ImGui::MenuItem("Seven")) key = Keys::Seven;
+        if (ImGui::MenuItem("Eight")) key = Keys::Eight;
+        if (ImGui::MenuItem("Nine")) key = Keys::Nine;
+        if (ImGui::MenuItem("Semicolon")) key = Keys::Semicolon;
+        if (ImGui::MenuItem("Equal")) key = Keys::Equal;
+
+        ImGui::Separator();
+
+        if (ImGui::MenuItem("A")) key = Keys::A;
+        if (ImGui::MenuItem("B")) key = Keys::B;
+        if (ImGui::MenuItem("C")) key = Keys::C;
+        if (ImGui::MenuItem("D")) key = Keys::D;
+        if (ImGui::MenuItem("E")) key = Keys::E;
+        if (ImGui::MenuItem("F")) key = Keys::F;
+        if (ImGui::MenuItem("G")) key = Keys::G;
+        if (ImGui::MenuItem("H")) key = Keys::H;
+        if (ImGui::MenuItem("I")) key = Keys::I;
+        if (ImGui::MenuItem("J")) key = Keys::J;
+        if (ImGui::MenuItem("K")) key = Keys::K;
+        if (ImGui::MenuItem("L")) key = Keys::L;
+        if (ImGui::MenuItem("M")) key = Keys::M;
+        if (ImGui::MenuItem("N")) key = Keys::N;
+        if (ImGui::MenuItem("O")) key = Keys::O;
+        if (ImGui::MenuItem("P")) key = Keys::P;
+        if (ImGui::MenuItem("Q")) key = Keys::Q;
+        if (ImGui::MenuItem("R")) key = Keys::R;
+        if (ImGui::MenuItem("S")) key = Keys::S;
+        if (ImGui::MenuItem("T")) key = Keys::T;
+        if (ImGui::MenuItem("U")) key = Keys::U;
+        if (ImGui::MenuItem("V")) key = Keys::V;
+        if (ImGui::MenuItem("W")) key = Keys::W;
+        if (ImGui::MenuItem("X")) key = Keys::X;
+        if (ImGui::MenuItem("Y")) key = Keys::Y;
+        if (ImGui::MenuItem("Z")) key = Keys::Z;
+
+        ImGui::Separator();
+
+        if (ImGui::MenuItem("Left Bracket")) key = Keys::LeftBracket;
+        if (ImGui::MenuItem("Backslash")) key = Keys::Backslash;
+        if (ImGui::MenuItem("Right Bracket")) key = Keys::RightBracket;
+        if (ImGui::MenuItem("Grave Accent")) key = Keys::GraveAccent;
+        if (ImGui::MenuItem("World One")) key = Keys::WorldOne;
+        if (ImGui::MenuItem("World Two")) key = Keys::WorldTwo;
+        if (ImGui::MenuItem("Escape")) key = Keys::Escape;
+        if (ImGui::MenuItem("Enter")) key = Keys::Enter;
+        if (ImGui::MenuItem("Tab")) key = Keys::Tab;
+        if (ImGui::MenuItem("Backspace")) key = Keys::Backspace;
+        if (ImGui::MenuItem("Insert")) key = Keys::Insert;
+        if (ImGui::MenuItem("Delete")) key = Keys::Delete;
+
+        ImGui::Separator();
+
+        if (ImGui::MenuItem("Right Arrow")) key = Keys::RightArrow;
+        if (ImGui::MenuItem("Left Arrow")) key = Keys::LeftArrow;
+        if (ImGui::MenuItem("Down Arrow")) key = Keys::DownArrow;
+        if (ImGui::MenuItem("Up Arrow")) key = Keys::UpArrow;
+
+        ImGui::Separator();
+
+        if (ImGui::MenuItem("Page Up")) key = Keys::PageUp;
+        if (ImGui::MenuItem("Page Down")) key = Keys::PageDown;
+        if (ImGui::MenuItem("Home")) key = Keys::Home;
+        if (ImGui::MenuItem("End")) key = Keys::End;
+        if (ImGui::MenuItem("Caps Lock")) key = Keys::CapsLock;
+        if (ImGui::MenuItem("Scroll Lock")) key = Keys::ScrollLock;
+        if (ImGui::MenuItem("Num Lock")) key = Keys::NumLock;
+        if (ImGui::MenuItem("Print Screen")) key = Keys::PrintScreen;
+        if (ImGui::MenuItem("Pause")) key = Keys::Pause;
+
+        ImGui::Separator();
+
+        if (ImGui::MenuItem("F1")) key = Keys::F1;
+        if (ImGui::MenuItem("F2")) key = Keys::F2;
+        if (ImGui::MenuItem("F3")) key = Keys::F3;
+        if (ImGui::MenuItem("F4")) key = Keys::F4;
+        if (ImGui::MenuItem("F5")) key = Keys::F5;
+        if (ImGui::MenuItem("F6")) key = Keys::F6;
+        if (ImGui::MenuItem("F7")) key = Keys::F7;
+        if (ImGui::MenuItem("F8")) key = Keys::F8;
+        if (ImGui::MenuItem("F9")) key = Keys::F9;
+        if (ImGui::MenuItem("F10")) key = Keys::F10;
+        if (ImGui::MenuItem("F11")) key = Keys::F11;
+        if (ImGui::MenuItem("F12")) key = Keys::F12;
+        if (ImGui::MenuItem("F13")) key = Keys::F13;
+        if (ImGui::MenuItem("F14")) key = Keys::F14;
+        if (ImGui::MenuItem("F15")) key = Keys::F15;
+        if (ImGui::MenuItem("F16")) key = Keys::F16;
+        if (ImGui::MenuItem("F17")) key = Keys::F17;
+        if (ImGui::MenuItem("F18")) key = Keys::F18;
+        if (ImGui::MenuItem("F19")) key = Keys::F19;
+        if (ImGui::MenuItem("F20")) key = Keys::F20;
+        if (ImGui::MenuItem("F21")) key = Keys::F21;
+        if (ImGui::MenuItem("F22")) key = Keys::F22;
+        if (ImGui::MenuItem("F23")) key = Keys::F23;
+        if (ImGui::MenuItem("F24")) key = Keys::F24;
+        if (ImGui::MenuItem("F25")) key = Keys::F25;
+
+        ImGui::Separator();
+
+        if (ImGui::MenuItem("Num Pad Zero")) key = Keys::NumPadZero;
+        if (ImGui::MenuItem("Num Pad One")) key = Keys::NumPadOne;
+        if (ImGui::MenuItem("Num Pad Two")) key = Keys::NumPadTwo;
+        if (ImGui::MenuItem("Num Pad Three")) key = Keys::NumPadThree;
+        if (ImGui::MenuItem("Num Pad Four")) key = Keys::NumPadFour;
+        if (ImGui::MenuItem("Num Pad Five")) key = Keys::NumPadFive;
+        if (ImGui::MenuItem("Num Pad Six")) key = Keys::NumPadSix;
+        if (ImGui::MenuItem("Num Pad Seven")) key = Keys::NumPadSeven;
+        if (ImGui::MenuItem("Num Pad Eight")) key = Keys::NumPadEight;
+        if (ImGui::MenuItem("Num Pad Nine")) key = Keys::NumPadNine;
+        if (ImGui::MenuItem("Num Pad Decimal")) key = Keys::NumPadDecimal;
+        if (ImGui::MenuItem("Num Pad Divide")) key = Keys::NumPadDivide;
+        if (ImGui::MenuItem("Num Pad Multiply")) key = Keys::NumPadMultiply;
+        if (ImGui::MenuItem("Num Pad Subtract")) key = Keys::NumPadSubtract;
+        if (ImGui::MenuItem("Num Pad Add")) key = Keys::NumPadAdd;
+        if (ImGui::MenuItem("Num Pad Enter")) key = Keys::NumPadEnter;
+        if (ImGui::MenuItem("Num Pad Equal")) key = Keys::NumPadEqual;
+
+        ImGui::Separator();
+
+        if (ImGui::MenuItem("Mouse Button 1/Left")) key = Keys::MouseButtonLeft;
+        if (ImGui::MenuItem("Mouse Button 2/Right")) key = Keys::MouseButtonRight;
+        if (ImGui::MenuItem("Mouse Button 3/Middle")) key = Keys::MouseButtonMiddle;
+        if (ImGui::MenuItem("Mouse Button 4")) key = Keys::MouseButton4;
+        if (ImGui::MenuItem("Mouse Button 5")) key = Keys::MouseButton5;
+        if (ImGui::MenuItem("Mouse Button 6")) key = Keys::MouseButton6;
+        if (ImGui::MenuItem("Mouse Button 7")) key = Keys::MouseButton7;
+        if (ImGui::MenuItem("Mouse Button 8/Last")) key = Keys::MouseButtonLast;
+
+        ImGui::EndCombo();
     }
 }

@@ -5,6 +5,8 @@
 
 namespace Settings
 {
+    void showKeySelect(const char* name, uint16_t& key);
+
     void displayWindow(bool& bOpen);
     void displayRenderer(bool& bOpen);
     void displayKeybindEditor(bool& bOpen);
