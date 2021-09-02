@@ -1,6 +1,5 @@
 // Theme.cpp
-// Last update 12/8/2021 by Madman10K
-#include <GL/glew.h>
+// Last update 2/9/2021 by Madman10K
 #include <Core.hpp>
 #include "Theme.hpp"
 #include <yaml.h>
@@ -48,7 +47,6 @@ YAML::Emitter& operator<<(YAML::Emitter& out, const ImVec4& vect)
 void UVK::EditorTheme::setTheme(UVK::String theme)
 {
     YAML::Node out;
-    bool bUseCustomTheme = true;
 
     try
     {
@@ -87,7 +85,6 @@ void UVK::EditorTheme::setTheme(UVK::String theme)
         fontLoc = "../Content/" + out["font"].as<std::string>();
         fontSize = out["font-size"].as<int>();
     }
-
 }
 
 void UVK::EditorTheme::useTheme()

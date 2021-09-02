@@ -1,5 +1,5 @@
 // Statistics.hpp
-// Last update 12/8/2021 by Madman10K
+// Last update 2/9/2021 by Madman10K
 #include "Statistics.hpp"
 
 #ifndef PRODUCTION
@@ -33,7 +33,6 @@ void Statistics::display(double* data, bool& bShow)
     {
         rdata.AddPoint(t, ImGui::GetIO().Framerate);
         rdata2.AddPoint(t, 1000.0f / ImGui::GetIO().Framerate);
-        frame = 0;
     }
 
     // NEVER MAKE THIS HIGHER THAN 1 SECOND. PERFORMANCE IMPACT CAN BE AS LARGE AS 97% LOWER FRAME TIMINGS

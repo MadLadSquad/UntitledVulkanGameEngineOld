@@ -1,14 +1,13 @@
 // Actor.cpp
-// Last update 21/7/2021 by Madman10K
+// Last update 2/9/2021 by Madman10K
 #include <GL/glew.h>
 #include "Actor.hpp"
 #include <GameFramework/Actors/ActorManager.hpp>
-#include <Core/Events/Events.hpp>
 #include "Engine/GameFramework/Components/Components.hpp"
 
-UVK::Actor::Actor(const std::string& nameN, uint64_t idN, const std::string& devNameN, bool bCreatedByLevel)
+UVK::Actor::Actor(const std::string& nameN, uint64_t idN, const std::string& devNameN)
 {
-    create(nameN, idN, devNameN, bCreatedByLevel);
+    create(nameN, idN, devNameN);
 }
 
 entt::entity& UVK::Actor::data()
@@ -16,7 +15,7 @@ entt::entity& UVK::Actor::data()
     return entity;
 }
 
-void UVK::Actor::create(const std::string& nameN, uint64_t idN, const std::string& devNameN, bool bCreatedByLevel)
+void UVK::Actor::create(const std::string &nameN, uint64_t idN, const std::string &devNameN)
 {
     entity = global.ecs.data().create();
 

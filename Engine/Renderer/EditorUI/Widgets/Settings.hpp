@@ -1,5 +1,5 @@
 // Settings.hpp
-// Last update 18/7/2021 by Madman10K
+// Last update 2/9/2021 by Madman10K
 #pragma once
 #include <iostream>
 

@@ -1,12 +1,11 @@
 // Window.cpp
-// Last update 12/8/2021 by Madman10K
+// Last update 2/9/2021 by Madman10K
 #include <GL/glew.h>
 #include "Window.hpp"
 #include <glfw3.h>
 #include <yaml.h>
 #include <Engine/Core/Core/Global.hpp>
 #include <stb/stb_image.h>
-#include "../Renderer.hpp"
 
 double UVK::WindowInternal::getYMousePositionChange()
 {
@@ -37,12 +36,12 @@ GLFWwindow* UVK::WindowInternal::getWindow() const
 
 UVK::FVector2 UVK::WindowInternal::getLastMousePosition() const
 {
-    return FVector2(lastPosX, lastPosY);
+    return { lastPosX, lastPosY };
 }
 
 UVK::FVector2 UVK::WindowInternal::getCurrentMousePosition() const
 {
-    return FVector2(posX, posY);
+    return { posX, posY };
 }
 
 void UVK::WindowInternal::configureCallBacks()
@@ -372,7 +371,7 @@ int UVK::WindowInternal::getBufferWidth() const
 
 UVK::FVector2 UVK::WindowInternal::getMousePositionChange()
 {
-    return FVector2(getXMousePositionChange(), getYMousePositionChange());
+    return { getXMousePositionChange(), getYMousePositionChange() };
 }
 
 int UVK::WindowInternal::getBufferHeight() const
@@ -425,7 +424,7 @@ void UVK::WindowInternal::saveGameKeybinds()
     file.close();
 }
 
-void UVK::WindowInternal::saveWindowSettings()
+void UVK::WindowInternal::saveWindowSettings() const
 {
     YAML::Emitter out;
     out << YAML::BeginMap << YAML::Key << "image" << YAML::Value << resources.image;

@@ -1,5 +1,5 @@
 // Window.hpp
-// Last update 1/8/2021 by Madman10K
+// Last update 2/9/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 
@@ -76,7 +76,7 @@ namespace UVK
 
         static void saveEditorKeybinds();
         static void saveGameKeybinds();
-        void saveWindowSettings();
+        void saveWindowSettings() const;
 
         friend class GLPipeline;
         friend class Renderer;

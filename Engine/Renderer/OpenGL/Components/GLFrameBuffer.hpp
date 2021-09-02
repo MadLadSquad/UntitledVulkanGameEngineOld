@@ -1,5 +1,5 @@
 // GLFrameBuffer.hpp
-// Last update 2/7/2021 by Madman10K
+// Last update 2/9/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 
@@ -30,23 +30,12 @@ namespace UVK
 
         void init(int width, int height);
 
-        static void unbindFramebuffer()
-        {
-            glBindFramebuffer(GL_FRAMEBUFFER, 0);
-        }
-
-        void destroyFramebuffer()
-        {
-            glDeleteFramebuffers(1, &FBO);
-        }
+        static void unbindFramebuffer();
+        void destroyFramebuffer();
     private:
         friend class GLPipeline;
 
-
-        void useFramebuffer() const
-        {
-            glBindFramebuffer(GL_FRAMEBUFFER, FBO);
-        }
+        void useFramebuffer() const;
 
         uint32_t FBO = 0;
         uint32_t framebufferTexture = 0;

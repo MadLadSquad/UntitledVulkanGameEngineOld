@@ -1,6 +1,5 @@
 // ECSInterface.cpp
-// Last update 1/8/2021 by Madman10K
-#include <GL/glew.h>
+// Last update 2/9/2021 by Madman10K
 #include "ECSInterface.hpp"
 #include <Core/Global.hpp>
 

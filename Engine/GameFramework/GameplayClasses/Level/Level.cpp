@@ -1,5 +1,5 @@
 // Level.cpp
-// Last update 27/8/2021 by Madman10K
+// Last update 2/9/2021 by Madman10K
 #include "../../Components/Components.hpp"
 #include "Engine/Core/Core/Actor.hpp"
 #include <Events/Events.hpp>
@@ -173,7 +173,7 @@ void UVK::Level::openInternal(UVK::String location)
                 id = 331;
             }
 
-            auto act = Actor(name, id, devName, true);
+            auto act = Actor(name, id, devName);
 
             if (entity["audio-pitch"] && entity["audio-gain"] && entity["audio-location"])
             {

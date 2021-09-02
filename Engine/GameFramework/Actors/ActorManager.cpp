@@ -1,6 +1,5 @@
 // ActorManager.cpp
-// Last update 2/7/2021 by Madman10K
-#include <GL/glew.h>
+// Last update 2/9/2021 by Madman10K
 #include "ActorManager.hpp"
 #include "Generated/ActorList.hpp"
 

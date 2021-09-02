@@ -1,6 +1,5 @@
 // VKGraphicsPipeline.cpp
-// Last update 16/8/2021 by Madman10K
-#include <GL/glew.h>
+// Last update 2/9/2021 by Madman10K
 #include "VKGraphicsPipeline.hpp"
 #include "Renderer/Vulkan/Components/VKShader.hpp"
 #include <Core/Global.hpp>
@@ -9,7 +8,6 @@
 #ifndef __APPLE__
     #include <vulkan/vulkan.h>
 #endif
-#include "../Components/VKMesh.hpp"
 
 void UVK::VKGraphicsPipeline::create()
 {

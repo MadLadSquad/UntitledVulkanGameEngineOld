@@ -1,5 +1,5 @@
 // Actor.hpp
-// Last update 25/7/2021 by Madman10K
+// Last update 2/9/2021 by Madman10K
 #pragma once
 #include <Core/Global.hpp>
 #include <GameFramework/Actors/ScriptableObject.hpp>
@@ -12,9 +12,9 @@ namespace UVK
     public:
         Actor() = default;
 
-        Actor(const std::string& nameN, uint64_t idN, const std::string& devNameN, bool bCreatedByLevel = false);
+        Actor(const std::string& nameN, uint64_t idN, const std::string& devNameN);
 
-        void create(const std::string& nameN, uint64_t idN, const std::string& devNameN, bool bCreatedByLevel);
+        void create(const std::string &nameN, uint64_t idN, const std::string &devNameN);
 
         template<typename T>
         auto& get()

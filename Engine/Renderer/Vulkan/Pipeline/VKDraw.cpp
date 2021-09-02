@@ -1,6 +1,5 @@
 // VKDraw.cpp
-// Last update 16/8/2021 by Madman10K
-#include <GL/glew.h>
+// Last update 2/9/2021 by Madman10K
 #include "VKDraw.hpp"
 #include <Core.hpp>
 #include "VKDevice.hpp"

@@ -1,7 +1,6 @@
 // VKSwapchain.cpp
-// Last update 16/8/2021 by Madman10K
+// Last update 2/9/2021 by Madman10K
 #ifndef __APPLE__
-#include <GL/glew.h>
 #define GLFW_INCLUDE_VULKAN
 #include <Engine/Core/Core/Global.hpp>
 #include <Core.hpp>

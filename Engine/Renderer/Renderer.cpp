@@ -1,6 +1,5 @@
 // Renderer.cpp
-// Last update 6/7/2021 by Madman10K
-#include <GL/glew.h>
+// Last update 2/9/2021 by Madman10K
 #include "Renderer.hpp"
 #include <Engine/Core/Core/Global.hpp>
 

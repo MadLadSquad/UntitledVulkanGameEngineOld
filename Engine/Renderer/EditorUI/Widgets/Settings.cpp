@@ -1,6 +1,5 @@
 // Settings.cpp
-// Last update 2/8/2021 by Madman10K
-#include <GL/glew.h>
+// Last update 2/9/2021 by Madman10K
 #include "Settings.hpp"
 #include <imgui.h>
 #include <cpp/imgui_stdlib.h>
@@ -578,7 +577,7 @@ void Settings::showKeySelect(const char* name, uint16_t& key)
         text = "K";
         break;
     case Keys::L:
-        text = "M";
+        text = "L";
         break;
     case Keys::M:
         text = "M";
