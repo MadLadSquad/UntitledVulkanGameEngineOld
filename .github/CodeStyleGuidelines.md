@@ -97,6 +97,7 @@ When you want to pass the memory address of a variable or dereference a pointer,
 int a = *b;
 int* c = &d;
 ```
+Finally when initializing structs, defining enums, etc we don't add a trailing comma for the last element
 ## Naming
 ### Files
 All files should be named like this
@@ -135,7 +136,7 @@ When creating functions always make them like this
 ```cpp
 void iAmAFunction();
 ```
-Single letter varibales or abbriviations are acceptable when naming an iterator, an index in a loop or a small temporary variable. It should be noted that we have a naming standart to always call the iterator in a range based for loop `a`, while calling the index in a regular for loop `i` and a full iterator as `it`, though these are more of an unofficial rules so you are not required to follow them
+Single letter varibales or abbriviations are acceptable when naming an iterator, an index in a loop or a small temporary variable. It should be noted that we have unofficial rules regarding short names. For example we mostly call the iterator in a range based for loop `a`, while calling the index in a regular for loop `i` and a full iterator as `it`, though these unofficial so you aren't required to follow them in your own code
 ```cpp
 for (auto& a : array)
 {
@@ -156,4 +157,24 @@ though there is a variation where you can do the reverse
 ```cpp
 class Settings; // The internal setting class
 class SettingsInterface; // An the interface into the settings class
+```
+When naming macros and enum members, always use the following naming
+```cpp
+#define THIS_IS_A_MACRO
+enum SomeEnum
+{
+    TYPE_X,
+    TYPE_Y,
+    TYPE_Z
+};
+```
+When talking about macros there are some exceptins such as when making a universal `std` interface like for the filesystem API
+```cpp
+#if __has_include(<filesystem>)
+    #include <filesystem>
+    #define std_filesystem std::filesystem
+#else
+    #include <experimental/filesystem>
+    #define std_filesystem std::experimental::filesystem
+#endif
 ```
