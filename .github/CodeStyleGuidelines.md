@@ -178,3 +178,11 @@ When talking about macros there are some exceptins such as when making a univers
     #define std_filesystem std::experimental::filesystem
 #endif
 ```
+### Code structure
+1. Always add `#pragma once` to the top of header files
+2. Always define classes inside the `UVK` namespace
+3. Do not create singletons, instead add the classes as members of the `UVKGlobal` class
+4. Interfaces to internal classes should only contain static functions
+5. Use the project's defined types(such as  FVector instead of glm::vec3) when possible
+6. Always define a default constructor even if you are going to mark it a default
+7. If possible try to use the default constructor to initialize variables automatically
