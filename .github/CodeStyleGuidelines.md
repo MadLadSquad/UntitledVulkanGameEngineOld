@@ -1,42 +1,188 @@
 # Code Style Guidelines
-This document defines the code style guidelines everyone needs to follow.
-## For the engine developer
-### For everyone
-1.  Variable and function names look like this
+The following code style guidelines should be followed
+## Braces and whitespaces
+When declaring a scope, always have the opening bracket on a new line like this
 ```cpp
-int iAmNumber = 0;
-
-void iPrintANumber(int thisArgIsANumber);
-```
-2.  Booleans start with lower case 'b'
-3.  Types are named like this
-```cpp
-ThisIsAType
-```
-4.  Defines and enum members are typed like this
-```cpp
-#define I_AM_A_MACRO
-
-enum MyEnum
+while (true)
 {
-    I_AM_AN_ENUM_MEMBER
+    doStuff();
+}
+```
+When declaring functions, there is no space between the last character of the function's name and the `(` symbol
+```
+void iAmAFunction();
+```
+It's the opposite when talking about `while` loops, `for` loops, `if` and `switch` statements
+```cpp
+while (true)
+{
+    doStuff();
+}
+```
+There is no padding for arguments of loops, functions or statements
+```cpp
+while (true)
+{
+    doStuff();
+}
+```
+When declaring an inline scope for any purpose, always add padding to the start and the end
+```cpp
+int arr[5] = { 1, 2, 3, 4, 5 };
+
+iTakeAFunctionPointer([&](){ doStuff(); });
+
+iUseStdInitializerList({ 1.0f, 1.0f, 1.0f });
+
+void iAmAFunctionWithAnInlineScope() { doStuff; };
+```
+If declaring a function with an inline scope(not to be confused with inline functions), add a space between the scope and the `)` symbol
+```cpp
+void iAmAFunctionWithAnInlineScope() { doStuff; };
+```
+When using boolean or bitwise operators, always add padding between the 2 variables
+```cpp
+if (a == b)
+    doStuff();
+    
+int e = c | d;
+```
+When assigning a value to a variable, always add padding
+```cpp
+int a = 5;
+```
+When filling a long initializer list always put the opening bracked on a new line, but keep the equal sign on the same line as the variable's declaration
+```cpp
+SomeBigStruct bigStruct = 
+{
+    10, 20, 30, 40, 50, 60
 };
 ```
-5.  Scope open bracket is on a new line
-## Components
-1.  Components are always structs
-2.  Variables in components are always public if they are used in the process of saving the component to a level
-3.  Components can contain functions
-4.  Components used for debug should be marked as such
-5.  Components that are editor runtime only should be marked as such
-6.  Always make sure to fill your component with default data when creating it
-## Internal classes
-1.  All variables are private and accessed with getter and setter functions
-2.  Classes should always have some type of constructor
-3.  Classes can be global variables only if and when there needs to be 1 instance of them
-## UI
-1.  Editor UI should be labeled on the right, content on the left
-2.  An editor UI widget can be contained in the GLRenderer.cpp or in a separate file in a namespace with the name of the widget
-3.  The render function for UI is a static function that is always called display
-## For the game developer
-Coming soon
+Since we use C++20 we have access to designated initializers. This means that if a struct is long and contains a lot of different values of different types, you can initialize it like this
+```cpp
+SomeVeryLargeStruct largeStruct =
+{
+    .type = STRUCT_TYPE_SOMETHING,
+    .attributes = &attributes,
+    .usesAcceleration = false,
+};
+```
+Sometimes when used for specific purposes, arrays can have different formatting. An example of that is an index buffer
+```cpp
+unsigned int indices[] = 
+{
+    0, 3, 1,
+    1, 3, 2,
+    2, 3, 0,
+    0, 1, 2
+};
+```
+When using attributes such as `const` and `noexcept` after the `)` symbol of a function, always add a space between them and the `)` symbol
+```cpp
+void test() const
+{
+
+}
+```
+When declaring a pointer, declare it like this
+```cpp
+int* a = nullptr
+```
+same goes with references
+```cpp
+int& a = b;
+```
+When you want to pass the memory address of a variable or dereference a pointer, type it like this
+```cpp
+int a = *b;
+int* c = &d;
+```
+Finally when initializing structs, defining enums, etc we don't add a trailing comma for the last element
+## Naming
+### Files
+All files should be named like this
+```
+ThisIsAFile.type
+```
+or like this for single word names
+```
+level.yaml
+```
+with the exception of source files, which are always using capital letters, even if the name is only 1 word
+```
+Window.cpp
+```
+When creating source files, always add these extensions
+```
+.cpp for C++ files
+.hpp for header files
+.c for C files
+.h for files used only in C APIs
+```
+When using YAML files, always use the long extension name
+```
+test.yaml
+```
+### Code
+When naming types like structs, classes, typedefs, enums, namespaces, etc always make them like this
+```cpp
+struct IAmAStructureType;
+```
+When making a variable always name it like this
+```cpp
+int iAmAnIntegerVariable = 10;
+```
+When creating functions always make them like this
+```cpp
+void iAmAFunction();
+```
+Single letter varibales or abbriviations are acceptable when naming an iterator, an index in a loop or a small temporary variable. It should be noted that we have unofficial rules regarding short names. For example we mostly call the iterator in a range based for loop `a`, while calling the index in a regular for loop `i` and a full iterator as `it`, though these unofficial so you aren't required to follow them in your own code
+```cpp
+for (auto& a : array)
+{
+    doStuff();
+}
+
+for (int i = 0; i < 10; i++)
+{
+    doOtherStuff();
+}
+```
+When developing a class that is going to have both an internal class and an interface class use the following naming
+```cpp
+class WindowInternal;// Will hold all internal engine operations here
+class Window; // A regular name to give an interface
+```
+though there is a variation where you can do the reverse
+```cpp
+class Settings; // The internal setting class
+class SettingsInterface; // An the interface into the settings class
+```
+When naming macros and enum members, always use the following naming
+```cpp
+#define THIS_IS_A_MACRO
+enum SomeEnum
+{
+    TYPE_X,
+    TYPE_Y,
+    TYPE_Z
+};
+```
+When talking about macros there are some exceptins such as when making a universal `std` interface like for the filesystem API
+```cpp
+#if __has_include(<filesystem>)
+    #include <filesystem>
+    #define std_filesystem std::filesystem
+#else
+    #include <experimental/filesystem>
+    #define std_filesystem std::experimental::filesystem
+#endif
+```
+### Code structure
+1. Always add `#pragma once` to the top of header files
+2. Always define classes inside the `UVK` namespace
+3. Do not create singletons, instead add the classes as members of the `UVKGlobal` class
+4. Interfaces to internal classes should only contain static functions
+5. Use the project's defined types(such as  FVector instead of glm::vec3) when possible
+6. Always define a default constructor even if you are going to mark it a default
+7. If possible try to use the default constructor to initialize variables automatically
