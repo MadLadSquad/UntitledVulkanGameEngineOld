@@ -17,6 +17,7 @@ namespace UVK
 
         virtual void beginPlay() = 0;
         virtual void endPlay() = 0;
+        virtual void onEventInitEditorModules() = 0; // Add any editor module declaration here
 
         // Shutdown your game
         static void exit();

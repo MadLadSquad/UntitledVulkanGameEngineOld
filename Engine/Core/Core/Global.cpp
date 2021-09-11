@@ -30,11 +30,6 @@ std::vector<UVK::InputAction>& UVK::UVKGlobal::getActions()
     return inputActionList;
 }
 
-std::vector<UVK::InputAction>& UVK::InputActions::getActions()
-{
-    return global.getActions();
-}
-
 void UVK::Math::translate(glm::mat4& mat, UVK::FVector vt)
 {
     if (global.bUsesVulkan)

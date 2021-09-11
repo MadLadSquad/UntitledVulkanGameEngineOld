@@ -8,6 +8,10 @@ namespace UVK
     class Window
     {
     public:
+        Window() = delete;
+        Window(const Window&) = delete;
+        void operator=(Window const&) = delete;
+
         static void setTitle(UVK::String name);
         static void setCursorVisibility(bool bVisible);
 

@@ -9,6 +9,8 @@ namespace UVK
     {
     public:
         UIInternal() = default;
+        UIInternal(const UIInternal&) = delete;
+        void operator=(UIInternal const&) = delete;
 
         void addEvent(const std::function<void(void)>& func);
         void addEventImgui(const std::function<void(void)>& func);

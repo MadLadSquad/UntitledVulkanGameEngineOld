@@ -16,6 +16,8 @@ namespace UVK
     public:
         Renderer() = delete;
         Renderer(UVK::Level* lvl, bool bUsesEditor);
+        Renderer(const Renderer&) = delete;
+        void operator=(Renderer const&) = delete;
 
         // Will switch your renderer API, save the rendering settings and shut down the application
         static void switchRenderer();

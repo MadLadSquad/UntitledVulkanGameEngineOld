@@ -80,7 +80,7 @@ void UVK::Level::saveEntity(YAML::Emitter& out, entt::entity act)
 {
     out << YAML::BeginMap;
 
-    if (global.ecs.data().has<CoreComponent>(act))
+    if (global.ecs.data().any_of<CoreComponent>(act))
     {
         auto& a = global.ecs.data().get<CoreComponent>(act);
         out << YAML::Key << "actor" << YAML::Value << a.name;
@@ -89,7 +89,7 @@ void UVK::Level::saveEntity(YAML::Emitter& out, entt::entity act)
     }
 
 #ifndef __MINGW32__
-    if (global.ecs.data().has<UVK::AudioComponent>(act))
+    if (global.ecs.data().any_of<UVK::AudioComponent>(act))
     {
         auto& a = global.ecs.data().get<UVK::AudioComponent>(act);
         out << YAML::Key << "audio-pitch" << YAML::Value << a.data.pitch;

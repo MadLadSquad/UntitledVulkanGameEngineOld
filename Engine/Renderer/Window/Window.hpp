@@ -46,6 +46,8 @@ namespace UVK
     {
     public:
         WindowInternal();
+        WindowInternal(const WindowInternal&) = delete;
+        void operator=(WindowInternal const&) = delete;
 
         /**
          * @brief Getter for the internal GLFWwindow
@@ -166,12 +168,19 @@ namespace UVK
     class Input
     {
     public:
+        Input() = delete;
+        Input(const Input&) = delete;
+        void operator=(Input const&) = delete;
+
         // Given a valid keyboard key from the Keys namespace it will return weather the key was pressed
         static uint8_t getKey(uint16_t key);
 
         // Input actions are a way of handling key input events by assigning a name to a key.
         // This name and key is stored in a config file, which enables you and your users to rebind key actions
         static const InputAction& getAction(const std::string& name);
+
+        // Returns a list of all input actions
+        static std::vector<InputAction>& getActions();
 
         static FVector2 getMousePositionChange();
         static FVector2 getCurrentMousePosition();

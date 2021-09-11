@@ -18,6 +18,8 @@ namespace UVK
     {
     public:
         Editor() = default;
+        Editor(const Editor&) = delete;
+        void operator=(Editor const&) = delete;
     private:
         friend class GLPipeline;
 

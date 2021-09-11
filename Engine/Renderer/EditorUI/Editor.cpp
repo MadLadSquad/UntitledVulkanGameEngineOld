@@ -126,7 +126,7 @@ void UVK::Editor::initEditor()
     //ImTTY::Terminal.CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
     //io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
-    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable | ImGuiConfigFlags_ViewportsEnable;
     io.ConfigViewportsNoTaskBarIcon = true;
 
     ImGui::StyleColorsDark();
@@ -138,8 +138,6 @@ void UVK::Editor::initEditor()
     {
         theme = EditorTheme(colTheme);
     }
-
-    //style.WindowPadding = ImVec2(0.0f, 0.0f);
 
     if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
     {
@@ -197,8 +195,8 @@ void UVK::Editor::runEditor(FVector4& colour, GLFrameBuffer& fb, Camera& camera,
         ImGuiViewport* viewport = ImGui::GetMainViewport();
         ImGui::SetNextWindowBgAlpha(1.0f);
 
-        ImGui::SetNextWindowPos(viewport->GetWorkPos());
-        ImGui::SetNextWindowSize(viewport->GetWorkSize());
+        ImGui::SetNextWindowPos(viewport->WorkPos);
+        ImGui::SetNextWindowSize(viewport->WorkSize);
         ImGui::SetNextWindowViewport(viewport->ID);
         ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
         ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);

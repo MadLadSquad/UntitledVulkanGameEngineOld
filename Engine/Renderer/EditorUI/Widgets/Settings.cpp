@@ -106,7 +106,7 @@ void Settings::displayKeybindEditor(bool& bOpen)
     if (ImGui::BeginPopupModal("Editor Keybinds", &bOpen))
     {
         int i = 0;
-        for (auto& a : UVK::InputActions::getActions())
+        for (auto& a : UVK::Input::getActions())
         {
             if (a.name.find("editor-") != std::string::npos)
             {
@@ -153,7 +153,7 @@ void Settings::displayKeybindGame(bool& bOpen)
             action.name = "NewAction" + std::to_string(newact);
             action.keyCode = 0;
 
-            UVK::InputActions::getActions().push_back(action);
+            UVK::Input::getActions().push_back(action);
             ++newact;
         }
         if (ImGui::MenuItem("- Remove Keybind##scn")) bDestroy = true;
@@ -161,26 +161,26 @@ void Settings::displayKeybindGame(bool& bOpen)
         ImGui::EndMenuBar();
 
         int j = 0;
-        for (int i = 0; i < UVK::InputActions::getActions().size(); i++)
+        for (int i = 0; i < UVK::Input::getActions().size(); i++)
         {
-            if (UVK::InputActions::getActions()[i].name.find("editor-") == std::string::npos)
+            if (UVK::Input::getActions()[i].name.find("editor-") == std::string::npos)
             {
                 if (bDestroy)
                 {
-                    UVK::InputActions::getActions().erase(UVK::InputActions::getActions().begin() + i);
+                    UVK::Input::getActions().erase(UVK::Input::getActions().begin() + i);
                     bDestroy = false;
                 }
                 else
                 {
-                    ImGui::TextWrapped("%s", UVK::InputActions::getActions()[i].name.c_str());
+                    ImGui::TextWrapped("%s", UVK::Input::getActions()[i].name.c_str());
 
                     ImGui::TextWrapped("Name");
                     ImGui::SameLine();
-                    ImGui::InputText(static_cast<std::string>("##Name##" + UVK::InputActions::getActions()[i].name + std::to_string(UVK::InputActions::getActions()[i].keyCode)).c_str(), &UVK::InputActions::getActions()[i].name);
+                    ImGui::InputText(static_cast<std::string>("##Name##" + UVK::Input::getActions()[i].name + std::to_string(UVK::Input::getActions()[i].keyCode)).c_str(), &UVK::Input::getActions()[i].name);
 
                     ImGui::TextWrapped("Keycode");
                     ImGui::SameLine();
-                    showKeySelect(static_cast<std::string>("##Keycode##" + UVK::InputActions::getActions()[i].name + std::to_string(UVK::InputActions::getActions()[i].keyCode) + std::to_string(j)).c_str(), UVK::InputActions::getActions()[i].keyCode);
+                    showKeySelect(static_cast<std::string>("##Keycode##" + UVK::Input::getActions()[i].name + std::to_string(UVK::Input::getActions()[i].keyCode) + std::to_string(j)).c_str(), UVK::Input::getActions()[i].keyCode);
                     ImGui::Separator();
                     j++;
                 }

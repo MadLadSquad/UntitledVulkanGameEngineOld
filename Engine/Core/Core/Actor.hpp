@@ -31,13 +31,14 @@ namespace UVK
         template<typename T>
         void remove()
         {
-            global.ecs.data().remove_if_exists<T>(entity);
+            global.ecs.data().remove<T>(entity);
+            //global.ecs.data().remove_if_exists<T>(entity);
         }
 
         template<typename T>
         bool has()
         {
-            return global.ecs.data().has<T>(entity);
+            return global.ecs.data().any_of<T>(entity);
         }
 
         void destroy();

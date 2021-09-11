@@ -9,6 +9,10 @@ namespace UVK
     class SettingsManager
     {
     public:
+        SettingsManager() = delete;
+        SettingsManager(const SettingsManager&) = delete;
+        void operator=(SettingsManager const&) = delete;
+
         // Saves all settings
         static void saveSettings();
         static void saveRendererSettings();

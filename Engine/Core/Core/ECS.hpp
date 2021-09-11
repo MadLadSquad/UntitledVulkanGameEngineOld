@@ -12,8 +12,8 @@ namespace UVK
     {
     public:
         ECSManager() = default;
-
-        void each(std::function<void(entt::entity)> func);
+        ECSManager(const ECSManager&) = delete;
+        void operator=(ECSManager const&) = delete;
 
         template<typename T>
         EntityView<T> view()

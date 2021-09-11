@@ -13,6 +13,8 @@ namespace UVK
     {
     public:
         Events() = default;
+        Events(const Events&) = delete;
+        void operator=(Events const&) = delete;
     private:
         friend class Level;
         friend class GLPipeline;

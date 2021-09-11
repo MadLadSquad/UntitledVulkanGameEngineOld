@@ -15,6 +15,7 @@ namespace UVK
     {
     public:
         EditorTheme() = default;
+
         explicit EditorTheme(UVK::String theme)
         {
             setTheme(std::move(theme));

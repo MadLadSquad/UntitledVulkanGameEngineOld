@@ -6,11 +6,16 @@
 
 namespace UVK
 {
+    class Actor;
+
     class ECS
     {
     public:
+        ECS() = delete;
+        ECS(const ECS&) = delete;
+        void operator=(ECS const&) = delete;
+
         static void clear();
-        static void each(const std::function<void(entt::entity)>& function);
         static EntityPool& data();
 
         template<typename T>

@@ -481,3 +481,8 @@ uint8_t UVK::Input::getKey(uint16_t key)
 {
     return global.window.getKeys()[key];
 }
+
+std::vector<UVK::InputAction>& UVK::Input::getActions()
+{
+    return global.inputActionList;
+}

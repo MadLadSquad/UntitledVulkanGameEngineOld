@@ -44,8 +44,8 @@ void UVK::UIInternal::update()
 
     ImGuiViewport* viewport = ImGui::GetMainViewport();
     ImGui::SetNextWindowBgAlpha(1.0f);
-    ImGui::SetNextWindowPos(viewport->GetWorkPos());
-    ImGui::SetNextWindowSize(viewport->GetWorkSize());
+    ImGui::SetNextWindowPos(viewport->GetWorkCenter());
+    ImGui::SetNextWindowSize(viewport->GetWorkCenter());
     ImGui::SetNextWindowViewport(viewport->ID);
 
     bool bIsOpen = true;

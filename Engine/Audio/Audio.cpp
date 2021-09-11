@@ -50,6 +50,16 @@ void UVK::AudioManager::destroyDevice()
     alcCloseDevice(device);
 }
 
+UVK::AudioManager::~AudioManager()
+{
+    destroyDevice();
+}
+
+UVK::AudioManager::AudioManager()
+{
+    createDevice();
+}
+
 UVK::AudioBuffer::AudioBuffer(String loc)
 {
     addSound(loc);

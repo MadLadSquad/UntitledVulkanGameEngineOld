@@ -30,6 +30,8 @@ namespace UVK
     public:
         UVKGlobal();
         ~UVKGlobal();
+        UVKGlobal(const UVKGlobal&) = delete;
+        void operator=(UVKGlobal const&) = delete;
 
         GameInstance* instance{};
         WindowInternal window;
@@ -87,12 +89,6 @@ namespace UVK
     };
 
     inline UVKGlobal global;
-
-    class InputActions
-    {
-    public:
-        static std::vector<InputAction>& getActions();
-    };
 
     class Math
     {
