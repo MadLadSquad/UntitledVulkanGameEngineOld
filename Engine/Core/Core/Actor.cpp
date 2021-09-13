@@ -1,5 +1,5 @@
 // Actor.cpp
-// Last update 2/9/2021 by Madman10K
+// Last update 13/9/2021 by Madman10K
 #include <GL/glew.h>
 #include "Actor.hpp"
 #include <GameFramework/Actors/ActorManager.hpp>
@@ -15,7 +15,7 @@ entt::entity& UVK::Actor::data()
     return entity;
 }
 
-void UVK::Actor::create(const std::string &nameN, uint64_t idN, const std::string &devNameN)
+void UVK::Actor::create(const std::string& nameN, uint64_t idN, const std::string& devNameN)
 {
     entity = global.ecs.data().create();
 
@@ -23,42 +23,24 @@ void UVK::Actor::create(const std::string &nameN, uint64_t idN, const std::strin
     a.name = nameN;
     a.id = idN;
     a.devName = devNameN;
-
-    // TODO: probably find a way to connect actors and scriptable objects together
-    for (auto& b : global.instance->actorManager.data())
-    {
-        if (b->name == nameN && b->id == idN && b->devname == devNameN)
-        {
-            b->entities.push_back(this);
-            global.instance->events.add(b);
-        }
-    }
 }
 
 void UVK::Actor::destroy()
 {
-    const auto& component = get<CoreComponent>();
-
-    std::vector<ScriptableObject*> temp;
-    bool tested = false;
-
-    // TODO: Destroy Scriptable Object
-    for (auto& a : global.instance->events.data())
+    if (global.ecs.data().any_of<AudioComponent>(entity))
     {
-        if (a->id == component.id && a->name == component.name && a->devname == component.devName && !tested)
-        {
-            a->endPlay();
-
-            tested = true;
-        }
-        else
-        {
-            temp.push_back(a);
-        }
+        global.ecs.data().get<AudioComponent>(entity).stop();
     }
 
-    global.instance->events.clear();
-    global.instance->events.data() = std::move(temp);
+    if (global.ecs.data().any_of<MeshComponentRaw>(entity))
+    {
+        global.ecs.data().get<MeshComponentRaw>(entity).clearMesh();
+    }
+
+    if (global.ecs.data().any_of<MeshComponent>(entity))
+    {
+        global.ecs.data().get<MeshComponent>(entity).clearMesh();
+    }
 
     global.ecs.data().destroy(entity);
 }

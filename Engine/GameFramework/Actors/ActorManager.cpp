@@ -1,19 +1,11 @@
 // ActorManager.cpp
-// Last update 2/9/2021 by Madman10K
+// Last update 13/9/2021 by Madman10K
 #include "ActorManager.hpp"
 #include "Generated/ActorList.hpp"
 
 void UVK::ActorManager::init()
 {
     ACTOR_SET_DEPLOY
-
-    for (auto& b : a)
-    {
-        if (b->id == 330 && b->name.find("Editor") == std::string::npos)
-        {
-            b->id = 331;
-        }
-    }
 }
 
 void UVK::ActorManager::destroy()
@@ -27,4 +19,10 @@ void UVK::ActorManager::destroy()
 std::set<UVK::ScriptableObject*>& UVK::ActorManager::data()
 {
     return a;
+}
+
+UVK::ActorManager::~ActorManager()
+{
+    destroy();
+    a.clear();
 }

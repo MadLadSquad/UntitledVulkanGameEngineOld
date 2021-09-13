@@ -1,5 +1,5 @@
 // ActorManager.hpp
-// Last update 21/7/2021 by Madman10K
+// Last update 13/9/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 
@@ -15,10 +15,12 @@ namespace UVK
     {
     public:
         ActorManager() = default;
+        ~ActorManager();
     private:
         friend class UVKGlobal;
         friend class GameInstance;
         friend class Actor;
+        friend class Events;
 
         std::set<ScriptableObject*>& data();
 

@@ -52,7 +52,8 @@ void SceneHierarchy::display(UVK::Actor& selectedEntity, std::string &entAppend,
 
         if (ImGui::Selectable(static_cast<std::string>(a.name + ", " + std::to_string(a.id)).c_str()))
         {
-            selectedEntity.data() = ent;
+            if (UVK::ECS::data().valid(ent))
+                selectedEntity.data() = ent;
         }
     });
 

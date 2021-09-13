@@ -1,5 +1,5 @@
 // CreateFile.cpp
-// Last update 12/8/2021 by Madman10K
+// Last update 12/9/2021 by Madman10K
 #include "CreateFile.hpp"
 #include <cpp/imgui_stdlib.h>
 #include <Core.hpp>
@@ -24,42 +24,36 @@ void CreateFile::display(uint8_t selectedFile, std::string& fileOutLocation, boo
             {
                 selectedFile = 1;
                 str = "Game mode";
-                goto end;
             }
 
             if (ImGui::MenuItem("Game state"))
             {
                 selectedFile = 2;
                 str = "Game state";
-                goto end;
             }
 
             if (ImGui::MenuItem("Player state"))
             {
                 selectedFile = 3;
                 str = "Player state";
-                goto end;
             }
 
             if (ImGui::MenuItem("Player controller"))
             {
                 selectedFile = 4;
                 str = "Player controller";
-                goto end;
             }
 
             if (ImGui::MenuItem("Pawn"))
             {
                 selectedFile = 5;
                 str = "Pawn";
-                goto end;
             }
 
             if (ImGui::MenuItem("Level"))
             {
                 selectedFile = 6;
                 str = "Level";
-                goto end;
             }
 
             if (ImGui::MenuItem("Scriptable object"))
@@ -67,7 +61,6 @@ void CreateFile::display(uint8_t selectedFile, std::string& fileOutLocation, boo
                 selectedFile = 7;
                 str = "Scriptable object";
             }
-end:
 
             ImGui::EndCombo();
         }
@@ -94,7 +87,7 @@ end:
             switch (selectedFile)
             {
 #ifdef _WIN32
-                case 1:
+            case 1:
                 lnt = system(static_cast<std::string>("cd ../UVKBuildTool/build && UVKBuildTool.exe --game-mode " + fileOutLocation + " && cd ../../").c_str());
                 break;
             case 2:

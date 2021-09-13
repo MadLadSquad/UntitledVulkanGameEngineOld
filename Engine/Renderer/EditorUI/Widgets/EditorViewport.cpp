@@ -49,7 +49,7 @@ void EditorViewport::display(UVK::GLFrameBuffer& fb, int& viewportWidth, int& vi
         }
         else if (UVK::Input::getAction("editor-gizmo-scale") == Keys::KeyPressed || UVK::Input::getAction("editor-gizmo-scale") == Keys::KeyRepeat)
         {
-            operationType = ImGuizmo::SCALE;
+            operationType = ImGuizmo::SCALEU;
         }
     }
 
@@ -82,7 +82,7 @@ void EditorViewport::display(UVK::GLFrameBuffer& fb, int& viewportWidth, int& vi
         ImGuizmo::SetDrawlist();
         ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, ImGui::GetWindowWidth(), ImGui::GetWindowHeight());
 
-        ImGuizmo::Manipulate(glm::value_ptr(camera.calculateViewMatrixRH()), glm::value_ptr(projection), (ImGuizmo::OPERATION)operationType, ImGuizmo::LOCAL, glm::value_ptr(a.mat), nullptr, snap ? snapValues : nullptr);
+        ImGuizmo::Manipulate(glm::value_ptr(camera.calculateViewMatrixRH()), glm::value_ptr(projection), (ImGuizmo::OPERATION)operationType, ImGuizmo::WORLD, glm::value_ptr(a.mat), nullptr, snap ? snapValues : nullptr);
 
         if (ImGuizmo::IsUsing())
         {

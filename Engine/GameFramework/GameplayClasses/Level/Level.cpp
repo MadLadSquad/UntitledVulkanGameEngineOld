@@ -1,5 +1,5 @@
 // Level.cpp
-// Last update 2/9/2021 by Madman10K
+// Last update 13/9/2021 by Madman10K
 #include "../../Components/Components.hpp"
 #include "Engine/Core/Core/Actor.hpp"
 #include <Events/Events.hpp>
@@ -141,16 +141,17 @@ void UVK::Level::openInternal(UVK::String location)
         return;
     }
 
-    global.ecs.clear();
-    global.ui.clear();
+    global.ecs.clear(); // Clear the ECS registry(contains all the actors)
+    global.ui.clear(); // Clear the UI registry
     if (!global.bEditor)
     {
-        global.instance->events.callEnd();
+        Events::callEnd(); // If running in a game environment call all the end events
     }
-    global.instance->events.clear();
+    Events::clear(); // Reset all scriptable objects, clear the event queue and add them again
 
     logger.consoleLog("Opening level with location: ", UVK_LOG_TYPE_NOTE, location);
 
+    // Load a bunch of metadata into the global state
     global.levelName = out["name"].as<std::string>();
     global.levelLocation = location;
     logger.consoleLog("Opened file with name: ", UVK_LOG_TYPE_SUCCESS, global.levelName);
@@ -195,7 +196,7 @@ void UVK::Level::openInternal(UVK::String location)
 
     if (!global.bEditor)
     {
-        global.instance->events.callBegin();
+        Events::callBegin();
     }
 }
 

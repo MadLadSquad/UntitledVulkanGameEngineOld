@@ -1,5 +1,5 @@
 // GameInstance.hpp
-// Last update 27/8/2021 by Madman10K
+// Last update 13/9/2021 by Madman10K
 #include "GameInstance.hpp"
 #include <Core/Global.hpp>
 
@@ -16,4 +16,9 @@ void UVK::GameInstance::exit()
 UVK::GameInstance::~GameInstance()
 {
     actorManager.destroy();
+}
+
+UVK::Level* UVK::GameInstance::currentLevel()
+{
+    return global.currentLevel;
 }

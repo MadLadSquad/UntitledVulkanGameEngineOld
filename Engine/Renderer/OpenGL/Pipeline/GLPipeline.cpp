@@ -1,5 +1,5 @@
 // GLPipeline.cpp
-// Last update 2/9/2021 by Madman10K
+// Last update 13/9/2021 by Madman10K
 #include <GL/glew.h>
 #include <Events/Events.hpp>
 #include <Renderer/EditorUI/Classes/EditorLevel.hpp>
@@ -27,6 +27,7 @@ void UVK::GLPipeline::begin(bool bHasEditor, Level* lvl)
         colTheme = global.rendererSettings.themeLoc.c_str();
         ed.setTheme(colTheme);
         ed.initEditor();
+        global.instance->onEventInitEditorModules();
 #endif
     }
     else
@@ -98,7 +99,7 @@ void UVK::GLPipeline::tick()
     else
     {
         global.currentLevel->tick(deltaTime);
-        global.instance->events.callTick(deltaTime);
+        Events::callTick(deltaTime);
         global.ui.update();
 
         global.finalizeOpening();
@@ -119,7 +120,7 @@ void UVK::GLPipeline::end()
     else
     {
         global.currentLevel->endPlay();
-        global.instance->events.callEnd();
+        Events::callEnd();
         global.instance->endPlay();
         UVK::UIInternal::clean();
     }

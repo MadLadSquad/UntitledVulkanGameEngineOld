@@ -1,5 +1,5 @@
 // Editor.cpp
-// Last update 27/8/2021 by Madman10K
+// Last update 13/9/2021 by Madman10K
 #include <GL/glew.h>
 #include <imgui_impl_vulkan.h>
 #include "Editor.hpp"
@@ -44,6 +44,7 @@ void UVK::Editor::initEditor()
     catch (YAML::BadFile&)
     {
         logger.consoleLog("Could not find uvproj.yaml file", UVK_LOG_TYPE_ERROR);
+        throw std::runtime_error(" ");
     }
 
     if (file["engine-version"] && file["name"] && file["version"] && file["startup-level"])
@@ -294,49 +295,41 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
             {
                 // TODO: Change this for file indexing :D
                 bShowDirectSaveWarning = true;
-                goto end1;
             }
 
             if (ImGui::MenuItem("Save Level As", "CTRL+SHIFT+S"))
             {
                 bShowSaveLevelWidget = true;
-                goto end1;
             }
 
             if (ImGui::MenuItem("New Level", "CTRL+N"))
             {
                 bShowSaveWarning = true;
-                goto end1;
             }
 
             if (ImGui::MenuItem("Open Level", "CTRL+O"))
             {
                 bShowOpenLevelWidget = true;
-                goto end1;
             }
 
             if (ImGui::MenuItem("New File", "CTRL+SHIFT+N"))
             {
                 bShowCreateFile1 = true;
-                goto end1;
             }
 
             if (ImGui::MenuItem("Remove File"))
             {
                 bShowRemoveFile = true;
-                goto end1;
             }
 
             if (ImGui::MenuItem("Regenerate files"))
             {
                 bShowGenerateWarning = true;
-                goto end1;
             }
 
             if (ImGui::MenuItem("Ship Project"))
             {
                 bShowShip = true;
-                goto end1;
             }
 
             if (ImGui::MenuItem("Exit", "CTRL+SHIFT+W"))
@@ -344,7 +337,6 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
                 //glfwSetWindowShouldClose(global.window.getWindow(), GL_TRUE);
                 bShowExitWarning = true;
             }
-end1:
 
             ImGui::EndMenu();
         }
@@ -352,16 +344,12 @@ end1:
         {
             if (ImGui::MenuItem("Undo", "CTRL+Z"))
             {
-
-                goto end2;
             }
 
             if (ImGui::MenuItem("Redo", "CTRL+Y"))
             {
-
             }
 
-end2:
             ImGui::EndMenu();
         }
 
@@ -370,38 +358,33 @@ end2:
             if (ImGui::MenuItem("Game Settings"))
             {
                 bShowGameSettings = true;
-                goto end3;
             }
 
             if (ImGui::MenuItem("Window Settings"))
             {
                 bShowWindowSettings = true;
-                goto end3;
             }
 
             if (ImGui::MenuItem("Renderer Settings"))
             {
                 bShowRendererSettings = true;
-                goto end3;
             }
 
             if (ImGui::MenuItem("Editor Keybind Settings"))
             {
                 bShowKeybindSettings = true;
-                goto end3;
             }
 
             if (ImGui::MenuItem("Game Keybind Settings"))
             {
                 bShowGameKeybinds = true;
-                goto end3;
             }
 
             if (ImGui::MenuItem("Theme Editor"))
             {
                 bShowThemeSettings = true;
             }
-end3:
+
             ImGui::EndMenu();
         }
         if (ImGui::BeginMenu("View"))
@@ -425,14 +408,12 @@ end3:
             if (ImGui::MenuItem("About us"))
             {
                 bShowAboutUs = true;
-                goto end4;
             }
 
             if (ImGui::MenuItem("Help"))
             {
                 bShowHelp = true;
             }
-end4:
             ImGui::EndMenu();
         }
         ImGui::EndMenuBar();
@@ -475,6 +456,11 @@ end4:
         CreateFile::display(selectedFile, fileOutLocation, bShowCreateFile1);
     }
 
+    if (bShowDetailsPanel)
+    {
+        DetailsPanel::display(selectedEntity, lvl, bShowDetailsPanel, bDestroyEntity);
+    }
+
     if (bShowSceneHierarchy)
     {
         SceneHierarchy::display(selectedEntity, entAppend, entNum, bShowSceneHierarchy);
@@ -487,11 +473,6 @@ end4:
         style.WindowPadding = ImVec2(8.0f, 8.0f);
     }
 
-    if (bShowDetailsPanel)
-    {
-        DetailsPanel::display(selectedEntity, lvl, bShowDetailsPanel, bDestroyEntity);
-    }
-
 #ifndef __MINGW32__
     if (bShowFilesystem)
     {
@@ -502,7 +483,7 @@ end4:
     if (bShowToolbar)
     {
         style.WindowPadding = ImVec2(0.0f, 0.0f);
-        TopToolbar::display(play, bShowToolbar);
+        TopToolbar::display(play, projectName, bShowToolbar);
         style.WindowPadding = ImVec2(8.0f, 8.0f);
     }
 

@@ -1,9 +1,11 @@
 // Actor.hpp
-// Last update 2/9/2021 by Madman10K
+// Last update 13/9/2021 by Madman10K
 #pragma once
 #include <Core/Global.hpp>
 #include <GameFramework/Actors/ScriptableObject.hpp>
 #include <GameFramework/GameplayClasses/GameInstance.hpp>
+#include <GameFramework/Actors/ActorManager.hpp>
+
 
 namespace UVK
 {
@@ -14,7 +16,7 @@ namespace UVK
 
         Actor(const std::string& nameN, uint64_t idN, const std::string& devNameN);
 
-        void create(const std::string &nameN, uint64_t idN, const std::string &devNameN);
+        void create(const std::string& nameN, uint64_t idN, const std::string& devNameN);
 
         template<typename T>
         auto& get()
@@ -32,7 +34,6 @@ namespace UVK
         void remove()
         {
             global.ecs.data().remove<T>(entity);
-            //global.ecs.data().remove_if_exists<T>(entity);
         }
 
         template<typename T>
