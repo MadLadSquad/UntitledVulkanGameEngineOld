@@ -1,5 +1,5 @@
 // Editor.hpp
-// Last update 2/8/2021 by Madman10K
+// Last update 13/9/2021 by Madman10K
 #pragma once
 #include <iostream>
 #include <utility>
@@ -8,6 +8,7 @@
 #include "Widgets/EditorViewport.hpp"
 #include "../Textures/Texture.hpp"
 #include <Audio/Audio.hpp>
+#include <Renderer/EditorUI/Modules/EditorModule.hpp>
 
 namespace UVK
 {
@@ -22,6 +23,7 @@ namespace UVK
         void operator=(Editor const&) = delete;
     private:
         friend class GLPipeline;
+        friend class EditorModules;
 
         double* getFrameTimeData()
         {
@@ -94,6 +96,8 @@ namespace UVK
         std::string projectName;
         std::string startupLevel;
         UVK::String colTheme{};
+
+        EditorModuleManager moduleManager;
 
         double frameTimeData[2] = { 0.0, 0.0 };
 #ifndef __MINGW32__

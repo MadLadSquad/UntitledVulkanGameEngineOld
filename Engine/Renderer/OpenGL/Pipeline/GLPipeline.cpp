@@ -27,7 +27,7 @@ void UVK::GLPipeline::begin(bool bHasEditor, Level* lvl)
         colTheme = global.rendererSettings.themeLoc.c_str();
         ed.setTheme(colTheme);
         ed.initEditor();
-        global.instance->onEventInitEditorModules();
+        global.instance->onEventInitEditorModules(); // Always call after the editor is instantiated
 #endif
     }
     else

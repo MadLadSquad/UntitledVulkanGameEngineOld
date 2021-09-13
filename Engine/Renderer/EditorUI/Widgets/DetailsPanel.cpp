@@ -1,5 +1,5 @@
 // DetailsPanel.cpp
-// Last update 27/8/2021 by Madman10K
+// Last update 13/9/2021 by Madman10K
 #include <GL/glew.h>
 #include <imgui.h>
 #include <cpp/imgui_stdlib.h>
@@ -8,6 +8,7 @@
 #include <Core/Actor.hpp>
 #include <GameFramework/GameplayClasses/Level/Level.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <Renderer/EditorUI/Modules/EditorModule.hpp>
 
 #ifndef PRODUCTION
 void DetailsPanel::DrawVec3Control(const std::string &label, glm::vec3 &values, float resetValue, float columnWidth)
@@ -78,7 +79,7 @@ void DetailsPanel::DrawVec3Control(const std::string &label, glm::vec3 &values, 
     ImGui::PopID();
 }
 
-void DetailsPanel::display(UVK::Actor& ent, UVK::Level* lvl, bool& bShow, bool& destroy)
+void DetailsPanel::display(UVK::Actor& ent, UVK::Level* lvl, bool& bShow, const UVK::EditorModuleManager& modules, bool& destroy)
 {
     ImGui::Begin("Details", &bShow, ImGuiWindowFlags_MenuBar);
 
@@ -277,6 +278,10 @@ void DetailsPanel::display(UVK::Actor& ent, UVK::Level* lvl, bool& bShow, bool& 
         DrawVec3Control("Velocity", cmp.data.velocity, 0.0f, 100.0f);
     }
 #endif
+
+    ImGui::Separator();
+    modules.renderDetailsPanelModules(&ent);
+
     ImGui::End();
 }
 #endif

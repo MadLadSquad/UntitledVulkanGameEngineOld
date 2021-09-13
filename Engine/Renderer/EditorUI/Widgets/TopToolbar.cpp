@@ -2,9 +2,10 @@
 // Last update 13/9/2021 by Madman10K
 #include "TopToolbar.hpp"
 #include <imgui.h>
+#include <Renderer/EditorUI/Modules/EditorModule.hpp>
 
 #ifndef PRODUCTION
-void TopToolbar::display(UVK::Texture &play, const std::string& projectName, bool& bShow)
+void TopToolbar::display(UVK::Texture& play, const std::string& projectName, const UVK::EditorModuleManager& modules, bool& bShow)
 {
     int8_t lnt = 0;
 
@@ -18,6 +19,8 @@ void TopToolbar::display(UVK::Texture &play, const std::string& projectName, boo
         lnt = system(static_cast<std::string>("./" + projectName).c_str());
 #endif
     }
+
+    modules.renderTopBar();
 
     if (lnt)
     {

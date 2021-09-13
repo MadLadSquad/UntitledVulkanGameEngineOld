@@ -7,6 +7,7 @@
 
 namespace UVK
 {
+    class Editor;
     /**
      * @brief The instance of the application
      */
@@ -35,7 +36,10 @@ namespace UVK
         friend class Level;
         friend class GLPipeline;
         friend class Events;
+        friend class Editor;
+        friend class EditorModules;
 
+        Editor* editor = nullptr;
         UVK::ActorManager actorManager;
     };
 }

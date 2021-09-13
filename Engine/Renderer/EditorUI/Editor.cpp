@@ -23,12 +23,15 @@
 #include "Widgets/RemoveFile.hpp"
 #include "Widgets/Ship.hpp"
 #include "Widgets/Warnings.hpp"
+#include "Widgets/Tools.hpp"
 #include <Engine/Core/Core/Global.hpp>
 #include <Renderer/OpenGL/Components/GLShader.hpp>
 #include <GameFramework/GameplayClasses/Level/Level.hpp>
 
 void UVK::Editor::initEditor()
 {
+    global.instance->editor = this;
+
     Timer tm;
 #ifndef PRODUCTION
     tm.startRecording();
@@ -400,6 +403,16 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
             ImGui::Checkbox("Tools", &bShowTools);
             ImGui::Checkbox("Memory Editor", &bShowMemoryEditor);
 
+            if (!moduleManager.getIndependentModules().empty())
+            {
+                ImGui::Separator();
+
+                for (auto& a : moduleManager.getIndependentModules())
+                {
+                    ImGui::Checkbox(a.name, &a.bEnabled);
+                }
+            }
+
             ImGui::EndMenu();
         }
 
@@ -458,7 +471,7 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
 
     if (bShowDetailsPanel)
     {
-        DetailsPanel::display(selectedEntity, lvl, bShowDetailsPanel, bDestroyEntity);
+        DetailsPanel::display(selectedEntity, lvl, bShowDetailsPanel, moduleManager, bDestroyEntity);
     }
 
     if (bShowSceneHierarchy)
@@ -483,15 +496,13 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
     if (bShowToolbar)
     {
         style.WindowPadding = ImVec2(0.0f, 0.0f);
-        TopToolbar::display(play, projectName, bShowToolbar);
+        TopToolbar::display(play, projectName, moduleManager,bShowToolbar);
         style.WindowPadding = ImVec2(8.0f, 8.0f);
     }
 
     if (bShowTools)
     {
-        ImGui::Begin("Tools", &bShowTools);
-        ImGui::Text("Coming soon!");
-        ImGui::End();
+        Tools::display(moduleManager, bShowTools);
     }
 
     if (bShowTerminalEmulator)
@@ -563,6 +574,8 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
     {
         Settings::displayProjectSettings(projectName, projectVersion, engineVersion, startupLevel, bShowGameSettings);
     }
+
+    moduleManager.renderIndependentModule();
 #endif
 }
 
