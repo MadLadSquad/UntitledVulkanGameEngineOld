@@ -1,5 +1,5 @@
 // Actor.cpp
-// Last update 13/9/2021 by Madman10K
+// Last update 15/9/2021 by Madman10K
 #include <GL/glew.h>
 #include "Actor.hpp"
 #include <GameFramework/Actors/ActorManager.hpp>
@@ -43,4 +43,9 @@ void UVK::Actor::destroy()
     }
 
     global.ecs.data().destroy(entity);
+}
+
+UVK::Actor::Actor(entt::entity ent)
+{
+    entity = ent;
 }

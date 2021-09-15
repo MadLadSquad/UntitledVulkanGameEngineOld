@@ -1,5 +1,5 @@
 // Actor.hpp
-// Last update 13/9/2021 by Madman10K
+// Last update 15/9/2021 by Madman10K
 #pragma once
 #include <Core/Global.hpp>
 #include <GameFramework/Actors/ScriptableObject.hpp>
@@ -13,7 +13,7 @@ namespace UVK
     {
     public:
         Actor() = default;
-
+        explicit Actor(entt::entity ent);
         Actor(const std::string& nameN, uint64_t idN, const std::string& devNameN);
 
         void create(const std::string& nameN, uint64_t idN, const std::string& devNameN);
