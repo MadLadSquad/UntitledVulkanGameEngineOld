@@ -7,7 +7,7 @@ void UVK::EditorModuleManager::addDetailsPanelModule(const std::function<void(Ac
     detailsPanelModules.emplace_back(func);
 }
 
-void UVK::EditorModuleManager::addToolsModule(const std::function<void(void)>& func)
+void UVK::EditorModuleManager::addToolsModule(const std::function<void(const UVK::CurrentToolType&)>& func)
 {
     toolsModules.emplace_back(func);
 }
@@ -25,11 +25,11 @@ void UVK::EditorModuleManager::renderDetailsPanelModules(UVK::Actor* actor) cons
     }
 }
 
-void UVK::EditorModuleManager::renderToolsModule() const
+void UVK::EditorModuleManager::renderToolsModule(const CurrentToolType& type) const
 {
     for (auto& a : toolsModules)
     {
-        a();
+        a(type);
     }
 }
 
@@ -57,7 +57,7 @@ void UVK::EditorModuleManager::renderTopBar() const
     }
 }
 
-const std::vector<std::function<void()>>& UVK::EditorModuleManager::getToolsModules() const
+const std::vector<std::function<void(const UVK::CurrentToolType&)>>& UVK::EditorModuleManager::getToolsModules() const
 {
     return toolsModules;
 }

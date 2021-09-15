@@ -8,6 +8,13 @@ namespace UVK
 {
     class Actor;
 
+    enum CurrentToolType
+    {
+        CURRENT_TOOL_TYPE_USEFUL_OBJECTS,
+        CURRENT_TOOL_TYPE_TERRAIN_EDITOR,
+        CURRENT_TOOL_TYPE_CUSTOM
+    };
+
     struct IndependentModuleData
     {
         bool bEnabled;
@@ -23,22 +30,22 @@ namespace UVK
         void operator=(EditorModuleManager const&) = delete;
 
         void addDetailsPanelModule(const std::function<void(Actor* actor)>& func);
-        void addToolsModule(const std::function<void(void)>& func);
+        void addToolsModule(const std::function<void(const CurrentToolType&)>& func);
         void addIndependentModule(const UVK::IndependentModuleData& func);
         void addTopBar(const std::function<void(void)>& func);
 
         void renderDetailsPanelModules(Actor* actor) const;
-        void renderToolsModule() const;
+        void renderToolsModule(const CurrentToolType& type) const;
         void renderIndependentModule();
         void renderTopBar() const;
 
-        [[nodiscard]] const std::vector<std::function<void()>>& getToolsModules() const;
+        [[nodiscard]] const std::vector<std::function<void(const UVK::CurrentToolType&)>>& getToolsModules() const;
         [[nodiscard]] const std::vector<std::function<void(Actor* actor)>>& getDetailsPanelModules() const;
         std::vector<IndependentModuleData>& getIndependentModules();
         [[nodiscard]] const std::vector<std::function<void()>>& getTopBarModules() const;
     private:
         std::vector<std::function<void(Actor* actor)>> detailsPanelModules;
-        std::vector<std::function<void(void)>> toolsModules;
+        std::vector<std::function<void(const CurrentToolType&)>> toolsModules;
         std::vector<IndependentModuleData> independentModules;
         std::vector<std::function<void(void)>> topBarModules;
     };

@@ -9,7 +9,7 @@ void UVK::EditorModules::addDetailsPanelModule(const std::function<void(Actor*)>
     global.instance->editor->moduleManager.addDetailsPanelModule(func);
 }
 
-void UVK::EditorModules::addToolsModule(const std::function<void(void)>& func)
+void UVK::EditorModules::addToolsModule(const std::function<void(const UVK::CurrentToolType&)>& func)
 {
     global.instance->editor->moduleManager.addToolsModule(func);
 }
