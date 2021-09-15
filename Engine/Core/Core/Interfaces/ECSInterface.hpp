@@ -19,6 +19,8 @@ namespace UVK
         static void clear();
         static EntityPool& data();
 
+        static Actor* getActorWithIdentifiers(const std::string& name, const uint64_t& id, const std::string& devname);
+
         template<typename T>
         static void forEveryComponent(const std::function<void(Actor*)>& func)
         {
