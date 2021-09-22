@@ -1,5 +1,5 @@
 // GameInstance.hpp
-// Last update 13/9/2021 by Madman10K
+// Last update 22/9/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 #include <GameFramework/Actors/ActorManager.hpp>
@@ -30,7 +30,7 @@ namespace UVK
             return static_cast<T*>(gi);
         }
 
-        virtual ~GameInstance();
+        virtual ~GameInstance() = default;
     private:
         friend class Actor;
         friend class Level;

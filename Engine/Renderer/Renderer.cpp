@@ -1,7 +1,8 @@
 // Renderer.cpp
-// Last update 2/9/2021 by Madman10K
+// Last update 22/9/2021 by Madman10K
 #include "Renderer.hpp"
 #include <Engine/Core/Core/Global.hpp>
+#include <GameFramework/GameplayClasses/Level/Level.hpp>
 
 UVK::Renderer::Renderer(UVK::Level* lvl, bool bUsesEditor)
 {

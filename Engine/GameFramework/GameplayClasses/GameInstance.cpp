@@ -1,5 +1,5 @@
 // GameInstance.hpp
-// Last update 13/9/2021 by Madman10K
+// Last update 22/9/2021 by Madman10K
 #include "GameInstance.hpp"
 #include <Core/Global.hpp>
 
@@ -11,11 +11,6 @@ UVK::GameInstance::GameInstance()
 void UVK::GameInstance::exit()
 {
     glfwSetWindowShouldClose(global.window.windowMain, true);
-}
-
-UVK::GameInstance::~GameInstance()
-{
-    actorManager.destroy();
 }
 
 UVK::Level* UVK::GameInstance::currentLevel()

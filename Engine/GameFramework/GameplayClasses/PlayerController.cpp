@@ -1,10 +1,12 @@
 // PlayerController.cpp
-// Last update 27/8/2021 by Madman10K
+// Last update 22/9/2021 by Madman10K
 #include "PlayerController.hpp"
 
 void UVK::PlayerController::possess(UVK::Pawn* pw)
 {
+    Pawn::destroyPawn(pawn);
     pawn = pw;
+    pawn->beginPlay();
 }
 
 UVK::PlayerController::~PlayerController()

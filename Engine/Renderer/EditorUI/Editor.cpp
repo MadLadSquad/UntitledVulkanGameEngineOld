@@ -1,5 +1,5 @@
 // Editor.cpp
-// Last update 13/9/2021 by Madman10K
+// Last update 22/9/2021 by Madman10K
 #include <GL/glew.h>
 #include <imgui_impl_vulkan.h>
 #include "Editor.hpp"
@@ -57,8 +57,6 @@ void UVK::Editor::initEditor()
         projectName = file["name"].as<std::string>();
         startupLevel = file["startup-level"].as<std::string>();
     }
-
-    auto* sh = new GLShader();
 #ifndef __MINGW32__
 
     play = Texture(static_cast<std::string>(pt.string() + "Engine/play.png"));
@@ -90,8 +88,6 @@ void UVK::Editor::initEditor()
 
     fileTextures[FS_ICON_CODE] = Texture(static_cast<std::string>(pt.string() + "Engine/code.png"));
     fileTextures[FS_ICON_CODE].loadImgui();
-
-    sh->createFromFile(static_cast<std::string>(pt.string() + "Engine/defaultvshader.gl").c_str(), static_cast<std::string>(pt.string() + "/../Content/Engine/defaultfshader.gl").c_str());
 #else
     play = Texture(static_cast<std::string>("../Content/Engine/play.png"));
     play.loadImgui();
@@ -122,8 +118,6 @@ void UVK::Editor::initEditor()
 
     fileTextures[7] = Texture(static_cast<std::string>("../Content/Engine/code.png"));
     fileTextures[7].loadImgui();
-
-    sh->createFromFile("../Content/Engine/defaultvshader.gl", "../Content/Engine/defaultfshader.gl");
 #endif
     ImGui::CreateContext();
     ImPlot::CreateContext();

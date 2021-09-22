@@ -1,5 +1,5 @@
 // EditorViewport.cpp
-// Last update 27/8/2021 by Madman10K
+// Last update 22/9/2021 by Madman10K
 #include <GL/glew.h>
 #include <Engine/Core/Core/Global.hpp>
 #include <Renderer/Window/Window.hpp>
@@ -10,6 +10,7 @@
 #include <GameFramework/Components/Components.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <GameFramework/GameplayClasses/Level/Level.hpp>
+#include <GameFramework/Components/Components/CoreComponent.hpp>
 
 #ifndef PRODUCTION
 void EditorViewport::display(UVK::GLFrameBuffer& fb, int& viewportWidth, int& viewportHeight, bool& bShow, UVK::Camera& camera, UVK::Actor& entity, glm::mat4& projection)
@@ -70,9 +71,9 @@ void EditorViewport::display(UVK::GLFrameBuffer& fb, int& viewportWidth, int& vi
         break;
     }
 
-    if (entity.has<UVK::MeshComponentRaw>() && operationType != -1)
+    if (entity.has<UVK::CoreComponent>() && operationType != -1)
     {
-        auto& a = entity.get<UVK::MeshComponentRaw>();
+        auto& core = entity.get<UVK::CoreComponent>();
 
         const float snapValues[3] = { snapVal, snapVal, snapVal };
         UVK::FVector translation, rotation, scale, deltaRotation;
@@ -82,36 +83,22 @@ void EditorViewport::display(UVK::GLFrameBuffer& fb, int& viewportWidth, int& vi
         ImGuizmo::SetDrawlist();
         ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, ImGui::GetWindowWidth(), ImGui::GetWindowHeight());
 
-        ImGuizmo::Manipulate(glm::value_ptr(camera.calculateViewMatrixRH()), glm::value_ptr(projection), (ImGuizmo::OPERATION)operationType, ImGuizmo::WORLD, glm::value_ptr(a.mat), nullptr, snap ? snapValues : nullptr);
+        glm::mat4 mat(1.0f);
+        UVK::Math::translate(mat, core.translation);
+        UVK::Math::rotate(mat, core.rotation);
+        UVK::Math::scale(mat, core.scale);
+
+        ImGuizmo::Manipulate(glm::value_ptr(camera.calculateViewMatrixRH()), glm::value_ptr(projection), (ImGuizmo::OPERATION)operationType, ImGuizmo::LOCAL, glm::value_ptr(mat), nullptr, snap ? snapValues : nullptr);
 
         if (ImGuizmo::IsUsing())
         {
-            ImGuizmo::DecomposeMatrixToComponents(glm::value_ptr(a.mat), glm::value_ptr(translation), glm::value_ptr(rotation), glm::value_ptr(scale));
+            ImGuizmo::DecomposeMatrixToComponents(glm::value_ptr(mat), glm::value_ptr(translation), glm::value_ptr(rotation), glm::value_ptr(scale));
 
-            deltaRotation = glm::radians(rotation) - a.rotation;
+            deltaRotation = glm::radians(rotation) - core.rotation;
 
-            a.translation = translation;
-            a.rotation += deltaRotation;
-            a.scale = scale;
-        }
-    }
-    else if (entity.has<UVK::MeshComponent>() && operationType != -1)
-    {
-        //todo add the functionality for a regular mesh component
-    }
-    else if (entity.has<UVK::AudioComponent>() && operationType != -1)
-    {
-        auto& a = entity.get<UVK::AudioComponent>();
-
-        ImGuizmo::SetOrthographic(false);
-        ImGuizmo::SetDrawlist();
-        ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, ImGui::GetWindowWidth(), ImGui::GetWindowHeight());
-
-        //ImGuizmo::Manipulate(glm::value_ptr(view), glm::value_ptr(projection), ImGuizmo::OPERATION::TRANSLATE, ImGuizmo::LOCAL, glm::value_ptr(transform));
-
-        if (ImGuizmo::IsUsing())
-        {
-
+            core.translation = translation;
+            core.rotation += deltaRotation;
+            core.scale = scale;
         }
     }
     ImGui::End();

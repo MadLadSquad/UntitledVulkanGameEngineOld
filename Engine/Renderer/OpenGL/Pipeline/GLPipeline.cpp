@@ -1,5 +1,5 @@
 // GLPipeline.cpp
-// Last update 13/9/2021 by Madman10K
+// Last update 22/9/2021 by Madman10K
 #include <GL/glew.h>
 #include <Events/Events.hpp>
 #include <Renderer/EditorUI/Classes/EditorLevel.hpp>
@@ -15,6 +15,7 @@ void UVK::GLPipeline::begin(bool bHasEditor, Level* lvl)
     if (bEditor)
     {
 #ifndef PRODUCTION
+        delete global.currentLevel;
         auto* lv = new UVK::EditorLevel;
         global.currentLevel = lv;
 
@@ -123,6 +124,7 @@ void UVK::GLPipeline::end()
         Events::callEnd();
         global.instance->endPlay();
         UVK::UIInternal::clean();
+        global.window.destroyWindow();
     }
 
     UVK::GLEntityManager::clean();

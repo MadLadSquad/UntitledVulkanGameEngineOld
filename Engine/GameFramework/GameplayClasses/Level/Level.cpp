@@ -1,7 +1,8 @@
 // Level.cpp
-// Last update 13/9/2021 by Madman10K
-#include "../../Components/Components.hpp"
-#include "Engine/Core/Core/Actor.hpp"
+// Last update 22/9/2021 by Madman10K
+#include <GameFramework/Components/Components.hpp>
+#include <GameFramework/Components/Components/CoreComponent.hpp>
+#include <Core/Actor.hpp>
 #include <Events/Events.hpp>
 #include <Engine/Core/Core/Global.hpp>
 #include "Level.hpp"
@@ -88,18 +89,16 @@ void UVK::Level::saveEntity(YAML::Emitter& out, entt::entity act)
         out << YAML::Key << "dev-name" << YAML::Value << a.devName;
     }
 
-#ifndef __MINGW32__
     if (global.ecs.data().any_of<UVK::AudioComponent>(act))
     {
         auto& a = global.ecs.data().get<UVK::AudioComponent>(act);
-        out << YAML::Key << "audio-pitch" << YAML::Value << a.data.pitch;
-        out << YAML::Key << "audio-gain" << YAML::Value << a.data.gain;
-        out << YAML::Key << "audio-loop" << YAML::Value << a.data.bLoop;
-        out << YAML::Key << "audio-location" << YAML::Value << a.data.position;
-        out << YAML::Key << "audio-velocity" << YAML::Value << a.data.velocity;
-        out << YAML::Key << "audio-file" << YAML::Value << a.data.location;
+        //out << YAML::Key << "audio-pitch" << YAML::Value << a.data.pitch;
+        //out << YAML::Key << "audio-gain" << YAML::Value << a.data.gain;
+        //out << YAML::Key << "audio-loop" << YAML::Value << a.data.bLoop;
+        //out << YAML::Key << "audio-location" << YAML::Value << a.data.position;
+        //out << YAML::Key << "audio-velocity" << YAML::Value << a.data.velocity;
+        //out << YAML::Key << "audio-file" << YAML::Value << a.data.location;
     }
-#endif
     out << YAML::EndMap;
 }
 
@@ -178,17 +177,16 @@ void UVK::Level::openInternal(UVK::String location)
 
             if (entity["audio-pitch"] && entity["audio-gain"] && entity["audio-location"])
             {
-                auto& a = act.add<UVK::AudioComponent>();
+                //auto& a = act.add<UVK::AudioComponent>();
 
-                UVK::AudioSourceData data;
-                data.pitch = entity["audio-pitch"].as<float>();
-                data.gain = entity["audio-gain"].as<float>();
-                data.bLoop = entity["audio-loop"].as<bool>();
-                data.position = entity["audio-location"].as<FVector>();
-                data.velocity = entity["audio-velocity"].as<FVector>();
-                data.location = entity["audio-file"].as<std::string>();
-
-                a.init(data);
+                //UVK::AudioSourceData data;
+                //data.pitch = entity["audio-pitch"].as<float>();
+                //data.gain = entity["audio-gain"].as<float>();
+                //data.bLoop = entity["audio-loop"].as<bool>();
+                //data.position = entity["audio-location"].as<FVector>();
+                //data.velocity = entity["audio-velocity"].as<FVector>();
+                //data.location = entity["audio-file"].as<std::string>();
+                //a.init(data);
             }
         }
         logger.consoleLog("Iterated entities", UVK_LOG_TYPE_SUCCESS);

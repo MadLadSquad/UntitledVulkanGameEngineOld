@@ -1,8 +1,9 @@
 // Pawn.hpp
-// Last update 27/8/2021 by Madman10K
+// Last update 22/9/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 #include <Renderer/Camera/Camera.hpp>
+#include <Core/Actor.hpp>
 
 namespace UVK
 {
@@ -12,16 +13,20 @@ namespace UVK
     class Pawn
     {
     public:
+        Pawn() = default;
+
         virtual void beginPlay() = 0;
         virtual void tick(float deltaTime) = 0;
         virtual void endPlay() = 0;
 
-        virtual ~Pawn() = default;
+        virtual ~Pawn();
         Camera camera;
 
         std::string name;
-        int64_t id;
+        int64_t id{};
         std::string devName;
+
+        Actor actor{};
 
         template<typename T>
         static Pawn* makePawn()
@@ -38,8 +43,6 @@ namespace UVK
 
         static void destroyPawn(Pawn* pw);
     private:
-
+        friend class GLPipeline;
     };
-
-
 }

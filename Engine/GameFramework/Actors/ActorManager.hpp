@@ -1,5 +1,5 @@
 // ActorManager.hpp
-// Last update 13/9/2021 by Madman10K
+// Last update 22/9/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 
@@ -22,10 +22,10 @@ namespace UVK
         friend class Actor;
         friend class Events;
 
-        std::set<ScriptableObject*>& data();
+        std::vector<ScriptableObject*>& data();
 
         void init();
         void destroy();
-        std::set<ScriptableObject*> a;
+        std::vector<ScriptableObject*> a;
     };
 }

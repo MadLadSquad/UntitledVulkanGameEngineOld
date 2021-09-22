@@ -1,9 +1,10 @@
 // SceneHierarchy.cpp
-// Last update 2/9/2021 by Madman10K
+// Last update 22/9/2021 by Madman10K
 #include "SceneHierarchy.hpp"
 #include <Core/Actor.hpp>
 #include <GameFramework/Actors/ActorManager.hpp>
 #include <GameFramework/Components/Components.hpp>
+#include <GameFramework/Components/Components/CoreComponent.hpp>
 
 void SceneHierarchy::destroyEntity(UVK::Actor& selectedEntity)
 {

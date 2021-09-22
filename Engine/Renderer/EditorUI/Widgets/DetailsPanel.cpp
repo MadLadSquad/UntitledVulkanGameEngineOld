@@ -1,5 +1,5 @@
 // DetailsPanel.cpp
-// Last update 13/9/2021 by Madman10K
+// Last update 22/9/2021 by Madman10K
 #include <GL/glew.h>
 #include <imgui.h>
 #include <cpp/imgui_stdlib.h>
@@ -9,6 +9,7 @@
 #include <GameFramework/GameplayClasses/Level/Level.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <Renderer/EditorUI/Modules/EditorModule.hpp>
+#include <GameFramework/Components/Components/CoreComponent.hpp>
 
 #ifndef PRODUCTION
 void DetailsPanel::DrawVec3Control(const std::string &label, glm::vec3 &values, float resetValue, float columnWidth)
@@ -103,23 +104,22 @@ void DetailsPanel::display(UVK::Actor& ent, UVK::Level* lvl, bool& bShow, const 
             }
         }
 
-        if (ImGui::MenuItem("Audio"))
-        {
-            if (!ent.has<UVK::AudioComponent>())
-            {
-                auto& a = ent.add<UVK::AudioComponent>();
+        //if (ImGui::MenuItem("Audio"))
+        //{
+        //    if (!ent.has<UVK::AudioComponent>())
+        //    {
+        //        auto& a = ent.add<UVK::AudioComponent>();
 
-                UVK::AudioSourceData dt;
-                dt.location = "test.wav";
-                dt.velocity = UVK::FVector(0.0f, 0.0f, 0.0f);
-                dt.position = UVK::FVector(0.0f, 0.0f, 0.0f);
-                dt.bLoop = false;
-                dt.gain = 1.0f;
-                dt.pitch = 1.0f;
-
-                a.init(dt);
-            }
-        }
+        //        UVK::AudioSourceData dt;
+        //        dt.location = "test.wav";
+        //        dt.velocity = UVK::FVector(0.0f, 0.0f, 0.0f);
+        //        dt.position = UVK::FVector(0.0f, 0.0f, 0.0f);
+        //        dt.bLoop = false;
+        //        dt.gain = 1.0f;
+        //        dt.pitch = 1.0f;
+        //        a.init(dt);
+        //    }
+        //}
 
         ImGui::EndMenu();
     }
@@ -142,13 +142,13 @@ void DetailsPanel::display(UVK::Actor& ent, UVK::Level* lvl, bool& bShow, const 
             }
         }
 
-        if (ImGui::MenuItem("Audio##rm"))
-        {
-            if (ent.has<UVK::AudioComponent>())
-            {
-                ent.remove<UVK::AudioComponent>();
-            }
-        }
+        //if (ImGui::MenuItem("Audio##rm"))
+        //{
+        //    if (ent.has<UVK::AudioComponent>())
+        //    {
+        //        ent.remove<UVK::AudioComponent>();
+        //    }
+        //}
 
         ImGui::EndMenu();
     }
@@ -173,6 +173,10 @@ void DetailsPanel::display(UVK::Actor& ent, UVK::Level* lvl, bool& bShow, const 
         ImGui::TextWrapped("Development Name");
         ImGui::SameLine();
         ImGui::InputText("##Development Name##devname", &a.devName);
+
+        DrawVec3Control("Translation", a.translation, 0.0f, 100.0f);
+        DrawVec3Control("Rotation", a.rotation, 0.0f, 100.0f);
+        DrawVec3Control("Scale", a.scale, 1.0f, 100.0f);
 
         if (a.name == UVK::Level::getPawn(lvl)->name && a.id == UVK::Level::getPawn(lvl)->id && a.devName == UVK::Level::getPawn(lvl)->devName)
         {
@@ -204,21 +208,16 @@ void DetailsPanel::display(UVK::Actor& ent, UVK::Level* lvl, bool& bShow, const 
                 ar = aspect.x / aspect.y;
                 UVK::Level::getPawn(lvl)->camera.projection().recalculateRH();
             }
+            UVK::Level::getPawn(lvl)->camera.recalculate();
         }
     }
 
-    if (ent.has<UVK::MeshComponentRaw>())
-    {
-        ImGui::Separator();
-
-        auto& cmp = ent.get<UVK::MeshComponentRaw>();
-
-        DrawVec3Control("Translation", cmp.translation, 0.0f, 100.0f);
-        glm::vec3 rotation = glm::degrees(cmp.rotation);
-        DrawVec3Control("Rotation", rotation, 0.0f, 100.0f);
-        cmp.rotation = glm::radians(rotation);
-        DrawVec3Control("Scale", cmp.scale, 1.0f, 100.0f);
-    }
+    //if (ent.has<UVK::MeshComponentRaw>())
+    //{
+    //    ImGui::Separator();
+//
+    //    auto& cmp = ent.get<UVK::MeshComponentRaw>();
+    //}
 
 #ifndef __MINGW32__
     if (ent.has<UVK::AudioComponent>())
@@ -226,56 +225,56 @@ void DetailsPanel::display(UVK::Actor& ent, UVK::Level* lvl, bool& bShow, const 
         ImGui::Separator();
 
         auto& cmp = ent.get<UVK::AudioComponent>();
-        UVK::AudioSourceData dt = cmp.data;
+        //UVK::AudioSourceData dt = cmp.data;
 
-        ImGui::TextWrapped("Pitch");
-        ImGui::SameLine();
-        ImGui::SliderFloat("##Pitchpt", &dt.pitch, 0.5f, 2.0f);
-
-        ImGui::TextWrapped("Gain");
-        ImGui::SameLine();
-        ImGui::SliderFloat("##Gaingn", &dt.gain, 0.0f, 10.0f);
-
-        ImGui::TextWrapped("Repeat");
-        ImGui::SameLine();
-        ImGui::Checkbox("##Repeatrt", &dt.bLoop);
-
-        ImGui::TextWrapped("File Location");
-        ImGui::SameLine();
-        ImGui::InputText("##File Location fl", &dt.location);
-
-        cmp.data = dt;
-        if (ImGui::Button("Play") && !dt.location.empty())
-        {
-            ent.remove<UVK::AudioComponent>();
-            auto& comp = ent.add<UVK::AudioComponent>();
-            comp.init(dt);
-            comp.play();
-        }
-        ImGui::SameLine();
-        if (ImGui::Button("Resume"))
-        {
-            cmp.resume();
-        }
-        ImGui::SameLine();
-        if (ImGui::Button("Pause"))
-        {
-            cmp.pause();
-        }
-        ImGui::SameLine();
-        if (ImGui::Button("Stop"))
-        {
-            cmp.stop();
-        }
-        ImGui::SameLine();
-        if (ImGui::Button("Replay"))
-        {
-            cmp.stop();
-            cmp.play();
-        }
-
-        DrawVec3Control("Position", cmp.data.position, 0.0f, 100.0f);
-        DrawVec3Control("Velocity", cmp.data.velocity, 0.0f, 100.0f);
+        //ImGui::TextWrapped("Pitch");
+        //ImGui::SameLine();
+        //ImGui::SliderFloat("##Pitchpt", &dt.pitch, 0.5f, 2.0f);
+//
+        //ImGui::TextWrapped("Gain");
+        //ImGui::SameLine();
+        //ImGui::SliderFloat("##Gaingn", &dt.gain, 0.0f, 10.0f);
+//
+        //ImGui::TextWrapped("Repeat");
+        //ImGui::SameLine();
+        //ImGui::Checkbox("##Repeatrt", &dt.bLoop);
+//
+        //ImGui::TextWrapped("File Location");
+        //ImGui::SameLine();
+        //ImGui::InputText("##File Location fl", &dt.location);
+//
+        //cmp.data = dt;
+        //if (ImGui::Button("Play") && !dt.location.empty())
+        //{
+        //    ent.remove<UVK::AudioComponent>();
+        //    auto& comp = ent.add<UVK::AudioComponent>();
+        //    comp.init(dt);
+        //    comp.play();
+        //}
+        //ImGui::SameLine();
+        //if (ImGui::Button("Resume"))
+        //{
+        //    cmp.resume();
+        //}
+        //ImGui::SameLine();
+        //if (ImGui::Button("Pause"))
+        //{
+        //    cmp.pause();
+        //}
+        //ImGui::SameLine();
+        //if (ImGui::Button("Stop"))
+        //{
+        //    cmp.stop();
+        //}
+        //ImGui::SameLine();
+        //if (ImGui::Button("Replay"))
+        //{
+        //    cmp.stop();
+        //    cmp.play();
+        //}
+//
+        //DrawVec3Control("Position", cmp.data.position, 0.0f, 100.0f);
+        //DrawVec3Control("Velocity", cmp.data.velocity, 0.0f, 100.0f);
     }
 #endif
 

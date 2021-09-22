@@ -1,9 +1,10 @@
 // Actor.cpp
-// Last update 15/9/2021 by Madman10K
+// Last update 22/9/2021 by Madman10K
 #include <GL/glew.h>
 #include "Actor.hpp"
 #include <GameFramework/Actors/ActorManager.hpp>
 #include "Engine/GameFramework/Components/Components.hpp"
+#include <GameFramework/Components/Components/CoreComponent.hpp>
 
 UVK::Actor::Actor(const std::string& nameN, uint64_t idN, const std::string& devNameN)
 {
@@ -27,10 +28,10 @@ void UVK::Actor::create(const std::string& nameN, uint64_t idN, const std::strin
 
 void UVK::Actor::destroy()
 {
-    if (global.ecs.data().any_of<AudioComponent>(entity))
-    {
-        global.ecs.data().get<AudioComponent>(entity).stop();
-    }
+    //if (global.ecs.data().any_of<AudioComponent>(entity))
+    //{
+    //    global.ecs.data().get<AudioComponent>(entity).stop();
+    //}
 
     if (global.ecs.data().any_of<MeshComponentRaw>(entity))
     {

@@ -1,42 +1,18 @@
 // AudioComponent.cpp
-// Last update 25/7/2021 by Madman10K
+// Last update 22/9/2021 by Madman10K
 #include "AudioComponent.hpp"
+#include "CoreComponent.hpp"
+#include <Core/Actor.hpp>
 
-void UVK::AudioComponent::play()
+void UVK::AudioComponent::create(UVK::Actor* act, const char* file)
 {
-#ifndef __MINGW32__
-    src = AudioSource(data);
+    actor = act;
+    currentFile = file;
 
-    src.play();
-#endif
+    core = &actor->get<CoreComponent>();
 }
 
-void UVK::AudioComponent::stop()
+void UVK::AudioComponent::tick()
 {
-#ifndef __MINGW32__
-    src.state() = UVK_AUDIO_STATE_STOPPED;
-#endif
-}
 
-void UVK::AudioComponent::pause()
-{
-#ifndef __MINGW32__
-    src.state() = UVK_AUDIO_STATE_PAUSED;
-#endif
-}
-
-void UVK::AudioComponent::resume()
-{
-#ifndef __MINGW32__
-    src.state() = UVK_AUDIO_STATE_RESUME;
-#endif
-}
-
-void UVK::AudioComponent::init(AudioSourceData dt)
-{
-    data = std::move(dt);
-
-#ifndef __MINGW32__
-
-#endif
 }

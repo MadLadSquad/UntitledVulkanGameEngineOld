@@ -1,5 +1,5 @@
 // ECSInterface.hpp
-// Last update 15/9/2021 by Madman10K
+// Last update 22/9/2021 by Madman10K
 #pragma once
 #include <functional>
 #include <Core/Types.hpp>
@@ -19,10 +19,10 @@ namespace UVK
         static void clear();
         static EntityPool& data();
 
-        static Actor* getActorWithIdentifiers(const std::string& name, const uint64_t& id, const std::string& devname);
+        static Actor getActorWithIdentifiers(const std::string& name, const uint64_t& id, const std::string& devname);
 
         template<typename T>
-        static void forEveryComponent(const std::function<void(Actor*)>& func)
+        static void forEveryComponent(const std::function<void(Actor&)>& func)
         {
             auto view = data().view<T>();
             for (auto& a : view)
@@ -33,8 +33,8 @@ namespace UVK
             }
         }
 
-        static void each(const std::function<void(Actor*)>& func);
+        static void each(const std::function<void(Actor&)>& func);
     private:
-        static void call(const std::function<void(Actor*)>& func, entt::entity& ent);
+        static void call(const std::function<void(Actor&)>& func, entt::entity& ent);
     };
 }

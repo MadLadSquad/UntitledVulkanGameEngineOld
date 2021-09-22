@@ -1,5 +1,5 @@
 // GLRenderer.cpp
-// Last update 2/9/2021 by Madman10K
+// Last update 22/9/2021 by Madman10K
 #include "GLRenderer.hpp"
 #include "../../Core/Events/Events.hpp"
 #include <Renderer/OpenGL/Pipeline/GLPipeline.hpp>
@@ -26,8 +26,7 @@ void UVK::GLRenderer::start(UVK::Level* level) const noexcept
     };
 
     auto& a = maikati.add<UVK::MeshComponentRaw>();
-    a.createMesh(vertices, indices, 20, 12, "../Content/Engine/defaultvshader.gl", "../Content/Engine/defaultfshader.gl", SHADER_IMPORT_TYPE_FILE);
-    a.rotation = FVector(0.0f, 0.0f, 0.0f);
+    a.createMesh(&maikati, vertices, indices, 20, 12, "../Content/Engine/defaultvshader.gl", "../Content/Engine/defaultfshader.gl", SHADER_IMPORT_TYPE_FILE);
     //auto& b = registry.addComponent<AudioComponent3D>(ent);
     //b.play("and.wav", true, 1.0f, 1.0f, FVector(15.0f, 0.0f, 0.0f));
 #endif
