@@ -11,4 +11,4 @@ These are the guidelines
     -   Follow the way the documentation is structured
     -   Write the document
     -   Add a pull request
-    -   If accepted your change will be a added to the offline docs and will be automatically updated in the online documentation
+    -   If accepted your change will be added to the offline docs and will be automatically updated in the online documentation
