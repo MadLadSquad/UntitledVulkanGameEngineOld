@@ -91,7 +91,7 @@ void UVK::Level::saveEntity(YAML::Emitter& out, entt::entity act)
 
     if (global.ecs.data().any_of<UVK::AudioComponent>(act))
     {
-        auto& a = global.ecs.data().get<UVK::AudioComponent>(act);
+        //auto& a = global.ecs.data().get<UVK::AudioComponent>(act);
         //out << YAML::Key << "audio-pitch" << YAML::Value << a.data.pitch;
         //out << YAML::Key << "audio-gain" << YAML::Value << a.data.gain;
         //out << YAML::Key << "audio-loop" << YAML::Value << a.data.bLoop;
