@@ -1,4 +1,4 @@
-# Contributing guidelines
+## Contributing guidelines
 These are the guidelines
 -   Follow the ToS
 -   Follow the CoC
