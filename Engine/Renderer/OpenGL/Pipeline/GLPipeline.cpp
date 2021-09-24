@@ -21,7 +21,6 @@ void UVK::GLPipeline::begin(bool bHasEditor, Level* lvl)
         global.currentLevel = lv;
 
         Actor a("Editor Pawn", 330, "EditorPawn");
-        std::cout << a.get<CoreComponent>().devName << std::endl;
         UVK::Level::getPawn(UVK::global.currentLevel)->beginPlay();
     #ifdef DEVELOPMENT
         tx = Texture("../Content/Engine/brick.jpg");
