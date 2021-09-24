@@ -1,14 +1,7 @@
 #pragma once
-#if _MSC_VER && !__INTEL_COMPILER
-    #define _CRT_SECURE_NO_WARNINGS
-#endif
 #include <iostream>
 #include <fstream>
-#include <ostream>
-#include <ios>
 #include <chrono>
-#include <ctime>
-#include <functional>
 
 #define LogColGreen "\x1B[32m"
 #define LogColYellow "\x1B[33m"
@@ -29,31 +22,12 @@ enum LogType
 class Timer
 {
 public:
-    void startRecording()
-    {
-        start = std::chrono::high_resolution_clock::now();
-    }
+    void startRecording();
+    void stopRecording();
 
-    void stopRecording()
-    {
-        auto endTime = std::chrono::high_resolution_clock::now();
-        auto st = std::chrono::time_point_cast<std::chrono::microseconds>(start).time_since_epoch().count();
-        auto end = std::chrono::time_point_cast<std::chrono::microseconds>(endTime).time_since_epoch().count();
+    ~Timer();
 
-        auto dt = end - st;
-
-        duration = (double)dt * 0.001;
-    }
-
-    ~Timer()
-    {
-        stopRecording();
-    }
-
-    [[nodiscard]] double getDuration() const
-    {
-        return duration;
-    }
+    [[nodiscard]] double getDuration() const;
 private:
     double duration = 0;
 
@@ -64,16 +38,10 @@ class UVKLog
 {
 public:
     UVKLog() = default;
+    ~UVKLog();
 
-    void setCrashOnError(bool bErr)
-    {
-        bErroring = bErr;
-    }
-
-    void setLogFileLocation(const char* file)
-    {
-        fileout = std::ofstream(file);
-    }
+    void setCrashOnError(bool bErr);
+    void setLogFileLocation(const char* file);
 
     // A general logging function that is useful for when you want to print to the console and to a file
     template<typename... args>
@@ -200,7 +168,7 @@ public:
             if (bErroring)
             {
                 std::cin.get();
-                throw std::runtime_error("[" + getCurrentTime() + "] Error: " + message);
+                throw std::runtime_error(" ");
             }
             break;
         case UVK_LOG_TYPE_NOTE:
@@ -223,21 +191,9 @@ public:
             break;
         }
     }
-
-    void shutdownFileStream()
-    {
-        fileout.close();
-    }
 private:
-    static std::string getCurrentTime()
-    {
-        auto now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
-
-        std::string realTime = std::ctime(&now);
-        realTime.erase(24);
-
-        return realTime;
-    }
+    static std::string getCurrentTime();
+    void shutdownFileStream();
 
     std::ofstream fileout;
     bool bErroring = false;
