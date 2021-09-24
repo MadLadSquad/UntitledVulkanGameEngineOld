@@ -52,4 +52,4 @@
 
 #define GLM_FORCE_DEPTH_ZERO_TO_ONE
 
-#define GLEW_STATIC
+//#define GLEW_STATIC
