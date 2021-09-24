@@ -6,7 +6,7 @@
 
 namespace UVK
 {
-    class VKDevice;
+    struct VKDevice;
 
     class VKBuffer
     {

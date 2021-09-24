@@ -68,10 +68,11 @@ echo -e "\x1B[32mCopying required libraries ...\033[0m"
 cp Engine/ThirdParty/openal/Release/OpenAL32.dll . || echo " " || exit # Copy the OpenAL32.dll file (needed for Windows)
 cp OpenAL32.dll Release/ || echo " " || exit # Copy the OpenAL32.dll file to the Release directory since this is where we build
 cd ../Engine/ThirdParty/vulkan/ || exit # Change into the Vulkan directory which for some reason contains the needeed libraries for Windows
-cp glew32.dll ../../../build/ || exit # Copy the glew32.dll file (responsible for OpenGL extension loading)
+#cp glew32.dll ../../../build/ || exit # Copy the glew32.dll file (responsible for OpenGL extension loading)
 cp sndfile.dll ../../../build/ || exit # Copy the sndfile.dll file (responsible for loading and operating with sound files)
-cp vulkan-1.dll ../../../build/ || exit # Copy the vulkan-1.dll file (responsible for Vulkan, Vulkan extension loading and Validation)
+#cp vulkan-1.dll ../../../build/ || exit # Copy the vulkan-1.dll file (responsible for Vulkan, Vulkan extension loading and Validation)
 cd ../../../build/ || exit # Go back into the build directory 
-cp glew32.dll sndfile.dll vulkan-1.dll Release/ || echo " " || exit # Finally copy the libraries to the Release folder because that is where Visual Studio builds
+#cp glew32.dll sndfile.dll vulkan-1.dll Release/ || echo " " || exit # Finally copy the libraries to the Release folder because that is where Visual Studio builds
+cp sndfile.dll Release/ || echo " " || exit # Finally copy the libraries to the Release folder because that is where Visual Studio builds
 
 echo -e "\x1B[32mEngine and project successfully installed! \033[0m" # Print a success message in green

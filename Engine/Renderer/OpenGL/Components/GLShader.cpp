@@ -1,5 +1,6 @@
 // GLShader.cpp
 // Last update 2/7/2021 by Madman10K
+#define GLEW_STATIC
 #include <GL/glew.h>
 #include "GLShader.hpp"
 
