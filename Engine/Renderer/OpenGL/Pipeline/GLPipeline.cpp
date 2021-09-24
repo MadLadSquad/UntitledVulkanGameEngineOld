@@ -5,6 +5,7 @@
 #include <Renderer/EditorUI/Classes/EditorLevel.hpp>
 #include <Renderer/OpenGL/Pipeline/GLEntityManager.hpp>
 #include "GLPipeline.hpp"
+#include <GameFramework/Components/Components/CoreComponent.hpp>
 
 void UVK::GLPipeline::begin(bool bHasEditor, Level* lvl)
 {
@@ -20,6 +21,7 @@ void UVK::GLPipeline::begin(bool bHasEditor, Level* lvl)
         global.currentLevel = lv;
 
         Actor a("Editor Pawn", 330, "EditorPawn");
+        std::cout << a.get<CoreComponent>().devName << std::endl;
         UVK::Level::getPawn(UVK::global.currentLevel)->beginPlay();
     #ifdef DEVELOPMENT
         tx = Texture("../Content/Engine/brick.jpg");

@@ -8,6 +8,9 @@
 void UVK::EditorPawn::beginPlay()
 {
     actor = ECS::getActorWithIdentifiers(name, id, devName);
+
+    std::cout << actor.get<CoreComponent>().devName << std::endl;
+
     coreCache = &actor.get<CoreComponent>();
     camera = Camera::makeCamera(*coreCache, FVector(0.0f, 0.0f, 0.0f), FVector(0.0f, 0.0f, 0.0f), FVector(0.0f, 1.0f, 0.0f), FVector2(0.1f, 100.0f), 90.0f, Window::windowSize().x / Window::windowSize().y);
 }
@@ -53,12 +56,6 @@ void UVK::EditorPawn::move(float deltaTime)
         {
             coreCache->translation += camera.worldUp * moveSpeed * deltaTime;
         }
-
-        if (UVK::Input::getKey(Keys::Z) == Keys::KeyPressed || UVK::Input::getKey(Keys::Z) == Keys::KeyRepeat)
-        {
-            coreCache->rotation.z += turnSpeed * deltaTime * 10;
-        }
-        //std::cout << camera.front.x << ", " << camera.front.y << ", " << camera.front.z << std::endl;
 
         auto scroll = UVK::Input::getScroll();
 

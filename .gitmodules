@@ -43,3 +43,6 @@
 [submodule "Engine/ThirdParty/freetype"]
 	path = Engine/ThirdParty/freetype
 	url = https://github.com/MadLadSquad/freetype.git
+[submodule "Engine/ThirdParty/glew"]
+	path = Engine/ThirdParty/glew
+	url = https://github.com/MadLadSquad/glew-cmake.git
