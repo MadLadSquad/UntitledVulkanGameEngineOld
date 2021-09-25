@@ -9,6 +9,6 @@
 namespace CreateFile
 {
     // Creates a file
-    void display(uint8_t selectedFile, std::string& fileOutLocation, bool& bShowCreateFile1);
+    void display(std::string& fileOutLocation, bool& bShowCreateFile1);
 }
 #endif

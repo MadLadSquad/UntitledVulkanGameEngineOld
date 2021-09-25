@@ -16,3 +16,4 @@
 #include "GameFramework/Actors/ActorManager.hpp"
 #include "Engine/Core/Core/Global.hpp"
 #include "GameFramework/GameplayClasses/Level/Level.hpp"
+#include "GameFramework/Components/Components/CoreComponent.hpp"

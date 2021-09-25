@@ -27,7 +27,8 @@ void SaveLevel::display(bool &bOpen, std::string& location, UVK::FVector4& colou
 
         if (ImGui::Button("Submit##submitbuttononsave"))
         {
-            UVK::Level::save(static_cast<std::string>("../Content/" + location).c_str());
+            std::string temp = "../Content/" + location;
+            UVK::Level::save(temp.c_str());
             bOpen = false;
         }
 

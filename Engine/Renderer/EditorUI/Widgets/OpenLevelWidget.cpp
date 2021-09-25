@@ -31,7 +31,8 @@ void OpenLevelWidget::display(std::string &openLevel, bool &bShowOpenLevelWidget
             Timer tm;
             tm.startRecording();
 
-            UVK::Level::open<UVK::EditorLevel>(static_cast<std::string>("Content/" + openLevel).c_str());
+            auto loc = "../Content/" + openLevel;
+            UVK::Level::open<UVK::EditorLevel>(loc);
 
             tm.stopRecording();
             dr = tm.getDuration();

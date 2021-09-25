@@ -46,13 +46,14 @@ void Warnings::displayGenerateWarning(bool& bOpen)
         {
             bOpen = false;
             int lnt;
+            std::string temp;
 #ifdef _WIN32
-            lnt = system("cd ../UVKBuildTool/build/ && UVKBuildTool.exe --generate && cd ../../");
+            temp = "cd ../UVKBuildTool/build/ && UVKBuildTool.exe --generate && cd ../../";
 #else
-            lnt = system("cd ../UVKBuildTool/build/ && ./UVKBuildTool --generate && cd ../../");
+            temp = "cd ../UVKBuildTool/build/ && ./UVKBuildTool --generate && cd ../../";
 #endif
 
-            if (lnt)
+            if (system(temp.c_str()))
             {
                 logger.consoleLog("Error when regenerating files!", UVK_LOG_TYPE_ERROR, lnt);
             }

@@ -39,7 +39,7 @@ namespace UVK
          * function below. This function* is called and then reset to an empty function every frame(GLPipeline L95)
          */
         template<typename T>
-        static void open(String location) noexcept
+        static void open(const std::string& location) noexcept
         {
             // Capturing by value, otherwise the function crashes
             global.openFunction = [location]()
@@ -48,7 +48,7 @@ namespace UVK
                 delete global.currentLevel;
                 T* lvl = new T();
                 global.currentLevel = lvl;
-                T::openInternal(location);
+                T::openInternal(location.c_str());
                 global.currentLevel->beginPlay();
             };
         }

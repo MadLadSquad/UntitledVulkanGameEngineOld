@@ -49,7 +49,6 @@ namespace UVK
 
         int entNum = 0;
         int viewportWidth = 0, viewportHeight = 0;
-        uint8_t selectedFile = 0;
 
         Actor selectedEntity{};
 

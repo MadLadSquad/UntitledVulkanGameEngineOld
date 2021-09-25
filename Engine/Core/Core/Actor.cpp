@@ -2,7 +2,6 @@
 // Last update 22/9/2021 by Madman10K
 #include <GL/glew.h>
 #include "Actor.hpp"
-#include <GameFramework/Actors/ActorManager.hpp>
 #include "Engine/GameFramework/Components/Components.hpp"
 #include <GameFramework/Components/Components/CoreComponent.hpp>
 
@@ -18,8 +17,9 @@ entt::entity& UVK::Actor::data()
 
 void UVK::Actor::create(const std::string& nameN, uint64_t idN, const std::string& devNameN)
 {
+    //entity = global.ecs.data().
     entity = global.ecs.data().create();
-
+    std::cout << (uint32_t)entity << std::endl;
     auto& a = add<CoreComponent>();
     a.name = nameN;
     a.id = idN;

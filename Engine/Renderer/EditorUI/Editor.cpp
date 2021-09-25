@@ -460,7 +460,7 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
 
     if (bShowCreateFile1)
     {
-        CreateFile::display(selectedFile, fileOutLocation, bShowCreateFile1);
+        CreateFile::display(fileOutLocation, bShowCreateFile1);
     }
 
     if (bShowDetailsPanel)

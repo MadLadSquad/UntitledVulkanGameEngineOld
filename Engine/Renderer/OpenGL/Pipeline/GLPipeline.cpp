@@ -103,9 +103,8 @@ void UVK::GLPipeline::tick()
         global.currentLevel->tick(deltaTime);
         Events::callTick(deltaTime);
         global.ui.update();
-
-        global.finalizeOpening();
     }
+    global.finalizeOpening();
 
     glfwSwapBuffers(global.window.getWindow());
 }
