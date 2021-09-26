@@ -6,9 +6,9 @@
 #include <GameFramework/Components/Components.hpp>
 
 UVK::GLRenderer::GLRenderer(Level* level, const bool& bUsesEditor, UVK::String theme)
+    : colTheme(std::move(theme))
 {
     bEditor = bUsesEditor;
-    colTheme = std::move(theme);
     start(level);
 }
 
