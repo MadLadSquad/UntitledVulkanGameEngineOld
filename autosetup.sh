@@ -1,12 +1,20 @@
 #!/bin/bash
 # shellcheck disable=SC2162
 read -p "Enter Your Application Name: " prjname # read the project name
+while true; do
+    read -p "Do you want to download offline documentation Y(Yes)/N(No): " yn
+    case $yn in
+        [Yy]* ) git clone https://github.com/MadLadSquad/UntitledVulkanGameEngine.wiki.git docs/; break;;
+        [Nn]* ) break;;
+        * ) echo "Please answer with Y(Yes) or N(No)!";;
+    esac
+done
 
 cpus=$(grep -c processor /proc/cpuinfo) ## get the cpu threads for maximum performance when compiling
 echo -e "\x1B[32mCopiling with ${cpus} compute jobs!\033[0m"
 
 # Create folders and files to be used as configs
-mkdir Source || exit 
+mkdir Source || exit
 mkdir Generated || exit
 cd Config || exit
 
@@ -34,7 +42,7 @@ echo " "
 
 cd UVKBuildTool/ || exit
 mkdir build || exit # Will store our compiled binary
-cd build || exit 
+cd build || exit
 cmake .. || exit # Generate the UVKBuildTool project files
 
 # Try to run MSBuild first, if it fails we are either on a non-Windows system or the user doesn't have Visual Studio installed
