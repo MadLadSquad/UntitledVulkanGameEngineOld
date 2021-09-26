@@ -3,6 +3,21 @@
 #include <GL/glew.h>
 #include "GLFrameBuffer.hpp"
 
+UVK::GLFrameBuffer::GLFrameBuffer(int width, int height)
+{
+    init(width, height);
+}
+
+uint32_t UVK::GLFrameBuffer::getFramebuffer() const
+{
+    return FBO;
+}
+
+uint32_t UVK::GLFrameBuffer::getFramebufferTexture() const
+{
+    return framebufferTexture;
+}
+
 void UVK::GLFrameBuffer::init(int width, int height)
 {
     glGenFramebuffers(1, &FBO);

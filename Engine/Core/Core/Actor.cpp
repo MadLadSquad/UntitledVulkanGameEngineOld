@@ -36,12 +36,15 @@ void UVK::Actor::destroy()
     if (global.ecs.data().any_of<MeshComponentRaw>(entity))
     {
         global.ecs.data().get<MeshComponentRaw>(entity).clearMesh();
+        remove<MeshComponentRaw>();
     }
 
     if (global.ecs.data().any_of<MeshComponent>(entity))
     {
         global.ecs.data().get<MeshComponent>(entity).clearMesh();
+        remove<MeshComponent>();
     }
+    remove<CoreComponent>();
 
     global.ecs.data().destroy(entity);
 }

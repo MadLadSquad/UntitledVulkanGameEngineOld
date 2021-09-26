@@ -19,9 +19,7 @@ void UVK::GLPipeline::begin(bool bHasEditor, Level* lvl)
         delete global.currentLevel;
         auto* lv = new UVK::EditorLevel;
         global.currentLevel = lv;
-
-        Actor a("Editor Pawn", 330, "EditorPawn");
-        UVK::Level::getPawn(UVK::global.currentLevel)->beginPlay();
+        global.currentLevel->beginPlay();
     #ifdef DEVELOPMENT
         tx = Texture("../Content/Engine/brick.jpg");
         tx.load();
@@ -70,7 +68,7 @@ void UVK::GLPipeline::tick()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
         UVK::Editor::beginFrame();
-        UVK::Level::getPawn(UVK::global.currentLevel)->tick(deltaTime);
+        global.currentLevel->tick(deltaTime);
         
 #ifdef DEVELOPMENT
         tx.useTexture();
@@ -81,6 +79,10 @@ void UVK::GLPipeline::tick()
         glClearColor(global.colour.x, global.colour.y, global.colour.z, global.colour.w);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
         UVK::UIInternal::beginFrame();
+
+        global.currentLevel->tick(deltaTime);
+        Events::callTick(deltaTime);
+        global.ui.update();
     }
 
     UVK::GLEntityManager::tick(&UVK::Level::getPawn(UVK::global.currentLevel)->camera);
@@ -97,12 +99,6 @@ void UVK::GLPipeline::tick()
         
         ed.runEditor(global.colour, fb, UVK::Level::getPawn(UVK::global.currentLevel)->camera, global.currentLevel);
 #endif
-    }
-    else
-    {
-        global.currentLevel->tick(deltaTime);
-        Events::callTick(deltaTime);
-        global.ui.update();
     }
     global.finalizeOpening();
 

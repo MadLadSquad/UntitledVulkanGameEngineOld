@@ -19,6 +19,8 @@ namespace UVK
             name = "Editor Pawn";
             id = 330;
             devName = "EditorPawn";
+
+            actor = Actor(name, id, devName);
         }
 
         virtual void beginPlay() override;

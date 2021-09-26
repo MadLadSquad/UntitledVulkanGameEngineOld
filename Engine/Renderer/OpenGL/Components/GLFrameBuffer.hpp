@@ -12,21 +12,10 @@ namespace UVK
     {
     public:
         GLFrameBuffer() = default;
+        GLFrameBuffer(int width, int height);
 
-        GLFrameBuffer(int width, int height)
-        {
-            init(width, height);
-        }
-
-        [[nodiscard]] uint32_t getFramebuffer() const
-        {
-            return FBO;
-        }
-
-        [[nodiscard]] uint32_t getFramebufferTexture() const
-        {
-            return framebufferTexture;
-        }
+        [[nodiscard]] uint32_t getFramebuffer() const;
+        [[nodiscard]] uint32_t getFramebufferTexture() const;
 
         void init(int width, int height);
 

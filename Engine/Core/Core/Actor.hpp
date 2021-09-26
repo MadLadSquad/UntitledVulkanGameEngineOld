@@ -45,6 +45,6 @@ namespace UVK
         void destroy();
         entt::entity& data();
     private:
-        entt::entity entity;
+        entt::entity entity = entt::null;
     };
 }

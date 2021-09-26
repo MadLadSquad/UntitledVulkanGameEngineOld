@@ -5,6 +5,13 @@
 #include <Renderer/OpenGL/Pipeline/GLPipeline.hpp>
 #include <GameFramework/Components/Components.hpp>
 
+UVK::GLRenderer::GLRenderer(Level* level, const bool& bUsesEditor, UVK::String theme)
+{
+    bEditor = bUsesEditor;
+    colTheme = std::move(theme);
+    start(level);
+}
+
 void UVK::GLRenderer::start(UVK::Level* level) const noexcept
 {
     GLPipeline pipeline(bEditor, level);
