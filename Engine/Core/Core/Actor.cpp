@@ -17,10 +17,12 @@ entt::entity& UVK::Actor::data()
 
 void UVK::Actor::create(const std::string& nameN, uint64_t idN, const std::string& devNameN)
 {
-    //entity = global.ecs.data().
     entity = global.ecs.data().create();
-    std::cout << (uint32_t)entity << std::endl;
     auto& a = add<CoreComponent>();
+
+    if (idN == 330 && nameN.find("Editor") == std::string::npos)
+        idN = 331;
+
     a.name = nameN;
     a.id = idN;
     a.devName = devNameN;
@@ -28,11 +30,6 @@ void UVK::Actor::create(const std::string& nameN, uint64_t idN, const std::strin
 
 void UVK::Actor::destroy()
 {
-    //if (global.ecs.data().any_of<AudioComponent>(entity))
-    //{
-    //    global.ecs.data().get<AudioComponent>(entity).stop();
-    //}
-
     if (global.ecs.data().any_of<MeshComponentRaw>(entity))
     {
         global.ecs.data().get<MeshComponentRaw>(entity).clearMesh();

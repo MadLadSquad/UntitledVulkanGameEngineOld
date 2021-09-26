@@ -1,0 +1,9 @@
+libdir=/usr/local/lib64
+includedir=/usr/local/include
+
+Name: Game
+Description: Import various well-known 3D model formats in an uniform manner.
+Version: 5.0.1
+Libs: -L${libdir} -lassimp
+Libs.private: -lstdc++ -lz
+Cflags: -I${includedir}
