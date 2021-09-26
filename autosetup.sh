@@ -22,7 +22,7 @@ cd Config || exit
 touch Engine/GameKeybinds.yaml
 echo "\
 bindings:
-  - key: NewAction0
+  - key: EmptyAction
     val: 65
 " > Engine/GameKeybinds.yaml
 cd .. || exit
