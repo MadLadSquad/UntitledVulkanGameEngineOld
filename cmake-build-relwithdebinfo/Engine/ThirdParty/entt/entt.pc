@@ -1,8 +1,0 @@
-prefix=/usr/local
-includedir=${prefix}/include
-
-Name: EnTT
-Description: Gaming meets modern C++
-Url: https://github.com/skypjack/entt
-Version: 3.9.0
-Cflags: -I${includedir}
