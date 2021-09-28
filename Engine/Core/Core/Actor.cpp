@@ -1,5 +1,5 @@
 // Actor.cpp
-// Last update 22/9/2021 by Madman10K
+// Last update 28/9/2021 by Madman10K
 #include <GL/glew.h>
 #include "Actor.hpp"
 #include "Engine/GameFramework/Components/Components.hpp"
@@ -30,15 +30,15 @@ void UVK::Actor::create(const std::string& nameN, uint64_t idN, const std::strin
 
 void UVK::Actor::destroy()
 {
-    if (global.ecs.data().any_of<MeshComponentRaw>(entity))
+    if (has<MeshComponentRaw>())
     {
-        global.ecs.data().get<MeshComponentRaw>(entity).clearMesh();
+        get<MeshComponentRaw>().clearMesh();
         remove<MeshComponentRaw>();
     }
 
-    if (global.ecs.data().any_of<MeshComponent>(entity))
+    if (has<MeshComponent>())
     {
-        global.ecs.data().get<MeshComponent>(entity).clearMesh();
+        get<MeshComponent>().clearMesh();
         remove<MeshComponent>();
     }
     remove<CoreComponent>();

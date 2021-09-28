@@ -1,5 +1,5 @@
 // Editor.hpp
-// Last update 13/9/2021 by Madman10K
+// Last update 28/9/2021 by Madman10K
 #pragma once
 #include <iostream>
 #include <utility>
@@ -9,6 +9,7 @@
 #include "../Textures/Texture.hpp"
 #include <Audio/Audio.hpp>
 #include <Renderer/EditorUI/Modules/EditorModule.hpp>
+#include "ThirdParty/logger/UVKLogImGui.h"
 
 namespace UVK
 {
@@ -81,6 +82,7 @@ namespace UVK
         bool bShowDirectSaveWarning = false;
         bool bShowExitWarning = false;
         bool bShowGenerateWarning = false;
+        bool bShowDeveloperConsole = true;
 
         void displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& camera, UVK::Level* lvl);
 
@@ -102,5 +104,7 @@ namespace UVK
 #ifndef __MINGW32__
         std_filesystem::path pt;
 #endif
+
+        UVKLogImGui loggerwidget;
     };
 }

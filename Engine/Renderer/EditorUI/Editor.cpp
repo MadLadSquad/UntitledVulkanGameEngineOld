@@ -1,5 +1,5 @@
 // Editor.cpp
-// Last update 22/9/2021 by Madman10K
+// Last update 28/9/2021 by Madman10K
 #include <GL/glew.h>
 #include <imgui_impl_vulkan.h>
 #include "Editor.hpp"
@@ -25,7 +25,6 @@
 #include "Widgets/Warnings.hpp"
 #include "Widgets/Tools.hpp"
 #include <Engine/Core/Core/Global.hpp>
-#include <Renderer/OpenGL/Components/GLShader.hpp>
 #include <GameFramework/GameplayClasses/Level/Level.hpp>
 
 void UVK::Editor::initEditor()
@@ -567,6 +566,11 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
     if (bShowGameSettings)
     {
         Settings::displayProjectSettings(projectName, projectVersion, engineVersion, startupLevel, bShowGameSettings);
+    }
+
+    if (bShowDeveloperConsole)
+    {
+        loggerwidget.displayFull(bShowDeveloperConsole);
     }
 
     moduleManager.renderIndependentModule();

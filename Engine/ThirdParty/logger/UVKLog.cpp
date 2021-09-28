@@ -1,5 +1,6 @@
 #include "UVKLog.h"
 #include <ctime>
+#include "UVKLogImGui.h"
 
 #if _MSC_VER && !__INTEL_COMPILER
     #define _CRT_SECURE_NO_WARNINGS
@@ -59,4 +60,26 @@ std::string UVKLog::getCurrentTime()
     realTime.erase(24);
 
     return realTime;
+}
+
+UVKLog::UVKLog()
+{
+#ifdef UVK_LOG_IMGUI
+    const CommandType clear =
+    {
+        .cmd = "clear",
+        .cmdHint = "Clears the scroll buffer",
+        .func = [&](){ messageLog.clear(); },
+    };
+
+    const CommandType help
+    {
+        .cmd = "help",
+        .cmdHint = "Sends a help message",
+        .func = UVKLogImGui::showHelpMessage
+    };
+
+    commands.emplace_back(clear);
+    commands.emplace_back(help);
+#endif
 }
