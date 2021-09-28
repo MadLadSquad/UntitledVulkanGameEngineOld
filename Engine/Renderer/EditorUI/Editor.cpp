@@ -395,6 +395,7 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
             ImGui::Checkbox("Toolbar", &bShowToolbar);
             ImGui::Checkbox("Tools", &bShowTools);
             ImGui::Checkbox("Memory Editor", &bShowMemoryEditor);
+            ImGui::Checkbox("Developer Console", &bShowDeveloperConsole);
 
             if (!moduleManager.getIndependentModules().empty())
             {
