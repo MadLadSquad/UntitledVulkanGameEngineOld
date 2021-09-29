@@ -1,11 +1,11 @@
 // OpenLevelWidget.hpp
 // Last update 1/8/2021 by Madman10K
 #pragma once
-#include <iostream>
 #include <Core.hpp>
+#ifndef PRODUCTION
+#include <iostream>
 #include <Renderer/Textures/Texture.hpp>
 
-#ifndef PRODUCTION
 namespace OpenLevelWidget
 {
     // Opens a level

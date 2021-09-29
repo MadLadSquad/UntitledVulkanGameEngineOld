@@ -7,6 +7,9 @@
 #ifndef PRODUCTION
 void UVK::EditorPawn::beginPlay()
 {
+    if (!global.getEditor())
+        logger.consoleLog("You are currently using an Editor Pawn ingame. This is a safety measure in order to prevent instant crashes of your game, however, the code for the EditorPawn will not compile in production which will cause a crash!", UVK_LOG_TYPE_ERROR);
+
     coreCache = &actor.get<CoreComponent>();
     camera = Camera::makeCamera(*coreCache, FVector(0.0f, 0.0f, 0.0f), FVector(0.0f, 0.0f, 0.0f), FVector(0.0f, 1.0f, 0.0f), FVector2(0.1f, 100.0f), 90.0f, Window::windowSize().x / Window::windowSize().y);
 }

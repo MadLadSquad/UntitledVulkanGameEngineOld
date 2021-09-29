@@ -2,6 +2,7 @@
 // Last update 13/9/2021 by Madman10K
 #include "EditorModule.hpp"
 
+#ifndef PRODUCTION
 void UVK::EditorModuleManager::addDetailsPanelModule(const std::function<void(Actor*)>& func)
 {
     detailsPanelModules.emplace_back(func);
@@ -76,3 +77,52 @@ const std::vector<std::function<void()>>& UVK::EditorModuleManager::getTopBarMod
 {
     return topBarModules;
 }
+#else
+void UVK::EditorModuleManager::addDetailsPanelModule(const std::function<void(Actor*)>& func)
+{
+}
+
+void UVK::EditorModuleManager::addToolsModule(const std::function<void(const UVK::CurrentToolType&)>& func)
+{
+}
+
+void UVK::EditorModuleManager::addIndependentModule(const UVK::IndependentModuleData& func)
+{
+}
+
+void UVK::EditorModuleManager::renderDetailsPanelModules(UVK::Actor* actor) const
+{
+}
+
+void UVK::EditorModuleManager::renderToolsModule(const CurrentToolType& type) const
+{
+}
+
+void UVK::EditorModuleManager::renderIndependentModule()
+{
+}
+
+void UVK::EditorModuleManager::addTopBar(const std::function<void(void)>& func)
+{
+}
+
+void UVK::EditorModuleManager::renderTopBar() const
+{
+}
+
+const std::vector<std::function<void(const UVK::CurrentToolType&)>>& UVK::EditorModuleManager::getToolsModules() const
+{
+}
+
+const std::vector<std::function<void(UVK::Actor* actor)>>& UVK::EditorModuleManager::getDetailsPanelModules() const
+{
+}
+
+std::vector<UVK::IndependentModuleData>& UVK::EditorModuleManager::getIndependentModules()
+{
+}
+
+const std::vector<std::function<void()>>& UVK::EditorModuleManager::getTopBarModules() const
+{
+}
+#endif

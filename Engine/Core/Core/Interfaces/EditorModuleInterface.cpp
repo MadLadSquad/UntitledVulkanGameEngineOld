@@ -3,6 +3,7 @@
 #include "EditorModuleInterface.hpp"
 #include <Core/Global.hpp>
 #include <Renderer/EditorUI/Editor.hpp>
+#ifndef PRODUCTION
 
 void UVK::EditorModules::addDetailsPanelModule(const std::function<void(Actor*)>& func)
 {
@@ -23,3 +24,20 @@ void UVK::EditorModules::addTopBar(const std::function<void(void)>& func)
 {
     global.instance->editor->moduleManager.addTopBar(func);
 }
+#else
+void UVK::EditorModules::addDetailsPanelModule(const std::function<void(Actor*)>& func)
+{
+}
+
+void UVK::EditorModules::addToolsModule(const std::function<void(const UVK::CurrentToolType&)>& func)
+{
+}
+
+void UVK::EditorModules::addIndependentModule(const UVK::IndependentModuleData& func)
+{
+}
+
+void UVK::EditorModules::addTopBar(const std::function<void(void)>& func)
+{
+}
+#endif

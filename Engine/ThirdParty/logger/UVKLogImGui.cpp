@@ -1,4 +1,5 @@
 #include "UVKLogImGui.h"
+#ifndef PRODUCTION
 #ifdef UVK_LOG_IMGUI
 #include "cpp/imgui_stdlib.h"
 void UVKLogImGui::setLogColour(ImVec4 colour, LogType type)
@@ -93,4 +94,5 @@ void UVKLogImGui::displayFull(bool& bOpen)
     display();
     ImGui::End();
 }
+#endif
 #endif

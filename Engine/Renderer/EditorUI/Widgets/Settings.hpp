@@ -1,6 +1,8 @@
 // Settings.hpp
 // Last update 2/9/2021 by Madman10K
 #pragma once
+#include <Generated/BuildDef.hpp>
+#ifndef PRODUCTION
 #include <iostream>
 
 namespace Settings
@@ -14,3 +16,4 @@ namespace Settings
     void displayThemeEditor(bool& bOpen);
     void displayProjectSettings(std::string& name, std::string& ver, std::string& enginever, std::string& startupLevel, bool& bOpen);
 }
+#endif

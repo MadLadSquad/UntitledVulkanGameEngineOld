@@ -2,6 +2,7 @@
 // Last update 13/9/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
+#ifndef PRODUCTION
 #include <Renderer/Textures/Texture.hpp>
 
 namespace UVK
@@ -10,7 +11,6 @@ namespace UVK
     class Actor;
     class EditorModuleManager;
 }
-#ifndef PRODUCTION
 /**
  * @brief Displays the Details Panel which is used to add, manipulate and remove components from selected entities
  */

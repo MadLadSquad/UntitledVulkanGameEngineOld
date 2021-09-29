@@ -1,8 +1,9 @@
 // Help.cpp
 // Last update 1/8/2021 by Madman10K
 #include "Help.hpp"
-#include <imgui.h>
 #ifndef PRODUCTION
+#include <imgui.h>
+
 void Help::display(bool& bShow)
 {
     if (!ImGui::IsPopupOpen("Help"))

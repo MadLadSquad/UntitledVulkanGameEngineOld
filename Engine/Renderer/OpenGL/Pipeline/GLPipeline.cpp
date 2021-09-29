@@ -58,7 +58,7 @@ void UVK::GLPipeline::tick()
     auto now = (float)glfwGetTime();
     deltaTime = now - lastTime;
     lastTime = now;
-
+#ifndef PRODUCTION
     if (bEditor)
     {
         fb.useFramebuffer();
@@ -84,22 +84,32 @@ void UVK::GLPipeline::tick()
         Events::callTick(deltaTime);
         global.ui.update();
     }
+#else
+    glClearColor(global.colour.x, global.colour.y, global.colour.z, global.colour.w);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+    UVK::UIInternal::beginFrame();
+
+    global.currentLevel->tick(deltaTime);
+    Events::callTick(deltaTime);
+    global.ui.update();
+#endif
 
     UVK::GLEntityManager::tick(&UVK::Level::getPawn(UVK::global.currentLevel)->camera);
 
     glUseProgram(0);
 
+#ifndef PRODUCTION
     if (bEditor)
     {
-#ifndef PRODUCTION
+
         UVK::GLFrameBuffer::unbindFramebuffer();
         glDisable(GL_DEPTH_TEST);
         glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         
         ed.runEditor(global.colour, fb, UVK::Level::getPawn(UVK::global.currentLevel)->camera, global.currentLevel);
-#endif
     }
+#endif
     global.finalizeOpening();
 
     glfwSwapBuffers(global.window.getWindow());

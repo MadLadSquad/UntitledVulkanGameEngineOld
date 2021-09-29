@@ -1,11 +1,12 @@
 // RemoveFile.cpp
 // Last update 1/8/2021 by Madman10K
 #include "RemoveFile.hpp"
+#ifndef PRODUCTION
 #include <Core.hpp>
 #include <imgui.h>
 #include <cpp/imgui_stdlib.h>
 
-#ifndef PRODUCTION
+
 void RemoveFile::display(bool& bShow)
 {
     if (!ImGui::IsPopupOpen("Remove File"))
@@ -33,7 +34,6 @@ void RemoveFile::display(bool& bShow)
 
         if (ImGui::Button("Delete##delete"))
         {
-            int8_t lnt = 0;
             bool error = false;
             std::string gen;
             if (bSO)

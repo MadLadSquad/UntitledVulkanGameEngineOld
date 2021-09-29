@@ -13,6 +13,7 @@
 
 namespace UVK
 {
+#ifndef PRODUCTION
     /**
      * @brief Controls the whole editor and related operations
      */
@@ -107,4 +108,13 @@ namespace UVK
 
         UVKLogImGui loggerwidget;
     };
+#else
+    class Editor
+    {
+    public:
+        Editor();
+
+        EditorModuleManager moduleManager;
+    };
+#endif
 }

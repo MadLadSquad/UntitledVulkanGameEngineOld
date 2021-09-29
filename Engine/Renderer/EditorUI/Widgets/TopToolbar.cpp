@@ -1,10 +1,10 @@
 // TopToolbar.cpp
 // Last update 13/9/2021 by Madman10K
 #include "TopToolbar.hpp"
+#ifndef PRODUCTION
 #include <imgui.h>
 #include <Renderer/EditorUI/Modules/EditorModule.hpp>
 
-#ifndef PRODUCTION
 void TopToolbar::display(UVK::Texture& play, const std::string& projectName, const UVK::EditorModuleManager& modules, bool& bShow)
 {
     int8_t lnt = 0;

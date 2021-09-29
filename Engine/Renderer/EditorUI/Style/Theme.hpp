@@ -1,10 +1,12 @@
 // Theme.hpp
 // Last update 6/7/2021 by Madman10K
 #pragma once
+#include <Generated/BuildDef.hpp>
+#ifndef PRODUCTION
 #include <iostream>
 #include <utility>
 #include <imgui.h>
-#ifndef PRODUCTION
+
 namespace UVK
 {
     /**

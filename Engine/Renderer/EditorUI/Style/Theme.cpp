@@ -2,11 +2,11 @@
 // Last update 2/9/2021 by Madman10K
 #include <Core.hpp>
 #include "Theme.hpp"
+#ifndef PRODUCTION
 #include <yaml.h>
 #include <imgui.h>
 #include <cpp/imgui_stdlib.h>
 
-#ifndef PRODUCTION
 namespace YAML
 {
     template<>

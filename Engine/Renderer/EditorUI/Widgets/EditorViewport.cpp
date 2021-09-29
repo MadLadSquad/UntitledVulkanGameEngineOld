@@ -1,9 +1,9 @@
 // EditorViewport.cpp
 // Last update 22/9/2021 by Madman10K
-#include <GL/glew.h>
+#include "EditorViewport.hpp"
+#ifndef PRODUCTION
 #include <Engine/Core/Core/Global.hpp>
 #include <Renderer/Window/Window.hpp>
-#include "EditorViewport.hpp"
 #include <imgui.h>
 #include <imguiex/imguizmo/ImGuizmo.h>
 #include <Core/Actor.hpp>
@@ -12,7 +12,6 @@
 #include <GameFramework/GameplayClasses/Level/Level.hpp>
 #include <GameFramework/Components/Components/CoreComponent.hpp>
 
-#ifndef PRODUCTION
 void EditorViewport::display(UVK::GLFrameBuffer& fb, int& viewportWidth, int& viewportHeight, bool& bShow, UVK::Camera& camera, UVK::Actor& entity, glm::mat4& projection)
 {
     ImGui::Begin("Viewport##1", &bShow);

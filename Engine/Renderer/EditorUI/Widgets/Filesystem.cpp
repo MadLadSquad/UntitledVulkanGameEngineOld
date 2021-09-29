@@ -2,9 +2,11 @@
 // Last update 12/8/2021 by Madman10K
 #include <GL/glew.h>
 #include "Filesystem.hpp"
-#include "Assets/Asset.hpp"
-
 #ifndef PRODUCTION
+#include "Assets/Asset.hpp"
+#include <imgui.h>
+#include <cpp/imgui_stdlib.h>
+
 #ifndef __MINGW32__
 void Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, std::unordered_map<std::string, UVK::Texture>& previews, bool& bShow)
 {

@@ -1,6 +1,7 @@
 // Ship.cpp
 // Last update 1/8/2021 by Madman10K
 #include "Ship.hpp"
+#ifndef PRODUCTION
 #include "imgui.h"
 #include <future>
 
@@ -61,3 +62,4 @@ void Shipping::display(bool& bShow)
         ImGui::EndPopup();
     }
 }
+#endif

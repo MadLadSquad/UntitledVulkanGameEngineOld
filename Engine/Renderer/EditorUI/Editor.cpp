@@ -1,8 +1,7 @@
 // Editor.cpp
 // Last update 28/9/2021 by Madman10K
-#include <GL/glew.h>
-#include <imgui_impl_vulkan.h>
 #include "Editor.hpp"
+#ifndef PRODUCTION
 #include "Widgets/SceneHierarchy.hpp"
 #include "Widgets/DetailsPanel.hpp"
 #include "Widgets/SaveLevel.hpp"
@@ -26,13 +25,13 @@
 #include "Widgets/Tools.hpp"
 #include <Engine/Core/Core/Global.hpp>
 #include <GameFramework/GameplayClasses/Level/Level.hpp>
+#include <imgui_impl_vulkan.h>
 
 void UVK::Editor::initEditor()
 {
     global.instance->editor = this;
 
     Timer tm;
-#ifndef PRODUCTION
     tm.startRecording();
 #ifndef __MINGW32__
     pt = "../Content/";
@@ -172,7 +171,6 @@ void UVK::Editor::initEditor()
         ImGui_ImplGlfw_InitForOpenGL(global.window.getWindow(), true);
         ImGui_ImplOpenGL3_Init("#version 450");
     }
-#endif
     tm.stopRecording();
     frameTimeData[0] = tm.getDuration();
 
@@ -276,11 +274,6 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
     {
         bShowOpenLevelWidget = true;
     }
-    else if ((Input::getAction("editor-bind-modifier") == Keys::KeyPressed || Input::getAction("editor-bind-modifier") == Keys::KeyRepeat) && (Input::getAction("editor-shift") == Keys::KeyPressed || Input::getAction("editor-shift") == Keys::KeyRepeat) && (Input::getAction("editor-exit") == Keys::KeyPressed || Input::getAction("editor-exit") == Keys::KeyRepeat))
-    {
-        logger.consoleLog("Shutting down editor!", UVK_LOG_TYPE_NOTE);
-        glfwSetWindowShouldClose(global.window.getWindow(), GL_TRUE);
-    }
 
     
     if (ImGui::BeginMenuBar())
@@ -328,7 +321,7 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
                 bShowShip = true;
             }
 
-            if (ImGui::MenuItem("Exit", "CTRL+SHIFT+W"))
+            if (ImGui::MenuItem("Exit"))
             {
                 //glfwSetWindowShouldClose(global.window.getWindow(), GL_TRUE);
                 bShowExitWarning = true;
@@ -618,3 +611,9 @@ void UVK::Editor::destroyContext()
     //ImTTY::Terminal.DestroyContext();
     global.window.destroyWindow();
 }
+#else
+UVK::Editor::Editor()
+{
+    global.instance->editor = this;
+}
+#endif

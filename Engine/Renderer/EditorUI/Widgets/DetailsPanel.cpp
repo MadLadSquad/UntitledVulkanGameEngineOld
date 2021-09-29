@@ -1,17 +1,16 @@
 // DetailsPanel.cpp
 // Last update 22/9/2021 by Madman10K
-#include <GL/glew.h>
+#include "DetailsPanel.hpp"
+#ifndef PRODUCTION
 #include <imgui.h>
 #include <cpp/imgui_stdlib.h>
 #include <GameFramework/Components/Components.hpp>
-#include "DetailsPanel.hpp"
 #include <Core/Actor.hpp>
 #include <GameFramework/GameplayClasses/Level/Level.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <Renderer/EditorUI/Modules/EditorModule.hpp>
 #include <GameFramework/Components/Components/CoreComponent.hpp>
 
-#ifndef PRODUCTION
 void DetailsPanel::DrawVec3Control(const std::string &label, glm::vec3 &values, float resetValue, float columnWidth)
 {
     const ImGuiIO& io = ImGui::GetIO();

@@ -1,6 +1,7 @@
 // EditorPlayerController.hpp
 // Last update 27/8/2021 by Madman10K
 #pragma once
+#ifndef PRODUCTION
 #include <GameFramework/GameplayClasses/PlayerController.hpp>
 
 namespace UVK
@@ -17,3 +18,4 @@ namespace UVK
         ~EditorPlayerController() = default;
     };
 }
+#endif

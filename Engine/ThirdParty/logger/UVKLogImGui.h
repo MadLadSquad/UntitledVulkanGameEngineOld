@@ -1,6 +1,8 @@
 #pragma once
 #include "UVKLog.h"
+#include <Generated/BuildDef.hpp>
 #define UVK_LOG_IMGUI
+#ifndef PRODUCTION
 #ifdef UVK_LOG_IMGUI
 #if __has_include(<imgui.h>)
 #include "imgui.h"
@@ -28,5 +30,6 @@ private:
 };
 #else
 #error Dear ImGui is not in the include path!. Consider adding it so that "#include <imgui.h>" is a valid line
+#endif
 #endif
 #endif

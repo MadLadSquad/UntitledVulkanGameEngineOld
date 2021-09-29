@@ -1,11 +1,9 @@
 // SceneHierarchy.hpp
 // Last update 2/7/2021 by Madman10K
 #pragma once
-#include <imgui.h>
-#include <iostream>
-//#include "../../../GameFramework/Components/Components.hpp"
-
+#include <Generated/BuildDef.hpp>
 #ifndef PRODUCTION
+#include <iostream>
 
 namespace UVK
 {
@@ -17,9 +15,7 @@ namespace UVK
 namespace SceneHierarchy
 {
     void addEntity(int& entNum);
-
     void destroyEntity(UVK::Actor& selectedEntity);
-
     void display(UVK::Actor& selectedEntity, std::string& entAppend, int& entNum, bool& bShow);
 }
 #endif

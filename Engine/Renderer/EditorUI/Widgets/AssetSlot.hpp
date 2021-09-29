@@ -1,6 +1,8 @@
 // AssetSlot.hpp
 // Last update 12/8/2021 by Madman10K
 #pragma once
+#include <Generated/BuildDef.hpp>
+#ifndef PRODUCTION
 #include "Core/Assets/Asset.hpp"
 #include <imgui.h>
 #include <Renderer/Textures/Texture.hpp>
@@ -51,3 +53,4 @@ namespace AssetSlot
         assetSlotEnd();
     }
 }
+#endif

@@ -44,18 +44,5 @@ void UVK::GLEntityManager::tick(Camera* camera)
 
 void UVK::GLEntityManager::clean()
 {
-    for (const auto& a : global.ecs.data().view<MeshComponentRaw>())
-    {
-        auto& b = global.ecs.data().get<MeshComponentRaw>(a);
-
-        b.clearMesh();
-    }
-
-    //for (const auto& a : global.ecs.data().view<AudioComponent>())
-    //{
-    //    auto& b = global.ecs.data().get<AudioComponent>(a);
-    //    b.src.buffer().removeSound();
-    //}
-
     global.ecs.clear();
 }

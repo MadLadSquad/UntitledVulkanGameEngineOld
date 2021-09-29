@@ -1,6 +1,7 @@
 // Settings.cpp
 // Last update 2/9/2021 by Madman10K
 #include "Settings.hpp"
+#ifndef PRODUCTION
 #include <imgui.h>
 #include <cpp/imgui_stdlib.h>
 #include <Core/Global.hpp>
@@ -1025,3 +1026,4 @@ void Settings::showKeySelect(const char* name, uint16_t& key)
         ImGui::EndCombo();
     }
 }
+#endif

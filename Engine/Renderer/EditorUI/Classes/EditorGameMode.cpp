@@ -6,6 +6,9 @@
 #ifndef PRODUCTION
 void UVK::EditorGameMode::beginPlay()
 {
+    if (!global.getEditor())
+        logger.consoleLog("You are currently using an Editor Game Mode ingame. This is a safety measure in order to prevent instant crashes of your game, however, the code for the EditorGameMode will not compile in production which will cause a crash!", UVK_LOG_TYPE_ERROR);
+
     playerController->beginPlay();
 }
 

@@ -1,11 +1,11 @@
 // OpenLevelWidget.cpp
 // Last update 2/9/2021 by Madman10K
 #include "OpenLevelWidget.hpp"
+#ifndef PRODUCTION
 #include <imgui.h>
 #include <cpp/imgui_stdlib.h>
 #include <Renderer/EditorUI/Classes/EditorLevel.hpp>
 
-#ifndef PRODUCTION
 void OpenLevelWidget::display(std::string &openLevel, bool &bShowOpenLevelWidget, double& dr, UVK::FVector4& colour)
 {
     if (!ImGui::IsPopupOpen("Open Level"))

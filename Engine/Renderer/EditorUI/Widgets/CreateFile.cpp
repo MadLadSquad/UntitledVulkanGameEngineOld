@@ -1,10 +1,10 @@
 // CreateFile.cpp
 // Last update 12/9/2021 by Madman10K
 #include "CreateFile.hpp"
+#ifndef PRODUCTION
 #include <cpp/imgui_stdlib.h>
 #include <Core.hpp>
 
-#ifndef PRODUCTION
 void CreateFile::display(std::string& fileOutLocation, bool& bShowCreateFile1)
 {
     if (!ImGui::IsPopupOpen("Create a file"))

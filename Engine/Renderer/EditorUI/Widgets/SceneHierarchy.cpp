@@ -1,6 +1,7 @@
 // SceneHierarchy.cpp
 // Last update 22/9/2021 by Madman10K
 #include "SceneHierarchy.hpp"
+#ifndef PRODUCTION
 #include <Core/Actor.hpp>
 #include <GameFramework/Actors/ActorManager.hpp>
 #include <GameFramework/Components/Components.hpp>
@@ -28,8 +29,6 @@ void SceneHierarchy::addEntity(int& entNum)
 
     entNum++;
 }
-
-#ifndef PRODUCTION
 
 void SceneHierarchy::display(UVK::Actor& selectedEntity, std::string &entAppend, int &entNum, bool& bShow)
 {
