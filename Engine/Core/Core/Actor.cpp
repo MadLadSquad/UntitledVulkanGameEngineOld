@@ -1,6 +1,5 @@
 // Actor.cpp
 // Last update 28/9/2021 by Madman10K
-#include <GL/glew.h>
 #include "Actor.hpp"
 #include "Engine/GameFramework/Components/Components.hpp"
 #include <GameFramework/Components/Components/CoreComponent.hpp>

@@ -1,6 +1,5 @@
 // GLEntityManager.hpp
 // Last update 22/9/2021 by Madman10K
-#include <GL/glew.h>
 #include <Core/Actor.hpp>
 #include "GLEntityManager.hpp"
 #include <GameFramework/Components/Components.hpp>

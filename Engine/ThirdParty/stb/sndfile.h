@@ -345,7 +345,7 @@ typedef	struct SNDFILE_tag	SNDFILE ;
 ** and the Microsoft compiler.
 */
 
-typedef __int64	sf_count_t ;
+typedef unsigned long long int sf_count_t ;
 #ifndef SF_COUNT_MAX
 #define SF_COUNT_MAX		0x7FFFFFFFFFFFFFFFLL
 #endif
