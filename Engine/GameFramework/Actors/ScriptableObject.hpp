@@ -1,7 +1,6 @@
 // ScriptableObject.hpp
 // Last update 13/9/2021 by Madman10K
 #pragma once
-#include <Core.hpp>
 
 namespace UVK
 {

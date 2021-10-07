@@ -12,9 +12,11 @@
 #include <GameFramework/GameplayClasses/Level/Level.hpp>
 #include <GameFramework/Components/Components/CoreComponent.hpp>
 
-void EditorViewport::display(UVK::GLFrameBuffer& fb, int& viewportWidth, int& viewportHeight, bool& bShow, UVK::Camera& camera, UVK::Actor& entity, glm::mat4& projection)
+void EditorViewport::display(UVK::GLFrameBuffer& fb, int& viewportWidth, int& viewportHeight, bool& bShow, UVK::Camera& camera, UVK::Actor& entity, glm::mat4& projection, bool& bFocused)
 {
     ImGui::Begin("Viewport##1", &bShow);
+
+    bFocused = ImGui::IsWindowFocused();
 
     if (viewportWidth != (int)ImGui::GetWindowWidth() || viewportHeight != (int)ImGui::GetWindowHeight())
     {

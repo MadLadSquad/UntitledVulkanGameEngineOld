@@ -1,7 +1,9 @@
 // Window.hpp
 // Last update 2/9/2021 by Madman10K
 #pragma once
-#include <Core.hpp>
+#include <iostream>
+#include <Core/Types.hpp>
+struct GLFWwindow;
 
 namespace UVK
 {
@@ -87,7 +89,7 @@ namespace UVK
         friend class VKSwapchain;
         friend class Input;
         friend class Editor;
-        friend class APawn;
+        friend class Pawn;
         friend class Window;
         friend class SettingsManager;
         friend class UIInternal;

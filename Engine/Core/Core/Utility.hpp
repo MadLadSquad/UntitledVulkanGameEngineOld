@@ -4,30 +4,40 @@
 #include <iostream>
 #include "Types.hpp"
 
-/**
- * @brief A namespace of useful utility functions
- */
-namespace Utility
+namespace UVK
 {
     /**
-     * @brief Sanitises filepaths
-     * @param str the string it sanitises
-     * @param bInput is this text inputed by the user or output
-     * @return sanitised string
-     */
-    static void sanitiseFilepath(std::string& str, bool bInput)
+ * @brief A namespace of useful utility functions
+ */
+    class Utility
     {
-        for (auto& a : str)
-        {
-            if (a == '\\')
-            {
-                a = '/';
-            }
+    public:
+        Utility() = delete;
+        Utility(const Utility&) = delete;
+        void operator=(Utility const&) = delete;
+        ~Utility() = delete;
+        /**
+         * @brief Sanitises filepaths
+         * @param str the string it sanitises
+         * @param bInput is this text inputed by the user or output
+         * @return sanitised string
+         */
+        static void sanitiseFilepath(std::string& str, bool bInput);
 
-            if (a == ' ')
-            {
+        /**
+         * @brief Pass in a string and a key code and it will make the string equal to the corresponding key
+         * @param text Reference to the string that will contain the key
+         * @param key Const reference to the keycode
+         */
+        static void keyToText(std::string& text, const uint16_t& key, bool bLong);
+        static std::string keyToText(const uint16_t& key, bool bLong);
+    };
 
-            }
-        }
-    }
+    class Math
+    {
+    public:
+        static void translate(glm::mat4& mat, FVector vt);
+        static void rotate(glm::mat4& mat, FVector vt);
+        static void scale(glm::mat4& mat, FVector vt);
+    };
 }

@@ -4,6 +4,7 @@
 #include <Core/Global.hpp>
 #include <Renderer/EditorUI/Editor.hpp>
 #ifndef PRODUCTION
+#include <GameFramework/GameplayClasses/GameInstance.hpp>
 
 void UVK::EditorModules::addDetailsPanelModule(const std::function<void(Actor*)>& func)
 {

@@ -3,7 +3,6 @@
 #pragma once
 #include <functional>
 #include <Core/Types.hpp>
-#include <any>
 
 namespace UVK
 {

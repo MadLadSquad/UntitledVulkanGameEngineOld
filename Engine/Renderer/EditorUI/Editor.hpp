@@ -1,15 +1,11 @@
 // Editor.hpp
 // Last update 28/9/2021 by Madman10K
 #pragma once
-#include <iostream>
-#include <utility>
+#include <Renderer/Camera/Camera.hpp>
+#include <Renderer/Textures/Texture.hpp>
+#include <Renderer/OpenGL/Components/GLFrameBuffer.hpp>
 #include <Core/Actor.hpp>
-#include <Core.hpp>
-#include "Widgets/EditorViewport.hpp"
-#include "../Textures/Texture.hpp"
-#include <Audio/Audio.hpp>
-#include <Renderer/EditorUI/Modules/EditorModule.hpp>
-#include "ThirdParty/logger/UVKLogImGui.h"
+#include <UVKLogImGui.h>
 
 namespace UVK
 {
@@ -26,6 +22,7 @@ namespace UVK
     private:
         friend class GLPipeline;
         friend class EditorModules;
+        friend class EditorPawn;
 
         double* getFrameTimeData()
         {
@@ -84,6 +81,7 @@ namespace UVK
         bool bShowExitWarning = false;
         bool bShowGenerateWarning = false;
         bool bShowDeveloperConsole = true;
+        bool bEditorViewportFocused = false;
 
         void displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& camera, UVK::Level* lvl);
 
@@ -106,7 +104,23 @@ namespace UVK
         std_filesystem::path pt;
 #endif
 
+        /**
+         * @brief Contains strings for the different keys used in editor hints
+         * @note Naming conventions are broken here due to the fact that the names should resemble their YAML form
+         */
+        struct EditorKeys
+        {
+            std::string editor_level_save;
+            std::string editor_level_new;
+            std::string editor_level_saveas;
+            std::string editor_level_open;
+            std::string editor_new_file;
+            std::string editor_undo;
+            std::string editor_redo;
+        };
+
         UVKLogImGui loggerwidget;
+        EditorKeys keys;
     };
 #else
     class Editor

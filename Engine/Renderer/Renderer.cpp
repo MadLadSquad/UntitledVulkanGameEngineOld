@@ -28,6 +28,7 @@ void UVK::RendererSettings::saveSettings() const
     out << YAML::Key << "theme" << YAML::Value << themeLoc;
     out << YAML::Key << "v-sync" << YAML::Value << bVsync;
     out << YAML::Key << "v-sync-immediate" << YAML::Value << bVsyncImmediate;
+    out << YAML::Key << "max-saved-transactions" << YAML::Value << maxSavedTransactions;
 
     out << YAML::EndMap;
 
@@ -89,11 +90,22 @@ void UVK::Renderer::loadSettings()
         {
             rs->bVsyncImmediate = a["v-sync-immediate"].as<bool>();
         }
+
+        if (a["max-saved-transactions"])
+        {
+            auto i = a["max-saved-transactions"].as<uint32_t>();
+            if (i <= 5)
+                rs->maxSavedTransactions = 100;
+            else
+                rs->maxSavedTransactions = i;
+        }
     }
     else
     {
         global.bUsesVulkan = false;
     }
+
+    global.instance->stateTracker.init();
 }
 
 bool& UVK::Renderer::getVSync()

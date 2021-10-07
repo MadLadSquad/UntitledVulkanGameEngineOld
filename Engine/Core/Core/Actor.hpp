@@ -2,10 +2,6 @@
 // Last update 15/9/2021 by Madman10K
 #pragma once
 #include <Core/Global.hpp>
-#include <GameFramework/Actors/ScriptableObject.hpp>
-#include <GameFramework/GameplayClasses/GameInstance.hpp>
-#include <GameFramework/Actors/ActorManager.hpp>
-
 
 namespace UVK
 {

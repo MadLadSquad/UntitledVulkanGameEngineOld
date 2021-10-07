@@ -10,6 +10,7 @@
 namespace UVK
 {
     struct CoreComponent;
+    class Actor;
 
     /**
      * @brief A mesh component used for debugging

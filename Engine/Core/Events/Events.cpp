@@ -3,6 +3,7 @@
 #include "Events.hpp"
 #include <GameFramework/Actors/ScriptableObject.hpp>
 #include <Core/Global.hpp>
+#include <GameFramework/GameplayClasses/GameInstance.hpp>
 
 void UVK::Events::clear()
 {

@@ -2,43 +2,71 @@
 // Last update 22/9/2021 by Madman10K
 #include "StateTracker.hpp"
 #include <Core/Actor.hpp>
+#include <Renderer/EditorUI/Editor.hpp>
+#include <GameFramework/GameplayClasses/GameInstance.hpp>
 
-void UVK::StateTracker::addActorAction(UVK::ActorActions action, UVK::Actor& actor)
+void UVK::StateTracker::pushAction(const UVK::Transaction& transaction)
 {
-    if (actorActionIndex == 50)
+    if (transactionIndex == transactionSize)
     {
-        actorActionIndex = 0;
+        // We go back 6 six times since we are erasing 5 elements and transactionSize is the size of the
+        // transaction array + 1
+        transactionIndex = transactionSize - 6;
+
+        for (int i = 0; i < undoStack.size(); i++)
+        {
+            // For efficiency's sake we remove 5 elements instead of one
+            // meaning that the max transaction size should always be above 4
+            if (undoStack[i] == &transactions[0] || undoStack[i] == &transactions[1] || undoStack[i] == &transactions[2] || undoStack[i] == &transactions[3] || undoStack[i] == &transactions[4])
+                undoStack.erase(undoStack.begin() + i);
+        }
+
+        for (int i = 0; i < redoStack.size(); i++)
+        {
+            // For efficiency's sake we remove 5 elements instead of one
+            // meaning that the max transaction size should always be above 4
+            if (redoStack[i] == &transactions[0] || redoStack[i] == &transactions[1] || redoStack[i] == &transactions[2] || redoStack[i] == &transactions[3] || redoStack[i] == &transactions[4])
+                redoStack.erase(redoStack.begin() + i);
+        }
+
+        transactions.erase(transactions.begin(), transactions.begin() + 4);
     }
 
-    actorActions[actorActionIndex].first = action;
-    actorActions[actorActionIndex].second = &actor;
+    transactions[transactionIndex] = transaction;
+    undoStack.emplace_back(&transactions[transactionIndex]);
 
-    actorActionIndex++;
+    transactionIndex++;
 }
 
-void UVK::StateTracker::undoActorAction()
+void UVK::StateTracker::undo()
 {
-    auto& pair = actorActions[actorActionIndex - 1];
-
-    switch (pair.first)
+    if (!undoStack.empty())
     {
-    case ACTOR_ACTION_MOVE:
-        break;
-    case ACTOR_ACTION_SCALE:
-        break;
-    case ACTOR_ACTION_ROTATE:
-        break;
-    case ACTOR_ACTION_CREATE:
-        break;
-    case ACTOR_ACTION_DESTROY:
-        break;
-    case ACTOR_ACTION_ADD_COMPONENT:
-        break;
-    case ACTOR_ACTION_REMOVE_COMPONENT:
-        break;
+        redoStack.emplace_back(undoStack.back());
+        undoStack.back()->undofunc();
+
+        undoStack.pop_back();
     }
 }
 
-void UVK::StateTracker::redoActorAction()
+void UVK::StateTracker::redo()
 {
+    if (!redoStack.empty())
+    {
+        undoStack.emplace_back(redoStack.back());
+        redoStack.back()->redofunc();
+
+        redoStack.pop_back();
+    }
+}
+
+void UVK::StateTracker::addTransaction(const UVK::Transaction& transaction)
+{
+    global.instance->stateTracker.pushAction(transaction);
+}
+
+void UVK::StateTracker::init()
+{
+    transactionSize = global.rendererSettings.maxSavedTransactions;
+    transactions.resize(transactionSize);
 }

@@ -1,7 +1,7 @@
 // ActorManager.hpp
 // Last update 22/9/2021 by Madman10K
 #pragma once
-#include <Core.hpp>
+#include <Core/STL.hpp>
 
 namespace UVK
 {

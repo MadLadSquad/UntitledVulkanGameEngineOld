@@ -23,6 +23,7 @@
 #include "Widgets/Ship.hpp"
 #include "Widgets/Warnings.hpp"
 #include "Widgets/Tools.hpp"
+#include "Widgets/EditorViewport.hpp"
 #include <Engine/Core/Core/Global.hpp>
 #include <GameFramework/GameplayClasses/Level/Level.hpp>
 #include <imgui_impl_vulkan.h>
@@ -31,13 +32,26 @@ void UVK::Editor::initEditor()
 {
     global.instance->editor = this;
 
+    auto bindText = Utility::keyToText(Input::getAction("editor-bind-modifier").keyCode, false);
+    auto shiftText = Utility::keyToText(Input::getAction("editor-shift").keyCode, false);
+
+    keys = EditorKeys
+    {
+        .editor_level_save = bindText + "+" + Utility::keyToText(Input::getAction("editor-level-save").keyCode, false),
+        .editor_level_new = bindText + "+" + Utility::keyToText(Input::getAction("editor-level-new").keyCode, false),
+        .editor_level_saveas = bindText + "+" + shiftText + "+" + Utility::keyToText(Input::getAction("editor-level-saveas").keyCode, false),
+        .editor_level_open = bindText + "+" + Utility::keyToText(Input::getAction("editor-level-open").keyCode, false),
+        .editor_new_file = bindText + "+" + shiftText + "+" + Utility::keyToText(Input::getAction("editor-new-file").keyCode, false),
+        .editor_undo = bindText + "+" + Utility::keyToText(Input::getAction("editor-undo").keyCode, false),
+        .editor_redo = bindText + "+" + Utility::keyToText(Input::getAction("editor-redo").keyCode, false),
+    };
+
     Timer tm;
     tm.startRecording();
 #ifndef __MINGW32__
     pt = "../Content/";
 #endif
     YAML::Node file;
-
     try
     {
         file = YAML::LoadFile("../uvproj.yaml");
@@ -137,11 +151,12 @@ void UVK::Editor::initEditor()
 
     if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
     {
-        if (!global.rendererSettings.themeLoc.empty())
-        {
-            style.WindowRounding = theme.getWindowRounding();
-        }
         style.Colors[ImGuiCol_WindowBg].w = 1.0f;
+    }
+
+    if (!global.rendererSettings.themeLoc.empty())
+    {
+        style.WindowRounding = theme.getWindowRounding();
     }
 
     if (!global.rendererSettings.themeLoc.empty())
@@ -274,34 +289,41 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
     {
         bShowOpenLevelWidget = true;
     }
+    else if ((Input::getAction("editor-bind-modifier") == Keys::KeyPressed || Input::getAction("editor-bind-modifier") == Keys::KeyRepeat) && (Input::getAction("editor-undo") == Keys::KeyPressed || Input::getAction("editor-undo") == Keys::KeyRepeat))
+    {
+        global.instance->stateTracker.undo();
+    }
+    else if ((Input::getAction("editor-bind-modifier") == Keys::KeyPressed || Input::getAction("editor-bind-modifier") == Keys::KeyRepeat) && (Input::getAction("editor-redo") == Keys::KeyPressed || Input::getAction("editor-redo") == Keys::KeyRepeat))
+    {
+        global.instance->stateTracker.redo();
+    }
 
-    
     if (ImGui::BeginMenuBar())
     {
         if (ImGui::BeginMenu("File"))
         {
-            if (ImGui::MenuItem("Save Level", "CTRL+S"))
+            if (ImGui::MenuItem("Save Level", keys.editor_level_save.c_str()))
             {
                 // TODO: Change this for file indexing :D
                 bShowDirectSaveWarning = true;
             }
 
-            if (ImGui::MenuItem("Save Level As", "CTRL+SHIFT+S"))
+            if (ImGui::MenuItem("Save Level As", keys.editor_level_saveas.c_str()))
             {
                 bShowSaveLevelWidget = true;
             }
 
-            if (ImGui::MenuItem("New Level", "CTRL+N"))
+            if (ImGui::MenuItem("New Level", keys.editor_level_new.c_str()))
             {
                 bShowSaveWarning = true;
             }
 
-            if (ImGui::MenuItem("Open Level", "CTRL+O"))
+            if (ImGui::MenuItem("Open Level", keys.editor_level_open.c_str()))
             {
                 bShowOpenLevelWidget = true;
             }
 
-            if (ImGui::MenuItem("New File", "CTRL+SHIFT+N"))
+            if (ImGui::MenuItem("New File", keys.editor_new_file.c_str()))
             {
                 bShowCreateFile1 = true;
             }
@@ -331,12 +353,14 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
         }
         if (ImGui::BeginMenu("Edit"))
         {
-            if (ImGui::MenuItem("Undo", "CTRL+Z"))
+            if (ImGui::MenuItem("Undo", keys.editor_undo.c_str()))
             {
+                global.instance->stateTracker.undo();
             }
 
-            if (ImGui::MenuItem("Redo", "CTRL+Y"))
+            if (ImGui::MenuItem("Redo", keys.editor_redo.c_str()))
             {
+                global.instance->stateTracker.redo();
             }
 
             ImGui::EndMenu();
@@ -469,7 +493,7 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
     if (bShowViewport)
     {
         style.WindowPadding = ImVec2(0.0f, 0.0f);
-        EditorViewport::display(fb, viewportWidth, viewportHeight, bShowViewport, camera, selectedEntity, UVK::Level::getPawn(lvl)->camera.projection().data());
+        EditorViewport::display(fb, viewportWidth, viewportHeight, bShowViewport, camera, selectedEntity, UVK::Level::getPawn(lvl)->camera.projection().data(), bEditorViewportFocused);
         style.WindowPadding = ImVec2(8.0f, 8.0f);
     }
 

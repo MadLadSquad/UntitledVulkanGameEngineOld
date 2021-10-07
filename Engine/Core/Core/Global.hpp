@@ -2,13 +2,11 @@
 // Last update 1/8/2021 by Madman10K
 #pragma once
 #include <Core/ECS.hpp>
-#include <Core.hpp>
 #include <Renderer/Window/Window.hpp>
-#include <glm/glm/gtx/quaternion.hpp>
-#include <GameFramework/GameplayClasses/GameInstance.hpp>
-#include <GameFramework/Actors/ActorManager.hpp>
+//#include <GameFramework/GameplayClasses/GameInstance.hpp>
+//#include <GameFramework/Actors/ActorManager.hpp>
 #include <Renderer/UI/UI.hpp>
-#include <Events/Events.hpp>
+//#include <Events/Events.hpp>
 #include <Assets/AssetManager.hpp>
 
 namespace UVK
@@ -19,11 +17,13 @@ namespace UVK
         std::string themeLoc;
         bool bVsync = false;
         bool bVsyncImmediate = true;
+        uint32_t maxSavedTransactions = 0;
 
         void saveSettings() const;
     };
 
     class Level;
+    class GameInstance;
 
     class UVKGlobal
     {
@@ -33,7 +33,7 @@ namespace UVK
         UVKGlobal(const UVKGlobal&) = delete;
         void operator=(UVKGlobal const&) = delete;
 
-        GameInstance* instance{};
+        GameInstance* instance = nullptr;
         WindowInternal window;
 
         bool& getEditor();
@@ -59,8 +59,7 @@ namespace UVK
         UIInternal ui;
 
         /**
-         * @note detailed description of this function and the whole Level opening system
-         * can be found in Core/Core/Utility.hpp
+         * @note Open the documentation for Levels and opening of levels for more info about this function
          */
         void finalizeOpening();
         std::vector<InputAction>& getActions();
@@ -84,17 +83,10 @@ namespace UVK
         friend class SettingsManager;
         friend class GameInstance;
         friend class Assets;
+        friend class StateTracker;
         friend struct MeshComponentRaw;
         friend struct RendererSettings;
     };
 
     inline UVKGlobal global;
-
-    class Math
-    {
-    public:
-        static void translate(glm::mat4& mat, FVector vt);
-        static void rotate(glm::mat4& mat, FVector vt);
-        static void scale(glm::mat4& mat, FVector vt);
-    };
 }

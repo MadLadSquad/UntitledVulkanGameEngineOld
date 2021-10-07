@@ -1,7 +1,6 @@
 // ECS.cpp
 // Last update 2/9/2021 by Madman10K
 #include "ECS.hpp"
-#include <utility>
 #include <GameFramework/Components/Components/CoreComponent.hpp>
 
 void UVK::ECSManager::clear()
@@ -14,7 +13,7 @@ void UVK::ECSManager::clear()
                 pool.destroy(ent);
         }
     });
-    //pool.clear();
+    //pool.clear(); // TODO: Keep a close eye on this line
 }
 
 UVK::EntityPool& UVK::ECSManager::data()

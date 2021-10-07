@@ -1,7 +1,7 @@
 // ECS.hpp
 // Last update 2/7/2021 by Madman10K
 #pragma once
-#include <Core.hpp>
+#include <Core/Types.hpp>
 
 namespace UVK
 {

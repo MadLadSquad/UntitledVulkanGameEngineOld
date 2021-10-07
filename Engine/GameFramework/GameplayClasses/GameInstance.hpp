@@ -4,6 +4,7 @@
 #include <Core.hpp>
 #include <GameFramework/Actors/ActorManager.hpp>
 #include <Events/Events.hpp>
+#include <Core/State/StateTracker.hpp>
 
 namespace UVK
 {
@@ -38,8 +39,12 @@ namespace UVK
         friend class Events;
         friend class Editor;
         friend class EditorModules;
+        friend class EditorPawn;
+        friend class StateTracker;
+        friend class Renderer;
 
         Editor* editor = nullptr;
         UVK::ActorManager actorManager;
+        UVK::StateTracker stateTracker;
     };
 }

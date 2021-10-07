@@ -41,7 +41,9 @@ bindings:
     val: 79
   - key: editor-new-file
     val: 78
-  - key: editor-exit
-    val: 87
   - key: editor-shift
     val: 340
+  - key: editor-undo
+    val: 90
+  - key: editor-redo
+    val: 89

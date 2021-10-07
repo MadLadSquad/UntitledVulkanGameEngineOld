@@ -3,6 +3,8 @@
 #include "EditorPawn.hpp"
 #include <GameFramework/Components/Components/CoreComponent.hpp>
 #include <Core/Actor.hpp>
+#include "../Editor.hpp"
+#include "GameFramework/GameplayClasses/GameInstance.hpp"
 
 #ifndef PRODUCTION
 void UVK::EditorPawn::beginPlay()
@@ -27,7 +29,7 @@ void UVK::EditorPawn::endPlay()
 
 void UVK::EditorPawn::move(float deltaTime)
 {
-    if (UVK::Input::getAction("editor-move") == Keys::KeyPressed || UVK::Input::getAction("editor-move") == Keys::KeyRepeat)
+    if ((UVK::Input::getAction("editor-move") == Keys::KeyPressed || UVK::Input::getAction("editor-move") == Keys::KeyRepeat) && global.instance->editor->bEditorViewportFocused)
     {
         Window::setCursorVisibility(false);
 
@@ -84,7 +86,7 @@ void UVK::EditorPawn::move(float deltaTime)
 
 void UVK::EditorPawn::moveMouse()
 {
-    if (UVK::Input::getAction("editor-move") == Keys::KeyPressed || UVK::Input::getAction("editor-move") == Keys::KeyRepeat)
+    if ((UVK::Input::getAction("editor-move") == Keys::KeyPressed || UVK::Input::getAction("editor-move") == Keys::KeyRepeat) && global.instance->editor->bEditorViewportFocused)
     {
         auto change = Input::getMousePositionChange();
         change.x *= turnSpeed; //* deltaTime;
