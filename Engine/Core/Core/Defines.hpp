@@ -1,5 +1,5 @@
 // Defines.hpp
-// Last update 22/9/2021 by Madman10K
+// Last update 11/10/2021 by Madman10K
 #pragma once
 #include <any>
 #include "Generated/BuildDef.hpp"
@@ -52,4 +52,6 @@
 
 #define GLM_FORCE_DEPTH_ZERO_TO_ONE
 
+#define COMPONENT_MESH_RAW 0
+#define COMPONENT_MESH 1
 //#define GLEW_STATIC

@@ -1,8 +1,12 @@
 // StateTracker.hpp
-// Last update 22/9/2021 by Madman10K
+// Last update 11/10/2021 by Madman10K
 #pragma once
 #include <vector>
 #include <cstdint>
+#include <Core/Actor.hpp>
+#include <GameFramework/Components/Components/CoreComponent.hpp>
+#include <GameFramework/Components/Components/MeshComponentRaw.hpp>
+#include <GameFramework/Components/Components/MeshComponent.hpp>
 
 namespace UVK
 {
@@ -10,8 +14,13 @@ namespace UVK
 
     struct Transaction
     {
-        std::function<void(void)> undofunc; // Called on undo
-        std::function<void(void)> redofunc; // Called on redo
+        std::function<void(UVK::Actor& ent, CoreComponent&, MeshComponentRaw&, MeshComponent&, bool*)> undofunc; // Called on undo
+        std::function<void(UVK::Actor& ent, CoreComponent&, MeshComponentRaw&, MeshComponent&, bool*)> redofunc; // Called on redo
+        Actor affectedEntity; // The entity that is going to be affected, can be empty
+        CoreComponent coreComponent;
+        MeshComponent meshComponent;
+        MeshComponentRaw meshComponentRaw;
+        bool bHasComponents[2];
     };
 
     /**
@@ -25,7 +34,7 @@ namespace UVK
         StateTracker(const StateTracker&) = delete;
         void operator=(StateTracker const&) = delete;
 
-        static void addTransaction(const Transaction& transaction);
+        static void push(const Transaction& transaction);
         void init();
     private:
         friend class Editor;

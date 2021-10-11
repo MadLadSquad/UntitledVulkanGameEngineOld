@@ -1,5 +1,5 @@
 // Editor.cpp
-// Last update 28/9/2021 by Madman10K
+// Last update 11/10/2021 by Madman10K
 #include "Editor.hpp"
 #ifndef PRODUCTION
 #include "Widgets/SceneHierarchy.hpp"
@@ -156,12 +156,8 @@ void UVK::Editor::initEditor()
 
     if (!global.rendererSettings.themeLoc.empty())
     {
-        style.WindowRounding = theme.getWindowRounding();
-    }
-
-    if (!global.rendererSettings.themeLoc.empty())
-    {
         theme.useTheme();
+        style.WindowRounding = theme.getWindowRounding();
 #ifndef __MINGW32__
         if (std_filesystem::exists(theme.getFont().first))
         {
@@ -289,11 +285,11 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
     {
         bShowOpenLevelWidget = true;
     }
-    else if ((Input::getAction("editor-bind-modifier") == Keys::KeyPressed || Input::getAction("editor-bind-modifier") == Keys::KeyRepeat) && (Input::getAction("editor-undo") == Keys::KeyPressed || Input::getAction("editor-undo") == Keys::KeyRepeat))
+    else if ((Input::getAction("editor-bind-modifier") == Keys::KeyPressed || Input::getAction("editor-bind-modifier") == Keys::KeyRepeat) && Input::getAction("editor-undo") == Keys::KeyPressed)
     {
         global.instance->stateTracker.undo();
     }
-    else if ((Input::getAction("editor-bind-modifier") == Keys::KeyPressed || Input::getAction("editor-bind-modifier") == Keys::KeyRepeat) && (Input::getAction("editor-redo") == Keys::KeyPressed || Input::getAction("editor-redo") == Keys::KeyRepeat))
+    else if ((Input::getAction("editor-bind-modifier") == Keys::KeyPressed || Input::getAction("editor-bind-modifier") == Keys::KeyRepeat) && Input::getAction("editor-redo") == Keys::KeyPressed)
     {
         global.instance->stateTracker.redo();
     }

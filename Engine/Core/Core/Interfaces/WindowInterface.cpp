@@ -1,5 +1,5 @@
 // WindowInterface.cpp
-// Last update 2/9/2021 by Madman10K
+// Last update 11/10/2021 by Madman10K
 #include "WindowInterface.hpp"
 #include "Core/Global.hpp"
 
@@ -31,4 +31,5 @@ std::string& UVK::Window::iconLocation()
 void UVK::Window::setCursorVisibility(bool bVisible)
 {
     global.window.setCursorVisibility(bVisible);
+    ImGui::GetIO().WantCaptureMouse = bVisible;
 }

@@ -1,5 +1,5 @@
 // StateTracker.cpp
-// Last update 22/9/2021 by Madman10K
+// Last update 11/10/2021 by Madman10K
 #include "StateTracker.hpp"
 #include <Core/Actor.hpp>
 #include <Renderer/EditorUI/Editor.hpp>
@@ -43,7 +43,7 @@ void UVK::StateTracker::undo()
     if (!undoStack.empty())
     {
         redoStack.emplace_back(undoStack.back());
-        undoStack.back()->undofunc();
+        undoStack.back()->undofunc(redoStack.back()->affectedEntity, redoStack.back()->coreComponent, redoStack.back()->meshComponentRaw, redoStack.back()->meshComponent, redoStack.back()->bHasComponents);
 
         undoStack.pop_back();
     }
@@ -54,13 +54,13 @@ void UVK::StateTracker::redo()
     if (!redoStack.empty())
     {
         undoStack.emplace_back(redoStack.back());
-        redoStack.back()->redofunc();
+        redoStack.back()->redofunc(redoStack.back()->affectedEntity, redoStack.back()->coreComponent, redoStack.back()->meshComponentRaw, redoStack.back()->meshComponent, redoStack.back()->bHasComponents);
 
         redoStack.pop_back();
     }
 }
 
-void UVK::StateTracker::addTransaction(const UVK::Transaction& transaction)
+void UVK::StateTracker::push(const UVK::Transaction& transaction)
 {
     global.instance->stateTracker.pushAction(transaction);
 }

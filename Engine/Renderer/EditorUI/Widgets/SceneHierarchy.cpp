@@ -6,6 +6,7 @@
 #include <GameFramework/Actors/ActorManager.hpp>
 #include <GameFramework/Components/Components.hpp>
 #include <GameFramework/Components/Components/CoreComponent.hpp>
+#include <State/StateTracker.hpp>
 
 void SceneHierarchy::destroyEntity(UVK::Actor& selectedEntity)
 {
@@ -13,6 +14,49 @@ void SceneHierarchy::destroyEntity(UVK::Actor& selectedEntity)
 
     if (a.id != 330)
     {
+        UVK::Transaction transaction =
+        {
+            .undofunc = [](UVK::Actor& ent, UVK::CoreComponent& coreComponent, UVK::MeshComponentRaw& meshComponentRaw, UVK::MeshComponent& meshComponent, bool* bHasCmp)
+            {
+                UVK::Actor act(coreComponent.name, coreComponent.id, coreComponent.devName);
+                auto& core = act.get<UVK::CoreComponent>();
+                core.translation = coreComponent.translation;
+                core.rotation = coreComponent.rotation;
+                core.scale = coreComponent.scale;
+
+                if (bHasCmp[COMPONENT_MESH])
+                {
+                    auto& a = act.add<UVK::MeshComponent>();
+                    a = meshComponent;
+                }
+
+                if (bHasCmp[COMPONENT_MESH_RAW])
+                {
+                    auto& a = act.add<UVK::MeshComponentRaw>();
+                    a = meshComponentRaw;
+                }
+
+                ent = act;
+            },
+            .redofunc = [](UVK::Actor& ent, UVK::CoreComponent& coreComponent, UVK::MeshComponentRaw& meshComponentRaw, UVK::MeshComponent& meshComponent, bool* bHasCmp)
+            {
+                ent.destroy();
+            },
+            .coreComponent = a
+        };
+        if (selectedEntity.has<UVK::MeshComponent>())
+        {
+            transaction.meshComponent = selectedEntity.get<UVK::MeshComponent>();
+            transaction.bHasComponents[COMPONENT_MESH] = true;
+        }
+
+        if (selectedEntity.has<UVK::MeshComponentRaw>())
+        {
+            transaction.meshComponentRaw = selectedEntity.get<UVK::MeshComponentRaw>();
+            transaction.bHasComponents[COMPONENT_MESH_RAW] = true;
+        }
+        UVK::StateTracker::push(transaction);
+
         selectedEntity.destroy();
     }
 }
@@ -26,6 +70,26 @@ void SceneHierarchy::addEntity(int& entNum)
     b.name = "NewEntity" + std::to_string(entNum);
     b.id = 0;
     b.devName = "a";
+
+    UVK::Transaction transaction =
+    {
+        .undofunc = [](UVK::Actor& ent, UVK::CoreComponent&, UVK::MeshComponentRaw&, UVK::MeshComponent&, bool*)
+        {
+            ent.remove<UVK::CoreComponent>();
+            ent.destroy();
+        },
+        .redofunc = [](UVK::Actor&, UVK::CoreComponent& coreComponent, UVK::MeshComponentRaw&, UVK::MeshComponent&, bool*)
+        {
+            UVK::Actor act(coreComponent.name, coreComponent.id, coreComponent.devName);
+            auto& core = act.get<UVK::CoreComponent>();
+            core.translation = coreComponent.translation;
+            core.rotation = coreComponent.rotation;
+            core.scale = coreComponent.scale;
+        },
+        .affectedEntity = UVK::Actor(a),
+        .coreComponent = b
+    };
+    UVK::StateTracker::push(transaction);
 
     entNum++;
 }

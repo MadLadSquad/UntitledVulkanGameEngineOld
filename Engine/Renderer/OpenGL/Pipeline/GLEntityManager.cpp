@@ -1,5 +1,5 @@
 // GLEntityManager.hpp
-// Last update 22/9/2021 by Madman10K
+// Last update 11/10/2021 by Madman10K
 #include <Core/Actor.hpp>
 #include "GLEntityManager.hpp"
 #include <GameFramework/Components/Components.hpp>

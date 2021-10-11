@@ -1,5 +1,5 @@
 // Actor.cpp
-// Last update 28/9/2021 by Madman10K
+// Last update 11/10/2021 by Madman10K
 #include "Actor.hpp"
 #include "Engine/GameFramework/Components/Components.hpp"
 #include <GameFramework/Components/Components/CoreComponent.hpp>
@@ -48,4 +48,29 @@ void UVK::Actor::destroy()
 UVK::Actor::Actor(entt::entity ent)
 {
     entity = ent;
+}
+
+bool UVK::Actor::operator==(entt::entity ent)
+{
+    return this->entity == ent;
+}
+
+bool UVK::Actor::operator==(UVK::Actor actor)
+{
+    return this->entity == actor.entity;
+}
+
+bool UVK::Actor::operator==(bool)
+{
+    return valid();
+}
+
+bool UVK::Actor::valid()
+{
+    return global.ecs.data().valid(entity);
+}
+
+UVK::Actor::operator bool()
+{
+    return valid();
 }

@@ -1,11 +1,10 @@
 // DetailsPanel.cpp
-// Last update 22/9/2021 by Madman10K
+// Last update 11/10/2021 by Madman10K
 #include "DetailsPanel.hpp"
 #ifndef PRODUCTION
 #include <imgui.h>
 #include <cpp/imgui_stdlib.h>
 #include <GameFramework/Components/Components.hpp>
-#include <Core/Actor.hpp>
 #include <GameFramework/GameplayClasses/Level/Level.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <Renderer/EditorUI/Modules/EditorModule.hpp>
@@ -89,18 +88,12 @@ void DetailsPanel::display(UVK::Actor& ent, UVK::Level* lvl, bool& bShow, const 
     {
         if (ImGui::MenuItem("Raw Mesh"))
         {
-            if (!ent.has<UVK::MeshComponentRaw>())
-            {
-                auto& a = ent.add<UVK::MeshComponentRaw>();
-            }
+            addComponent<UVK::MeshComponentRaw>(ent);
         }
 
         if (ImGui::MenuItem("Mesh"))
         {
-            if (!ent.has<UVK::MeshComponent>())
-            {
-                auto& a = ent.add<UVK::MeshComponent>();
-            }
+            addComponent<UVK::MeshComponent>(ent);
         }
 
         //if (ImGui::MenuItem("Audio"))
@@ -127,18 +120,12 @@ void DetailsPanel::display(UVK::Actor& ent, UVK::Level* lvl, bool& bShow, const 
     {
         if (ImGui::MenuItem("Raw Mesh##rm"))
         {
-            if (ent.has<UVK::MeshComponentRaw>())
-            {
-                ent.remove<UVK::MeshComponentRaw>();
-            }
+            removeComponent<UVK::MeshComponentRaw>(ent);
         }
 
         if (ImGui::MenuItem("Mesh##rm"))
         {
-            if (ent.has<UVK::MeshComponent>())
-            {
-                ent.remove<UVK::MeshComponent>();
-            }
+            removeComponent<UVK::MeshComponent>(ent);
         }
 
         //if (ImGui::MenuItem("Audio##rm"))

@@ -1,12 +1,9 @@
 // Global.hpp
-// Last update 1/8/2021 by Madman10K
+// Last update 11/10/2021 by Madman10K
 #pragma once
 #include <Core/ECS.hpp>
 #include <Renderer/Window/Window.hpp>
-//#include <GameFramework/GameplayClasses/GameInstance.hpp>
-//#include <GameFramework/Actors/ActorManager.hpp>
 #include <Renderer/UI/UI.hpp>
-//#include <Events/Events.hpp>
 #include <Assets/AssetManager.hpp>
 
 namespace UVK

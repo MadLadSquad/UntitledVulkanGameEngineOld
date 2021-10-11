@@ -1,5 +1,5 @@
 // Theme.hpp
-// Last update 6/7/2021 by Madman10K
+// Last update 11/10/2021 by Madman10K
 #pragma once
 #include <Generated/BuildDef.hpp>
 #ifndef PRODUCTION
@@ -20,7 +20,7 @@ namespace UVK
 
         explicit EditorTheme(UVK::String theme)
         {
-            setTheme(std::move(theme));
+            setTheme(theme);
         }
 
         static void save(UVK::String filename, UVK::String font, int fontSz);

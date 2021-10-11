@@ -1,5 +1,5 @@
 // EditorViewport.cpp
-// Last update 22/9/2021 by Madman10K
+// Last update 11/10/2021 by Madman10K
 #include "EditorViewport.hpp"
 #ifndef PRODUCTION
 #include <Engine/Core/Core/Global.hpp>
@@ -90,6 +90,10 @@ void EditorViewport::display(UVK::GLFrameBuffer& fb, int& viewportWidth, int& vi
         UVK::Math::scale(mat, core.scale);
 
         ImGuizmo::Manipulate(glm::value_ptr(camera.calculateViewMatrixRH()), glm::value_ptr(projection), (ImGuizmo::OPERATION)operationType, ImGuizmo::LOCAL, glm::value_ptr(mat), nullptr, snap ? snapValues : nullptr);
+
+        // TODO: To be added later for undo/redo
+        static bool bUsing = false;
+        static bool bPreviouslyUsing = false;
 
         if (ImGuizmo::IsUsing())
         {
