@@ -105,7 +105,7 @@ void Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, std::
                     },
                     .coreComponent =
                     {
-                        .name = pt/("NewFolder" + std::to_string(i))
+                        .name = (pt/("NewFolder" + std::to_string(i))).string()
                     }
                 };
                 UVK::StateTracker::push(transaction);
@@ -127,7 +127,7 @@ void Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, std::
                     },
                     .coreComponent =
                     {
-                        .name = pt/"NewFolder"
+                        .name = (pt/"NewFolder").string()
                     }
                 };
                 UVK::StateTracker::push(transaction);
@@ -163,7 +163,7 @@ void Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, std::
                     },
                     .coreComponent =
                     {
-                        .name = pt/("NewFile" + std::to_string(i) + ".txt")
+                        .name = (pt/("NewFile" + std::to_string(i) + ".txt")).string()
                     }
                 };
                 UVK::StateTracker::push(transaction);
@@ -189,7 +189,7 @@ void Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, std::
                     },
                     .coreComponent =
                     {
-                        .name = pt/"NewFile.txt"
+                        .name = (pt/"NewFile.txt").string()
                     }
                 };
                 UVK::StateTracker::push(transaction);

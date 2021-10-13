@@ -166,44 +166,7 @@ void DetailsPanel::display(UVK::Actor& ent, UVK::Level* lvl, bool& bShow, const 
         ImGui::SameLine();
         ImGui::InputText("##Development Name##devname", &a.devName);
 
-        static bool bCoreTranslationPreviouslyActive = false;
-        static bool bCoreRotationPreviouslyActive = false;
-        static bool bCoreScalePreviouslyActive = false;
-
-        static UVK::FVector previousTranslation = a.translation;
-        if (DrawVec3Control("Translation", a.translation, 0.0f, 100.0f))
-        {
-            bCoreTranslationPreviouslyActive = true;
-        }
-        else if (bCoreTranslationPreviouslyActive)
-        {
-            bCoreTranslationPreviouslyActive = false;
-
-            UVK::Transaction transaction =
-            {
-                .undofunc = [](UVK::Actor& actor, UVK::CoreComponent& coreComponent, UVK::CoreComponent&, UVK::MeshComponentRaw&, UVK::MeshComponent&, bool*)
-                {
-                    auto& core = actor.get<UVK::CoreComponent>();
-                    core.translation = coreComponent.translation;
-                },
-                .redofunc = [](UVK::Actor& actor, UVK::CoreComponent& coreComponent, UVK::CoreComponent& deltaCore, UVK::MeshComponentRaw&, UVK::MeshComponent&, bool*)
-                {
-                    auto& core = actor.get<UVK::CoreComponent>();
-                    core.translation = deltaCore.translation;
-                },
-                .affectedEntity = ent,
-                .coreComponent = a,
-                .deltaCoreComponent =
-                {
-                    .translation = previousTranslation
-                }
-            };
-            UVK::StateTracker::push(transaction);
-        }
-        else
-        {
-            previousTranslation = a.translation;
-        }
+        DrawVec3Control("Translation", a.translation, 0.0f, 100.0f);
         DrawVec3Control("Rotation", a.rotation, 0.0f, 100.0f);
         DrawVec3Control("Scale", a.scale, 1.0f, 100.0f);
 
