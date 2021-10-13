@@ -1,5 +1,5 @@
 // StateTracker.hpp
-// Last update 11/10/2021 by Madman10K
+// Last update 13/10/2021 by Madman10K
 #pragma once
 #include <vector>
 #include <cstdint>
@@ -14,10 +14,11 @@ namespace UVK
 
     struct Transaction
     {
-        std::function<void(UVK::Actor& ent, CoreComponent&, MeshComponentRaw&, MeshComponent&, bool*)> undofunc; // Called on undo
-        std::function<void(UVK::Actor& ent, CoreComponent&, MeshComponentRaw&, MeshComponent&, bool*)> redofunc; // Called on redo
+        std::function<void(UVK::Actor& ent, CoreComponent&, CoreComponent&, MeshComponentRaw&, MeshComponent&, bool*)> undofunc; // Called on undo
+        std::function<void(UVK::Actor& ent, CoreComponent&, CoreComponent&, MeshComponentRaw&, MeshComponent&, bool*)> redofunc; // Called on redo
         Actor affectedEntity; // The entity that is going to be affected, can be empty
         CoreComponent coreComponent;
+        CoreComponent deltaCoreComponent;
         MeshComponent meshComponent;
         MeshComponentRaw meshComponentRaw;
         bool bHasComponents[2];

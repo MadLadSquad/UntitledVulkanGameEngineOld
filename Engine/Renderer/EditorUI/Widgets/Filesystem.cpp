@@ -1,34 +1,39 @@
 // Filesystem.cpp
-// Last update 12/8/2021 by Madman10K
+// Last update 13/10/2021 by Madman10K
 #include <GL/glew.h>
 #include "Filesystem.hpp"
 #ifndef PRODUCTION
 #include "Assets/Asset.hpp"
 #include <imgui.h>
 #include <cpp/imgui_stdlib.h>
+#include <State/StateTracker.hpp>
 
 #ifndef __MINGW32__
 void Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, std::unordered_map<std::string, UVK::Texture>& previews, bool& bShow)
 {
+    // Constants for the file extensions
     constexpr const char* audioExtensions[] = { ".wav", ".flac", ".m4a", ".ogg", ".mp3" };
     constexpr const char* imageExtensions[] = { ".jpeg", ".jpg", ".tiff", ".gif", ".bmp", ".png", ".tga", ".psd", ".pic" };
     constexpr const char* videoExtensions[] = { ".mov", ".m4v", ".mp4", ".mpeg", ".mkv", ".mpg", ".wmv", ".webm" };
     constexpr const char* objExtensions[] = { ".obj", ".fbx", ".glb", ".gltf", ".mp3" };
     constexpr const char* codeExtensions[] = { ".yaml", ".uvklevel", ".yml" };
 
+    // Variables for the UI
     static float padding = 20.0f;
     static float imageSize = 50.0f;
     float cellSize = padding + imageSize;
     static bool bUsePreviews = true;
     int columns;
 
-    ImGui::Begin("Filesystem##Widget", &bShow, ImGuiWindowFlags_MenuBar);
-
+    // Variables for file actions
     bool bCreateFile = false;
     bool bRemoveFile = false;
     bool bAddDirectory = false;
 
+    // The current file represented as a string
     static std::string selectedFile;
+
+    ImGui::Begin("Filesystem##Widget", &bShow, ImGuiWindowFlags_MenuBar);
 
     if (ImGui::BeginMenuBar())
     {
@@ -82,35 +87,112 @@ void Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, std::
             if (std_filesystem::exists(pt/"NewFolder"))
             {
                 int i = 0;
-                while (std_filesystem::exists(pt.string() + "/NewFolder" + std::to_string(i)))
+                while (std_filesystem::exists(pt/("NewFolder" + std::to_string(i))))
                     i++;
 
-                create_directory(std_filesystem::path(pt.string() + "/NewFolder" + std::to_string(i)));
+                create_directory(std_filesystem::path(pt/("NewFolder" + std::to_string(i))));
+
+                UVK::Transaction transaction =
+                {
+                    .undofunc = [](UVK::Actor&, UVK::CoreComponent& core, UVK::CoreComponent&, UVK::MeshComponentRaw&, UVK::MeshComponent&, bool*)
+                    {
+                        remove_all(std_filesystem::path(core.name));
+                    },
+                    .redofunc = [](UVK::Actor&, UVK::CoreComponent& core, UVK::CoreComponent&, UVK::MeshComponentRaw&, UVK::MeshComponent&, bool*)
+                    {
+                        if (!std_filesystem::exists(core.name))
+                            std::filesystem::create_directory(std_filesystem::path(core.name));
+                    },
+                    .coreComponent =
+                    {
+                        .name = pt/("NewFolder" + std::to_string(i))
+                    }
+                };
+                UVK::StateTracker::push(transaction);
             }
             else
+            {
                 create_directory(pt/"NewFolder");
+
+                UVK::Transaction transaction =
+                {
+                    .undofunc = [](UVK::Actor&, UVK::CoreComponent& core, UVK::CoreComponent&, UVK::MeshComponentRaw&, UVK::MeshComponent&, bool*)
+                    {
+                        remove_all(std_filesystem::path(core.name));
+                    },
+                    .redofunc = [](UVK::Actor&, UVK::CoreComponent& core, UVK::CoreComponent&, UVK::MeshComponentRaw&, UVK::MeshComponent&, bool*)
+                    {
+                        if (!std_filesystem::exists(core.name))
+                            std::filesystem::create_directory(std_filesystem::path(core.name));
+                    },
+                    .coreComponent =
+                    {
+                        .name = pt/"NewFolder"
+                    }
+                };
+                UVK::StateTracker::push(transaction);
+            }
 
             bAddDirectory = false;
         }
 
         if (bCreateFile)
         {
-            std::cout << pt.string() << std::endl;
-            if (std_filesystem::exists(pt.string() + "/NewFile.txt"))
+            if (std_filesystem::exists(pt/"NewFile.txt"))
             {
                 int i = 0;
-                while (std_filesystem::exists(pt.string() + "/NewFile" + std::to_string(i) + ".txt"))
+                while (std_filesystem::exists(pt/("NewFile" + std::to_string(i) + ".txt")))
                     i++;
 
-                std::ofstream out(pt.string() + "/NewFile" + std::to_string(i) + ".txt");
+                std::ofstream out(pt/("NewFile" + std::to_string(i) + ".txt"));
                 out << std::endl;
                 out.close();
+
+                UVK::Transaction transaction =
+                {
+                    .undofunc = [](UVK::Actor&, UVK::CoreComponent& core, UVK::CoreComponent&, UVK::MeshComponentRaw&, UVK::MeshComponent&, bool*)
+                    {
+                        if (std_filesystem::exists(core.name))
+                            remove(std_filesystem::path(core.name));
+                    },
+                    .redofunc = [](UVK::Actor&, UVK::CoreComponent& core, UVK::CoreComponent&, UVK::MeshComponentRaw&, UVK::MeshComponent&, bool*)
+                    {
+                        std::ofstream out(core.name);
+                        out << std::endl;
+                        out.close();
+                    },
+                    .coreComponent =
+                    {
+                        .name = pt/("NewFile" + std::to_string(i) + ".txt")
+                    }
+                };
+                UVK::StateTracker::push(transaction);
             }
             else
             {
-                std::ofstream out(pt.string() + "/NewFile.txt");
+                std::ofstream out(pt/"NewFile.txt");
                 out << std::endl;
                 out.close();
+
+                UVK::Transaction transaction =
+                {
+                    .undofunc = [](UVK::Actor&, UVK::CoreComponent& core, UVK::CoreComponent&, UVK::MeshComponentRaw&, UVK::MeshComponent&, bool*)
+                    {
+                        if (std_filesystem::exists(core.name))
+                            remove(std_filesystem::path(core.name));
+                    },
+                    .redofunc = [](UVK::Actor&, UVK::CoreComponent& core, UVK::CoreComponent&, UVK::MeshComponentRaw&, UVK::MeshComponent&, bool*)
+                    {
+                        std::ofstream out(core.name);
+                        out << std::endl;
+                        out.close();
+                    },
+                    .coreComponent =
+                    {
+                        .name = pt/"NewFile.txt"
+                    }
+                };
+                UVK::StateTracker::push(transaction);
             }
 
             bCreateFile = false;
@@ -119,9 +201,59 @@ void Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, std::
         if (bRemoveFile)
         {
             if (is_directory(std_filesystem::path(selectedFile)))
+            {
+                // TODO: Add a warning here
                 remove_all(std_filesystem::path(selectedFile));
+
+                UVK::Transaction transaction =
+                {
+                    .undofunc = [](UVK::Actor&, UVK::CoreComponent& core, UVK::CoreComponent&, UVK::MeshComponentRaw&, UVK::MeshComponent&, bool*)
+                    {
+                        // TODO: Recreate the whole directory structure
+                        std_filesystem::create_directory(std_filesystem::path(core.name));
+                    },
+                    .redofunc = [](UVK::Actor&, UVK::CoreComponent& core, UVK::CoreComponent&, UVK::MeshComponentRaw&, UVK::MeshComponent&, bool*)
+                    {
+                        std_filesystem::remove_all(std_filesystem::path(core.name));
+                    },
+                    .coreComponent =
+                    {
+                        .name = selectedFile
+                    }
+                };
+                UVK::StateTracker::push(transaction);
+            }
             else
+            {
+                std::ifstream in(selectedFile);
+                std::string buf;
+                std::string temp;
+
+                while (std::getline(in, temp))
+                    buf.append(temp + '\n');
+
                 remove(std_filesystem::path(selectedFile));
+
+                UVK::Transaction transaction =
+                {
+                    .undofunc = [](UVK::Actor&, UVK::CoreComponent& core, UVK::CoreComponent&, UVK::MeshComponentRaw&, UVK::MeshComponent&, bool*)
+                    {
+                        std::ofstream out(std_filesystem::path(core.name));
+                        out << core.devName << std::flush;
+                        out.close();
+                    },
+                    .redofunc = [](UVK::Actor&, UVK::CoreComponent& core, UVK::CoreComponent&, UVK::MeshComponentRaw&, UVK::MeshComponent&, bool*)
+                    {
+                        std_filesystem::remove(std_filesystem::path(core.name));
+                    },
+                    .coreComponent =
+                    {
+                        .name = selectedFile,
+                        .devName = buf
+                    }
+                };
+                UVK::StateTracker::push(transaction);
+            }
 
             selectedFile.clear();
             bRemoveFile = false;

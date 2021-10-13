@@ -1,5 +1,5 @@
 // Actor.hpp
-// Last update 11/10/2021 by Madman10K
+// Last update 13/10/2021 by Madman10K
 #pragma once
 #include <Core/Global.hpp>
 
@@ -43,6 +43,8 @@ namespace UVK
             return global.ecs.data().any_of<T>(entity);
         }
 
+        // Clears all components from the entity so that it can be used later
+        void clear();
         void destroy();
         entt::entity& data();
     private:

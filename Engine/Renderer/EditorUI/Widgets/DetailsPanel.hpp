@@ -1,5 +1,5 @@
 // DetailsPanel.hpp
-// Last update 11/10/2021 by Madman10K
+// Last update 13/10/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 #ifndef PRODUCTION
@@ -18,7 +18,7 @@ namespace UVK
 namespace DetailsPanel
 {
     // All of this is copied from the Cherno because his styling looks great
-    void DrawVec3Control(const std::string& label, glm::vec3& values, float resetValue = 0.0f, float columnWidth = 100.0f);
+    bool DrawVec3Control(const std::string& label, glm::vec3& values, float resetValue = 0.0f, float columnWidth = 100.0f);
 
     template<typename T>
     void addComponent(UVK::Actor& ent)
@@ -29,14 +29,14 @@ namespace DetailsPanel
 
             UVK::Transaction transaction =
             {
-                .undofunc = [](UVK::Actor& en, UVK::CoreComponent&, UVK::MeshComponentRaw&, UVK::MeshComponent&, bool*)
+                .undofunc = [](UVK::Actor& en, UVK::CoreComponent&, UVK::CoreComponent&, UVK::MeshComponentRaw&, UVK::MeshComponent&, bool*)
                 {
-                    if (en)
+                    if (en.has<T>())
                         en.remove<T>();
                 },
-                .redofunc = [](UVK::Actor& en, UVK::CoreComponent&, UVK::MeshComponentRaw&, UVK::MeshComponent&, bool*)
+                .redofunc = [](UVK::Actor& en, UVK::CoreComponent&, UVK::CoreComponent&, UVK::MeshComponentRaw&, UVK::MeshComponent&, bool*)
                 {
-                    if (en)
+                    if (en.has<T>())
                         en.add<T>();
                 },
                 .affectedEntity = ent
@@ -55,14 +55,14 @@ namespace DetailsPanel
 
             UVK::Transaction transaction =
             {
-                .undofunc = [](UVK::Actor& en, UVK::CoreComponent&, UVK::MeshComponentRaw&, UVK::MeshComponent&, bool*)
+                .undofunc = [](UVK::Actor& en, UVK::CoreComponent&, UVK::CoreComponent&, UVK::MeshComponentRaw&, UVK::MeshComponent&, bool*)
                 {
-                    if (en)
+                    if (en.has<T>())
                         en.add<T>();
                 },
-                .redofunc = [](UVK::Actor& en, UVK::CoreComponent&, UVK::MeshComponentRaw&, UVK::MeshComponent&, bool*)
+                .redofunc = [](UVK::Actor& en, UVK::CoreComponent&, UVK::CoreComponent&, UVK::MeshComponentRaw&, UVK::MeshComponent&, bool*)
                 {
-                    if (en)
+                    if (en.has<T>())
                         en.remove<T>();
                 },
                 .affectedEntity = ent

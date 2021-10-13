@@ -16,32 +16,24 @@ void SceneHierarchy::destroyEntity(UVK::Actor& selectedEntity)
     {
         UVK::Transaction transaction =
         {
-            .undofunc = [](UVK::Actor& ent, UVK::CoreComponent& coreComponent, UVK::MeshComponentRaw& meshComponentRaw, UVK::MeshComponent& meshComponent, bool* bHasCmp)
+            .undofunc = [](UVK::Actor& ent, UVK::CoreComponent& coreComponent, UVK::CoreComponent&, UVK::MeshComponentRaw& meshComponentRaw, UVK::MeshComponent& meshComponent, bool* bHasCmp)
             {
-                UVK::Actor act(coreComponent.name, coreComponent.id, coreComponent.devName);
-                auto& core = act.get<UVK::CoreComponent>();
-                core.translation = coreComponent.translation;
-                core.rotation = coreComponent.rotation;
-                core.scale = coreComponent.scale;
-
+                ent.add<UVK::CoreComponent>() = coreComponent;
                 if (bHasCmp[COMPONENT_MESH])
                 {
-                    auto& a = act.add<UVK::MeshComponent>();
-                    a = meshComponent;
+                    ent.add<UVK::MeshComponent>() = meshComponent;
                 }
 
                 if (bHasCmp[COMPONENT_MESH_RAW])
                 {
-                    auto& a = act.add<UVK::MeshComponentRaw>();
-                    a = meshComponentRaw;
+                    ent.add<UVK::MeshComponentRaw>() = meshComponentRaw;
                 }
-
-                ent = act;
             },
-            .redofunc = [](UVK::Actor& ent, UVK::CoreComponent& coreComponent, UVK::MeshComponentRaw& meshComponentRaw, UVK::MeshComponent& meshComponent, bool* bHasCmp)
+            .redofunc = [](UVK::Actor& ent, UVK::CoreComponent& coreComponent, UVK::CoreComponent&, UVK::MeshComponentRaw& meshComponentRaw, UVK::MeshComponent& meshComponent, bool* bHasCmp)
             {
-                ent.destroy();
+                ent.clear();
             },
+            .affectedEntity = selectedEntity,
             .coreComponent = a
         };
         if (selectedEntity.has<UVK::MeshComponent>())
@@ -57,7 +49,7 @@ void SceneHierarchy::destroyEntity(UVK::Actor& selectedEntity)
         }
         UVK::StateTracker::push(transaction);
 
-        selectedEntity.destroy();
+        selectedEntity.clear();
     }
 }
 
@@ -73,18 +65,13 @@ void SceneHierarchy::addEntity(int& entNum)
 
     UVK::Transaction transaction =
     {
-        .undofunc = [](UVK::Actor& ent, UVK::CoreComponent&, UVK::MeshComponentRaw&, UVK::MeshComponent&, bool*)
+        .undofunc = [](UVK::Actor& ent, UVK::CoreComponent&, UVK::CoreComponent&, UVK::MeshComponentRaw&, UVK::MeshComponent&, bool*)
         {
-            ent.remove<UVK::CoreComponent>();
-            ent.destroy();
+            ent.clear();
         },
-        .redofunc = [](UVK::Actor&, UVK::CoreComponent& coreComponent, UVK::MeshComponentRaw&, UVK::MeshComponent&, bool*)
+        .redofunc = [](UVK::Actor& ent, UVK::CoreComponent& coreComponent, UVK::CoreComponent&, UVK::MeshComponentRaw&, UVK::MeshComponent&, bool*)
         {
-            UVK::Actor act(coreComponent.name, coreComponent.id, coreComponent.devName);
-            auto& core = act.get<UVK::CoreComponent>();
-            core.translation = coreComponent.translation;
-            core.rotation = coreComponent.rotation;
-            core.scale = coreComponent.scale;
+            ent.add<UVK::CoreComponent>() = coreComponent;
         },
         .affectedEntity = UVK::Actor(a),
         .coreComponent = b
@@ -94,7 +81,7 @@ void SceneHierarchy::addEntity(int& entNum)
     entNum++;
 }
 
-void SceneHierarchy::display(UVK::Actor& selectedEntity, std::string &entAppend, int &entNum, bool& bShow)
+void SceneHierarchy::display(UVK::Actor& selectedEntity, std::string& entAppend, int& entNum, bool& bShow)
 {
     bool bDestroy = false;
 
@@ -109,17 +96,16 @@ void SceneHierarchy::display(UVK::Actor& selectedEntity, std::string &entAppend,
 
     ImGui::EndMenuBar();
 
-    // to be fixed immediately because it's a big performance drain
-    UVK::ECS::data().each([&](entt::entity ent)
+    for (auto& a: UVK::ECS::data().view<UVK::CoreComponent>())
     {
-        const auto& a = UVK::ECS::data().get<UVK::CoreComponent>(ent);
+        const auto& b = UVK::ECS::data().get<UVK::CoreComponent>(a);
 
-        if (ImGui::Selectable(static_cast<std::string>(a.name + ", " + std::to_string(a.id)).c_str()))
+        if (ImGui::Selectable(static_cast<std::string>(b.name + ", " + std::to_string(b.id)).c_str()))
         {
-            if (UVK::ECS::data().valid(ent))
-                selectedEntity.data() = ent;
+            if (UVK::ECS::data().valid(a))
+                selectedEntity.data() = a;
         }
-    });
+    }
 
     if (bDestroy && UVK::ECS::data().valid(selectedEntity.data()))
     {

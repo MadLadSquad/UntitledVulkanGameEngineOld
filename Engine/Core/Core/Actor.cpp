@@ -1,5 +1,5 @@
 // Actor.cpp
-// Last update 11/10/2021 by Madman10K
+// Last update 13/10/2021 by Madman10K
 #include "Actor.hpp"
 #include "Engine/GameFramework/Components/Components.hpp"
 #include <GameFramework/Components/Components/CoreComponent.hpp>
@@ -29,19 +29,7 @@ void UVK::Actor::create(const std::string& nameN, uint64_t idN, const std::strin
 
 void UVK::Actor::destroy()
 {
-    if (has<MeshComponentRaw>())
-    {
-        get<MeshComponentRaw>().clearMesh();
-        remove<MeshComponentRaw>();
-    }
-
-    if (has<MeshComponent>())
-    {
-        get<MeshComponent>().clearMesh();
-        remove<MeshComponent>();
-    }
-    remove<CoreComponent>();
-
+    clear();
     global.ecs.data().destroy(entity);
 }
 
@@ -73,4 +61,20 @@ bool UVK::Actor::valid()
 UVK::Actor::operator bool()
 {
     return valid();
+}
+
+void UVK::Actor::clear()
+{
+    if (has<MeshComponentRaw>())
+    {
+        get<MeshComponentRaw>().clearMesh();
+        remove<MeshComponentRaw>();
+    }
+
+    if (has<MeshComponent>())
+    {
+        get<MeshComponent>().clearMesh();
+        remove<MeshComponent>();
+    }
+    remove<CoreComponent>();
 }

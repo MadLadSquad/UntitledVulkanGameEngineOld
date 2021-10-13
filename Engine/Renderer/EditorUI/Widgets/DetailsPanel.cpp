@@ -1,5 +1,5 @@
 // DetailsPanel.cpp
-// Last update 11/10/2021 by Madman10K
+// Last update 13/10/2021 by Madman10K
 #include "DetailsPanel.hpp"
 #ifndef PRODUCTION
 #include <imgui.h>
@@ -10,7 +10,7 @@
 #include <Renderer/EditorUI/Modules/EditorModule.hpp>
 #include <GameFramework/Components/Components/CoreComponent.hpp>
 
-void DetailsPanel::DrawVec3Control(const std::string &label, glm::vec3 &values, float resetValue, float columnWidth)
+bool DetailsPanel::DrawVec3Control(const std::string &label, glm::vec3 &values, float resetValue, float columnWidth)
 {
     const ImGuiIO& io = ImGui::GetIO();
     auto boldFont = io.Fonts->Fonts[0];
@@ -38,9 +38,13 @@ void DetailsPanel::DrawVec3Control(const std::string &label, glm::vec3 &values, 
         values.x = resetValue;
     ImGui::PopFont();
     ImGui::PopStyleColor(3);
-
     ImGui::SameLine();
-    ImGui::DragFloat("##X", &values.x, 0.1f, 0.0f, 0.0f, "%.2f");
+
+    bool x = false;
+    bool y = false;
+    bool z = false;
+
+    x = ImGui::DragFloat("##X", &values.x, 0.1f, 0.0f, 0.0f, "%.2f");
     ImGui::PopItemWidth();
     ImGui::SameLine();
 
@@ -54,7 +58,7 @@ void DetailsPanel::DrawVec3Control(const std::string &label, glm::vec3 &values, 
     ImGui::PopStyleColor(3);
 
     ImGui::SameLine();
-    ImGui::DragFloat("##Y", &values.y, 0.1f, 0.0f, 0.0f, "%.2f");
+    y = ImGui::DragFloat("##Y", &values.y, 0.1f, 0.0f, 0.0f, "%.2f");
     ImGui::PopItemWidth();
     ImGui::SameLine();
 
@@ -68,7 +72,7 @@ void DetailsPanel::DrawVec3Control(const std::string &label, glm::vec3 &values, 
     ImGui::PopStyleColor(3);
 
     ImGui::SameLine();
-    ImGui::DragFloat("##Z", &values.z, 0.1f, 0.0f, 0.0f, "%.2f");
+    z = ImGui::DragFloat("##Z", &values.z, 0.1f, 0.0f, 0.0f, "%.2f");
     ImGui::PopItemWidth();
 
     ImGui::PopStyleVar();
@@ -76,6 +80,8 @@ void DetailsPanel::DrawVec3Control(const std::string &label, glm::vec3 &values, 
     ImGui::Columns(1);
 
     ImGui::PopID();
+
+    return (x || y || z);
 }
 
 void DetailsPanel::display(UVK::Actor& ent, UVK::Level* lvl, bool& bShow, const UVK::EditorModuleManager& modules, bool& destroy)
@@ -160,7 +166,44 @@ void DetailsPanel::display(UVK::Actor& ent, UVK::Level* lvl, bool& bShow, const 
         ImGui::SameLine();
         ImGui::InputText("##Development Name##devname", &a.devName);
 
-        DrawVec3Control("Translation", a.translation, 0.0f, 100.0f);
+        static bool bCoreTranslationPreviouslyActive = false;
+        static bool bCoreRotationPreviouslyActive = false;
+        static bool bCoreScalePreviouslyActive = false;
+
+        static UVK::FVector previousTranslation = a.translation;
+        if (DrawVec3Control("Translation", a.translation, 0.0f, 100.0f))
+        {
+            bCoreTranslationPreviouslyActive = true;
+        }
+        else if (bCoreTranslationPreviouslyActive)
+        {
+            bCoreTranslationPreviouslyActive = false;
+
+            UVK::Transaction transaction =
+            {
+                .undofunc = [](UVK::Actor& actor, UVK::CoreComponent& coreComponent, UVK::CoreComponent&, UVK::MeshComponentRaw&, UVK::MeshComponent&, bool*)
+                {
+                    auto& core = actor.get<UVK::CoreComponent>();
+                    core.translation = coreComponent.translation;
+                },
+                .redofunc = [](UVK::Actor& actor, UVK::CoreComponent& coreComponent, UVK::CoreComponent& deltaCore, UVK::MeshComponentRaw&, UVK::MeshComponent&, bool*)
+                {
+                    auto& core = actor.get<UVK::CoreComponent>();
+                    core.translation = deltaCore.translation;
+                },
+                .affectedEntity = ent,
+                .coreComponent = a,
+                .deltaCoreComponent =
+                {
+                    .translation = previousTranslation
+                }
+            };
+            UVK::StateTracker::push(transaction);
+        }
+        else
+        {
+            previousTranslation = a.translation;
+        }
         DrawVec3Control("Rotation", a.rotation, 0.0f, 100.0f);
         DrawVec3Control("Scale", a.scale, 1.0f, 100.0f);
 
