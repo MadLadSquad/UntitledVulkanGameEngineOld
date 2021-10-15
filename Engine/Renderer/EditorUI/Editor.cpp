@@ -496,7 +496,7 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
 #ifndef __MINGW32__
     if (bShowFilesystem)
     {
-        Filesystem::display(pt, fileTextures, texturePreviews, bShowFilesystem);
+        Filesystem::display(pt, fileTextures, bShowFilesystem);
     }
 #endif
 

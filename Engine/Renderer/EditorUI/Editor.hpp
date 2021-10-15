@@ -41,10 +41,7 @@ namespace UVK
 
         Texture play;
         Texture logoTxt;
-
         Texture fileTextures[8];
-
-        std::unordered_map<std::string, UVK::Texture> texturePreviews;
 
         int entNum = 0;
         int viewportWidth = 0, viewportHeight = 0;

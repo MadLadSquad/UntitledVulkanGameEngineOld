@@ -76,5 +76,7 @@ void UVK::Actor::clear()
         get<MeshComponent>().clearMesh();
         remove<MeshComponent>();
     }
-    remove<CoreComponent>();
+
+    if (has<CoreComponent>())
+        remove<CoreComponent>();
 }

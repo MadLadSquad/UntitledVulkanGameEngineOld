@@ -91,12 +91,15 @@ void EditorViewport::display(UVK::GLFrameBuffer& fb, int& viewportWidth, int& vi
 
         ImGuizmo::Manipulate(glm::value_ptr(camera.calculateViewMatrixRH()), glm::value_ptr(projection), (ImGuizmo::OPERATION)operationType, ImGuizmo::LOCAL, glm::value_ptr(mat), nullptr, snap ? snapValues : nullptr);
 
-        // TODO: To be added later for undo/redo
-        static bool bUsing = false;
         static bool bPreviouslyUsing = false;
+
+        static UVK::FVector previousTranslation;
+        static UVK::FVector previousRotation;
+        static UVK::FVector previousScale;
 
         if (ImGuizmo::IsUsing())
         {
+            bPreviouslyUsing = true;
             ImGuizmo::DecomposeMatrixToComponents(glm::value_ptr(mat), glm::value_ptr(translation), glm::value_ptr(rotation), glm::value_ptr(scale));
 
             deltaRotation = glm::radians(rotation) - core.rotation;
@@ -104,6 +107,48 @@ void EditorViewport::display(UVK::GLFrameBuffer& fb, int& viewportWidth, int& vi
             core.translation = translation;
             core.rotation += deltaRotation;
             core.scale = scale;
+        }
+        else
+        {
+            if (bPreviouslyUsing)
+            {
+                UVK::CoreComponent deltaCore =
+                {
+                    .translation = previousTranslation,
+                    .rotation = previousRotation,
+                    .scale = previousScale
+                };
+
+                UVK::Transaction transaction =
+                {
+                    .undofunc = [](UVK::Actor& ent, UVK::CoreComponent& coreComponent, UVK::CoreComponent& deltaCore, UVK::MeshComponentRaw&, UVK::MeshComponent&, bool*)
+                    {
+                        auto& corecmp = ent.get<UVK::CoreComponent>();
+                        corecmp.translation = deltaCore.translation;
+                        corecmp.rotation = deltaCore.rotation;
+                        corecmp.scale = deltaCore.scale;
+                    },
+                    .redofunc = [](UVK::Actor& ent, UVK::CoreComponent& coreComponent, UVK::CoreComponent& deltaCore, UVK::MeshComponentRaw&, UVK::MeshComponent&, bool*)
+                    {
+                        auto& corecmp = ent.get<UVK::CoreComponent>();
+                        corecmp.translation = coreComponent.translation;
+                        corecmp.rotation = coreComponent.rotation;
+                        corecmp.scale = coreComponent.scale;
+                    },
+                    .affectedEntity = entity,
+                    .coreComponent = core,
+                    .deltaCoreComponent = deltaCore
+                };
+                UVK::StateTracker::push(transaction);
+
+                bPreviouslyUsing = false;
+            }
+            else
+            {
+                previousTranslation = core.translation;
+                previousRotation = core.rotation;
+                previousScale = core.scale;
+            }
         }
     }
     ImGui::End();

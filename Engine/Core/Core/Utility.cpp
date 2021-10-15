@@ -814,6 +814,9 @@ void UVK::Utility::sanitiseFilepath(std::string& str, bool bInput)
 
         }
     }
+
+    //if (str[str.size() - 1] != '/')
+    //    str.append("/");
 }
 
 std::string UVK::Utility::keyToText(const uint16_t& key, bool bLong)
