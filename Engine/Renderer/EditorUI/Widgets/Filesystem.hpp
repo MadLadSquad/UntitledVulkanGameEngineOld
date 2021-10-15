@@ -20,8 +20,8 @@ namespace Filesystem
     };
 
     void display(std_filesystem::path& pt, UVK::Texture* textures, bool& bShow);
-    void createFile(std_filesystem::path& pt);
-    void createFolder(std_filesystem::path& pt);
+    void createFile(const std_filesystem::path& pt);
+    void createFolder(const std_filesystem::path& pt);
     void deleteFile(std_filesystem::path& pt, std_filesystem::path& selectedFile);
     UVK::Texture* selectTextures(UVK::Texture* textures, const std_filesystem::path& path);
 }

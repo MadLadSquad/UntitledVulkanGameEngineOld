@@ -117,7 +117,7 @@ void Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, bool&
     ImGui::End();
 }
 
-void Filesystem::createFile(std_filesystem::path &pt)
+void Filesystem::createFile(const std_filesystem::path &pt)
 {
     std::cout << "Created File" << std::endl;
     if (std_filesystem::exists(pt/"NewFile.txt"))
@@ -178,7 +178,7 @@ void Filesystem::createFile(std_filesystem::path &pt)
     }
 }
 
-void Filesystem::createFolder(std_filesystem::path& pt)
+void Filesystem::createFolder(const std_filesystem::path& pt)
 {
     std::cout << "true" << std::endl;
     if (std_filesystem::exists(pt/"NewFolder"))
