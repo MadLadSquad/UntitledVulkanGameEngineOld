@@ -81,6 +81,7 @@ namespace UVK
         friend class GameInstance;
         friend class Assets;
         friend class StateTracker;
+        friend class Utility;
         friend struct MeshComponentRaw;
         friend struct RendererSettings;
     };

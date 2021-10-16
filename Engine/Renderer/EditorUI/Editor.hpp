@@ -23,6 +23,7 @@ namespace UVK
         friend class GLPipeline;
         friend class EditorModules;
         friend class EditorPawn;
+        friend class Utility;
 
         double* getFrameTimeData()
         {
@@ -96,9 +97,9 @@ namespace UVK
 
         EditorModuleManager moduleManager;
 
-        double frameTimeData[2] = { 0.0, 0.0 };
 #ifndef __MINGW32__
         std_filesystem::path pt;
+        double frameTimeData[2] = { 0.0, 0.0 };
 #endif
 
         /**

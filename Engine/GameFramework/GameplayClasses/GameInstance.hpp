@@ -42,6 +42,7 @@ namespace UVK
         friend class EditorPawn;
         friend class StateTracker;
         friend class Renderer;
+        friend class Utility;
 
         Editor* editor = nullptr;
         UVK::ActorManager actorManager;

@@ -119,7 +119,6 @@ void Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, bool&
 
 void Filesystem::createFile(const std_filesystem::path &pt)
 {
-    std::cout << "Created File" << std::endl;
     if (std_filesystem::exists(pt/"NewFile.txt"))
     {
         int i = 0;
@@ -180,7 +179,6 @@ void Filesystem::createFile(const std_filesystem::path &pt)
 
 void Filesystem::createFolder(const std_filesystem::path& pt)
 {
-    std::cout << "true" << std::endl;
     if (std_filesystem::exists(pt/"NewFolder"))
     {
         int i = 0;
@@ -236,15 +234,15 @@ void Filesystem::deleteFile(std_filesystem::path& pt, std_filesystem::path& sele
     if (is_directory(selectedFile))
     {
         // TODO: Add a warning here
-        copy(selectedFile, std_filesystem::path("../Generated/EditorFS/"), std_filesystem::copy_options::recursive);
+        //create_directory(std_filesystem::path("../Generated/EditorFS")/selectedFile.filename());
+        //copy(selectedFile, std_filesystem::path("../Generated/EditorFS")/selectedFile.filename(), std_filesystem::copy_options::recursive);
         remove_all(selectedFile);
 
         UVK::Transaction transaction =
         {
             .undofunc = [](UVK::Actor& act, UVK::CoreComponent& core, UVK::CoreComponent&, UVK::MeshComponentRaw&, UVK::MeshComponent&, bool*)
             {
-                if (!act.valid())
-                    std::cout << "Check" << std::endl;
+                //if (!act.valid())
                 // TODO: Recreate the whole directory structure
                 std_filesystem::create_directory(std_filesystem::path(core.name));
             },

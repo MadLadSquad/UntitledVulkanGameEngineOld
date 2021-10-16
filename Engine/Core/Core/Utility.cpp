@@ -3,6 +3,8 @@
 #include "Utility.hpp"
 #include <Core/Global.hpp>
 #include <glm/glm/gtx/quaternion.hpp>
+#include <GameFramework/GameplayClasses/GameInstance.hpp>
+#include <Renderer/EditorUI/Editor.hpp>
 
 void UVK::Utility::keyToText(std::string& text, const uint16_t& key, bool bLong)
 {

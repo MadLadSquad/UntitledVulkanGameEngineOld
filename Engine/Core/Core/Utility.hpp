@@ -3,12 +3,17 @@
 #pragma once
 #include <iostream>
 #include "Types.hpp"
+#ifdef _WIN32
+
+#else
+    #include <sys/resource.h>
+#endif
 
 namespace UVK
 {
     /**
- * @brief A namespace of useful utility functions
- */
+     * @brief A namespace of useful utility functions
+     */
     class Utility
     {
     public:

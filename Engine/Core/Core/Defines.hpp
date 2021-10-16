@@ -4,6 +4,7 @@
 #include <any>
 #include "Generated/BuildDef.hpp"
 #include <logger/UVKLog.h>
+#include "Utility.hpp"
 
 // This is for MinGW32 because it is retarded
 #ifndef __MINGW32__
