@@ -43,7 +43,7 @@ echo " "
 cd UVKBuildTool/ || exit
 mkdir build || exit # Will store our compiled binary
 cd build || exit
-cmake .. -G "Visual Studio 16 2019" || exit # Generate the UVKBuildTool project files
+cmake .. -G "Visual Studio 16 2019" || cmake .. -G "Unix Makefiles" || exit # Generate the UVKBuildTool project files
 
 # Try to run MSBuild first, if it fails we are either on a non-Windows system or the user doesn't have Visual Studio installed
 MSBuild.exe UVKBuildTool.sln -property:Configuration=Release -property:Platform=x64 -property:maxCpuCount="${cpus}" || make -j "${cpus}" || exit
@@ -65,7 +65,7 @@ echo -e "\x1B[32mCompiling ${prjname} ...\033[0m"
 echo -e "\x1B[32m--------------------------------------------------------------------------------\033[0m"
 echo " "
 
-cmake .. -G "Visual Studio 16 2019" || exit # Generate build files for the project
+cmake .. -G "Visual Studio 16 2019" || cmake .. -G "Unix Makefiles" || exit # Generate build files for the project
 
 # Try to run MSBuild first, if it fails we are either on a non-windows system or the user doesn't have Visual Studio installed
 MSBuild.exe "${prjname}".sln -property:Configuration=Release -property:Platform=x64 -property:maxCpuCount="${cpus}" || make -j "${cpus}" || exit
