@@ -1,5 +1,5 @@
 // Ship.hpp
-// Last update 16/6/2021 by Madman10K
+// Last update 17/10/2021 by Madman10K
 #pragma once
 #include <Generated/BuildDef.hpp>
 

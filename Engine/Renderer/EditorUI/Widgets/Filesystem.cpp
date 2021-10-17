@@ -1,5 +1,5 @@
 // Filesystem.cpp
-// Last update 13/10/2021 by Madman10K
+// Last update 17/10/2021 by Madman10K
 #include <GL/glew.h>
 #include "Filesystem.hpp"
 #ifndef PRODUCTION
@@ -91,6 +91,30 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, bool&
         ImGui::ImageButton((void*)(intptr_t)textures[FS_ICON_FOLDER].getImage(), ImVec2(imageSize, imageSize));
         if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
         {
+            UVK::Transaction transaction =
+            {
+                .undofunc = [](UVK::TransactionPayload& payload)
+                {
+                    *payload.path = std_filesystem::path(payload.coreComponent.name);
+                    *payload.vbChanged = true;
+                },
+                .redofunc = [](UVK::TransactionPayload& payload)
+                {
+                    *payload.path = std_filesystem::path(payload.coreComponent.devName);
+                    *payload.vbChanged = true;
+                },
+                .transactionPayload =
+                {
+                    .coreComponent =
+                    {
+                        .name = pt.string(),
+                        .devName = pt.parent_path().string()
+                    },
+                    .vbChanged = &bNewFolder,
+                    .path = &pt
+                }
+            };
+            UVK::StateTracker::push(transaction);
             pt = pt.parent_path();
             bNewFolder = true;
             return false;
@@ -112,6 +136,31 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, bool&
             {
                 if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
                 {
+                    UVK::Transaction transaction =
+                    {
+                        .undofunc = [](UVK::TransactionPayload& payload)
+                        {
+                            *payload.path = std_filesystem::path(payload.coreComponent.name);
+                            *payload.vbChanged = true;
+                        },
+                        .redofunc = [](UVK::TransactionPayload& payload)
+                        {
+                            *payload.path = std_filesystem::path(payload.coreComponent.devName);
+                            *payload.vbChanged = true;
+                        },
+                        .transactionPayload =
+                        {
+                            .coreComponent =
+                            {
+                                .name = pt.string(),
+                                .id = 330,
+                                .devName = (pt/path.filename()).string()
+                            },
+                            .vbChanged = &bNewFolder,
+                            .path = &pt
+                        }
+                    };
+                    UVK::StateTracker::push(transaction);
                     pt = pt / path.filename();
                     selectedFile.clear();
                     bNewFolder = true;

@@ -1,5 +1,5 @@
 // Editor.hpp
-// Last update 28/9/2021 by Madman10K
+// Last update 17/10/2021 by Madman10K
 #pragma once
 #include <Renderer/Camera/Camera.hpp>
 #include <Renderer/Textures/Texture.hpp>

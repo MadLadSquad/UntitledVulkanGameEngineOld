@@ -1,5 +1,5 @@
 // DetailsPanel.cpp
-// Last update 13/10/2021 by Madman10K
+// Last update 17/10/2021 by Madman10K
 #include "DetailsPanel.hpp"
 #ifndef PRODUCTION
 #include <imgui.h>

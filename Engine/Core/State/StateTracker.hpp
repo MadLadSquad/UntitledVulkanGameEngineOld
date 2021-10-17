@@ -1,5 +1,5 @@
 // StateTracker.hpp
-// Last update 13/10/2021 by Madman10K
+// Last update 17/10/2021 by Madman10K
 #pragma once
 #include <vector>
 #include <cstdint>
@@ -20,6 +20,9 @@ namespace UVK
         MeshComponent meshComponent;
         MeshComponentRaw meshComponentRaw;
         bool bHasComponents[2];
+        bool* bChanged;
+        volatile bool* vbChanged;
+        std_filesystem::path* path;
     };
 
     struct Transaction

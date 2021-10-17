@@ -1,5 +1,5 @@
 // WorldSettings.cpp
-// Last update 1/8/2021 by Madman10K
+// Last update 17/10/2021 by Madman10K
 #include "WorldSettings.hpp"
 
 #ifndef PRODUCTION
