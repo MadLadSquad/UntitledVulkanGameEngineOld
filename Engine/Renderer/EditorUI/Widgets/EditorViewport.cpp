@@ -121,23 +121,26 @@ void EditorViewport::display(UVK::GLFrameBuffer& fb, int& viewportWidth, int& vi
 
                 UVK::Transaction transaction =
                 {
-                    .undofunc = [](UVK::Actor& ent, UVK::CoreComponent& coreComponent, UVK::CoreComponent& deltaCore, UVK::MeshComponentRaw&, UVK::MeshComponent&, bool*)
+                    .undofunc = [](UVK::TransactionPayload& payload)
                     {
-                        auto& corecmp = ent.get<UVK::CoreComponent>();
-                        corecmp.translation = deltaCore.translation;
-                        corecmp.rotation = deltaCore.rotation;
-                        corecmp.scale = deltaCore.scale;
+                        auto& corecmp = payload.affectedEntity.get<UVK::CoreComponent>();
+                        corecmp.translation = payload.deltaCoreComponent.translation;
+                        corecmp.rotation = payload.deltaCoreComponent.rotation;
+                        corecmp.scale = payload.deltaCoreComponent.scale;
                     },
-                    .redofunc = [](UVK::Actor& ent, UVK::CoreComponent& coreComponent, UVK::CoreComponent& deltaCore, UVK::MeshComponentRaw&, UVK::MeshComponent&, bool*)
+                    .redofunc = [](UVK::TransactionPayload& payload)
                     {
-                        auto& corecmp = ent.get<UVK::CoreComponent>();
-                        corecmp.translation = coreComponent.translation;
-                        corecmp.rotation = coreComponent.rotation;
-                        corecmp.scale = coreComponent.scale;
+                        auto& corecmp = payload.affectedEntity.get<UVK::CoreComponent>();
+                        corecmp.translation = payload.coreComponent.translation;
+                        corecmp.rotation = payload.coreComponent.rotation;
+                        corecmp.scale = payload.coreComponent.scale;
                     },
-                    .affectedEntity = entity,
-                    .coreComponent = core,
-                    .deltaCoreComponent = deltaCore
+                    .transactionPayload =
+                    {
+                        .affectedEntity = entity,
+                        .coreComponent = core,
+                        .deltaCoreComponent = deltaCore
+                    }
                 };
                 UVK::StateTracker::push(transaction);
 

@@ -6,15 +6,17 @@
 #include <cpp/imgui_stdlib.h>
 #include <Renderer/EditorUI/Classes/EditorLevel.hpp>
 
-void OpenLevelWidget::display(std::string &openLevel, bool &bShowOpenLevelWidget, double& dr, UVK::FVector4& colour)
+bool OpenLevelWidget::display(std::string &openLevel, bool &bShowOpenLevelWidget, double& dr, UVK::FVector4& colour)
 {
+    bool bReturn = false;
     if (!ImGui::IsPopupOpen("Open Level"))
         ImGui::OpenPopup("Open Level");
     if (ImGui::BeginPopupModal("Open Level", &bShowOpenLevelWidget))
     {
         ImGui::TextWrapped("File location: Content/");
         ImGui::SameLine();
-        ImGui::InputText("##File location", &openLevel);
+        if (ImGui::InputText("##File location", &openLevel) || ImGui::IsItemFocused())
+            bReturn = true;
         ImGui::SameLine();
         ImGui::TextWrapped(".uvklevel");
 
@@ -42,5 +44,6 @@ void OpenLevelWidget::display(std::string &openLevel, bool &bShowOpenLevelWidget
 
         ImGui::EndPopup();
     }
+    return bReturn;
 }
 #endif

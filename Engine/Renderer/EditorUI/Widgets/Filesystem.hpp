@@ -19,11 +19,11 @@ namespace Filesystem
         UVK::Texture texture;
     };
 
-    void display(std_filesystem::path& pt, UVK::Texture* textures, bool& bShow);
+    bool display(std_filesystem::path& pt, UVK::Texture* textures, bool& bShow);
     void createFile(const std_filesystem::path& pt);
     void createFolder(const std_filesystem::path& pt);
     void deleteFile(std_filesystem::path& pt, std_filesystem::path& selectedFile);
-    UVK::Texture* selectTextures(UVK::Texture* textures, const std_filesystem::path& path);
+    UVK::Texture* selectTextures(UVK::Texture* textures, const std_filesystem::path& path, std::vector<UVK::Texture>& previews, volatile bool& bPreviews, const int& currentIndex, volatile bool& bLoad);
 }
 #endif
 #endif

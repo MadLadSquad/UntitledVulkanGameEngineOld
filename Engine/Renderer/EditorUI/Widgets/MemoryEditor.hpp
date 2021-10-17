@@ -8,6 +8,6 @@
  */
 namespace ImGuiMemoryEditor
 {
-    void display(bool& bShow);
+    bool display(bool& bShow);
 }
 #endif

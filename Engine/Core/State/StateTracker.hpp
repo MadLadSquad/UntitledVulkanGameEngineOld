@@ -12,10 +12,8 @@ namespace UVK
 {
     class Actor;
 
-    struct Transaction
+    struct TransactionPayload
     {
-        std::function<void(UVK::Actor& ent, CoreComponent&, CoreComponent&, MeshComponentRaw&, MeshComponent&, bool*)> undofunc; // Called on undo
-        std::function<void(UVK::Actor& ent, CoreComponent&, CoreComponent&, MeshComponentRaw&, MeshComponent&, bool*)> redofunc; // Called on redo
         Actor affectedEntity; // The entity that is going to be affected, can be empty
         CoreComponent coreComponent;
         CoreComponent deltaCoreComponent;
@@ -24,6 +22,12 @@ namespace UVK
         bool bHasComponents[2];
     };
 
+    struct Transaction
+    {
+        std::function<void(TransactionPayload&)> undofunc; // Called on undo
+        std::function<void(TransactionPayload&)> redofunc; // Called on redo
+        TransactionPayload transactionPayload;
+    };
     /**
      * @brief Tracks state changes for the editor and actors. Handles things like Undo/Redo, stores states
      * of components and much more

@@ -29,17 +29,20 @@ namespace DetailsPanel
 
             UVK::Transaction transaction =
             {
-                .undofunc = [](UVK::Actor& en, UVK::CoreComponent&, UVK::CoreComponent&, UVK::MeshComponentRaw&, UVK::MeshComponent&, bool*)
+                .undofunc = [](UVK::TransactionPayload& payload)
                 {
-                    if (en.has<T>())
-                        en.remove<T>();
+                    if (payload.affectedEntity.has<T>())
+                        payload.affectedEntity.remove<T>();
                 },
-                .redofunc = [](UVK::Actor& en, UVK::CoreComponent&, UVK::CoreComponent&, UVK::MeshComponentRaw&, UVK::MeshComponent&, bool*)
+                .redofunc = [](UVK::TransactionPayload& payload)
                 {
-                    if (en.has<T>())
-                        en.add<T>();
+                    if (payload.affectedEntity.has<T>())
+                        payload.affectedEntity.add<T>();
                 },
-                .affectedEntity = ent
+                .transactionPayload =
+                {
+                    .affectedEntity = ent
+                }
             };
 
             UVK::StateTracker::push(transaction);
@@ -55,23 +58,26 @@ namespace DetailsPanel
 
             UVK::Transaction transaction =
             {
-                .undofunc = [](UVK::Actor& en, UVK::CoreComponent&, UVK::CoreComponent&, UVK::MeshComponentRaw&, UVK::MeshComponent&, bool*)
+                .undofunc = [](UVK::TransactionPayload& payload)
                 {
-                    if (en.has<T>())
-                        en.add<T>();
+                    if (payload.affectedEntity.has<T>())
+                        payload.affectedEntity.add<T>();
                 },
-                .redofunc = [](UVK::Actor& en, UVK::CoreComponent&, UVK::CoreComponent&, UVK::MeshComponentRaw&, UVK::MeshComponent&, bool*)
+                .redofunc = [](UVK::TransactionPayload& payload)
                 {
-                    if (en.has<T>())
-                        en.remove<T>();
+                    if (payload.affectedEntity.has<T>())
+                        payload.affectedEntity.remove<T>();
                 },
-                .affectedEntity = ent
+                .transactionPayload =
+                {
+                    .affectedEntity = ent
+                }
             };
 
             UVK::StateTracker::push(transaction);
         }
     }
 
-    void display(UVK::Actor& ent, UVK::Level* lvl, bool& bShow, const UVK::EditorModuleManager& modules, bool& destroy);
+    bool display(UVK::Actor& ent, UVK::Level* lvl, bool& bShow, const UVK::EditorModuleManager& modules, bool& destroy);
 }
 #endif

@@ -5,24 +5,25 @@
 #include "imgui.h"
 #include <future>
 
-void Shipping::display(bool& bShow)
+bool Shipping::display(bool& bShow)
 {
+    bool bReturn = false;
     if (!ImGui::IsPopupOpen("Shipping"))
         ImGui::OpenPopup("Shipping");
 
     if (ImGui::BeginPopupModal("Shipping", &bShow))
     {
         ImGui::TextWrapped("Compile your program for testing or production!");
-        ImGui::Separator();
-        ImGui::TextWrapped("Warning: This feature is only available on Unix systems");
-        ImGui::TextWrapped("A guide for Windows is available in the Wiki. Link is in the 'Help' window under the 'More' tab");
+        ImGui::SameLine();
+        ImGui::ShowDemoWindow();
         ImGui::Separator();
 
         static int jobs = 1;
         static bool testing = false;
         ImGui::TextWrapped("Compile jobs");
         ImGui::SameLine();
-        ImGui::InputInt("##Compile jobs", &jobs);
+        if (ImGui::InputScalar("##Compile jobs", ImGuiDataType_U32, &jobs) || ImGui::IsItemFocused())
+            bReturn = true;
 
         ImGui::TextWrapped("Testing?");
         ImGui::SameLine();
@@ -61,5 +62,6 @@ void Shipping::display(bool& bShow)
         }
         ImGui::EndPopup();
     }
+    return bReturn;
 }
 #endif

@@ -9,6 +9,6 @@
 namespace OpenLevelWidget
 {
     // Opens a level
-    void display(std::string& openLevel, bool& bShowOpenLevelWidget, double& dr, UVK::FVector4& colour);
+    bool display(std::string& openLevel, bool& bShowOpenLevelWidget, double& dr, UVK::FVector4& colour);
 }
 #endif

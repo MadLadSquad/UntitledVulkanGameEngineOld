@@ -10,6 +10,6 @@ namespace UVK
 
 namespace Tools
 {
-    void display(const UVK::EditorModuleManager& module, bool& bShow);
+    bool display(const UVK::EditorModuleManager& module, bool& bShow);
 }
 #endif

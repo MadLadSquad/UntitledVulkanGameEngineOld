@@ -5,8 +5,9 @@
 #include <Renderer/EditorUI/Modules/EditorModule.hpp>
 #include <imgui.h>
 
-void Tools::display(const UVK::EditorModuleManager& module, bool& bShow)
+bool Tools::display(const UVK::EditorModuleManager& module, bool& bShow)
 {
+    bool bReturn = false;
     static UVK::CurrentToolType currentToolType = UVK::CURRENT_TOOL_TYPE_USEFUL_OBJECTS;
 
     ImGui::Begin("Tools", &bShow);
@@ -34,8 +35,9 @@ void Tools::display(const UVK::EditorModuleManager& module, bool& bShow)
     default:
         break;
     }
-    module.renderToolsModule(currentToolType);
+    module.renderToolsModule(currentToolType, bReturn);
 
     ImGui::End();
+    return bReturn;
 }
 #endif

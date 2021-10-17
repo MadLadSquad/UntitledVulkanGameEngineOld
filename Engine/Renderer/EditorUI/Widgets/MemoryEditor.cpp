@@ -5,7 +5,7 @@
 #include <imgui.h>
 #include <imguiex/memory_editor/imgui_memory_editor.h>
 
-void ImGuiMemoryEditor::display(bool& bShow)
+bool ImGuiMemoryEditor::display(bool& bShow)
 {
     ImGui::Begin("Memory Editor", &bShow);
     int hello = 50;
@@ -15,5 +15,6 @@ void ImGuiMemoryEditor::display(bool& bShow)
     mem_edit.DrawContents(&hello, sizeof(int));
 
     ImGui::End();
+    return false;
 }
 #endif

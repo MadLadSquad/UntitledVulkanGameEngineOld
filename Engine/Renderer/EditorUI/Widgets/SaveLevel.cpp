@@ -4,8 +4,9 @@
 #ifndef PRODUCTION
 #include "../../GameFramework/GameplayClasses/Level/Level.hpp"
 
-void SaveLevel::display(bool &bOpen, std::string& location, UVK::FVector4& colour)
+bool SaveLevel::display(bool &bOpen, std::string& location, UVK::FVector4& colour)
 {
+    bool bReturn = false;
     if (!ImGui::IsPopupOpen("Save level"))
         ImGui::OpenPopup("Save level");
 
@@ -13,7 +14,8 @@ void SaveLevel::display(bool &bOpen, std::string& location, UVK::FVector4& colou
     {
         ImGui::TextWrapped("Location: Content/");
         ImGui::SameLine();
-        ImGui::InputText("##location##inputlocationsave", &location);
+        if (ImGui::InputText("##location##inputlocationsave", &location) || ImGui::IsItemFocused())
+            bReturn = true;
         ImGui::SameLine();
         ImGui::TextWrapped(".uvklevel");
 
@@ -33,5 +35,6 @@ void SaveLevel::display(bool &bOpen, std::string& location, UVK::FVector4& colou
 
         ImGui::EndPopup();
     }
+    return bReturn;
 }
 #endif

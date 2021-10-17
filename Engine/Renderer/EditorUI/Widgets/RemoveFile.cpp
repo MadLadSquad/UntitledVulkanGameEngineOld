@@ -6,9 +6,9 @@
 #include <imgui.h>
 #include <cpp/imgui_stdlib.h>
 
-
-void RemoveFile::display(bool& bShow)
+bool RemoveFile::display(bool& bShow)
 {
+    bool bReturn = false;
     if (!ImGui::IsPopupOpen("Remove File"))
         ImGui::OpenPopup("Remove File");
 
@@ -23,7 +23,8 @@ void RemoveFile::display(bool& bShow)
 
         ImGui::TextWrapped("File Location: Source/");
         ImGui::SameLine();
-        ImGui::InputText("##File to delete", &in);
+        if (ImGui::InputText("##File to delete", &in) || ImGui::IsItemFocused())
+            bReturn = true;
 
         if (ImGui::Button("Close##delete"))
         {
@@ -90,5 +91,6 @@ void RemoveFile::display(bool& bShow)
         }
         ImGui::EndPopup();
     }
+    return bReturn;
 }
 #endif

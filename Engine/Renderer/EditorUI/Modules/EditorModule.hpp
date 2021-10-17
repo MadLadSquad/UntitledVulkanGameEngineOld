@@ -18,7 +18,7 @@ namespace UVK
     struct IndependentModuleData
     {
         bool bEnabled;
-        std::function<void(const char*, bool&)> func;
+        std::function<void(const char*, bool&, bool&)> func;
         const char* name;
     };
 
@@ -29,24 +29,24 @@ namespace UVK
         EditorModuleManager(const EditorModuleManager& mod) = delete;
         void operator=(EditorModuleManager const&) = delete;
 
-        void addDetailsPanelModule(const std::function<void(Actor* actor)>& func);
-        void addToolsModule(const std::function<void(const CurrentToolType&)>& func);
+        void addDetailsPanelModule(const std::function<void(Actor* actor, bool&)>& func);
+        void addToolsModule(const std::function<void(const CurrentToolType&, bool&)>& func);
         void addIndependentModule(const UVK::IndependentModuleData& func);
-        void addTopBar(const std::function<void(void)>& func);
+        void addTopBar(const std::function<void(bool&)>& func);
 
-        void renderDetailsPanelModules(Actor* actor) const;
-        void renderToolsModule(const CurrentToolType& type) const;
-        void renderIndependentModule();
-        void renderTopBar() const;
+        void renderDetailsPanelModules(Actor* actor, bool& bReturn) const;
+        void renderToolsModule(const CurrentToolType& type, bool& bReturn) const;
+        void renderIndependentModule(bool& bReturn);
+        void renderTopBar(bool& bReturn) const;
 
-        [[nodiscard]] const std::vector<std::function<void(const UVK::CurrentToolType&)>>& getToolsModules() const;
-        [[nodiscard]] const std::vector<std::function<void(Actor* actor)>>& getDetailsPanelModules() const;
+        [[nodiscard]] const std::vector<std::function<void(const UVK::CurrentToolType&, bool&)>>& getToolsModules() const;
+        [[nodiscard]] const std::vector<std::function<void(Actor* actor, bool&)>>& getDetailsPanelModules() const;
         std::vector<IndependentModuleData>& getIndependentModules();
-        [[nodiscard]] const std::vector<std::function<void()>>& getTopBarModules() const;
+        [[nodiscard]] const std::vector<std::function<void(bool&)>>& getTopBarModules() const;
     private:
-        std::vector<std::function<void(Actor* actor)>> detailsPanelModules;
-        std::vector<std::function<void(const CurrentToolType&)>> toolsModules;
+        std::vector<std::function<void(Actor* actor, bool&)>> detailsPanelModules;
+        std::vector<std::function<void(const CurrentToolType&, bool&)>> toolsModules;
         std::vector<IndependentModuleData> independentModules;
-        std::vector<std::function<void(void)>> topBarModules;
+        std::vector<std::function<void(bool&)>> topBarModules;
     };
 }

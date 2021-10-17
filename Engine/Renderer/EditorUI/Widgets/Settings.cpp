@@ -10,8 +10,9 @@
 #include <Renderer/Renderer.hpp>
 #include <Core/Utility.hpp>
 
-void Settings::displayWindow(bool& bOpen)
+bool Settings::displayWindow(bool& bOpen)
 {
+    bool bReturn = false;
     if (!ImGui::IsPopupOpen("Window Settings"))
         ImGui::OpenPopup("Window Settings");
     if (ImGui::BeginPopupModal("Window Settings", &bOpen))
@@ -26,15 +27,18 @@ void Settings::displayWindow(bool& bOpen)
 
         ImGui::TextWrapped("Window Size");
         ImGui::SameLine();
-        ImGui::InputInt2("##Window Size", arr);
+        if (ImGui::InputScalarN("##Window Size", ImGuiDataType_S32, arr, 2) || ImGui::IsItemFocused())
+            bReturn = true;
 
         ImGui::TextWrapped("Window Name");
         ImGui::SameLine();
-        ImGui::InputText("##Window Name", &UVK::Window::name());
+        if (ImGui::InputText("##Window Name", &UVK::Window::name()) || ImGui::IsItemFocused())
+            bReturn = true;
 
         ImGui::TextWrapped("Window Icon Location");
         ImGui::SameLine();
-        ImGui::InputText("##Window Icon location", &UVK::Window::iconLocation());
+        if (ImGui::InputText("##Window Icon location", &UVK::Window::iconLocation()) || ImGui::IsItemFocused())
+            bReturn = true;
 
         UVK::Window::windowSize().x = (float)arr[0];
         UVK::Window::windowSize().y = (float)arr[1];
@@ -50,10 +54,12 @@ void Settings::displayWindow(bool& bOpen)
         }
         ImGui::EndPopup();
     }
+    return bReturn;
 }
 
-void Settings::displayRenderer(bool& bOpen)
+bool Settings::displayRenderer(bool& bOpen)
 {
+    bool bReturn = false;
     if (!ImGui::IsPopupOpen("Renderer Settings"))
         ImGui::OpenPopup("Renderer Settings");
     if (ImGui::BeginPopupModal("Renderer Settings", &bOpen))
@@ -75,7 +81,8 @@ void Settings::displayRenderer(bool& bOpen)
 
         ImGui::TextWrapped("Theme Location");
         ImGui::SameLine();
-        ImGui::InputText("##Theme Location", &UVK::SettingsManager::getRendererSettings().themeLoc);
+        if (ImGui::InputText("##Theme Location", &UVK::SettingsManager::getRendererSettings().themeLoc) || ImGui::IsItemFocused())
+            bReturn = true;
 
         ImGui::TextWrapped("V-Sync");
         ImGui::SameLine();
@@ -99,10 +106,12 @@ void Settings::displayRenderer(bool& bOpen)
         }
         ImGui::EndPopup();
     }
+    return bReturn;
 }
 
-void Settings::displayKeybindEditor(bool& bOpen)
+bool Settings::displayKeybindEditor(bool& bOpen)
 {
+    bool bReturn = false;
     if (!ImGui::IsPopupOpen("Editor Keybinds"))
         ImGui::OpenPopup("Editor Keybinds");
     if (ImGui::BeginPopupModal("Editor Keybinds", &bOpen))
@@ -116,8 +125,8 @@ void Settings::displayKeybindEditor(bool& bOpen)
 
                 ImGui::TextWrapped("Name");
                 ImGui::SameLine();
-                ImGui::InputText(static_cast<std::string>("##Name##" + a.name + std::to_string(a.keyCode)).c_str(), &a.name);
-
+                if (ImGui::InputText(static_cast<std::string>("##Name##" + a.name + std::to_string(a.keyCode)).c_str(), &a.name) || ImGui::IsItemFocused())
+                    bReturn = true;
                 ImGui::TextWrapped("Keycode");
                 ImGui::SameLine();
                 showKeySelect(static_cast<std::string>("##Name##" + a.name + std::to_string(a.keyCode) + std::to_string(i)).c_str(), a.keyCode);
@@ -137,10 +146,12 @@ void Settings::displayKeybindEditor(bool& bOpen)
         }
         ImGui::EndPopup();
     }
+    return bReturn;
 }
 
-void Settings::displayKeybindGame(bool& bOpen)
+bool Settings::displayKeybindGame(bool& bOpen)
 {
+    bool bReturn = false;
     if (!ImGui::IsPopupOpen("Game Keybinds"))
         ImGui::OpenPopup("Game Keybinds");
     if (ImGui::BeginPopupModal("Game Keybinds", &bOpen, ImGuiWindowFlags_MenuBar))
@@ -178,7 +189,8 @@ void Settings::displayKeybindGame(bool& bOpen)
 
                     ImGui::TextWrapped("Name");
                     ImGui::SameLine();
-                    ImGui::InputText(static_cast<std::string>("##Name##" + UVK::Input::getActions()[i].name + std::to_string(UVK::Input::getActions()[i].keyCode)).c_str(), &UVK::Input::getActions()[i].name);
+                    if (ImGui::InputText(static_cast<std::string>("##Name##" + UVK::Input::getActions()[i].name + std::to_string(UVK::Input::getActions()[i].keyCode)).c_str(), &UVK::Input::getActions()[i].name) || ImGui::IsItemFocused())
+                        bReturn = true;
 
                     ImGui::TextWrapped("Keycode");
                     ImGui::SameLine();
@@ -200,10 +212,12 @@ void Settings::displayKeybindGame(bool& bOpen)
         }
         ImGui::EndPopup();
     }
+    return bReturn;
 }
 
-void Settings::displayThemeEditor(bool& bOpen)
+bool Settings::displayThemeEditor(bool& bOpen)
 {
+    bool bReturn = false;
     if (!ImGui::IsPopupOpen("Theme Editor"))
         ImGui::OpenPopup("Theme Editor");
     if (ImGui::BeginPopupModal("Theme Editor", &bOpen))
@@ -398,15 +412,18 @@ void Settings::displayThemeEditor(bool& bOpen)
 
         ImGui::TextWrapped("Font Location: Content/");
         ImGui::SameLine();
-        ImGui::InputText("##Font Location", &fontLoc);
+        if (ImGui::InputText("##Font Location", &fontLoc) || ImGui::IsItemFocused())
+            bReturn = true;
 
         ImGui::TextWrapped("Font Size");
         ImGui::SameLine();
-        ImGui::InputInt("##Font Size", &fontSize);
+        if (ImGui::InputScalar("##Font Size", ImGuiDataType_U16, &fontSize) || ImGui::IsItemFocused())
+            bReturn = true;
 
         ImGui::TextWrapped("Output Location: Config/Settings/");
         ImGui::SameLine();
-        ImGui::InputText("##Output Location", &outName);
+        if (ImGui::InputText("##Output Location", &outName) || ImGui::IsItemFocused())
+            bReturn = true;
         ImGui::SameLine();
         ImGui::TextWrapped(".uvktheme");
 
@@ -423,29 +440,35 @@ void Settings::displayThemeEditor(bool& bOpen)
         }
         ImGui::EndPopup();
     }
+    return bReturn;
 }
 
-void Settings::displayProjectSettings(std::string& name, std::string& ver, std::string& enginever, std::string& startupLevel, bool& bOpen)
+bool Settings::displayProjectSettings(std::string& name, std::string& ver, std::string& enginever, std::string& startupLevel, bool& bOpen)
 {
+    bool bReturn = false;
     if (!ImGui::IsPopupOpen("Project Settings"))
         ImGui::OpenPopup("Project Settings");
     if (ImGui::BeginPopupModal("Project Settings", &bOpen))
     {
         ImGui::TextWrapped("Project Name");
         ImGui::SameLine();
-        ImGui::InputText("##Project Name", &name);
+        if (ImGui::InputText("##Project Name", &name) || ImGui::IsItemFocused())
+            bReturn = true;
 
         ImGui::TextWrapped("Project Version");
         ImGui::SameLine();
-        ImGui::InputText("##Project Version", &ver);
+        if (ImGui::InputText("##Project Version", &ver) || ImGui::IsItemFocused())
+            bReturn = true;
 
         ImGui::TextWrapped("Engine Version");
         ImGui::SameLine();
-        ImGui::InputText("##Engine Version", &enginever);
+        if (ImGui::InputText("##Engine Version", &enginever) || ImGui::IsItemFocused())
+            bReturn = true;
 
         ImGui::TextWrapped("Startup Level Name");
         ImGui::SameLine();
-        ImGui::InputText("##Startup Level Name", &startupLevel);
+        if (ImGui::InputText("##Startup Level Name", &startupLevel) || ImGui::IsItemFocused())
+            bReturn = true;
         ImGui::SameLine();
         ImGui::TextWrapped(".uvklevel");
 
@@ -481,6 +504,7 @@ void Settings::displayProjectSettings(std::string& name, std::string& ver, std::
         }
         ImGui::EndPopup();
     }
+    return bReturn;
 }
 
 void Settings::showKeySelect(const char* name, uint16_t& key)

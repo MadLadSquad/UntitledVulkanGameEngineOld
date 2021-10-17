@@ -14,6 +14,6 @@
  */
 namespace WorldSettings
 {
-    void display(UVK::FVector4& colour, UVK::FVector4& ambientLight, std::string& name, bool& bShow);
+    bool display(UVK::FVector4& colour, UVK::FVector4& ambientLight, std::string& name, bool& bShow);
 }
 #endif

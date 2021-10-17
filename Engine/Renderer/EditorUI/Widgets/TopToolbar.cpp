@@ -5,8 +5,9 @@
 #include <imgui.h>
 #include <Renderer/EditorUI/Modules/EditorModule.hpp>
 
-void TopToolbar::display(UVK::Texture& play, const std::string& projectName, const UVK::EditorModuleManager& modules, bool& bShow)
+bool TopToolbar::display(UVK::Texture& play, const std::string& projectName, const UVK::EditorModuleManager& modules, bool& bShow)
 {
+    bool bReturn = false;
     int8_t lnt = 0;
 
     ImGui::Begin("Toolbar", &bShow);
@@ -20,7 +21,7 @@ void TopToolbar::display(UVK::Texture& play, const std::string& projectName, con
 #endif
     }
 
-    modules.renderTopBar();
+    modules.renderTopBar(bReturn);
 
     if (lnt)
     {
@@ -28,5 +29,6 @@ void TopToolbar::display(UVK::Texture& play, const std::string& projectName, con
     }
 
     ImGui::End();
+    return bReturn;
 }
 #endif

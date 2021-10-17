@@ -31,7 +31,7 @@ void UVK::StateTracker::pushAction(const UVK::Transaction& transaction)
 
         for (uint8_t i = 0; i < 5; i++)
         {
-            transactions[i].affectedEntity.destroy();
+            transactions[i].transactionPayload.affectedEntity.destroy();
         }
         transactions.erase(transactions.begin(), transactions.begin() + 4);
     }
@@ -47,7 +47,7 @@ void UVK::StateTracker::undo()
     if (!undoStack.empty())
     {
         redoStack.emplace_back(undoStack.back());
-        undoStack.back()->undofunc(redoStack.back()->affectedEntity, redoStack.back()->coreComponent, redoStack.back()->deltaCoreComponent, redoStack.back()->meshComponentRaw, redoStack.back()->meshComponent, redoStack.back()->bHasComponents);
+        undoStack.back()->undofunc(redoStack.back()->transactionPayload);
 
         undoStack.pop_back();
     }
@@ -58,7 +58,7 @@ void UVK::StateTracker::redo()
     if (!redoStack.empty())
     {
         undoStack.emplace_back(redoStack.back());
-        redoStack.back()->redofunc(redoStack.back()->affectedEntity, redoStack.back()->coreComponent, redoStack.back()->deltaCoreComponent, redoStack.back()->meshComponentRaw, redoStack.back()->meshComponent, redoStack.back()->bHasComponents);
+        redoStack.back()->redofunc(redoStack.back()->transactionPayload);
 
         redoStack.pop_back();
     }

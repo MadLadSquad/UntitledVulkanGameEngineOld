@@ -5,10 +5,12 @@
 #include <imgui.h>
 #include <cpp/imgui_stdlib.h>
 
-void TerminalEmulator::display(std::string& terminalCommand, bool& bFinalisedCommand, bool& bShow)
+bool TerminalEmulator::display(std::string& terminalCommand, bool& bFinalisedCommand, bool& bShow)
 {
+    bool bReturn = false;
     ImGui::Begin("Terminal Emulator", &bShow);
-    ImGui::InputText("TTY command", &terminalCommand);
+    if (ImGui::InputText("TTY command", &terminalCommand) || ImGui::IsItemFocused())
+        bReturn = true;
     ImGui::SameLine();
     if (ImGui::Button("Send##TTY"))
     {
@@ -20,5 +22,6 @@ void TerminalEmulator::display(std::string& terminalCommand, bool& bFinalisedCom
     //ImGui::Text("%s", a.c_str());
 
     ImGui::End();
+    return bReturn;
 }
 #endif

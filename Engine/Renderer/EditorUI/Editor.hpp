@@ -80,6 +80,7 @@ namespace UVK
         bool bShowGenerateWarning = false;
         bool bShowDeveloperConsole = true;
         bool bEditorViewportFocused = false;
+        bool bEditorUsingTextbox = false;
 
         void displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& camera, UVK::Level* lvl);
 

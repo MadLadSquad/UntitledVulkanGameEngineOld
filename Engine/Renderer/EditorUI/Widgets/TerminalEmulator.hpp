@@ -10,6 +10,6 @@
  */
 namespace TerminalEmulator
 {
-    void display(std::string& terminalCommand, bool& bFinalisedCommand, bool& bShow);
+    bool display(std::string& terminalCommand, bool& bFinalisedCommand, bool& bShow);
 }
 #endif

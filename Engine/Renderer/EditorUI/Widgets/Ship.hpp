@@ -6,6 +6,6 @@
 #ifndef PRODUCTION
 namespace Shipping
 {
-    void display(bool& bShow);
+    bool display(bool& bShow);
 }
 #endif

@@ -145,14 +145,10 @@ void UVK::Editor::initEditor()
     ImGuiStyle& style = ImGui::GetStyle();
     EditorTheme theme;
     if (!global.rendererSettings.themeLoc.empty())
-    {
         theme = EditorTheme(colTheme);
-    }
 
     if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-    {
         style.Colors[ImGuiCol_WindowBg].w = 1.0f;
-    }
 
     if (!global.rendererSettings.themeLoc.empty())
     {
@@ -211,9 +207,7 @@ void UVK::Editor::runEditor(FVector4& colour, GLFrameBuffer& fb, Camera& camera,
         dockspace_flags |= ImGuiDockNodeFlags_PassthruCentralNode;
     }
     else
-    {
         dockspace_flags &= ~ImGuiDockNodeFlags_PassthruCentralNode;
-    }
 
 
     if (dockspace_flags & ImGuiDockNodeFlags_PassthruCentralNode)
@@ -247,9 +241,7 @@ void UVK::Editor::runEditor(FVector4& colour, GLFrameBuffer& fb, Camera& camera,
         //ImGui_ImplVulkan_RenderDrawData(ImGui::GetDrawData(), );
     }
     else
-    {
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-    }
 
     if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
     {
@@ -285,11 +277,11 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
     {
         bShowOpenLevelWidget = true;
     }
-    else if ((Input::getAction("editor-bind-modifier") == Keys::KeyPressed || Input::getAction("editor-bind-modifier") == Keys::KeyRepeat) && Input::getAction("editor-undo") == Keys::KeyPressed)
+    else if (((Input::getAction("editor-bind-modifier") == Keys::KeyPressed || Input::getAction("editor-bind-modifier") == Keys::KeyRepeat) && Input::getAction("editor-undo") == Keys::KeyPressed) && !bEditorUsingTextbox)
     {
         global.instance->stateTracker.undo();
     }
-    else if ((Input::getAction("editor-bind-modifier") == Keys::KeyPressed || Input::getAction("editor-bind-modifier") == Keys::KeyRepeat) && Input::getAction("editor-redo") == Keys::KeyPressed)
+    else if (((Input::getAction("editor-bind-modifier") == Keys::KeyPressed || Input::getAction("editor-bind-modifier") == Keys::KeyRepeat) && Input::getAction("editor-redo") == Keys::KeyPressed) && !bEditorUsingTextbox)
     {
         global.instance->stateTracker.redo();
     }
@@ -442,49 +434,31 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
     ImGui::End();
 
     if (bShowDirectSaveWarning)
-    {
         Warnings::displaySaveWarning(bShowDirectSaveWarning);
-    }
 
     if (bShowExitWarning)
-    {
         Warnings::displayExitWarning(bShowExitWarning);
-    }
 
     if (bShowGenerateWarning)
-    {
         Warnings::displayGenerateWarning(bShowGenerateWarning);
-    }
 
     if (bShowSaveWarning)
-    {
         NewLevel::display(bShowSaveWarning);
-    }
 
     if (bShowSaveLevelWidget)
-    {
-        SaveLevel::display(bShowSaveLevelWidget, location, colour);
-    }
+        bEditorUsingTextbox = SaveLevel::display(bShowSaveLevelWidget, location, colour) ? true : bEditorUsingTextbox;
 
     if (bShowOpenLevelWidget)
-    {
-        OpenLevelWidget::display(openLevel, bShowOpenLevelWidget, frameTimeData[1], colour);
-    }
+        bEditorUsingTextbox = OpenLevelWidget::display(openLevel, bShowOpenLevelWidget, frameTimeData[1], colour) ? true : bEditorUsingTextbox;
 
     if (bShowCreateFile1)
-    {
-        CreateFile::display(fileOutLocation, bShowCreateFile1);
-    }
+        bEditorUsingTextbox = CreateFile::display(fileOutLocation, bShowCreateFile1) ? true : bEditorUsingTextbox;
 
     if (bShowDetailsPanel)
-    {
-        DetailsPanel::display(selectedEntity, lvl, bShowDetailsPanel, moduleManager, bDestroyEntity);
-    }
+        bEditorUsingTextbox = DetailsPanel::display(selectedEntity, lvl, bShowDetailsPanel, moduleManager, bDestroyEntity) ? true : bEditorUsingTextbox;
 
     if (bShowSceneHierarchy)
-    {
         SceneHierarchy::display(selectedEntity, entAppend, entNum, bShowSceneHierarchy);
-    }
 
     if (bShowViewport)
     {
@@ -495,99 +469,67 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
 
 #ifndef __MINGW32__
     if (bShowFilesystem)
-    {
-        Filesystem::display(pt, fileTextures, bShowFilesystem);
-    }
+        bEditorUsingTextbox = Filesystem::display(pt, fileTextures, bShowFilesystem) ? true : bEditorUsingTextbox;
 #endif
 
     if (bShowToolbar)
     {
         style.WindowPadding = ImVec2(0.0f, 0.0f);
-        TopToolbar::display(play, projectName, moduleManager,bShowToolbar);
+        bEditorUsingTextbox = TopToolbar::display(play, projectName, moduleManager,bShowToolbar) ? true : bEditorUsingTextbox;
         style.WindowPadding = ImVec2(8.0f, 8.0f);
     }
 
     if (bShowTools)
-    {
-        Tools::display(moduleManager, bShowTools);
-    }
+        bEditorUsingTextbox = Tools::display(moduleManager, bShowTools) ? true : bEditorUsingTextbox;
 
     if (bShowTerminalEmulator)
-    {
-        TerminalEmulator::display(terminalCommand, bFinalisedCommand, bShowTerminalEmulator);
-    }
+        bEditorUsingTextbox = TerminalEmulator::display(terminalCommand, bFinalisedCommand, bShowTerminalEmulator) ? true : bEditorUsingTextbox;
 
     if (bShowMemoryEditor)
-    {
         ImGuiMemoryEditor::display(bShowMemoryEditor);
-    }
 
     if (bShowStatistics)
-    {
         Statistics::display(frameTimeData, bShowStatistics);
-    }
 
     if (bShowWorldSettings)
-    {
-        WorldSettings::display(colour, global.ambientLight, global.levelName, bShowWorldSettings);
-    }
+        bEditorUsingTextbox = WorldSettings::display(colour, global.ambientLight, global.levelName, bShowWorldSettings) ? true : bEditorUsingTextbox;
 
     if (bShowAboutUs)
-    {
         About::display(engineVersion, projectName, projectVersion, logoTxt, bShowAboutUs);
-    }
 
     if (bShowHelp)
-    {
         Help::display(bShowHelp);
-    }
 
     if (bShowRemoveFile)
-    {
-        RemoveFile::display(bShowRemoveFile);
-    }
+        bEditorUsingTextbox = RemoveFile::display(bShowRemoveFile) ? true : bEditorUsingTextbox;
 
     if (bShowShip)
-    {
-        Shipping::display(bShowShip);
-    }
+        bEditorUsingTextbox = Shipping::display(bShowShip) ? true : bEditorUsingTextbox;
 
     if (bShowWindowSettings)
-    {
-        Settings::displayWindow(bShowWindowSettings);
-    }
+        bEditorUsingTextbox = Settings::displayWindow(bShowWindowSettings) ? true : bEditorUsingTextbox;
 
     if (bShowRendererSettings)
-    {
-        Settings::displayRenderer(bShowRendererSettings);
-    }
+        bEditorUsingTextbox = Settings::displayRenderer(bShowRendererSettings) ? true : bEditorUsingTextbox;
 
     if (bShowKeybindSettings)
-    {
-        Settings::displayKeybindEditor(bShowKeybindSettings);
-    }
+        bEditorUsingTextbox = Settings::displayKeybindEditor(bShowKeybindSettings) ? true : bEditorUsingTextbox;
 
     if (bShowGameKeybinds)
-    {
-        Settings::displayKeybindGame(bShowGameKeybinds);
-    }
+        bEditorUsingTextbox = Settings::displayKeybindGame(bShowGameKeybinds) ? true : bEditorUsingTextbox;
 
     if (bShowThemeSettings)
-    {
-        Settings::displayThemeEditor(bShowThemeSettings);
-    }
+        bEditorUsingTextbox = Settings::displayThemeEditor(bShowThemeSettings) ? true : bEditorUsingTextbox;
 
     if (bShowGameSettings)
-    {
-        Settings::displayProjectSettings(projectName, projectVersion, engineVersion, startupLevel, bShowGameSettings);
-    }
+        bEditorUsingTextbox = Settings::displayProjectSettings(projectName, projectVersion, engineVersion, startupLevel, bShowGameSettings) ? true : bEditorUsingTextbox;
 
     if (bShowDeveloperConsole)
-    {
         loggerwidget.displayFull(bShowDeveloperConsole);
-    }
 
-    moduleManager.renderIndependentModule();
+    bool bReturn = false;
+    moduleManager.renderIndependentModule(bReturn);
+    bEditorUsingTextbox = bReturn ? true : bEditorUsingTextbox;
 #endif
 }
 

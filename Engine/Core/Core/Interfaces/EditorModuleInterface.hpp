@@ -15,9 +15,9 @@ namespace UVK
         EditorModules(const EditorModules&) = delete;
         void operator=(EditorModules const&) = delete;
 
-        static void addDetailsPanelModule(const std::function<void(Actor* actor)>& func);
-        static void addToolsModule(const std::function<void(const UVK::CurrentToolType&)>& func);
+        static void addDetailsPanelModule(const std::function<void(Actor* actor, bool&)>& func);
+        static void addToolsModule(const std::function<void(const UVK::CurrentToolType&, bool&)>& func);
         static void addIndependentModule(const UVK::IndependentModuleData& func);
-        static void addTopBar(const std::function<void(void)>& func);
+        static void addTopBar(const std::function<void(bool&)>& func);
     };
 }

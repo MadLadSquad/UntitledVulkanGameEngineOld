@@ -5,8 +5,9 @@
 #include <cpp/imgui_stdlib.h>
 #include <Core.hpp>
 
-void CreateFile::display(std::string& fileOutLocation, bool& bShowCreateFile1)
+bool CreateFile::display(std::string& fileOutLocation, bool& bShowCreateFile1)
 {
+    bool bReturn = false;
     if (!ImGui::IsPopupOpen("Create a file"))
         ImGui::OpenPopup("Create a file");
 
@@ -69,7 +70,8 @@ void CreateFile::display(std::string& fileOutLocation, bool& bShowCreateFile1)
         ImGui::Text("Selected file type: %s", str.c_str());
         ImGui::TextWrapped("Location: Source/");
         ImGui::SameLine();
-        ImGui::InputText("##Location##genfile", &fileOutLocation);
+        if (ImGui::InputText("##Location##genfile", &fileOutLocation) || ImGui::IsItemFocused())
+            bReturn = true;
 
         if (ImGui::Button("Cancel"))
         {
@@ -146,5 +148,6 @@ void CreateFile::display(std::string& fileOutLocation, bool& bShowCreateFile1)
 
         ImGui::EndPopup();
     }
+    return bReturn;
 }
 #endif

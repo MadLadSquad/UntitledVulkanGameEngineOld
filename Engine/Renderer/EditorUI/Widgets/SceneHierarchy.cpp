@@ -16,36 +16,39 @@ void SceneHierarchy::destroyEntity(UVK::Actor& selectedEntity)
     {
         UVK::Transaction transaction =
         {
-            .undofunc = [](UVK::Actor& ent, UVK::CoreComponent& coreComponent, UVK::CoreComponent&, UVK::MeshComponentRaw& meshComponentRaw, UVK::MeshComponent& meshComponent, bool* bHasCmp)
+            .undofunc = [](UVK::TransactionPayload& payload)
             {
-                ent.add<UVK::CoreComponent>() = coreComponent;
-                if (bHasCmp[COMPONENT_MESH])
+                payload.affectedEntity.add<UVK::CoreComponent>() = payload.coreComponent;
+                if (payload.bHasComponents[COMPONENT_MESH])
                 {
-                    ent.add<UVK::MeshComponent>() = meshComponent;
+                    payload.affectedEntity.add<UVK::MeshComponent>() = payload.meshComponent;
                 }
 
-                if (bHasCmp[COMPONENT_MESH_RAW])
+                if (payload.bHasComponents[COMPONENT_MESH_RAW])
                 {
-                    ent.add<UVK::MeshComponentRaw>() = meshComponentRaw;
+                    payload.affectedEntity.add<UVK::MeshComponentRaw>() = payload.meshComponentRaw;
                 }
             },
-            .redofunc = [](UVK::Actor& ent, UVK::CoreComponent& coreComponent, UVK::CoreComponent&, UVK::MeshComponentRaw& meshComponentRaw, UVK::MeshComponent& meshComponent, bool* bHasCmp)
+            .redofunc = [](UVK::TransactionPayload& payload)
             {
-                ent.clear();
+                payload.affectedEntity.clear();
             },
-            .affectedEntity = selectedEntity,
-            .coreComponent = a
+            .transactionPayload =
+            {
+                .affectedEntity = selectedEntity,
+                .coreComponent = a
+            }
         };
         if (selectedEntity.has<UVK::MeshComponent>())
         {
-            transaction.meshComponent = selectedEntity.get<UVK::MeshComponent>();
-            transaction.bHasComponents[COMPONENT_MESH] = true;
+            transaction.transactionPayload.meshComponent = selectedEntity.get<UVK::MeshComponent>();
+            transaction.transactionPayload.bHasComponents[COMPONENT_MESH] = true;
         }
 
         if (selectedEntity.has<UVK::MeshComponentRaw>())
         {
-            transaction.meshComponentRaw = selectedEntity.get<UVK::MeshComponentRaw>();
-            transaction.bHasComponents[COMPONENT_MESH_RAW] = true;
+            transaction.transactionPayload.meshComponentRaw = selectedEntity.get<UVK::MeshComponentRaw>();
+            transaction.transactionPayload.bHasComponents[COMPONENT_MESH_RAW] = true;
         }
         UVK::StateTracker::push(transaction);
 
@@ -65,16 +68,19 @@ void SceneHierarchy::addEntity(int& entNum)
 
     UVK::Transaction transaction =
     {
-        .undofunc = [](UVK::Actor& ent, UVK::CoreComponent&, UVK::CoreComponent&, UVK::MeshComponentRaw&, UVK::MeshComponent&, bool*)
+        .undofunc = [](UVK::TransactionPayload& payload)
         {
-            ent.clear();
+            payload.affectedEntity.clear();
         },
-        .redofunc = [](UVK::Actor& ent, UVK::CoreComponent& coreComponent, UVK::CoreComponent&, UVK::MeshComponentRaw&, UVK::MeshComponent&, bool*)
+        .redofunc = [](UVK::TransactionPayload& payload)
         {
-            ent.add<UVK::CoreComponent>() = coreComponent;
+            payload.affectedEntity.add<UVK::CoreComponent>() = payload.coreComponent;
         },
-        .affectedEntity = UVK::Actor(a),
-        .coreComponent = b
+        .transactionPayload =
+        {
+            .affectedEntity = UVK::Actor(a),
+            .coreComponent = b
+        }
     };
     UVK::StateTracker::push(transaction);
 
