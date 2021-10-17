@@ -27,6 +27,7 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, bool&
 
     if (bNewFolder)
     {
+        bCurrentlyUsingPreviews = false;
         fileNum = 0;
         for (auto& a : std_filesystem::directory_iterator(pt))
             fileNum++;
