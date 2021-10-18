@@ -47,3 +47,5 @@ bindings:
     val: 90
   - key: editor-redo
     val: 89
+  - key: editor-filesystem-rename
+    val: 291

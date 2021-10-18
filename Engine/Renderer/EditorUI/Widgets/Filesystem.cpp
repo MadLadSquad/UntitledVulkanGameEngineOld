@@ -11,6 +11,8 @@
 #ifndef __MINGW32__
 bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, bool& bShow)
 {
+    bool bReturn = false;
+
     // Variables for the UI
     static float padding = 20.0f;
     static float imageSize = 50.0f;
@@ -24,6 +26,10 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, bool&
     static unsigned int fileNum = 0;
     static int maxFileNum = 64;
     static std::vector<UVK::Texture> previews;
+
+    // Variables for renaming
+    static bool bRenaming = false;
+    static std::string renameText;
 
     if (bNewFolder)
     {
@@ -54,21 +60,27 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, bool&
         {
             createFile(pt);
             bNewFolder = true;
-            return false;
+            return bReturn;
         }
 
         if (ImGui::MenuItem("- Remove File"))
         {
             deleteFile(pt, selectedFile);
             bNewFolder = true;
-            return false;
+            return bReturn;
         }
 
         if (ImGui::MenuItem("+ Add Directory"))
         {
             createFolder(pt);
             bNewFolder = true;
-            return false;
+            return bReturn;
+        }
+
+        if ((ImGui::MenuItem("* Rename File") || UVK::Input::getAction("editor-filesystem-rename") == Keys::KeyPressed) && !selectedFile.empty())
+        {
+            bRenaming = true;
+            renameText = selectedFile.filename().string();
         }
 
         ImGui::EndMenuBar();
@@ -117,7 +129,7 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, bool&
             UVK::StateTracker::push(transaction);
             pt = pt.parent_path();
             bNewFolder = true;
-            return false;
+            return bReturn;
         }
 
         ImGui::TextWrapped("../");
@@ -129,6 +141,7 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, bool&
     {
         i++;
         auto& path = a.path();
+
         if (a.is_directory())
         {
             ImGui::ImageButton((void*)(intptr_t)textures[FS_ICON_FOLDER].getImage(), ImVec2(imageSize, imageSize));
@@ -164,7 +177,7 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, bool&
                     pt = pt / path.filename();
                     selectedFile.clear();
                     bNewFolder = true;
-                    return false;
+                    return bReturn;
                 }
 
                 if (ImGui::IsMouseClicked(ImGuiMouseButton_Left))
@@ -177,9 +190,25 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, bool&
             if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Left))
                 selectedFile = path;
         }
+        if (bRenaming && a.path() == selectedFile)
+        {
+            if (ImGui::InputText(("##Rename" + a.path().string()).c_str(), &renameText) || ImGui::IsItemFocused())
+                bReturn = true;
+            // I don't think it's useful to set it as any other key really
+            if (UVK::Input::getKey(Keys::Enter) == Keys::KeyPressed)
+            {
+                std_filesystem::rename(path.parent_path()/path.filename(), path.parent_path()/renameText);
 
-        // path.filename().c_str() shows only the first letter of a filename on Windows for some reason
-        ImGui::TextWrapped("%s", path.filename().string().c_str());
+                bRenaming = false;
+                bNewFolder = true;
+
+                return bReturn;
+            }
+        }
+        else
+            // path.filename().c_str() shows only the first letter of a filename on Windows for some reason
+            ImGui::TextWrapped("%s", path.filename().string().c_str());
+
         ImGui::NextColumn();
     }
     bNewFolder = false;
@@ -221,7 +250,7 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, bool&
     ImGui::Columns(1);
     ImGui::EndGroup();
     ImGui::End();
-    return false;
+    return bReturn;
 }
 
 void Filesystem::createFile(const std_filesystem::path &pt)
