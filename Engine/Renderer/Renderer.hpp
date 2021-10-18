@@ -32,7 +32,10 @@ namespace UVK
         static bool& getVSync();
         static void saveSettings();
     private:
+        friend class Editor;
+
         void loadSettings();
+        static void loadFilesystemSettings();
         void startRenderer(UVK::Level* lvl, bool bUsesEditor);
 
         RendererSettings* rs{};

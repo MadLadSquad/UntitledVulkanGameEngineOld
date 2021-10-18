@@ -10,7 +10,7 @@ namespace Settings
     void showKeySelect(const char* name, uint16_t& key);
 
     bool displayWindow(bool& bOpen);
-    bool displayRenderer(bool& bOpen);
+    bool displayRenderer(bool& bOpen, UVK::FilesystemWidgetData& filesystemData);
     bool displayKeybindEditor(bool& bOpen);
     bool displayKeybindGame(bool& bOpen);
     bool displayThemeEditor(bool& bOpen);

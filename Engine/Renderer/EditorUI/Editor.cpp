@@ -31,6 +31,7 @@
 void UVK::Editor::initEditor()
 {
     global.instance->editor = this;
+    UVK::Renderer::loadFilesystemSettings();
 
     auto bindText = Utility::keyToText(Input::getAction("editor-bind-modifier").keyCode, false);
     auto shiftText = Utility::keyToText(Input::getAction("editor-shift").keyCode, false);
@@ -469,7 +470,7 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
 
 #ifndef __MINGW32__
     if (bShowFilesystem)
-        bEditorUsingTextbox = Filesystem::display(pt, fileTextures, bShowFilesystem) ? true : bEditorUsingTextbox;
+        bEditorUsingTextbox = Filesystem::display(pt, fileTextures, filesystemWidgetData, bShowFilesystem) ? true : bEditorUsingTextbox;
 #endif
 
     if (bShowToolbar)
@@ -510,7 +511,7 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
         bEditorUsingTextbox = Settings::displayWindow(bShowWindowSettings) ? true : bEditorUsingTextbox;
 
     if (bShowRendererSettings)
-        bEditorUsingTextbox = Settings::displayRenderer(bShowRendererSettings) ? true : bEditorUsingTextbox;
+        bEditorUsingTextbox = Settings::displayRenderer(bShowRendererSettings, filesystemWidgetData) ? true : bEditorUsingTextbox;
 
     if (bShowKeybindSettings)
         bEditorUsingTextbox = Settings::displayKeybindEditor(bShowKeybindSettings) ? true : bEditorUsingTextbox;

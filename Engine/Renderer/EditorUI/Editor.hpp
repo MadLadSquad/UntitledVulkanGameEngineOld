@@ -24,6 +24,8 @@ namespace UVK
         friend class EditorModules;
         friend class EditorPawn;
         friend class Utility;
+        friend class Renderer;
+        friend struct RendererSettings;
 
         double* getFrameTimeData()
         {
@@ -117,9 +119,10 @@ namespace UVK
             std::string editor_undo;
             std::string editor_redo;
         };
-
         UVKLogImGui loggerwidget;
         EditorKeys keys;
+
+        FilesystemWidgetData filesystemWidgetData{};
     };
 #else
     class Editor

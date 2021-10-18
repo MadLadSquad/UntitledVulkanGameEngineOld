@@ -3,6 +3,7 @@
 #include "Renderer.hpp"
 #include <Engine/Core/Core/Global.hpp>
 #include <GameFramework/GameplayClasses/Level/Level.hpp>
+#include <Renderer/EditorUI/Editor.hpp>
 
 UVK::Renderer::Renderer(UVK::Level* lvl, bool bUsesEditor)
 {
@@ -29,6 +30,10 @@ void UVK::RendererSettings::saveSettings() const
     out << YAML::Key << "v-sync" << YAML::Value << bVsync;
     out << YAML::Key << "v-sync-immediate" << YAML::Value << bVsyncImmediate;
     out << YAML::Key << "max-saved-transactions" << YAML::Value << maxSavedTransactions;
+    out << YAML::Key << "filesystem-file-padding" << YAML::Value << global.instance->editor->filesystemWidgetData.padding;
+    out << YAML::Key << "filesystem-file-thumbnail-size" << YAML::Value << global.instance->editor->filesystemWidgetData.imageSize;
+    out << YAML::Key << "filesystem-using-previews" << YAML::Value << global.instance->editor->filesystemWidgetData.bUsePreviews;
+    out << YAML::Key << "filesystem-max-preview-files" << YAML::Value << global.instance->editor->filesystemWidgetData.maxFileNum;
 
     out << YAML::EndMap;
 
@@ -72,24 +77,16 @@ void UVK::Renderer::loadSettings()
     if (bUsesConf)
     {
         if (a["vulkan"])
-        {
             global.bUsesVulkan = a["vulkan"].as<bool>();
-        }
 
         if (a["theme"])
-        {
             rs->themeLoc = a["theme"].as<std::string>();
-        }
 
         if (a["v-sync"])
-        {
             rs->bVsync = a["v-sync"].as<bool>();
-        }
 
         if (a["v-sync-immediate"])
-        {
             rs->bVsyncImmediate = a["v-sync-immediate"].as<bool>();
-        }
 
         if (a["max-saved-transactions"])
         {
@@ -121,4 +118,31 @@ void UVK::Renderer::saveSettings()
 bool& UVK::Renderer::getImmediateRender()
 {
     return global.rendererSettings.bVsyncImmediate;
+}
+
+void UVK::Renderer::loadFilesystemSettings()
+{
+    YAML::Node a;
+    bool bUsesConf = true;
+    try
+    {
+        a = YAML::LoadFile("../Config/Settings/Renderer.yaml");
+    }
+    catch (YAML::BadFile&)
+    {
+        bUsesConf = false;
+
+        logger.consoleLog("Invalid renderer file defaulting to OpenGL with default theme if the editor is in use!", UVK_LOG_TYPE_ERROR);
+    }
+    if (bUsesConf)
+    {
+        if (a["filesystem-file-padding"])
+            global.instance->editor->filesystemWidgetData.padding = a["filesystem-file-padding"].as<float>();
+        if (a["filesystem-file-thumbnail-size"])
+            global.instance->editor->filesystemWidgetData.imageSize = a["filesystem-file-thumbnail-size"].as<float>();
+        if (a["filesystem-using-previews"])
+            global.instance->editor->filesystemWidgetData.bUsePreviews = a["filesystem-using-previews"].as<bool>();
+        if (a["filesystem-max-preview-files"])
+            global.instance->editor->filesystemWidgetData.maxFileNum = a["filesystem-max-preview-files"].as<uint32_t>();
+    }
 }

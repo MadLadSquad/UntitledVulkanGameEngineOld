@@ -1,5 +1,5 @@
 // Filesystem.cpp
-// Last update 17/10/2021 by Madman10K
+// Last update 18/10/2021 by Madman10K
 #include <GL/glew.h>
 #include "Filesystem.hpp"
 #ifndef PRODUCTION
@@ -9,27 +9,26 @@
 #include <State/StateTracker.hpp>
 
 #ifndef __MINGW32__
-bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, bool& bShow)
+bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::FilesystemWidgetData& data, bool& bShow)
 {
     bool bReturn = false;
 
     // Variables for the UI
-    static float padding = 20.0f;
-    static float imageSize = 50.0f;
-    float cellSize = padding + imageSize;
+    float cellSize = data.padding + data.imageSize;
     int columns;
 
     // Variables for previews and folder refresh
-    static bool bUsePreviews = false;
     volatile static bool bCurrentlyUsingPreviews = false;
     volatile static bool bNewFolder = true;
     static unsigned int fileNum = 0;
-    static int maxFileNum = 64;
     static std::vector<UVK::Texture> previews;
 
     // Variables for renaming
     static bool bRenaming = false;
     static std::string renameText;
+
+    // Warning for when deleting a folder specifically
+    static bool bDeleteWarning = false;
 
     if (bNewFolder)
     {
@@ -43,11 +42,11 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, bool&
         previews.clear();
     }
 
-    if (bUsePreviews)
-        bCurrentlyUsingPreviews = fileNum >= maxFileNum ? false : true;
+    if (data.bUsePreviews)
+        bCurrentlyUsingPreviews = fileNum >= data.maxFileNum ? false : true;
 
-    if (bCurrentlyUsingPreviews && (previews.size() != maxFileNum || bNewFolder))
-        previews.resize(maxFileNum);
+    if (bCurrentlyUsingPreviews && (previews.size() != data.maxFileNum || bNewFolder))
+        previews.resize(data.maxFileNum);
 
     // The current file represented as a string
     static std_filesystem::path selectedFile;
@@ -64,11 +63,7 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, bool&
         }
 
         if (ImGui::MenuItem("- Remove File"))
-        {
-            deleteFile(pt, selectedFile);
-            bNewFolder = true;
-            return bReturn;
-        }
+            bDeleteWarning = true;
 
         if (ImGui::MenuItem("+ Add Directory"))
         {
@@ -86,6 +81,34 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, bool&
         ImGui::EndMenuBar();
     }
 
+    if (bDeleteWarning)
+    {
+        if (!ImGui::IsPopupOpen("Warning##FileDeletion"))
+            ImGui::OpenPopup("Warning##FileDeletion");
+        if (ImGui::BeginPopupModal("Warning##FileDeletion", &bDeleteWarning))
+        {
+            ImGui::TextWrapped("You are trying to delete a file. Deleting a file can be undone, however folders will not be! Files are also not stored in a recycle bin, and are stored in memory, until the end of the application!");
+            static bool bAccepted = false;
+
+            ImGui::TextWrapped("I am aware of this!");
+            ImGui::SameLine();
+            ImGui::Checkbox("##Accepted", &bAccepted);
+
+            if (ImGui::Button("Close##FiledDeletion"))
+                bDeleteWarning = false;
+            ImGui::SameLine();
+            if (ImGui::Button("Delete##FileDeletion") && bAccepted)
+            {
+                deleteFile(pt, selectedFile);
+                bNewFolder = true;
+                bDeleteWarning = false;
+                return bReturn;
+            }
+
+            ImGui::EndPopup();
+        }
+    }
+
     ImGui::BeginChild("Explorer");
 
     columns = (int)(ImGui::GetContentRegionAvail().x / cellSize);
@@ -100,7 +123,7 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, bool&
     ImGui::PushStyleColor(ImGuiCol_Button, { 0.0f, 0.0f, 0.0f, 0.0f });
     if (!(p == "../Content/" || p == "../Content"))
     {
-        ImGui::ImageButton((void*)(intptr_t)textures[FS_ICON_FOLDER].getImage(), ImVec2(imageSize, imageSize));
+        ImGui::ImageButton((void*)(intptr_t)textures[FS_ICON_FOLDER].getImage(), ImVec2(data.imageSize, data.imageSize));
         if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
         {
             UVK::Transaction transaction =
@@ -144,7 +167,7 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, bool&
 
         if (a.is_directory())
         {
-            ImGui::ImageButton((void*)(intptr_t)textures[FS_ICON_FOLDER].getImage(), ImVec2(imageSize, imageSize));
+            ImGui::ImageButton((void*)(intptr_t)textures[FS_ICON_FOLDER].getImage(), ImVec2(data.imageSize, data.imageSize));
             if (ImGui::IsItemHovered())
             {
                 if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
@@ -186,7 +209,7 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, bool&
         }
         else
         {
-            ImGui::ImageButton((void*)(intptr_t)(selectTextures(textures, a, previews, bCurrentlyUsingPreviews, i, bNewFolder)->getImage()), ImVec2(imageSize, imageSize));
+            ImGui::ImageButton((void*)(intptr_t)(selectTextures(textures, a, previews, bCurrentlyUsingPreviews, i, bNewFolder)->getImage()), ImVec2(data.imageSize, data.imageSize));
             if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Left))
                 selectedFile = path;
         }
@@ -222,12 +245,12 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, bool&
 
     ImGui::TextWrapped("Image size");
     ImGui::SameLine();
-    ImGui::SliderFloat("##Image size", &imageSize, 1.0f, 256.0f);
+    ImGui::SliderFloat("##Image size", &data.imageSize, 1.0f, 256.0f);
     ImGui::NextColumn();
 
     ImGui::TextWrapped("Padding");
     ImGui::SameLine();
-    ImGui::SliderFloat("##Padding", &padding, 20.0f, 256.0f);
+    ImGui::SliderFloat("##Padding", &data.padding, 20.0f, 256.0f);
     ImGui::NextColumn();
 
     ImGui::TextWrapped("Max Previews");
@@ -239,13 +262,13 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, bool&
         ImGui::EndTooltip();
     }
     ImGui::SameLine();
-    ImGui::SliderInt("##MaxImages", &maxFileNum, 0, 1024);
+    ImGui::SliderInt("##MaxImages", &data.maxFileNum, 0, 1024);
     ImGui::NextColumn();
 
     ImGui::SetColumnWidth(3, 150.0f);
     ImGui::TextWrapped("Previews?");
     ImGui::SameLine();
-    ImGui::Checkbox("##Display preview images", &bUsePreviews);
+    ImGui::Checkbox("##Display preview images", &data.bUsePreviews);
 
     ImGui::Columns(1);
     ImGui::EndGroup();

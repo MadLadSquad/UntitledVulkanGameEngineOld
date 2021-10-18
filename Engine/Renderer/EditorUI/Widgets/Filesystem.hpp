@@ -11,15 +11,7 @@
  */
 namespace Filesystem
 {
-    struct Preview
-    {
-        Preview() = default;
-
-        UVK::String location;
-        UVK::Texture texture;
-    };
-
-    bool display(std_filesystem::path& pt, UVK::Texture* textures, bool& bShow);
+    bool display(std_filesystem::path& pt, UVK::Texture* textures, UVK::FilesystemWidgetData& data, bool& bShow);
     void createFile(const std_filesystem::path& pt);
     void createFolder(const std_filesystem::path& pt);
     void deleteFile(std_filesystem::path& pt, std_filesystem::path& selectedFile);

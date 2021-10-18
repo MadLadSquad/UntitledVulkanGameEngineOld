@@ -57,7 +57,7 @@ bool Settings::displayWindow(bool& bOpen)
     return bReturn;
 }
 
-bool Settings::displayRenderer(bool& bOpen)
+bool Settings::displayRenderer(bool& bOpen, UVK::FilesystemWidgetData& filesystemData)
 {
     bool bReturn = false;
     if (!ImGui::IsPopupOpen("Renderer Settings"))
@@ -68,7 +68,6 @@ bool Settings::displayRenderer(bool& bOpen)
 
         static bool bVulkan = false;
         static bool first = false;
-
         if (!first)
         {
             bVulkan = UVK::global.bUsesVulkan;
@@ -88,9 +87,29 @@ bool Settings::displayRenderer(bool& bOpen)
         ImGui::SameLine();
         ImGui::Checkbox("##V-Sync", &UVK::Renderer::getVSync());
 
-        ImGui::TextWrapped("Immediate frame display");
+        ImGui::TextWrapped("Immediate Frame Display");
         ImGui::SameLine();
         ImGui::Checkbox("##V-Sync immediate", &UVK::Renderer::getImmediateRender());
+
+        ImGui::TextWrapped("Max Saved Transactions");
+        ImGui::SameLine();
+        ImGui::InputScalar("##MaxSaveDTransactions", ImGuiDataType_U32, &UVK::SettingsManager::getRendererSettings().maxSavedTransactions);
+
+        ImGui::TextWrapped("Filesystem Element Padding");
+        ImGui::SameLine();
+        ImGui::InputScalar("##FilesystemElementPadding", ImGuiDataType_Float, &filesystemData.padding);
+
+        ImGui::TextWrapped("Filesystem Element Image Size");
+        ImGui::SameLine();
+        ImGui::InputScalar("##FilesystemElementImageSize", ImGuiDataType_Float, &filesystemData.imageSize);
+
+        ImGui::TextWrapped("Filesystem Use Previews");
+        ImGui::SameLine();
+        ImGui::Checkbox("##FilesystemPreviews", &filesystemData.bUsePreviews);
+
+        ImGui::TextWrapped("Filesystem Max Elements With Previews");
+        ImGui::SameLine();
+        ImGui::InputScalar("##FilesystemMaxElementsWithPreviews", ImGuiDataType_U32, &filesystemData.maxFileNum);
 
         if (ImGui::Button("Close"))
         {
