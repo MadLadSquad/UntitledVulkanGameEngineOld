@@ -12,40 +12,26 @@ void UVK::StateTracker::pushAction(const UVK::Transaction& transaction)
         // Destroying half of the buffer saves memory and performance for future transactions
         for (uint32_t i = 0; i < (transactionSize/2); i++)
         {
-            for (auto& a : undoStack)
+            for (int j = 0; j < undoStack.size(); j++)
             {
-                if (&transactions[i] == a)
+                if (&transactions[i] == undoStack[j])
                 {
-                    a = nullptr; // Set "a" to nullptr for safety idk
-                    // This is bad, very, very bad, although most users won't set the limit very high
-                    for (auto& b : undoStack)
-                    {
-                        if (&b == &a)
-                        {
-                            undoStack.pop_front();
-                            break;
-                        }
+                    undoStack[j] = nullptr;
+                    for (int m = 0; m <= j; m++)
                         undoStack.pop_front();
-                    }
                 }
             }
-            for (auto& a : redoStack)
+
+            for (int j = 0; j < redoStack.size(); j++)
             {
-                if (&transactions[i] == a)
+                if (&transactions[i] == redoStack[j])
                 {
-                    a = nullptr; // Set "a" to nullptr for safety idk
-                    // This is bad, very, very bad, although most users won't set the limit very high
-                    for (auto& b : redoStack)
-                    {
-                        if (&b == &a)
-                        {
-                            redoStack.pop_front();
-                            break;
-                        }
+                    redoStack[j] = nullptr;
+                    for (int m = 0; m <= j; m++)
                         redoStack.pop_front();
-                    }
                 }
             }
+
             transactions.pop_front();
         }
     }
