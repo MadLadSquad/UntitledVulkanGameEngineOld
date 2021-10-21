@@ -10,7 +10,7 @@
 #include <Renderer/EditorUI/Modules/EditorModule.hpp>
 #include <GameFramework/Components/Components/CoreComponent.hpp>
 
-bool DetailsPanel::DrawVec3Control(const std::string &label, glm::vec3 &values, float resetValue, float columnWidth)
+bool DetailsPanel::DrawVec3Control(const std::string &label, glm::vec3 &values, float resetValue, float columnWidth, float speed)
 {
     const ImGuiIO& io = ImGui::GetIO();
     auto boldFont = io.Fonts->Fonts[0];
@@ -50,7 +50,7 @@ bool DetailsPanel::DrawVec3Control(const std::string &label, glm::vec3 &values, 
     ImGui::PopStyleColor(3);
     ImGui::SameLine();
 
-    if (ImGui::DragFloat("##X", &values.x, 0.1f, 0.0f, 0.0f, "%.2f") || (ImGui::IsItemHovered() && ImGui::IsMouseDown(ImGuiMouseButton_Left)))
+    if (ImGui::DragFloat("##X", &values.x, speed, 0.0f, 0.0f, "%.2f") || ((ImGui::IsItemHovered() || ImGui::IsItemActive()) && ImGui::IsMouseDown(ImGuiMouseButton_Left)))
         x = true;
 
     ImGui::PopItemWidth();
@@ -72,7 +72,7 @@ bool DetailsPanel::DrawVec3Control(const std::string &label, glm::vec3 &values, 
     ImGui::PopStyleColor(3);
 
     ImGui::SameLine();
-    if (ImGui::DragFloat("##Y", &values.y, 0.1f, 0.0f, 0.0f, "%.2f") || (ImGui::IsItemHovered() && ImGui::IsMouseDown(ImGuiMouseButton_Left)))
+    if (ImGui::DragFloat("##Y", &values.y, speed, 0.0f, 0.0f, "%.2f") || (ImGui::IsItemActive() && ImGui::IsMouseDown(ImGuiMouseButton_Left)))
         y = true;
 
     ImGui::PopItemWidth();
@@ -94,7 +94,7 @@ bool DetailsPanel::DrawVec3Control(const std::string &label, glm::vec3 &values, 
     ImGui::PopStyleColor(3);
 
     ImGui::SameLine();
-    if (ImGui::DragFloat("##Z", &values.z, 0.1f, 0.0f, 0.0f, "%.2f") || (ImGui::IsItemHovered() && ImGui::IsMouseDown(ImGuiMouseButton_Left)))
+    if (ImGui::DragFloat("##Z", &values.z, speed, 0.0f, 0.0f, "%.2f") || (ImGui::IsItemActive() && ImGui::IsMouseDown(ImGuiMouseButton_Left)))
         z = true;
     ImGui::PopItemWidth();
 
@@ -104,7 +104,7 @@ bool DetailsPanel::DrawVec3Control(const std::string &label, glm::vec3 &values, 
 
     ImGui::PopID();
 
-    return x || y || z;
+    return (x || y || z);
 }
 
 bool DetailsPanel::display(UVK::Actor& ent, UVK::Level* lvl, bool& bShow, const UVK::EditorModuleManager& modules, bool& destroy)
@@ -192,9 +192,155 @@ bool DetailsPanel::display(UVK::Actor& ent, UVK::Level* lvl, bool& bShow, const 
             if (ImGui::InputText("##Development Name##devname", &a.devName) || ImGui::IsItemFocused())
                 bReturn = true;
 
-            DrawVec3Control("Translation", a.translation, 0.0f, 100.0f);
-            DrawVec3Control("Rotation", a.rotation, 0.0f, 100.0f);
-            DrawVec3Control("Scale", a.scale, 1.0f, 100.0f);
+            static UVK::FVector pastTranslation;
+            static UVK::FVector pastRotation;
+            static UVK::FVector pastScale;
+            static bool bTranslating = false;
+            static bool bRotating = false;
+            static bool bScaling = false;
+
+            if (DrawVec3Control("Translation", a.translation, 0.0f, 100.0f))
+                bTranslating = true;
+            else
+            {
+                if (bTranslating)
+                {
+                    UVK::Transaction transaction =
+                    {
+                        .undofunc = [](UVK::TransactionPayload& payload)
+                        {
+                            if (payload.affectedEntity.valid() && payload.affectedEntity.has<UVK::CoreComponent>())
+                            {
+                                auto& core = payload.affectedEntity.get<UVK::CoreComponent>();
+                                core.translation = payload.deltaCoreComponent.translation;
+                            }
+                        },
+                        .redofunc = [](UVK::TransactionPayload& payload)
+                        {
+                            if (payload.affectedEntity.valid() && payload.affectedEntity.has<UVK::CoreComponent>())
+                            {
+                                auto& core = payload.affectedEntity.get<UVK::CoreComponent>();
+                                core.translation = payload.coreComponent.translation;
+                            }
+                        },
+                        .transactionPayload =
+                        {
+                            .affectedEntity = ent,
+                            .coreComponent =
+                            {
+                                .translation = a.translation
+                            },
+                            .deltaCoreComponent =
+                            {
+                                .translation = pastTranslation
+                            }
+                        }
+                    };
+                    UVK::StateTracker::push(transaction);
+                    bTranslating = false;
+                }
+                else
+                    pastTranslation = a.translation;
+            }
+            a.rotation.x = glm::degrees(a.rotation.x);
+            a.rotation.y = glm::degrees(a.rotation.y);
+            a.rotation.z = glm::degrees(a.rotation.z);
+            if (DrawVec3Control("Rotation", a.rotation, 0.0f, 100.0f, 0.5f))
+                bRotating = true;
+            else
+            {
+                if (bRotating)
+                {
+                    UVK::Transaction transaction =
+                    {
+                        .undofunc = [](UVK::TransactionPayload& payload)
+                        {
+                            if (payload.affectedEntity.valid() && payload.affectedEntity.has<UVK::CoreComponent>())
+                            {
+                                auto& core = payload.affectedEntity.get<UVK::CoreComponent>();
+                                core.rotation = payload.deltaCoreComponent.rotation;
+                                core.rotation.x = glm::radians(core.rotation.x);
+                                core.rotation.y = glm::radians(core.rotation.y);
+                                core.rotation.z = glm::radians(core.rotation.z);
+                            }
+                        },
+                        .redofunc = [](UVK::TransactionPayload& payload)
+                        {
+                            if (payload.affectedEntity.valid() && payload.affectedEntity.has<UVK::CoreComponent>())
+                            {
+                                auto& core = payload.affectedEntity.get<UVK::CoreComponent>();
+                                core.rotation = payload.coreComponent.rotation;
+                                core.rotation.x = glm::radians(core.rotation.x);
+                                core.rotation.y = glm::radians(core.rotation.y);
+                                core.rotation.z = glm::radians(core.rotation.z);
+                            }
+                        },
+                        .transactionPayload =
+                        {
+                            .affectedEntity = ent,
+                            .coreComponent =
+                            {
+                                .rotation = a.rotation
+                            },
+                            .deltaCoreComponent =
+                            {
+                                .rotation = pastRotation
+                            }
+                        }
+                    };
+                    UVK::StateTracker::push(transaction);
+                    bRotating = false;
+                }
+                else
+                    pastRotation = a.rotation;
+            }
+            a.rotation.x = glm::radians(a.rotation.x);
+            a.rotation.y = glm::radians(a.rotation.y);
+            a.rotation.z = glm::radians(a.rotation.z);
+
+            if (DrawVec3Control("Scale", a.scale, 1.0f, 100.0f))
+                bScaling = true;
+            else
+            {
+                if (bScaling)
+                {
+                    UVK::Transaction transaction =
+                    {
+                        .undofunc = [](UVK::TransactionPayload& payload)
+                        {
+                            if (payload.affectedEntity.valid() && payload.affectedEntity.has<UVK::CoreComponent>())
+                            {
+                                auto& core = payload.affectedEntity.get<UVK::CoreComponent>();
+                                core.scale = payload.deltaCoreComponent.scale;
+                            }
+                        },
+                        .redofunc = [](UVK::TransactionPayload& payload)
+                        {
+                            if (payload.affectedEntity.valid() && payload.affectedEntity.has<UVK::CoreComponent>())
+                            {
+                                auto& core = payload.affectedEntity.get<UVK::CoreComponent>();
+                                core.scale = payload.coreComponent.scale;
+                            }
+                        },
+                        .transactionPayload =
+                        {
+                            .affectedEntity = ent,
+                            .coreComponent =
+                            {
+                                .scale = a.scale
+                            },
+                            .deltaCoreComponent =
+                            {
+                                .scale = pastScale
+                            }
+                        }
+                    };
+                    UVK::StateTracker::push(transaction);
+                    bScaling = false;
+                }
+                else
+                    pastScale = a.scale;
+            }
 
             if (a.name == UVK::Level::getPawn(lvl)->name && a.id == UVK::Level::getPawn(lvl)->id && a.devName == UVK::Level::getPawn(lvl)->devName)
             {

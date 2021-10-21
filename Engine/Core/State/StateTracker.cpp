@@ -1,5 +1,5 @@
 // StateTracker.cpp
-// Last update 17/10/2021 by Madman10K
+// Last update 19/10/2021 by Madman10K
 #include "StateTracker.hpp"
 #include <Core/Actor.hpp>
 #include <Renderer/EditorUI/Editor.hpp>
@@ -7,39 +7,50 @@
 
 void UVK::StateTracker::pushAction(const UVK::Transaction& transaction)
 {
-    if (transactionIndex == transactionSize)
+    if (transactions.size() == transactionSize)
     {
-        // We go back 6 six times since we are erasing 5 elements and transactionSize is the size of the
-        // transaction array + 1
-        transactionIndex = transactionSize - 6;
-
-        for (int i = 0; i < undoStack.size(); i++)
+        // Destroying half of the buffer saves memory and performance for future transactions
+        for (uint32_t i = 0; i < (transactionSize/2); i++)
         {
-            // For efficiency's sake we remove 5 elements instead of one
-            // meaning that the max transaction size should always be above 4
-            if (undoStack[i] == &transactions[0] || undoStack[i] == &transactions[1] || undoStack[i] == &transactions[2] || undoStack[i] == &transactions[3] || undoStack[i] == &transactions[4])
-                undoStack.erase(undoStack.begin() + i);
+            for (auto& a : undoStack)
+            {
+                if (&transactions[i] == a)
+                {
+                    a = nullptr; // Set "a" to nullptr for safety idk
+                    // This is bad, very, very bad, although most users won't set the limit very high
+                    for (auto& b : undoStack)
+                    {
+                        if (&b == &a)
+                        {
+                            undoStack.pop_front();
+                            break;
+                        }
+                        undoStack.pop_front();
+                    }
+                }
+            }
+            for (auto& a : redoStack)
+            {
+                if (&transactions[i] == a)
+                {
+                    a = nullptr; // Set "a" to nullptr for safety idk
+                    // This is bad, very, very bad, although most users won't set the limit very high
+                    for (auto& b : redoStack)
+                    {
+                        if (&b == &a)
+                        {
+                            redoStack.pop_front();
+                            break;
+                        }
+                        redoStack.pop_front();
+                    }
+                }
+            }
+            transactions.pop_front();
         }
-
-        for (int i = 0; i < redoStack.size(); i++)
-        {
-            // For efficiency's sake we remove 5 elements instead of one
-            // meaning that the max transaction size should always be above 4
-            if (redoStack[i] == &transactions[0] || redoStack[i] == &transactions[1] || redoStack[i] == &transactions[2] || redoStack[i] == &transactions[3] || redoStack[i] == &transactions[4])
-                redoStack.erase(redoStack.begin() + i);
-        }
-
-        for (uint8_t i = 0; i < 5; i++)
-        {
-            transactions[i].transactionPayload.affectedEntity.destroy();
-        }
-        transactions.erase(transactions.begin(), transactions.begin() + 4);
     }
-
-    transactions[transactionIndex] = transaction;
-    undoStack.emplace_back(&transactions[transactionIndex]);
-
-    transactionIndex++;
+    transactions.push_back(transaction);
+    undoStack.push_back(&transactions.back());
 }
 
 void UVK::StateTracker::undo()
@@ -72,5 +83,4 @@ void UVK::StateTracker::push(const UVK::Transaction& transaction)
 void UVK::StateTracker::init()
 {
     transactionSize = global.rendererSettings.maxSavedTransactions;
-    transactions.resize(transactionSize);
 }

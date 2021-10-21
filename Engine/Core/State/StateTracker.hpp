@@ -20,13 +20,26 @@ namespace UVK
         MeshComponent meshComponent;
         MeshComponentRaw meshComponentRaw;
         bool bHasComponents[2];
-        bool* bChanged;
-        volatile bool* vbChanged;
-        std_filesystem::path* path;
+        bool* bChanged = nullptr;
+        volatile bool* vbChanged = nullptr;
+        std_filesystem::path* path = nullptr;
     };
 
     struct Transaction
     {
+        ~Transaction()
+        {
+            undofunc = [](TransactionPayload&){};
+            redofunc = [](TransactionPayload&){};
+            transactionPayload.deltaCoreComponent.name.clear();
+            transactionPayload.deltaCoreComponent.devName.clear();
+            transactionPayload.coreComponent.id = 0;
+            transactionPayload.coreComponent.name.clear();
+            transactionPayload.coreComponent.devName.clear();
+            transactionPayload.coreComponent.id = 0;
+            transactionPayload.meshComponentRaw.clearMesh();
+            transactionPayload.meshComponent.clearMesh();
+        }
         std::function<void(TransactionPayload&)> undofunc; // Called on undo
         std::function<void(TransactionPayload&)> redofunc; // Called on redo
         TransactionPayload transactionPayload;
@@ -57,9 +70,9 @@ namespace UVK
 
         uint32_t transactionSize = 0;
 
-        std::vector<Transaction*> undoStack;
-        std::vector<Transaction*> redoStack;
-        std::vector<Transaction> transactions;
+        std::deque<Transaction*> undoStack;
+        std::deque<Transaction*> redoStack;
+        std::deque<Transaction> transactions;
 
         uint8_t transactionIndex = 0;
     };
