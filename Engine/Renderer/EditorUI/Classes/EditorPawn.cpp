@@ -29,7 +29,7 @@ void UVK::EditorPawn::endPlay()
 
 void UVK::EditorPawn::move(float deltaTime)
 {
-    if ((UVK::Input::getAction("editor-move") == Keys::KeyPressed || UVK::Input::getAction("editor-move") == Keys::KeyRepeat) && global.instance->editor->bEditorViewportFocused)
+    if ((UVK::Input::getAction("editor-move") == Keys::KeyPressed || UVK::Input::getAction("editor-move") == Keys::KeyRepeat) && global.instance->editor->bools.bEditorViewportFocused)
     {
         Window::setCursorVisibility(false);
 
@@ -86,7 +86,7 @@ void UVK::EditorPawn::move(float deltaTime)
 
 void UVK::EditorPawn::moveMouse()
 {
-    if ((UVK::Input::getAction("editor-move") == Keys::KeyPressed || UVK::Input::getAction("editor-move") == Keys::KeyRepeat) && global.instance->editor->bEditorViewportFocused)
+    if ((UVK::Input::getAction("editor-move") == Keys::KeyPressed || UVK::Input::getAction("editor-move") == Keys::KeyRepeat) && global.instance->editor->bools.bEditorViewportFocused)
     {
         auto change = Input::getMousePositionChange();
         change.x *= turnSpeed; //* deltaTime;

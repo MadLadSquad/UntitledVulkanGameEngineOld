@@ -24,7 +24,7 @@ void UVKLogImGui::setLogColour(ImVec4 colour, LogType type)
     }
 }
 
-void UVKLogImGui::display()
+void UVKLogImGui::display(bool& bReturn)
 {
     for (auto& a : logger.messageLog)
     {
@@ -52,7 +52,9 @@ void UVKLogImGui::display()
     }
 
     static std::string command;
-    ImGui::InputTextWithHint("##Input", "Enter any command here", &command);
+    if (ImGui::InputTextWithHint("##Input", "Enter any command here", &command) || ImGui::IsItemFocused())
+        bReturn = true;
+
     ImGui::SameLine();
     if (ImGui::Button("Send##consoleCommand"))
     {
@@ -88,10 +90,10 @@ void UVKLogImGui::showHelpMessage()
     }
 }
 
-void UVKLogImGui::displayFull(bool& bOpen)
+void UVKLogImGui::displayFull(bool& bOpen, bool& bReturn)
 {
     ImGui::Begin("Developer Console", &bOpen);
-    display();
+    display(bReturn);
     ImGui::End();
 }
 #endif

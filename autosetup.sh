@@ -76,11 +76,12 @@ echo -e "\x1B[32mCopying required libraries ...\033[0m"
 echo -e "\x1B[32m--------------------------------------------------------------------------------\033[0m"
 echo " "
 
-cp Engine/ThirdParty/openal/Release/OpenAL32.dll . || echo " " || exit # Copy the OpenAL32.dll file (needed for Windows)
-cp OpenAL32.dll Release/ || echo " " || exit # Copy the OpenAL32.dll file to the Release directory since this is where we build
-cd ../Engine/ThirdParty/vulkan/ || exit # Change into the Vulkan directory which for some reason contains the needeed libraries for Windows
-cp sndfile.dll ../../../build/ || exit # Copy the sndfile.dll file (responsible for loading and operating with sound files)
+(echo -e "\x1B[32mOpenAL32.dll required for this system!\033[0m" && cp Engine/ThirdParty/openal/Release/OpenAL32.dll .) || echo -e "\x1B[32mOpenAL32.dll not required for this system!\033[0m"
+(cp OpenAL32.dll Release/ && echo -e "\x1B[32mSuccessfully installed OpenAL!\033[0m") || echo -e "\x1B[32mNo need to install OpenAL32!\033[0m"
+cd ../Engine/ThirdParty/vulkan/ || exit # Change into the Vulkan directory which for some reason contains the needed libraries for Windows
+(cp sndfile.dll ../../../build/ && echo -e "\x1B[32msndfile.dll required for this system!\033[0m") || echo -e "\x1B[32msndfile.dll not required for this system!\033[0m" # Copy the sndfile.dll file (responsible for loading and operating with sound files)
 cd ../../../build/ || exit # Go back into the build directory
-cp sndfile.dll Release/ || echo " " || exit # Finally copy the libraries to the Release folder because that is where Visual Studio builds
+(cp sndfile.dll Release/ && echo -e "\x1B[32mInstalled sndfile.dll!\033[0m") || echo -e "\x1B[32mNo need to install sndfile.dll!\033[0m" || exit # Finally copy the libraries to the Release folder because that is where Visual Studio builds
+cp Release/"${prjname}".exe . || echo -e "\x1B[32mProject Installed!\033[0m"
 
 echo -e "\x1B[32mEngine and project successfully installed! \033[0m" # Print a success message in green

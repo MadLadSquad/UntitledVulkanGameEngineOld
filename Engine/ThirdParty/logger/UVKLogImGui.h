@@ -10,8 +10,8 @@
 class UVKLogImGui
 {
 public:
-    void displayFull(bool& bOpen);
-    void display();
+    void displayFull(bool& bOpen, bool& bReturn);
+    void display(bool& bReturn);
 
     static void addToMessageLog(const std::string& msg, LogType type);
     static void addCommand(const CommandType& cmd);
