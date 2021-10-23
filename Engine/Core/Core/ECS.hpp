@@ -1,7 +1,7 @@
 // ECS.hpp
 // Last update 2/7/2021 by Madman10K
 #pragma once
-#include <Core.hpp>
+#include <Core/Types.hpp>
 
 namespace UVK
 {
@@ -12,8 +12,8 @@ namespace UVK
     {
     public:
         ECSManager() = default;
-
-        void each(std::function<void(entt::entity)> func);
+        ECSManager(const ECSManager&) = delete;
+        void operator=(ECSManager const&) = delete;
 
         template<typename T>
         EntityView<T> view()

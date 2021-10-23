@@ -1,9 +1,7 @@
 // Actor.hpp
-// Last update 25/7/2021 by Madman10K
+// Last update 13/10/2021 by Madman10K
 #pragma once
 #include <Core/Global.hpp>
-#include <GameFramework/Actors/ScriptableObject.hpp>
-#include <GameFramework/GameplayClasses/GameInstance.hpp>
 
 namespace UVK
 {
@@ -11,10 +9,15 @@ namespace UVK
     {
     public:
         Actor() = default;
+        explicit Actor(entt::entity ent);
+        Actor(const std::string& nameN, uint64_t idN, const std::string& devNameN);
+        bool operator==(entt::entity ent);
+        bool operator==(Actor actor);
+        bool operator==(bool);
+        explicit operator bool();
 
-        Actor(const std::string &nameN, uint64_t idN, const std::string &devNameN, bool bCreatedByLevel = false);
-
-        void create(const std::string &nameN, uint64_t idN, const std::string &devNameN, bool bCreatedByLevel);
+        void create(const std::string& nameN, uint64_t idN, const std::string& devNameN);
+        bool valid();
 
         template<typename T>
         auto& get()
@@ -31,18 +34,20 @@ namespace UVK
         template<typename T>
         void remove()
         {
-            global.ecs.data().remove_if_exists<T>(entity);
+            global.ecs.data().remove<T>(entity);
         }
 
         template<typename T>
         bool has()
         {
-            return global.ecs.data().has<T>(entity);
+            return global.ecs.data().any_of<T>(entity);
         }
 
+        // Clears all components from the entity so that it can be used later
+        void clear();
         void destroy();
         entt::entity& data();
     private:
-        entt::entity entity;
+        entt::entity entity = entt::null;
     };
 }

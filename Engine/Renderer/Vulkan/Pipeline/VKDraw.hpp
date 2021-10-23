@@ -1,5 +1,5 @@
 // VKDraw.hpp
-// Last update 16/8/2021 by Madman10K
+// Last update 2/9/2021 by Madman10K
 #pragma once
 #ifndef __APPLE
 #include <vulkan/vulkan.h>
@@ -25,9 +25,9 @@ namespace UVK
         bool getNextImage(UVK::VKMesh& mesh1);
     private:
         int currentFrame = 0;
-        Device* device;
-        VKSwapchain* swapchain;
-        VKCommandBuffers* commandBuffers;
+        Device* device = nullptr;
+        VKSwapchain* swapchain = nullptr;
+        VKCommandBuffers* commandBuffers = nullptr;
 
         std::vector<VkSemaphore> imageAvailable;
         std::vector<VkSemaphore> finishedRendering;

@@ -1,19 +1,20 @@
 // CreateFile.cpp
-// Last update 12/8/2021 by Madman10K
+// Last update 17/10/2021 by Madman10K
 #include "CreateFile.hpp"
+#ifndef PRODUCTION
 #include <cpp/imgui_stdlib.h>
 #include <Core.hpp>
 
-#ifndef PRODUCTION
-void CreateFile::display(uint8_t selectedFile, std::string& fileOutLocation, bool& bShowCreateFile1)
+bool CreateFile::display(std::string& fileOutLocation, bool& bShowCreateFile1)
 {
+    bool bReturn = false;
     if (!ImGui::IsPopupOpen("Create a file"))
         ImGui::OpenPopup("Create a file");
 
     if (ImGui::BeginPopupModal("Create a file", &bShowCreateFile1))
     {
         static std::string str;
-
+        static int sf = 0;
         ImGui::Columns(2, nullptr, false);
 
         ImGui::TextWrapped("File type");
@@ -22,52 +23,45 @@ void CreateFile::display(uint8_t selectedFile, std::string& fileOutLocation, boo
         {
             if (ImGui::MenuItem("Game mode"))
             {
-                selectedFile = 1;
+                sf = 1;
                 str = "Game mode";
-                goto end;
             }
 
             if (ImGui::MenuItem("Game state"))
             {
-                selectedFile = 2;
+                sf = 2;
                 str = "Game state";
-                goto end;
             }
 
             if (ImGui::MenuItem("Player state"))
             {
-                selectedFile = 3;
+                sf = 3;
                 str = "Player state";
-                goto end;
             }
 
             if (ImGui::MenuItem("Player controller"))
             {
-                selectedFile = 4;
+                sf = 4;
                 str = "Player controller";
-                goto end;
             }
 
             if (ImGui::MenuItem("Pawn"))
             {
-                selectedFile = 5;
+                sf = 5;
                 str = "Pawn";
-                goto end;
             }
 
             if (ImGui::MenuItem("Level"))
             {
-                selectedFile = 6;
+                sf = 6;
                 str = "Level";
-                goto end;
             }
 
             if (ImGui::MenuItem("Scriptable object"))
             {
-                selectedFile = 7;
+                sf = 7;
                 str = "Scriptable object";
             }
-end:
 
             ImGui::EndCombo();
         }
@@ -76,11 +70,12 @@ end:
         ImGui::Text("Selected file type: %s", str.c_str());
         ImGui::TextWrapped("Location: Source/");
         ImGui::SameLine();
-        ImGui::InputText("##Location##genfile", &fileOutLocation);
+        if (ImGui::InputText("##Location##genfile", &fileOutLocation) || ImGui::IsItemFocused())
+            bReturn = true;
 
         if (ImGui::Button("Cancel"))
         {
-            selectedFile = 0;
+            sf = 0;
             bShowCreateFile1 = false;
             fileOutLocation = "";
         }
@@ -89,70 +84,70 @@ end:
 
         if (ImGui::Button("Create"))
         {
-            // This is so the linter can shut up
-            int lnt;
-            switch (selectedFile)
+            std::string gen;
+            switch (sf)
             {
 #ifdef _WIN32
-                case 1:
-                lnt = system(static_cast<std::string>("cd ../UVKBuildTool/build && UVKBuildTool.exe --game-mode " + fileOutLocation + " && cd ../../").c_str());
+            case 1:
+                gen = "cd ../UVKBuildTool/build && UVKBuildTool.exe --game-mode " + fileOutLocation + " && cd ../../";
                 break;
             case 2:
-                lnt = system(static_cast<std::string>("cd ../UVKBuildTool/build && UVKBuildTool.exe --game-state " + fileOutLocation + " && cd ../../").c_str());
+                gen = "cd ../UVKBuildTool/build && UVKBuildTool.exe --game-state " + fileOutLocation + " && cd ../../";
                 break;
             case 3:
-                lnt = system(static_cast<std::string>("cd ../UVKBuildTool/build && UVKBuildTool.exe --player-state " + fileOutLocation + " && cd ../../").c_str());
+                gen = "cd ../UVKBuildTool/build && UVKBuildTool.exe --player-state " + fileOutLocation + " && cd ../../";
                 break;
             case 4:
-                lnt = system(static_cast<std::string>("cd ../UVKBuildTool/build && UVKBuildTool.exe --player-controller " + fileOutLocation + " && cd ../../").c_str());
+                gen = "cd ../UVKBuildTool/build && UVKBuildTool.exe --player-controller " + fileOutLocation + " && cd ../../";
                 break;
             case 5:
-                lnt = system(static_cast<std::string>("cd ../UVKBuildTool/build && UVKBuildTool.exe --pawn " + fileOutLocation + " && cd ../../").c_str());
+                gen = "cd ../UVKBuildTool/build && UVKBuildTool.exe --pawn " + fileOutLocation + " && cd ../../";
                 break;
             case 6:
-                lnt = system(static_cast<std::string>("cd ../UVKBuildTool/build && UVKBuildTool.exe --level " + fileOutLocation + " && cd ../../").c_str());
+                gen = "cd ../UVKBuildTool/build && UVKBuildTool.exe --level " + fileOutLocation + " && cd ../../";
                 break;
             case 7:
-                lnt = system(static_cast<std::string>("cd ../UVKBuildTool/build && UVKBuildTool.exe --actor " + fileOutLocation + " --add && cd ../../").c_str());
+                gen = "cd ../UVKBuildTool/build && UVKBuildTool.exe --scriptable-object " + fileOutLocation + " --add && cd ../../";
                 break;
 #else
                 case 1:
-                    lnt = system(static_cast<std::string>("cd ../UVKBuildTool/build && ./UVKBuildTool --game-mode " + fileOutLocation + " && cd ../../").c_str());
+                    gen = "cd ../UVKBuildTool/build && ./UVKBuildTool --game-mode " + fileOutLocation + " && cd ../../";
                     break;
                 case 2:
-                    lnt = system(static_cast<std::string>("cd ../UVKBuildTool/build && ./UVKBuildTool --game-state " + fileOutLocation + " && cd ../../").c_str());
+                    gen = "cd ../UVKBuildTool/build && ./UVKBuildTool --game-state " + fileOutLocation + " && cd ../../";
                     break;
                 case 3:
-                    lnt = system(static_cast<std::string>("cd ../UVKBuildTool/build && ./UVKBuildTool --player-state " + fileOutLocation + " && cd ../../").c_str());
+                    gen = "cd ../UVKBuildTool/build && ./UVKBuildTool --player-state " + fileOutLocation + " && cd ../../";
                     break;
                 case 4:
-                    lnt = system(static_cast<std::string>("cd ../UVKBuildTool/build && ./UVKBuildTool --player-controller " + fileOutLocation + " && cd ../../").c_str());
+                    gen = "cd ../UVKBuildTool/build && ./UVKBuildTool --player-controller " + fileOutLocation + " && cd ../../";
                     break;
                 case 5:
-                    lnt = system(static_cast<std::string>("cd ../UVKBuildTool/build && ./UVKBuildTool --pawn " + fileOutLocation + " && cd ../../").c_str());
+                    gen = "cd ../UVKBuildTool/build && ./UVKBuildTool --pawn " + fileOutLocation + " && cd ../../";
                     break;
                 case 6:
-                    lnt = system(static_cast<std::string>("cd ../UVKBuildTool/build && ./UVKBuildTool --level " + fileOutLocation + " && cd ../../").c_str());
+                    gen = "cd ../UVKBuildTool/build && ./UVKBuildTool --level " + fileOutLocation + " && cd ../../";
                     break;
                 case 7:
-                    lnt = system(static_cast<std::string>("cd ../UVKBuildTool/build && ./UVKBuildTool --actor " + fileOutLocation + " --add && cd ../../").c_str());
+                    gen = "cd ../UVKBuildTool/build && ./UVKBuildTool --scriptable-object " + fileOutLocation + " --add && cd ../../";
                     break;
 #endif
                 default:
-                    lnt = 15;
                     break;
             }
 
-            if (lnt)
+            if (system(gen.c_str()))
             {
                 logger.consoleLog("Error when generating files!", UVK_LOG_TYPE_ERROR);
             }
 
             bShowCreateFile1 = false;
             fileOutLocation = "";
+            sf = 0;
         }
 
         ImGui::EndPopup();
     }
+    return bReturn;
 }
 #endif

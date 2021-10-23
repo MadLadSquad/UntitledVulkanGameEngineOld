@@ -20,6 +20,8 @@ namespace UVK
     {
     public:
         VulkanRenderer() = default;
+        VulkanRenderer(const VulkanRenderer&) = delete;
+        void operator=(VulkanRenderer const&) = delete;
     private:
         friend class Renderer;
 

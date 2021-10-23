@@ -1,5 +1,5 @@
 // Statistics.hpp
-// Last update 12/8/2021 by Madman10K
+// Last update 2/9/2021 by Madman10K
 #include "Statistics.hpp"
 
 #ifndef PRODUCTION
@@ -26,19 +26,18 @@ void Statistics::display(double* data, bool& bShow)
     frame++;
     // I literally copy pasted this from the implot_demp.cpp because I do not understand anything because no docs
     ImGui::Text("Framerate Charts:");
-    static RollingBuffer rdata, rdata2;
+    static RollingBuffer rdata, rdata1;
     static float t = 0;
     t += ImGui::GetIO().DeltaTime;
     if (frame > (int)(ImGui::GetIO().Framerate / 60))
     {
         rdata.AddPoint(t, ImGui::GetIO().Framerate);
-        rdata2.AddPoint(t, 1000.0f / ImGui::GetIO().Framerate);
-        frame = 0;
+        rdata1.AddPoint(t, 1000.0f / ImGui::GetIO().Framerate);
     }
 
     // NEVER MAKE THIS HIGHER THAN 1 SECOND. PERFORMANCE IMPACT CAN BE AS LARGE AS 97% LOWER FRAME TIMINGS
     rdata.Span = 0.5f;
-    rdata2.Span = 0.5f;
+    rdata1.Span = 0.5f;
 
     static ImPlotAxisFlags rt_axis = ImPlotAxisFlags_NoTickLabels;
 
@@ -57,7 +56,7 @@ void Statistics::display(double* data, bool& bShow)
     ImPlot::SetNextPlotLimitsY(0, 1);
     if (ImPlot::BeginPlot("##Rollingaaaaa", nullptr, nullptr, ImVec2(-1, 150), 0, rt_axis, rt_axis))
     {
-        ImPlot::PlotLine("##Frametime", &rdata2.Data[0].x, &rdata2.Data[0].y, rdata2.Data.size(), 0, 2 * sizeof(float));
+        ImPlot::PlotLine("##Frametime", &rdata1.Data[0].x, &rdata1.Data[0].y, rdata1.Data.size(), 0, 2 * sizeof(float));
         ImPlot::EndPlot();
     }
 

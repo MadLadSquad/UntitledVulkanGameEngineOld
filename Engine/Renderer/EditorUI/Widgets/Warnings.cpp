@@ -2,6 +2,7 @@
 // Last update 1/8/2021 by Madman10K
 #include <GL/glew.h>
 #include "Warnings.hpp"
+#ifndef PRODUCTION
 #include <imgui.h>
 #include <Core/Global.hpp>
 #include <GameFramework/GameplayClasses/Level/Level.hpp>
@@ -45,16 +46,15 @@ void Warnings::displayGenerateWarning(bool& bOpen)
         if (ImGui::Button("Regenerate##ed"))
         {
             bOpen = false;
-            int lnt;
 #ifdef _WIN32
-            lnt = system("cd ../UVKBuildTool/build/ && UVKBuildTool.exe --generate && cd ../../");
+            std::string temp = "cd ../UVKBuildTool/build/ && UVKBuildTool.exe --generate && cd ../../";
 #else
-            lnt = system("cd ../UVKBuildTool/build/ && ./UVKBuildTool --generate && cd ../../");
+            std::string temp = "cd ../UVKBuildTool/build/ && ./UVKBuildTool --generate && cd ../../";
 #endif
 
-            if (lnt)
+            if (system(temp.c_str()))
             {
-                logger.consoleLog("Error when regenerating files!", UVK_LOG_TYPE_ERROR, lnt);
+                logger.consoleLog("Error when regenerating files!", UVK_LOG_TYPE_ERROR);
             }
         }
 
@@ -83,3 +83,4 @@ void Warnings::displaySaveWarning(bool& bOpen)
         ImGui::EndPopup();
     }
 }
+#endif

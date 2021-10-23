@@ -1,11 +1,12 @@
 // SceneHierarchy.cpp
-// Last update 2/7/2021 by Madman10K
-#include <GL/glew.h>
+// Last update 17/10/2021 by Madman10K
 #include "SceneHierarchy.hpp"
+#ifndef PRODUCTION
 #include <Core/Actor.hpp>
 #include <GameFramework/Actors/ActorManager.hpp>
-#include <Core/Events/Events.hpp>
 #include <GameFramework/Components/Components.hpp>
+#include <GameFramework/Components/Components/CoreComponent.hpp>
+#include <State/StateTracker.hpp>
 
 void SceneHierarchy::destroyEntity(UVK::Actor& selectedEntity)
 {
@@ -13,7 +14,45 @@ void SceneHierarchy::destroyEntity(UVK::Actor& selectedEntity)
 
     if (a.id != 330)
     {
-        selectedEntity.destroy();
+        UVK::Transaction transaction =
+        {
+            .undofunc = [](UVK::TransactionPayload& payload)
+            {
+                payload.affectedEntity.add<UVK::CoreComponent>() = payload.coreComponent;
+                if (payload.bHasComponents[COMPONENT_MESH])
+                {
+                    payload.affectedEntity.add<UVK::MeshComponent>() = payload.meshComponent;
+                }
+
+                if (payload.bHasComponents[COMPONENT_MESH_RAW])
+                {
+                    payload.affectedEntity.add<UVK::MeshComponentRaw>() = payload.meshComponentRaw;
+                }
+            },
+            .redofunc = [](UVK::TransactionPayload& payload)
+            {
+                payload.affectedEntity.clear();
+            },
+            .transactionPayload =
+            {
+                .affectedEntity = selectedEntity,
+                .coreComponent = a
+            }
+        };
+        if (selectedEntity.has<UVK::MeshComponent>())
+        {
+            transaction.transactionPayload.meshComponent = selectedEntity.get<UVK::MeshComponent>();
+            transaction.transactionPayload.bHasComponents[COMPONENT_MESH] = true;
+        }
+
+        if (selectedEntity.has<UVK::MeshComponentRaw>())
+        {
+            transaction.transactionPayload.meshComponentRaw = selectedEntity.get<UVK::MeshComponentRaw>();
+            transaction.transactionPayload.bHasComponents[COMPONENT_MESH_RAW] = true;
+        }
+        UVK::StateTracker::push(transaction);
+
+        selectedEntity.clear();
     }
 }
 
@@ -27,12 +66,28 @@ void SceneHierarchy::addEntity(int& entNum)
     b.id = 0;
     b.devName = "a";
 
+    UVK::Transaction transaction =
+    {
+        .undofunc = [](UVK::TransactionPayload& payload)
+        {
+            payload.affectedEntity.clear();
+        },
+        .redofunc = [](UVK::TransactionPayload& payload)
+        {
+            payload.affectedEntity.add<UVK::CoreComponent>() = payload.coreComponent;
+        },
+        .transactionPayload =
+        {
+            .affectedEntity = UVK::Actor(a),
+            .coreComponent = b
+        }
+    };
+    UVK::StateTracker::push(transaction);
+
     entNum++;
 }
 
-#ifndef PRODUCTION
-
-void SceneHierarchy::display(UVK::Actor& selectedEntity, std::string &entAppend, int &entNum, bool& bShow)
+void SceneHierarchy::display(UVK::Actor& selectedEntity, std::string& entAppend, int& entNum, bool& bShow)
 {
     bool bDestroy = false;
 
@@ -47,16 +102,16 @@ void SceneHierarchy::display(UVK::Actor& selectedEntity, std::string &entAppend,
 
     ImGui::EndMenuBar();
 
-    // to be fixed immediately because it's a big performance drain
-    UVK::ECS::data().each([&](entt::entity ent)
+    for (auto& a: UVK::ECS::data().view<UVK::CoreComponent>())
     {
-        const auto& a = UVK::ECS::data().get<UVK::CoreComponent>(ent);
+        const auto& b = UVK::ECS::data().get<UVK::CoreComponent>(a);
 
-        if (ImGui::Selectable(static_cast<std::string>(a.name + ", " + std::to_string(a.id)).c_str()))
+        if (ImGui::Selectable(static_cast<std::string>(b.name + ", " + std::to_string(b.id)).c_str()))
         {
-            selectedEntity.data() = ent;
+            if (UVK::ECS::data().valid(a))
+                selectedEntity.data() = a;
         }
-    });
+    }
 
     if (bDestroy && UVK::ECS::data().valid(selectedEntity.data()))
     {

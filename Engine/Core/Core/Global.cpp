@@ -1,8 +1,8 @@
 // Global.cpp
-// Last update 1/8/2021 by Madman10K
-#include <GL/glew.h>
+// Last update 22/9/2021 by Madman10K
 #include "Global.hpp"
 #include <GameFramework/GameplayClasses/Level/Level.hpp>
+#include <glm/glm/gtx/quaternion.hpp>
 
 UVK::UVKGlobal::UVKGlobal()
 {
@@ -17,6 +17,7 @@ UVK::UVKGlobal::UVKGlobal()
 UVK::UVKGlobal::~UVKGlobal()
 {
     delete currentLevel;
+    delete instance;
 }
 
 void UVK::UVKGlobal::finalizeOpening()
@@ -29,49 +30,6 @@ void UVK::UVKGlobal::finalizeOpening()
 std::vector<UVK::InputAction>& UVK::UVKGlobal::getActions()
 {
     return inputActionList;
-}
-
-std::vector<UVK::InputAction>& UVK::InputActions::getActions()
-{
-    return global.getActions();
-}
-
-void UVK::Math::translate(glm::mat4& mat, UVK::FVector vt)
-{
-    if (global.bUsesVulkan)
-    {
-        mat = glm::translate(mat, FVector(vt.x, -vt.y, vt.z));
-    }
-    else
-    {
-        mat = glm::translate(mat, vt);
-    }
-}
-
-void UVK::Math::rotate(glm::mat4& mat, UVK::FVector vt)
-{
-    if (global.bUsesVulkan)
-    {
-        auto rot = glm::toMat4(glm::quat(FVector(vt.x, -vt.y, vt.z)));
-        mat *= rot;
-    }
-    else
-    {
-        auto rot = glm::toMat4(glm::quat(vt));
-        mat *= rot;
-    }
-}
-
-void UVK::Math::scale(glm::mat4& mat, UVK::FVector vt)
-{
-    if (global.bUsesVulkan)
-    {
-        mat = glm::scale(mat, FVector(vt.x, -vt.y, vt.z));
-    }
-    else
-    {
-        mat = glm::scale(mat, vt);
-    }
 }
 
 bool& UVK::UVKGlobal::getEditor()

@@ -1,5 +1,5 @@
 // VKGraphicsPipeline.hpp
-// Last update 16/8/2021 by Madman10K
+// Last update 2/9/2021 by Madman10K
 #pragma once
 #ifndef __APPLE__
     #include <vulkan/vulkan.h>
@@ -26,9 +26,9 @@ namespace UVK
         VkRenderPass& getRenderPass();
         VkPipelineLayout& pipelineLayout();
     private:
-        VKSwapchain* swapchain;
-        VKDevice* device;
-        VkDescriptorSetLayout* descriptorSetLayout;
+        VKSwapchain* swapchain = nullptr;
+        VKDevice* device = nullptr;
+        VkDescriptorSetLayout* descriptorSetLayout = nullptr;
 
         VkPipelineLayout layout{};
         VkRenderPass renderPass{};

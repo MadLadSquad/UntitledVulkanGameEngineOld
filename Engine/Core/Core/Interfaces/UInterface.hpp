@@ -9,7 +9,9 @@ namespace UVK
     class UI
     {
     public:
-        UI() = default;
+        UI() = delete;
+        UI(const UI&) = delete;
+        void operator=(UI const&) = delete;
 
         static void addEvent(const std::function<void(void)>& func);
         static void addEventImGui(const std::function<void(void)>& func);

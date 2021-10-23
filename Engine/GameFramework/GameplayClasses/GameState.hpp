@@ -1,5 +1,5 @@
 // GameState.hpp
-// Last update 19/7/2021 by Madman10K
+// Last update 27/8/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 
@@ -22,6 +22,12 @@ namespace UVK
         {
             T* gs = new T();
             return gs;
+        }
+
+        template<typename T>
+        static T* cast(GameState* gs)
+        {
+            return static_cast<T*>(gs);
         }
 
         static void destroyGameState(GameState* gs);

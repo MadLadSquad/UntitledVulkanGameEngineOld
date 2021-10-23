@@ -1,12 +1,11 @@
 // Engine.hpp
-// Last update 25/7/2021 by Madman10K
+// Last update 2/9/2021 by Madman10K
 
 // A header file containing every include you would want from the engine
 #pragma once
-#include <GL/glew.h>
 #include "Renderer/Renderer.hpp"
 #include "GameFramework/Actors/ScriptableObject.hpp"
-#include "GameFramework/Actors/APawn.hpp"
+#include "GameFramework/Actors/Pawn.hpp"
 #include "GameFramework/GameplayClasses/GameInstance.hpp"
 #include "GameFramework/GameplayClasses/GameMode.hpp"
 #include "GameFramework/GameplayClasses/GameState.hpp"
@@ -17,3 +16,4 @@
 #include "GameFramework/Actors/ActorManager.hpp"
 #include "Engine/Core/Core/Global.hpp"
 #include "GameFramework/GameplayClasses/Level/Level.hpp"
+#include "GameFramework/Components/Components/CoreComponent.hpp"

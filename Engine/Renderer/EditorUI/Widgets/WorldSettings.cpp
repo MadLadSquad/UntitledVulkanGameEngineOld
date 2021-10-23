@@ -1,15 +1,17 @@
 // WorldSettings.cpp
-// Last update 1/8/2021 by Madman10K
+// Last update 17/10/2021 by Madman10K
 #include "WorldSettings.hpp"
 
 #ifndef PRODUCTION
-void WorldSettings::display(UVK::FVector4& colour, UVK::FVector4& ambientLight, std::string& name, bool& bShow)
+bool WorldSettings::display(UVK::FVector4& colour, UVK::FVector4& ambientLight, std::string& name, bool& bShow)
 {
+    bool bReturn = false;
     ImGui::Begin("World Settings", &bShow);
 
     ImGui::TextWrapped("Level name");
     ImGui::SameLine();
-    ImGui::InputText("##Level Name ln", &name);
+    if (ImGui::InputText("##Level Name ln", &name) || ImGui::IsItemFocused())
+        bReturn = true;
 
     ImGui::TextWrapped("Colour background");
     ImGui::SameLine();
@@ -20,5 +22,6 @@ void WorldSettings::display(UVK::FVector4& colour, UVK::FVector4& ambientLight, 
     ImGui::ColorEdit4("##Ambient Light al", (float*)&ambientLight); // W is for ambient light intensity
 
     ImGui::End();
+    return bReturn;
 }
 #endif

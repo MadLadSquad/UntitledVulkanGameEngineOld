@@ -1,10 +1,9 @@
 // About.cpp
 // Last update 12/8/2021 by Madman10K
-#include <GL/glew.h>
 #include "About.hpp"
+#ifndef PRODUCTION
 #include "AssetSlot.hpp"
 
-#ifndef PRODUCTION
 void About::display(std::string& engineVersion, std::string& projectName, std::string& projectVersion, UVK::Texture& logo, bool& bShow)
 {
     if (!ImGui::IsPopupOpen("About us"))

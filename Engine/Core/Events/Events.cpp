@@ -1,44 +1,66 @@
 // Events.cpp
-// Last update 2/7/2021 by Madman10K
-#include <GL/glew.h>
+// Last update 13/9/2021 by Madman10K
 #include "Events.hpp"
 #include <GameFramework/Actors/ScriptableObject.hpp>
-
-void UVK::Events::add(ScriptableObject* sco)
-{
-    objList.push_back(sco);
-}
+#include <Core/Global.hpp>
+#include <GameFramework/GameplayClasses/GameInstance.hpp>
 
 void UVK::Events::clear()
 {
-    objList.clear();
+    global.instance->actorManager.destroy();
+    global.instance->actorManager.init();
 }
 
 void UVK::Events::callTick(float deltaTime)
 {
-    for (auto& a : objList)
+    for (auto& a : global.instance->actorManager.data())
     {
-        a->tick(deltaTime);
+        switch (a->activityFlags)
+        {
+        case SCRIPTABLE_OBJECT_ACTIVITY_FLAG_DISABLED:
+            break;
+        case SCRIPTABLE_OBJECT_ACTIVITY_FLAG_ACTIVE:
+            a->tick(deltaTime);
+            break;
+        case SCRIPTABLE_OBJECT_ACTIVITY_FLAG_INACTIVE:
+            a->inactiveTick(deltaTime);
+            break;
+        }
     }
 }
 
 void UVK::Events::callBegin()
 {
-    for (auto& a : objList)
+    for (auto& a : global.instance->actorManager.data())
     {
-        a->beginPlay();
+        switch (a->activityFlags)
+        {
+        case SCRIPTABLE_OBJECT_ACTIVITY_FLAG_DISABLED:
+            break;
+        case SCRIPTABLE_OBJECT_ACTIVITY_FLAG_ACTIVE:
+            a->beginPlay();
+            break;
+        case SCRIPTABLE_OBJECT_ACTIVITY_FLAG_INACTIVE:
+            a->inactiveBegin();
+            break;
+        }
     }
 }
 
 void UVK::Events::callEnd()
 {
-    for (auto& a : objList)
+    for (auto& a : global.instance->actorManager.data())
     {
-        a->endPlay();
+        switch (a->activityFlags)
+        {
+        case SCRIPTABLE_OBJECT_ACTIVITY_FLAG_DISABLED:
+            break;
+        case SCRIPTABLE_OBJECT_ACTIVITY_FLAG_ACTIVE:
+            a->endPlay();
+            break;
+        case SCRIPTABLE_OBJECT_ACTIVITY_FLAG_INACTIVE:
+            a->inactiveEnd();
+            break;
+        }
     }
-}
-
-std::vector<UVK::ScriptableObject*>& UVK::Events::data()
-{
-    return objList;
 }

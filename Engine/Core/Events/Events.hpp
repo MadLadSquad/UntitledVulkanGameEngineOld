@@ -1,5 +1,5 @@
 // Events.hpp
-// Last update 2/7/2021 by Madman10K
+// Last update 13/9/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 
@@ -12,20 +12,18 @@ namespace UVK
     class Events
     {
     public:
-        Events() = default;
+        Events() = delete;
+        Events(const Events&) = delete;
+        void operator=(Events const&) = delete;
     private:
         friend class Level;
         friend class GLPipeline;
         friend class Actor;
 
-        void callTick(float deltaTime);
-        void callBegin();
-        void callEnd();
+        static void callTick(float deltaTime);
+        static void callBegin();
+        static void callEnd();
 
-        void clear();
-        void add(ScriptableObject* sco);
-
-        std::vector<ScriptableObject*>& data();
-        std::vector<ScriptableObject*> objList;
+        static void clear();
     };
 }

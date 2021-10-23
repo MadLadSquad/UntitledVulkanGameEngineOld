@@ -1,21 +1,22 @@
 // OpenLevelWidget.cpp
-// Last update 1/8/2021 by Madman10K
-#include <GL/glew.h>
+// Last update 17/10/2021 by Madman10K
 #include "OpenLevelWidget.hpp"
+#ifndef PRODUCTION
 #include <imgui.h>
 #include <cpp/imgui_stdlib.h>
 #include <Renderer/EditorUI/Classes/EditorLevel.hpp>
 
-#ifndef PRODUCTION
-void OpenLevelWidget::display(std::string &openLevel, bool &bShowOpenLevelWidget, double& dr, UVK::FVector4& colour)
+bool OpenLevelWidget::display(std::string &openLevel, bool &bShowOpenLevelWidget, double& dr, UVK::FVector4& colour)
 {
+    bool bReturn = false;
     if (!ImGui::IsPopupOpen("Open Level"))
         ImGui::OpenPopup("Open Level");
     if (ImGui::BeginPopupModal("Open Level", &bShowOpenLevelWidget))
     {
         ImGui::TextWrapped("File location: Content/");
         ImGui::SameLine();
-        ImGui::InputText("##File location", &openLevel);
+        if (ImGui::InputText("##File location", &openLevel) || ImGui::IsItemFocused())
+            bReturn = true;
         ImGui::SameLine();
         ImGui::TextWrapped(".uvklevel");
 
@@ -32,7 +33,8 @@ void OpenLevelWidget::display(std::string &openLevel, bool &bShowOpenLevelWidget
             Timer tm;
             tm.startRecording();
 
-            UVK::Level::open<UVK::EditorLevel>(static_cast<std::string>("Content/" + openLevel).c_str());
+            auto loc = "../Content/" + openLevel;
+            UVK::Level::open<UVK::EditorLevel>(loc);
 
             tm.stopRecording();
             dr = tm.getDuration();
@@ -42,5 +44,6 @@ void OpenLevelWidget::display(std::string &openLevel, bool &bShowOpenLevelWidget
 
         ImGui::EndPopup();
     }
+    return bReturn;
 }
 #endif

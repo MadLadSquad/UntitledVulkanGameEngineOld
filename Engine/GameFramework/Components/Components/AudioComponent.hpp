@@ -1,5 +1,5 @@
 // AudioComponent.hpp
-// Last update 6/7/2021 by Madman10K
+// Last update 22/9/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 #include <Audio/Audio.hpp>
@@ -7,24 +7,20 @@
 namespace UVK
 {
     struct AudioSourceData;
+    struct CoreComponent;
 
     /**
      * @brief A simple audio component
      */
     struct AudioComponent
     {
-        void init(AudioSourceData dt);
-
-        void play();
-        void stop();
-        void pause();
-        void resume();
-
-
-        AudioSourceData data;
-#ifndef __MINGW32__
-        AudioSource src;
-#endif
+    public:
+        void create(UVK::Actor* act, const char* file);
+        void tick();
     private:
+        std::string currentFile;
+
+        UVK::CoreComponent* core = nullptr;
+        UVK::Actor* actor = nullptr;
     };
 }

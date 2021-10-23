@@ -1,16 +1,18 @@
 // Settings.cpp
-// Last update 2/8/2021 by Madman10K
-#include <GL/glew.h>
+// Last update 17/10/2021 by Madman10K
 #include "Settings.hpp"
+#ifndef PRODUCTION
 #include <imgui.h>
 #include <cpp/imgui_stdlib.h>
 #include <Core/Global.hpp>
 #include <Renderer/EditorUI/Style/Theme.hpp>
 #include <Core/Interfaces/SettingsManager.hpp>
 #include <Renderer/Renderer.hpp>
+#include <Core/Utility.hpp>
 
-void Settings::displayWindow(bool& bOpen)
+bool Settings::displayWindow(bool& bOpen)
 {
+    bool bReturn = false;
     if (!ImGui::IsPopupOpen("Window Settings"))
         ImGui::OpenPopup("Window Settings");
     if (ImGui::BeginPopupModal("Window Settings", &bOpen))
@@ -25,15 +27,18 @@ void Settings::displayWindow(bool& bOpen)
 
         ImGui::TextWrapped("Window Size");
         ImGui::SameLine();
-        ImGui::InputInt2("##Window Size", arr);
+        if (ImGui::InputScalarN("##Window Size", ImGuiDataType_S32, arr, 2) || ImGui::IsItemFocused())
+            bReturn = true;
 
         ImGui::TextWrapped("Window Name");
         ImGui::SameLine();
-        ImGui::InputText("##Window Name", &UVK::Window::name());
+        if (ImGui::InputText("##Window Name", &UVK::Window::name()) || ImGui::IsItemFocused())
+            bReturn = true;
 
         ImGui::TextWrapped("Window Icon Location");
         ImGui::SameLine();
-        ImGui::InputText("##Window Icon location", &UVK::Window::iconLocation());
+        if (ImGui::InputText("##Window Icon location", &UVK::Window::iconLocation()) || ImGui::IsItemFocused())
+            bReturn = true;
 
         UVK::Window::windowSize().x = (float)arr[0];
         UVK::Window::windowSize().y = (float)arr[1];
@@ -49,10 +54,12 @@ void Settings::displayWindow(bool& bOpen)
         }
         ImGui::EndPopup();
     }
+    return bReturn;
 }
 
-void Settings::displayRenderer(bool& bOpen)
+bool Settings::displayRenderer(bool& bOpen, UVK::FilesystemWidgetData& filesystemData)
 {
+    bool bReturn = false;
     if (!ImGui::IsPopupOpen("Renderer Settings"))
         ImGui::OpenPopup("Renderer Settings");
     if (ImGui::BeginPopupModal("Renderer Settings", &bOpen))
@@ -61,7 +68,6 @@ void Settings::displayRenderer(bool& bOpen)
 
         static bool bVulkan = false;
         static bool first = false;
-
         if (!first)
         {
             bVulkan = UVK::global.bUsesVulkan;
@@ -74,15 +80,36 @@ void Settings::displayRenderer(bool& bOpen)
 
         ImGui::TextWrapped("Theme Location");
         ImGui::SameLine();
-        ImGui::InputText("##Theme Location", &UVK::SettingsManager::getRendererSettings().themeLoc);
+        if (ImGui::InputText("##Theme Location", &UVK::SettingsManager::getRendererSettings().themeLoc) || ImGui::IsItemFocused())
+            bReturn = true;
 
         ImGui::TextWrapped("V-Sync");
         ImGui::SameLine();
         ImGui::Checkbox("##V-Sync", &UVK::Renderer::getVSync());
 
-        ImGui::TextWrapped("Immediate frame display");
+        ImGui::TextWrapped("Immediate Frame Display");
         ImGui::SameLine();
         ImGui::Checkbox("##V-Sync immediate", &UVK::Renderer::getImmediateRender());
+
+        ImGui::TextWrapped("Max Saved Transactions");
+        ImGui::SameLine();
+        ImGui::InputScalar("##MaxSaveDTransactions", ImGuiDataType_U32, &UVK::SettingsManager::getRendererSettings().maxSavedTransactions);
+
+        ImGui::TextWrapped("Filesystem Element Padding");
+        ImGui::SameLine();
+        ImGui::InputScalar("##FilesystemElementPadding", ImGuiDataType_Float, &filesystemData.padding);
+
+        ImGui::TextWrapped("Filesystem Element Image Size");
+        ImGui::SameLine();
+        ImGui::InputScalar("##FilesystemElementImageSize", ImGuiDataType_Float, &filesystemData.imageSize);
+
+        ImGui::TextWrapped("Filesystem Use Previews");
+        ImGui::SameLine();
+        ImGui::Checkbox("##FilesystemPreviews", &filesystemData.bUsePreviews);
+
+        ImGui::TextWrapped("Filesystem Max Elements With Previews");
+        ImGui::SameLine();
+        ImGui::InputScalar("##FilesystemMaxElementsWithPreviews", ImGuiDataType_U32, &filesystemData.maxFileNum);
 
         if (ImGui::Button("Close"))
         {
@@ -98,15 +125,18 @@ void Settings::displayRenderer(bool& bOpen)
         }
         ImGui::EndPopup();
     }
+    return bReturn;
 }
 
-void Settings::displayKeybindEditor(bool& bOpen)
+bool Settings::displayKeybindEditor(bool& bOpen)
 {
+    bool bReturn = false;
     if (!ImGui::IsPopupOpen("Editor Keybinds"))
         ImGui::OpenPopup("Editor Keybinds");
     if (ImGui::BeginPopupModal("Editor Keybinds", &bOpen))
     {
-        for (auto& a : UVK::InputActions::getActions())
+        int i = 0;
+        for (auto& a : UVK::Input::getActions())
         {
             if (a.name.find("editor-") != std::string::npos)
             {
@@ -114,15 +144,13 @@ void Settings::displayKeybindEditor(bool& bOpen)
 
                 ImGui::TextWrapped("Name");
                 ImGui::SameLine();
-                ImGui::InputText(static_cast<std::string>("##Name##" + a.name + std::to_string(a.keyCode)).c_str(), &a.name);
-
-                int i = a.keyCode;
-
+                if (ImGui::InputText(static_cast<std::string>("##Name##" + a.name + std::to_string(a.keyCode)).c_str(), &a.name) || ImGui::IsItemFocused())
+                    bReturn = true;
                 ImGui::TextWrapped("Keycode");
                 ImGui::SameLine();
-                ImGui::InputInt("##Keycode", &i);
-                a.keyCode = i;
+                showKeySelect(static_cast<std::string>("##Name##" + a.name + std::to_string(a.keyCode) + std::to_string(i)).c_str(), a.keyCode);
                 ImGui::Separator();
+                i++;
             }
         }
 
@@ -137,10 +165,12 @@ void Settings::displayKeybindEditor(bool& bOpen)
         }
         ImGui::EndPopup();
     }
+    return bReturn;
 }
 
-void Settings::displayKeybindGame(bool& bOpen)
+bool Settings::displayKeybindGame(bool& bOpen)
 {
+    bool bReturn = false;
     if (!ImGui::IsPopupOpen("Game Keybinds"))
         ImGui::OpenPopup("Game Keybinds");
     if (ImGui::BeginPopupModal("Game Keybinds", &bOpen, ImGuiWindowFlags_MenuBar))
@@ -155,36 +185,37 @@ void Settings::displayKeybindGame(bool& bOpen)
             action.name = "NewAction" + std::to_string(newact);
             action.keyCode = 0;
 
-            UVK::InputActions::getActions().push_back(action);
+            UVK::Input::getActions().push_back(action);
             ++newact;
         }
         if (ImGui::MenuItem("- Remove Keybind##scn")) bDestroy = true;
 
         ImGui::EndMenuBar();
 
-        for (int i = 0; i < UVK::InputActions::getActions().size(); i++)
+        int j = 0;
+        for (int i = 0; i < UVK::Input::getActions().size(); i++)
         {
-            if (UVK::InputActions::getActions()[i].name.find("editor-") == std::string::npos)
+            if (UVK::Input::getActions()[i].name.find("editor-") == std::string::npos)
             {
                 if (bDestroy)
                 {
-                    UVK::InputActions::getActions().erase(UVK::InputActions::getActions().begin() + i);
+                    UVK::Input::getActions().erase(UVK::Input::getActions().begin() + i);
                     bDestroy = false;
                 }
                 else
                 {
-                    ImGui::TextWrapped("%s", UVK::InputActions::getActions()[i].name.c_str());
+                    ImGui::TextWrapped("%s", UVK::Input::getActions()[i].name.c_str());
 
                     ImGui::TextWrapped("Name");
                     ImGui::SameLine();
-                    ImGui::InputText(static_cast<std::string>("##Name##" + UVK::InputActions::getActions()[i].name + std::to_string(UVK::InputActions::getActions()[i].keyCode)).c_str(), &UVK::InputActions::getActions()[i].name);
+                    if (ImGui::InputText(static_cast<std::string>("##Name##" + UVK::Input::getActions()[i].name + std::to_string(UVK::Input::getActions()[i].keyCode)).c_str(), &UVK::Input::getActions()[i].name) || ImGui::IsItemFocused())
+                        bReturn = true;
 
-                    int a = UVK::InputActions::getActions()[i].keyCode;
                     ImGui::TextWrapped("Keycode");
                     ImGui::SameLine();
-                    ImGui::InputInt(static_cast<std::string>("##Keycode##" + UVK::InputActions::getActions()[i].name + std::to_string(UVK::InputActions::getActions()[i].keyCode)).c_str(), &a);
-                    UVK::InputActions::getActions()[i].keyCode = a;
+                    showKeySelect(static_cast<std::string>("##Keycode##" + UVK::Input::getActions()[i].name + std::to_string(UVK::Input::getActions()[i].keyCode) + std::to_string(j)).c_str(), UVK::Input::getActions()[i].keyCode);
                     ImGui::Separator();
+                    j++;
                 }
             }
         }
@@ -200,10 +231,12 @@ void Settings::displayKeybindGame(bool& bOpen)
         }
         ImGui::EndPopup();
     }
+    return bReturn;
 }
 
-void Settings::displayThemeEditor(bool& bOpen)
+bool Settings::displayThemeEditor(bool& bOpen)
 {
+    bool bReturn = false;
     if (!ImGui::IsPopupOpen("Theme Editor"))
         ImGui::OpenPopup("Theme Editor");
     if (ImGui::BeginPopupModal("Theme Editor", &bOpen))
@@ -398,15 +431,18 @@ void Settings::displayThemeEditor(bool& bOpen)
 
         ImGui::TextWrapped("Font Location: Content/");
         ImGui::SameLine();
-        ImGui::InputText("##Font Location", &fontLoc);
+        if (ImGui::InputText("##Font Location", &fontLoc) || ImGui::IsItemFocused())
+            bReturn = true;
 
         ImGui::TextWrapped("Font Size");
         ImGui::SameLine();
-        ImGui::InputInt("##Font Size", &fontSize);
+        if (ImGui::InputScalar("##Font Size", ImGuiDataType_U16, &fontSize) || ImGui::IsItemFocused())
+            bReturn = true;
 
         ImGui::TextWrapped("Output Location: Config/Settings/");
         ImGui::SameLine();
-        ImGui::InputText("##Output Location", &outName);
+        if (ImGui::InputText("##Output Location", &outName) || ImGui::IsItemFocused())
+            bReturn = true;
         ImGui::SameLine();
         ImGui::TextWrapped(".uvktheme");
 
@@ -423,29 +459,35 @@ void Settings::displayThemeEditor(bool& bOpen)
         }
         ImGui::EndPopup();
     }
+    return bReturn;
 }
 
-void Settings::displayProjectSettings(std::string& name, std::string& ver, std::string& enginever, std::string& startupLevel, bool& bOpen)
+bool Settings::displayProjectSettings(std::string& name, std::string& ver, std::string& enginever, std::string& startupLevel, bool& bOpen)
 {
+    bool bReturn = false;
     if (!ImGui::IsPopupOpen("Project Settings"))
         ImGui::OpenPopup("Project Settings");
     if (ImGui::BeginPopupModal("Project Settings", &bOpen))
     {
         ImGui::TextWrapped("Project Name");
         ImGui::SameLine();
-        ImGui::InputText("##Project Name", &name);
+        if (ImGui::InputText("##Project Name", &name) || ImGui::IsItemFocused())
+            bReturn = true;
 
         ImGui::TextWrapped("Project Version");
         ImGui::SameLine();
-        ImGui::InputText("##Project Version", &ver);
+        if (ImGui::InputText("##Project Version", &ver) || ImGui::IsItemFocused())
+            bReturn = true;
 
         ImGui::TextWrapped("Engine Version");
         ImGui::SameLine();
-        ImGui::InputText("##Engine Version", &enginever);
+        if (ImGui::InputText("##Engine Version", &enginever) || ImGui::IsItemFocused())
+            bReturn = true;
 
         ImGui::TextWrapped("Startup Level Name");
         ImGui::SameLine();
-        ImGui::InputText("##Startup Level Name", &startupLevel);
+        if (ImGui::InputText("##Startup Level Name", &startupLevel) || ImGui::IsItemFocused())
+            bReturn = true;
         ImGui::SameLine();
         ImGui::TextWrapped(".uvklevel");
 
@@ -481,4 +523,159 @@ void Settings::displayProjectSettings(std::string& name, std::string& ver, std::
         }
         ImGui::EndPopup();
     }
+    return bReturn;
 }
+
+void Settings::showKeySelect(const char* name, uint16_t& key)
+{
+    static std::string text;
+    UVK::Utility::keyToText(text, key, true);
+
+    if (ImGui::BeginCombo(name, text.c_str()))
+    {
+        if (ImGui::MenuItem("Unknown Key")) key = Keys::UnknownKey;
+        if (ImGui::MenuItem("Space")) key = Keys::Space;
+        if (ImGui::MenuItem("Apostrophe")) key = Keys::Apostrophe;
+        if (ImGui::MenuItem("Comma")) key = Keys::Comma;
+        if (ImGui::MenuItem("Minus")) key = Keys::Minus;
+        if (ImGui::MenuItem("Period")) key = Keys::Period;
+        if (ImGui::MenuItem("Slash")) key = Keys::Slash;
+        if (ImGui::MenuItem("Zero")) key = Keys::Zero;
+        if (ImGui::MenuItem("One")) key = Keys::One;
+        if (ImGui::MenuItem("Two")) key = Keys::Two;
+        if (ImGui::MenuItem("Three")) key = Keys::Three;
+        if (ImGui::MenuItem("Four")) key = Keys::Four;
+        if (ImGui::MenuItem("Five")) key = Keys::Five;
+        if (ImGui::MenuItem("Six")) key = Keys::Six;
+        if (ImGui::MenuItem("Seven")) key = Keys::Seven;
+        if (ImGui::MenuItem("Eight")) key = Keys::Eight;
+        if (ImGui::MenuItem("Nine")) key = Keys::Nine;
+        if (ImGui::MenuItem("Semicolon")) key = Keys::Semicolon;
+        if (ImGui::MenuItem("Equal")) key = Keys::Equal;
+
+        ImGui::Separator();
+
+        if (ImGui::MenuItem("A")) key = Keys::A;
+        if (ImGui::MenuItem("B")) key = Keys::B;
+        if (ImGui::MenuItem("C")) key = Keys::C;
+        if (ImGui::MenuItem("D")) key = Keys::D;
+        if (ImGui::MenuItem("E")) key = Keys::E;
+        if (ImGui::MenuItem("F")) key = Keys::F;
+        if (ImGui::MenuItem("G")) key = Keys::G;
+        if (ImGui::MenuItem("H")) key = Keys::H;
+        if (ImGui::MenuItem("I")) key = Keys::I;
+        if (ImGui::MenuItem("J")) key = Keys::J;
+        if (ImGui::MenuItem("K")) key = Keys::K;
+        if (ImGui::MenuItem("L")) key = Keys::L;
+        if (ImGui::MenuItem("M")) key = Keys::M;
+        if (ImGui::MenuItem("N")) key = Keys::N;
+        if (ImGui::MenuItem("O")) key = Keys::O;
+        if (ImGui::MenuItem("P")) key = Keys::P;
+        if (ImGui::MenuItem("Q")) key = Keys::Q;
+        if (ImGui::MenuItem("R")) key = Keys::R;
+        if (ImGui::MenuItem("S")) key = Keys::S;
+        if (ImGui::MenuItem("T")) key = Keys::T;
+        if (ImGui::MenuItem("U")) key = Keys::U;
+        if (ImGui::MenuItem("V")) key = Keys::V;
+        if (ImGui::MenuItem("W")) key = Keys::W;
+        if (ImGui::MenuItem("X")) key = Keys::X;
+        if (ImGui::MenuItem("Y")) key = Keys::Y;
+        if (ImGui::MenuItem("Z")) key = Keys::Z;
+
+        ImGui::Separator();
+
+        if (ImGui::MenuItem("Left Bracket")) key = Keys::LeftBracket;
+        if (ImGui::MenuItem("Backslash")) key = Keys::Backslash;
+        if (ImGui::MenuItem("Right Bracket")) key = Keys::RightBracket;
+        if (ImGui::MenuItem("Grave Accent")) key = Keys::GraveAccent;
+        if (ImGui::MenuItem("World One")) key = Keys::WorldOne;
+        if (ImGui::MenuItem("World Two")) key = Keys::WorldTwo;
+        if (ImGui::MenuItem("Escape")) key = Keys::Escape;
+        if (ImGui::MenuItem("Enter")) key = Keys::Enter;
+        if (ImGui::MenuItem("Tab")) key = Keys::Tab;
+        if (ImGui::MenuItem("Backspace")) key = Keys::Backspace;
+        if (ImGui::MenuItem("Insert")) key = Keys::Insert;
+        if (ImGui::MenuItem("Delete")) key = Keys::Delete;
+
+        ImGui::Separator();
+
+        if (ImGui::MenuItem("Right Arrow")) key = Keys::RightArrow;
+        if (ImGui::MenuItem("Left Arrow")) key = Keys::LeftArrow;
+        if (ImGui::MenuItem("Down Arrow")) key = Keys::DownArrow;
+        if (ImGui::MenuItem("Up Arrow")) key = Keys::UpArrow;
+
+        ImGui::Separator();
+
+        if (ImGui::MenuItem("Page Up")) key = Keys::PageUp;
+        if (ImGui::MenuItem("Page Down")) key = Keys::PageDown;
+        if (ImGui::MenuItem("Home")) key = Keys::Home;
+        if (ImGui::MenuItem("End")) key = Keys::End;
+        if (ImGui::MenuItem("Caps Lock")) key = Keys::CapsLock;
+        if (ImGui::MenuItem("Scroll Lock")) key = Keys::ScrollLock;
+        if (ImGui::MenuItem("Num Lock")) key = Keys::NumLock;
+        if (ImGui::MenuItem("Print Screen")) key = Keys::PrintScreen;
+        if (ImGui::MenuItem("Pause")) key = Keys::Pause;
+
+        ImGui::Separator();
+
+        if (ImGui::MenuItem("F1")) key = Keys::F1;
+        if (ImGui::MenuItem("F2")) key = Keys::F2;
+        if (ImGui::MenuItem("F3")) key = Keys::F3;
+        if (ImGui::MenuItem("F4")) key = Keys::F4;
+        if (ImGui::MenuItem("F5")) key = Keys::F5;
+        if (ImGui::MenuItem("F6")) key = Keys::F6;
+        if (ImGui::MenuItem("F7")) key = Keys::F7;
+        if (ImGui::MenuItem("F8")) key = Keys::F8;
+        if (ImGui::MenuItem("F9")) key = Keys::F9;
+        if (ImGui::MenuItem("F10")) key = Keys::F10;
+        if (ImGui::MenuItem("F11")) key = Keys::F11;
+        if (ImGui::MenuItem("F12")) key = Keys::F12;
+        if (ImGui::MenuItem("F13")) key = Keys::F13;
+        if (ImGui::MenuItem("F14")) key = Keys::F14;
+        if (ImGui::MenuItem("F15")) key = Keys::F15;
+        if (ImGui::MenuItem("F16")) key = Keys::F16;
+        if (ImGui::MenuItem("F17")) key = Keys::F17;
+        if (ImGui::MenuItem("F18")) key = Keys::F18;
+        if (ImGui::MenuItem("F19")) key = Keys::F19;
+        if (ImGui::MenuItem("F20")) key = Keys::F20;
+        if (ImGui::MenuItem("F21")) key = Keys::F21;
+        if (ImGui::MenuItem("F22")) key = Keys::F22;
+        if (ImGui::MenuItem("F23")) key = Keys::F23;
+        if (ImGui::MenuItem("F24")) key = Keys::F24;
+        if (ImGui::MenuItem("F25")) key = Keys::F25;
+
+        ImGui::Separator();
+
+        if (ImGui::MenuItem("Num Pad Zero")) key = Keys::NumPadZero;
+        if (ImGui::MenuItem("Num Pad One")) key = Keys::NumPadOne;
+        if (ImGui::MenuItem("Num Pad Two")) key = Keys::NumPadTwo;
+        if (ImGui::MenuItem("Num Pad Three")) key = Keys::NumPadThree;
+        if (ImGui::MenuItem("Num Pad Four")) key = Keys::NumPadFour;
+        if (ImGui::MenuItem("Num Pad Five")) key = Keys::NumPadFive;
+        if (ImGui::MenuItem("Num Pad Six")) key = Keys::NumPadSix;
+        if (ImGui::MenuItem("Num Pad Seven")) key = Keys::NumPadSeven;
+        if (ImGui::MenuItem("Num Pad Eight")) key = Keys::NumPadEight;
+        if (ImGui::MenuItem("Num Pad Nine")) key = Keys::NumPadNine;
+        if (ImGui::MenuItem("Num Pad Decimal")) key = Keys::NumPadDecimal;
+        if (ImGui::MenuItem("Num Pad Divide")) key = Keys::NumPadDivide;
+        if (ImGui::MenuItem("Num Pad Multiply")) key = Keys::NumPadMultiply;
+        if (ImGui::MenuItem("Num Pad Subtract")) key = Keys::NumPadSubtract;
+        if (ImGui::MenuItem("Num Pad Add")) key = Keys::NumPadAdd;
+        if (ImGui::MenuItem("Num Pad Enter")) key = Keys::NumPadEnter;
+        if (ImGui::MenuItem("Num Pad Equal")) key = Keys::NumPadEqual;
+
+        ImGui::Separator();
+
+        if (ImGui::MenuItem("Mouse Button 1/Left")) key = Keys::MouseButtonLeft;
+        if (ImGui::MenuItem("Mouse Button 2/Right")) key = Keys::MouseButtonRight;
+        if (ImGui::MenuItem("Mouse Button 3/Middle")) key = Keys::MouseButtonMiddle;
+        if (ImGui::MenuItem("Mouse Button 4")) key = Keys::MouseButton4;
+        if (ImGui::MenuItem("Mouse Button 5")) key = Keys::MouseButton5;
+        if (ImGui::MenuItem("Mouse Button 6")) key = Keys::MouseButton6;
+        if (ImGui::MenuItem("Mouse Button 7")) key = Keys::MouseButton7;
+        if (ImGui::MenuItem("Mouse Button 8/Last")) key = Keys::MouseButtonLast;
+
+        ImGui::EndCombo();
+    }
+}
+#endif

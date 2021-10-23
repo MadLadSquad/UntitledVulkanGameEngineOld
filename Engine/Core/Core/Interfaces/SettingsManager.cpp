@@ -1,6 +1,5 @@
 // SettingsManager.cpp
 // Last update 1/8/2021 by Madman10K
-#include <GL/glew.h>
 #include "SettingsManager.hpp"
 #include <Core/Global.hpp>
 

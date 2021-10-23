@@ -1,13 +1,14 @@
 // RemoveFile.cpp
-// Last update 1/8/2021 by Madman10K
+// Last update 17/10/2021 by Madman10K
 #include "RemoveFile.hpp"
+#ifndef PRODUCTION
 #include <Core.hpp>
 #include <imgui.h>
 #include <cpp/imgui_stdlib.h>
 
-#ifndef PRODUCTION
-void RemoveFile::display(bool& bShow)
+bool RemoveFile::display(bool& bShow)
 {
+    bool bReturn = false;
     if (!ImGui::IsPopupOpen("Remove File"))
         ImGui::OpenPopup("Remove File");
 
@@ -22,7 +23,8 @@ void RemoveFile::display(bool& bShow)
 
         ImGui::TextWrapped("File Location: Source/");
         ImGui::SameLine();
-        ImGui::InputText("##File to delete", &in);
+        if (ImGui::InputText("##File to delete", &in) || ImGui::IsItemFocused())
+            bReturn = true;
 
         if (ImGui::Button("Close##delete"))
         {
@@ -33,8 +35,8 @@ void RemoveFile::display(bool& bShow)
 
         if (ImGui::Button("Delete##delete"))
         {
-            int8_t lnt = 0;
             bool error = false;
+            std::string gen;
             if (bSO)
             {
 
@@ -43,12 +45,12 @@ void RemoveFile::display(bool& bShow)
                 try
                 {
 #ifndef _WIN32
-                    lnt = system(static_cast<std::string>("cd ../UVKBuildTool/build/ && ./UVKBuildTool --actor " + in + " --remove").c_str());
+                    gen = "cd ../UVKBuildTool/build/ && ./UVKBuildTool --actor " + in + " --remove";
 #else
-                    lnt = system(static_cast<std::string>("cd ../UVKBuildTool/build/ && UVKBuildTool.exe --actor " + in + " --remove").c_str());
+                    gen = "cd ../UVKBuildTool/build/ && UVKBuildTool.exe --actor " + in + " --remove";
 #endif
-                    std_filesystem::remove("../../Source/" + in + ".hpp");
-                    std_filesystem::remove("../../Source/" + in + ".cpp");
+                    std_filesystem::remove("../Source/" + in + ".hpp");
+                    std_filesystem::remove("../Source/" + in + ".cpp");
                 }
                 catch (std_filesystem::filesystem_error&)
                 {
@@ -67,8 +69,8 @@ void RemoveFile::display(bool& bShow)
 #ifndef __MINGW32__
                 try
                 {
-                    std_filesystem::remove("../../Source/" + in + ".hpp");
-                    std_filesystem::remove("../../Source/" + in + ".cpp");
+                    std_filesystem::remove("../Source/" + in + ".hpp");
+                    std_filesystem::remove("../Source/" + in + ".cpp");
                 }
                 catch (std_filesystem::filesystem_error&)
                 {
@@ -82,12 +84,13 @@ void RemoveFile::display(bool& bShow)
                 }
 #endif
             }
-            if (lnt)
+            if (system(gen.c_str()))
             {
 
             }
         }
         ImGui::EndPopup();
     }
+    return bReturn;
 }
 #endif

@@ -13,9 +13,6 @@
 [submodule "Engine/ThirdParty/glfw"]
 	path = Engine/ThirdParty/glfw
 	url = https://github.com/MadLadSquad/glfw.git
-[submodule "Engine/ThirdParty/glew"]
-	path = Engine/ThirdParty/glew
-	url = https://github.com/MadLadSquad/glew.git
 [submodule "UVKBuildTool"]
 	path = UVKBuildTool
 	url = https://github.com/MadLadSquad/UVKBuildTool.git
@@ -43,3 +40,9 @@
 [submodule "Engine/ThirdParty/imguiex/umath"]
 	path = Engine/ThirdParty/imguiex/umath
 	url = https://github.com/MadLadSquad/UntitledMath.git
+[submodule "Engine/ThirdParty/freetype"]
+	path = Engine/ThirdParty/freetype
+	url = https://github.com/MadLadSquad/freetype.git
+[submodule "Engine/ThirdParty/glew"]
+	path = Engine/ThirdParty/glew
+	url = https://github.com/MadLadSquad/glew-cmake.git

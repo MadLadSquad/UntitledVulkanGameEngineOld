@@ -1,12 +1,27 @@
 #!/bin/bash
 # shellcheck disable=SC2162
 read -p "Enter Your Application Name: " prjname # read the project name
+while true; do
+    read -p "Do you want to download offline documentation Y(Yes)/N(No): " yn
+    case $yn in
+        [Yy]* ) git clone https://github.com/MadLadSquad/UntitledVulkanGameEngine.wiki.git docs/; break;;
+        [Nn]* ) break;;
+        * ) echo "Please answer with Y(Yes) or N(No)!";;
+    esac
+done
+
+wdir=$(pwd)
+cd "C:/Program Files (x86)/Microsoft Visual Studio/2019/" || echo " " > /dev/null
+VSType=$(find Community -maxdepth 0 > /dev/null) || VSType=$(find Enterprise -maxdepth 0 > /dev/null) || VSType=$(find Professional -maxdepth 0 > /dev/null) || echo " " > /dev/null
+cd "${wdir}" || echo " " > /dev/null
+
+setx PATH "C:/Program Files (x86)/Microsoft Visual Studio/2019/${VSType}/MSBuild/Current/Bin/amd64/;%PATH%" || echo " " > /dev/null
 
 cpus=$(grep -c processor /proc/cpuinfo) ## get the cpu threads for maximum performance when compiling
 echo -e "\x1B[32mCopiling with ${cpus} compute jobs!\033[0m"
 
 # Create folders and files to be used as configs
-mkdir Source || exit 
+mkdir Source || exit
 mkdir Generated || exit
 cd Config || exit
 
@@ -14,7 +29,7 @@ cd Config || exit
 touch Engine/GameKeybinds.yaml
 echo "\
 bindings:
-  - key: NewAction0
+  - key: EmptyAction
     val: 65
 " > Engine/GameKeybinds.yaml
 cd .. || exit
@@ -34,8 +49,8 @@ echo " "
 
 cd UVKBuildTool/ || exit
 mkdir build || exit # Will store our compiled binary
-cd build || exit 
-cmake .. || exit # Generate the UVKBuildTool project files
+cd build || exit
+cmake .. -G "Visual Studio 16 2019" || cmake .. -G "Unix Makefiles" || exit # Generate the UVKBuildTool project files
 
 # Try to run MSBuild first, if it fails we are either on a non-Windows system or the user doesn't have Visual Studio installed
 MSBuild.exe UVKBuildTool.sln -property:Configuration=Release -property:Platform=x64 -property:maxCpuCount="${cpus}" || make -j "${cpus}" || exit
@@ -57,7 +72,7 @@ echo -e "\x1B[32mCompiling ${prjname} ...\033[0m"
 echo -e "\x1B[32m--------------------------------------------------------------------------------\033[0m"
 echo " "
 
-cmake .. || exit # Generate build files for the project
+cmake .. -G "Visual Studio 16 2019" || cmake .. -G "Unix Makefiles" || exit # Generate build files for the project
 
 # Try to run MSBuild first, if it fails we are either on a non-windows system or the user doesn't have Visual Studio installed
 MSBuild.exe "${prjname}".sln -property:Configuration=Release -property:Platform=x64 -property:maxCpuCount="${cpus}" || make -j "${cpus}" || exit
@@ -65,14 +80,15 @@ MSBuild.exe "${prjname}".sln -property:Configuration=Release -property:Platform=
 echo " "
 echo -e "\x1B[32m--------------------------------------------------------------------------------\033[0m"
 echo -e "\x1B[32mCopying required libraries ...\033[0m"
+echo -e "\x1B[32m--------------------------------------------------------------------------------\033[0m"
+echo " "
 
-cp Engine/ThirdParty/openal/Release/OpenAL32.dll . || echo " " || exit # Copy the OpenAL32.dll file (needed for Windows)
-cp OpenAL32.dll Release/ || echo " " || exit # Copy the OpenAL32.dll file to the Release directory since this is where we build
-cd ../Engine/ThirdParty/vulkan/ || exit # Change into the Vulkan directory which for some reason contains the needeed libraries for Windows
-cp glew32.dll ../../../build/ || exit # Copy the glew32.dll file (responsible for OpenGL extension loading)
-cp sndfile.dll ../../../build/ || exit # Copy the sndfile.dll file (responsible for loading and operating with sound files)
-cp vulkan-1.dll ../../../build/ || exit # Copy the vulkan-1.dll file (responsible for Vulkan, Vulkan extension loading and Validation)
-cd ../../../build/ || exit # Go back into the build directory 
-cp glew32.dll sndfile.dll vulkan-1.dll Release/ || echo " " || exit # Finally copy the libraries to the Release folder because that is where Visual Studio builds
+(echo -e "\x1B[32mOpenAL32.dll required for this system!\033[0m" && cp Engine/ThirdParty/openal/Release/OpenAL32.dll .) || echo -e "\x1B[32mOpenAL32.dll not required for this system!\033[0m"
+(cp OpenAL32.dll Release/ && echo -e "\x1B[32mSuccessfully installed OpenAL!\033[0m") || echo -e "\x1B[32mNo need to install OpenAL32!\033[0m"
+cd ../Engine/ThirdParty/vulkan/ || exit # Change into the Vulkan directory which for some reason contains the needed libraries for Windows
+(cp sndfile.dll ../../../build/ && echo -e "\x1B[32msndfile.dll required for this system!\033[0m") || echo -e "\x1B[32msndfile.dll not required for this system!\033[0m" # Copy the sndfile.dll file (responsible for loading and operating with sound files)
+cd ../../../build/ || exit # Go back into the build directory
+(cp sndfile.dll Release/ && echo -e "\x1B[32mInstalled sndfile.dll!\033[0m") || echo -e "\x1B[32mNo need to install sndfile.dll!\033[0m" || exit # Finally copy the libraries to the Release folder because that is where Visual Studio builds
+cp Release/"${prjname}".exe . || echo -e "\x1B[32mProject Installed!\033[0m"
 
 echo -e "\x1B[32mEngine and project successfully installed! \033[0m" # Print a success message in green

@@ -1,13 +1,11 @@
 // VKCommandBuffer.cpp
-// Last update 16/8/2021 by Madman10K
-#include <GL/glew.h>
+// Last update 2/9/2021 by Madman10K
 #include "VKCommandBuffers.hpp"
 #ifndef __APPLE__
 #include <vulkan/vulkan.h>
 #include <Core.hpp>
 #include "VKDevice.hpp"
 #include <GameFramework/GameplayClasses/Level/Level.hpp>
-#include "../Components/VKMesh.hpp"
 
 void UVK::VKCommandBuffers::createCommandPool()
 {

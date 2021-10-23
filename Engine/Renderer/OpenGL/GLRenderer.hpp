@@ -17,12 +17,7 @@ namespace UVK
     private:
         friend class Renderer;
 
-        explicit GLRenderer(Level* level, const bool& bUsesEditor, UVK::String theme)
-        {
-            bEditor = bUsesEditor;
-            colTheme = std::move(theme);
-            start(level);
-        }
+        explicit GLRenderer(Level* level, const bool& bUsesEditor, UVK::String theme);
         void start(Level* level) const noexcept;
 
         bool bEditor;

@@ -1,31 +1,27 @@
 // ActorManager.cpp
-// Last update 2/7/2021 by Madman10K
-#include <GL/glew.h>
+// Last update 22/9/2021 by Madman10K
 #include "ActorManager.hpp"
 #include "Generated/ActorList.hpp"
 
 void UVK::ActorManager::init()
 {
+    a.clear();
     ACTOR_SET_DEPLOY
-
-    for (auto& b : a)
-    {
-        if (b->id == 330 && b->name.find("Editor") == std::string::npos)
-        {
-            b->id = 331;
-        }
-    }
 }
 
 void UVK::ActorManager::destroy()
 {
-    for (auto& b : a)
-    {
+    for (auto* b : a)
         delete b;
-    }
 }
 
-std::set<UVK::ScriptableObject*>& UVK::ActorManager::data()
+std::vector<UVK::ScriptableObject*>& UVK::ActorManager::data()
 {
     return a;
+}
+
+UVK::ActorManager::~ActorManager()
+{
+    destroy();
+    a.clear();
 }

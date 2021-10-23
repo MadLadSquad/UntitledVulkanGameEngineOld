@@ -1,19 +1,22 @@
 // EditorViewport.cpp
-// Last update 2/7/2021 by Madman10K
-#include <GL/glew.h>
+// Last update 17/10/2021 by Madman10K
+#include "EditorViewport.hpp"
+#ifndef PRODUCTION
 #include <Engine/Core/Core/Global.hpp>
 #include <Renderer/Window/Window.hpp>
-#include "EditorViewport.hpp"
 #include <imgui.h>
 #include <imguiex/imguizmo/ImGuizmo.h>
 #include <Core/Actor.hpp>
 #include <GameFramework/Components/Components.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <GameFramework/GameplayClasses/Level/Level.hpp>
+#include <GameFramework/Components/Components/CoreComponent.hpp>
 
-#ifndef PRODUCTION
-void EditorViewport::display(UVK::GLFrameBuffer& fb, int& viewportWidth, int& viewportHeight, bool& bShow, UVK::Camera& camera, UVK::Actor& entity, glm::mat4& projection)
+void EditorViewport::display(UVK::GLFrameBuffer& fb, int& viewportWidth, int& viewportHeight, bool& bShow, UVK::Camera& camera, UVK::Actor& entity, glm::mat4& projection, bool& bFocused)
 {
     ImGui::Begin("Viewport##1", &bShow);
+
+    bFocused = ImGui::IsWindowFocused();
 
     if (viewportWidth != (int)ImGui::GetWindowWidth() || viewportHeight != (int)ImGui::GetWindowHeight())
     {
@@ -24,6 +27,7 @@ void EditorViewport::display(UVK::GLFrameBuffer& fb, int& viewportWidth, int& vi
         fb.init((int)ImGui::GetWindowWidth(), (int)ImGui::GetWindowHeight());
         viewportWidth = (int)ImGui::GetWindowWidth();
         viewportHeight = (int)ImGui::GetWindowHeight();
+        UVK::Level::getPawn(UVK::global.currentLevel)->camera.projection().aspectRatio() = ImGui::GetWindowWidth() / ImGui::GetWindowHeight();
     }
     ImGui::Image((void*)(intptr_t)fb.getFramebufferTexture(), ImVec2((float)viewportWidth, (float)viewportHeight), ImVec2(0, 1), ImVec2(1, 0));
 
@@ -47,7 +51,7 @@ void EditorViewport::display(UVK::GLFrameBuffer& fb, int& viewportWidth, int& vi
         }
         else if (UVK::Input::getAction("editor-gizmo-scale") == Keys::KeyPressed || UVK::Input::getAction("editor-gizmo-scale") == Keys::KeyRepeat)
         {
-            operationType = ImGuizmo::SCALE;
+            operationType = ImGuizmo::SCALEU;
         }
     }
 
@@ -68,9 +72,9 @@ void EditorViewport::display(UVK::GLFrameBuffer& fb, int& viewportWidth, int& vi
         break;
     }
 
-    if (entity.has<UVK::MeshComponentRaw>() && operationType != -1)
+    if (entity.has<UVK::CoreComponent>() && operationType != -1)
     {
-        auto& a = entity.get<UVK::MeshComponentRaw>();
+        auto& core = entity.get<UVK::CoreComponent>();
 
         const float snapValues[3] = { snapVal, snapVal, snapVal };
         UVK::FVector translation, rotation, scale, deltaRotation;
@@ -80,36 +84,74 @@ void EditorViewport::display(UVK::GLFrameBuffer& fb, int& viewportWidth, int& vi
         ImGuizmo::SetDrawlist();
         ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, ImGui::GetWindowWidth(), ImGui::GetWindowHeight());
 
-        ImGuizmo::Manipulate(glm::value_ptr(camera.calculateViewMatrixRH()), glm::value_ptr(projection), (ImGuizmo::OPERATION)operationType, ImGuizmo::LOCAL, glm::value_ptr(a.mat), nullptr, snap ? snapValues : nullptr);
+        glm::mat4 mat(1.0f);
+        UVK::Math::translate(mat, core.translation);
+        UVK::Math::rotate(mat, core.rotation);
+        UVK::Math::scale(mat, core.scale);
+
+        ImGuizmo::Manipulate(glm::value_ptr(camera.calculateViewMatrixRH()), glm::value_ptr(projection), (ImGuizmo::OPERATION)operationType, ImGuizmo::LOCAL, glm::value_ptr(mat), nullptr, snap ? snapValues : nullptr);
+
+        static bool bPreviouslyUsing = false;
+
+        static UVK::FVector previousTranslation;
+        static UVK::FVector previousRotation;
+        static UVK::FVector previousScale;
 
         if (ImGuizmo::IsUsing())
         {
-            ImGuizmo::DecomposeMatrixToComponents(glm::value_ptr(a.mat), glm::value_ptr(translation), glm::value_ptr(rotation), glm::value_ptr(scale));
+            bPreviouslyUsing = true;
+            ImGuizmo::DecomposeMatrixToComponents(glm::value_ptr(mat), glm::value_ptr(translation), glm::value_ptr(rotation), glm::value_ptr(scale));
 
-            deltaRotation = glm::radians(rotation) - a.rotation;
+            deltaRotation = glm::radians(rotation) - core.rotation;
 
-            a.translation = translation;
-            a.rotation += deltaRotation;
-            a.scale = scale;
+            core.translation = translation;
+            core.rotation += deltaRotation;
+            core.scale = scale;
         }
-    }
-    else if (entity.has<UVK::MeshComponent>() && operationType != -1)
-    {
-        //todo add the functionality for a regular mesh component
-    }
-    else if (entity.has<UVK::AudioComponent>() && operationType != -1)
-    {
-        auto& a = entity.get<UVK::AudioComponent>();
-
-        ImGuizmo::SetOrthographic(false);
-        ImGuizmo::SetDrawlist();
-        ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, ImGui::GetWindowWidth(), ImGui::GetWindowHeight());
-
-        //ImGuizmo::Manipulate(glm::value_ptr(view), glm::value_ptr(projection), ImGuizmo::OPERATION::TRANSLATE, ImGuizmo::LOCAL, glm::value_ptr(transform));
-
-        if (ImGuizmo::IsUsing())
+        else
         {
+            if (bPreviouslyUsing)
+            {
+                UVK::CoreComponent deltaCore =
+                {
+                    .translation = previousTranslation,
+                    .rotation = previousRotation,
+                    .scale = previousScale
+                };
 
+                UVK::Transaction transaction =
+                {
+                    .undofunc = [](UVK::TransactionPayload& payload)
+                    {
+                        auto& corecmp = payload.affectedEntity.get<UVK::CoreComponent>();
+                        corecmp.translation = payload.deltaCoreComponent.translation;
+                        corecmp.rotation = payload.deltaCoreComponent.rotation;
+                        corecmp.scale = payload.deltaCoreComponent.scale;
+                    },
+                    .redofunc = [](UVK::TransactionPayload& payload)
+                    {
+                        auto& corecmp = payload.affectedEntity.get<UVK::CoreComponent>();
+                        corecmp.translation = payload.coreComponent.translation;
+                        corecmp.rotation = payload.coreComponent.rotation;
+                        corecmp.scale = payload.coreComponent.scale;
+                    },
+                    .transactionPayload =
+                    {
+                        .affectedEntity = entity,
+                        .coreComponent = core,
+                        .deltaCoreComponent = deltaCore
+                    }
+                };
+                UVK::StateTracker::push(transaction);
+
+                bPreviouslyUsing = false;
+            }
+            else
+            {
+                previousTranslation = core.translation;
+                previousRotation = core.rotation;
+                previousScale = core.scale;
+            }
         }
     }
     ImGui::End();

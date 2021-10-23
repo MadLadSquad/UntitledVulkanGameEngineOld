@@ -56,19 +56,13 @@ namespace UVK
     class AudioManager
     {
     public:
-        AudioManager()
-        {
-            createDevice();
-        }
-
-        ~AudioManager()
-        {
-            destroyDevice();
-        }
+        AudioManager();
+        AudioManager(const AudioManager&) = delete;
+        void operator=(AudioManager const&) = delete;
+        ~AudioManager();
 
         void createDevice();
         void destroyDevice();
-
     private:
         ALCdevice* device = nullptr;
         ALCcontext* context = nullptr;

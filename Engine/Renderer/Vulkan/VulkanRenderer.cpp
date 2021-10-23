@@ -1,11 +1,9 @@
 // VulkanRenderer.cpp
-// Last update 16/8/2021 by Madman10K
+// Last update 2/9/2021 by Madman10K
 #ifndef __APPLE__
 #define GLFW_INCLUDE_VULKAN
-#include <GL/glew.h>
 #include <Engine/Core/Core/Global.hpp>
 #include "VulkanRenderer.hpp"
-#include "Components/VKFramebuffer.hpp"
 #include "Components/VKMesh.hpp"
 #include "Components/VKShader.hpp"
 

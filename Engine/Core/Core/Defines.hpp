@@ -1,9 +1,10 @@
 // Defines.hpp
-// Last update 12/8/2021 by Madman10K
+// Last update 11/10/2021 by Madman10K
 #pragma once
 #include <any>
 #include "Generated/BuildDef.hpp"
 #include <logger/UVKLog.h>
+#include "Utility.hpp"
 
 // This is for MinGW32 because it is retarded
 #ifndef __MINGW32__
@@ -15,14 +16,14 @@
         #define std_filesystem std::experimental::filesystem
     #endif
 #else
-
+    #error "Compiling against MinGW is not supported!"
 #endif
 
 #ifdef PRODUCTION
-    #define ENABLE_FAST_IO(x) std::ios_base::sync_with_stdio(!x); \
+    #define ENABLE_FAST_IO(x) std::ios_base::sync_with_stdio(!(x)); \
     logger.setCrashOnError(true)
 #else
-    #define ENABLE_FAST_IO(x) std::ios_base::sync_with_stdio(!x)
+    #define ENABLE_FAST_IO(x) std::ios_base::sync_with_stdio(!(x))
 #endif
 
 #define FS_ICON_AUDIO 0
@@ -51,3 +52,7 @@
 #define VK_MAX_CONCURRENT_IMAGE_DRAW 1
 
 #define GLM_FORCE_DEPTH_ZERO_TO_ONE
+
+#define COMPONENT_MESH_RAW 0
+#define COMPONENT_MESH 1
+//#define GLEW_STATIC

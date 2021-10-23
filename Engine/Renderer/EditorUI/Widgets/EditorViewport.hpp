@@ -1,11 +1,11 @@
 // EditorViewport.hpp
 // Last update 2/7/2021 by Madman10K
 #pragma once
+#include <Generated/BuildDef.hpp>
+#ifndef PRODUCTION
 #include "Engine/Renderer/OpenGL/Components/GLFrameBuffer.hpp"
 #include "Engine/Renderer/Camera/Camera.hpp"
 
-
-#ifndef PRODUCTION
 namespace UVK
 {
     class Actor;
@@ -15,6 +15,6 @@ namespace UVK
  */
 namespace EditorViewport
 {
-    void display(UVK::GLFrameBuffer& fb, int& viewportWidth, int& viewportHeight, bool& bShow, UVK::Camera& camera, UVK::Actor& entity, glm::mat4& projection);
+    void display(UVK::GLFrameBuffer& fb, int& viewportWidth, int& viewportHeight, bool& bShow, UVK::Camera& camera, UVK::Actor& entity, glm::mat4& projection, bool& bFocused);
 }
 #endif

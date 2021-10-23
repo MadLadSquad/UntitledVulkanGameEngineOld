@@ -12,11 +12,11 @@ void UVK::GLMesh::createMesh(float* vertices, uint32_t* indices, uint32_t vertex
 
 	glGenBuffers(1, &IBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, static_cast<long int>(sizeof(indices[0])) * indexNum, indices, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, static_cast<long int>(sizeof(indices[0])) * static_cast<long int>(indexNum), indices, GL_STATIC_DRAW);
 
 	glGenBuffers(1, &VBO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, static_cast<long int>(sizeof(vertices[0])) * vertexNum, vertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, static_cast<long int>(sizeof(vertices[0])) * static_cast<long int>(vertexNum), vertices, GL_STATIC_DRAW);
 
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(vertices[0]) * 5, nullptr);
 	glEnableVertexAttribArray(0);

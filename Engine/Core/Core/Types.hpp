@@ -4,10 +4,6 @@
 #define GLM_FORCE_DEPTH_ZERO_TO_ONE
 #include <vector>
 #include <glm/glm.hpp>
-//#include <glm/mat3x4.hpp>
-//#include <glm/vec3.hpp>
-//#include <glm/gtc/matrix_transform.hpp>
-//#include <glm/gtc/type_ptr.hpp>
 #include "Engine/ThirdParty/entt/src/entt/entt.hpp"
 
 namespace UVK
@@ -28,4 +24,12 @@ namespace UVK
 
     class Math;
     class Level;
+
+    struct FilesystemWidgetData
+    {
+        float padding = 20.0f;
+        float imageSize = 50.0f;
+        int maxFileNum = 64;
+        bool bUsePreviews = false;
+    };
 }

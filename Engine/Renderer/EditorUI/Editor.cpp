@@ -1,8 +1,7 @@
 // Editor.cpp
-// Last update 12/8/2021 by Madman10K
-#include <GL/glew.h>
-#include <imgui_impl_vulkan.h>
+// Last update 17/10/2021 by Madman10K
 #include "Editor.hpp"
+#ifndef PRODUCTION
 #include "Widgets/SceneHierarchy.hpp"
 #include "Widgets/DetailsPanel.hpp"
 #include "Widgets/SaveLevel.hpp"
@@ -23,20 +22,38 @@
 #include "Widgets/RemoveFile.hpp"
 #include "Widgets/Ship.hpp"
 #include "Widgets/Warnings.hpp"
+#include "Widgets/Tools.hpp"
+#include "Widgets/EditorViewport.hpp"
 #include <Engine/Core/Core/Global.hpp>
-#include <Renderer/OpenGL/Components/GLShader.hpp>
 #include <GameFramework/GameplayClasses/Level/Level.hpp>
+#include <imgui_impl_vulkan.h>
 
 void UVK::Editor::initEditor()
 {
+    std::cout << sizeof(bools) << std::endl;
+    global.instance->editor = this;
+    UVK::Renderer::loadFilesystemSettings();
+
+    auto bindText = Utility::keyToText(Input::getAction("editor-bind-modifier").keyCode, false);
+    auto shiftText = Utility::keyToText(Input::getAction("editor-shift").keyCode, false);
+
+    keys = EditorKeys
+    {
+        .editor_level_save = bindText + "+" + Utility::keyToText(Input::getAction("editor-level-save").keyCode, false),
+        .editor_level_new = bindText + "+" + Utility::keyToText(Input::getAction("editor-level-new").keyCode, false),
+        .editor_level_saveas = bindText + "+" + shiftText + "+" + Utility::keyToText(Input::getAction("editor-level-saveas").keyCode, false),
+        .editor_level_open = bindText + "+" + Utility::keyToText(Input::getAction("editor-level-open").keyCode, false),
+        .editor_new_file = bindText + "+" + shiftText + "+" + Utility::keyToText(Input::getAction("editor-new-file").keyCode, false),
+        .editor_undo = bindText + "+" + Utility::keyToText(Input::getAction("editor-undo").keyCode, false),
+        .editor_redo = bindText + "+" + Utility::keyToText(Input::getAction("editor-redo").keyCode, false),
+    };
+
     Timer tm;
-#ifndef PRODUCTION
     tm.startRecording();
 #ifndef __MINGW32__
     pt = "../Content/";
 #endif
     YAML::Node file;
-
     try
     {
         file = YAML::LoadFile("../uvproj.yaml");
@@ -44,6 +61,7 @@ void UVK::Editor::initEditor()
     catch (YAML::BadFile&)
     {
         logger.consoleLog("Could not find uvproj.yaml file", UVK_LOG_TYPE_ERROR);
+        throw std::runtime_error(" ");
     }
 
     if (file["engine-version"] && file["name"] && file["version"] && file["startup-level"])
@@ -53,8 +71,6 @@ void UVK::Editor::initEditor()
         projectName = file["name"].as<std::string>();
         startupLevel = file["startup-level"].as<std::string>();
     }
-
-    auto* sh = new GLShader();
 #ifndef __MINGW32__
 
     play = Texture(static_cast<std::string>(pt.string() + "Engine/play.png"));
@@ -86,8 +102,6 @@ void UVK::Editor::initEditor()
 
     fileTextures[FS_ICON_CODE] = Texture(static_cast<std::string>(pt.string() + "Engine/code.png"));
     fileTextures[FS_ICON_CODE].loadImgui();
-
-    sh->createFromFile(static_cast<std::string>(pt.string() + "Engine/defaultvshader.gl").c_str(), static_cast<std::string>(pt.string() + "/../Content/Engine/defaultfshader.gl").c_str());
 #else
     play = Texture(static_cast<std::string>("../Content/Engine/play.png"));
     play.loadImgui();
@@ -118,15 +132,13 @@ void UVK::Editor::initEditor()
 
     fileTextures[7] = Texture(static_cast<std::string>("../Content/Engine/code.png"));
     fileTextures[7].loadImgui();
-
-    sh->createFromFile("../Content/Engine/defaultvshader.gl", "../Content/Engine/defaultfshader.gl");
 #endif
     ImGui::CreateContext();
     ImPlot::CreateContext();
     //ImTTY::Terminal.CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
     //io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
-    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable | ImGuiConfigFlags_ViewportsEnable;
     io.ConfigViewportsNoTaskBarIcon = true;
 
     ImGui::StyleColorsDark();
@@ -135,24 +147,15 @@ void UVK::Editor::initEditor()
     ImGuiStyle& style = ImGui::GetStyle();
     EditorTheme theme;
     if (!global.rendererSettings.themeLoc.empty())
-    {
         theme = EditorTheme(colTheme);
-    }
-
-    //style.WindowPadding = ImVec2(0.0f, 0.0f);
 
     if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-    {
-        if (!global.rendererSettings.themeLoc.empty())
-        {
-            style.WindowRounding = theme.getWindowRounding();
-        }
         style.Colors[ImGuiCol_WindowBg].w = 1.0f;
-    }
 
     if (!global.rendererSettings.themeLoc.empty())
     {
         theme.useTheme();
+        style.WindowRounding = theme.getWindowRounding();
 #ifndef __MINGW32__
         if (std_filesystem::exists(theme.getFont().first))
         {
@@ -177,7 +180,6 @@ void UVK::Editor::initEditor()
         ImGui_ImplGlfw_InitForOpenGL(global.window.getWindow(), true);
         ImGui_ImplOpenGL3_Init("#version 450");
     }
-#endif
     tm.stopRecording();
     frameTimeData[0] = tm.getDuration();
 
@@ -197,8 +199,8 @@ void UVK::Editor::runEditor(FVector4& colour, GLFrameBuffer& fb, Camera& camera,
         ImGuiViewport* viewport = ImGui::GetMainViewport();
         ImGui::SetNextWindowBgAlpha(1.0f);
 
-        ImGui::SetNextWindowPos(viewport->GetWorkPos());
-        ImGui::SetNextWindowSize(viewport->GetWorkSize());
+        ImGui::SetNextWindowPos(viewport->WorkPos);
+        ImGui::SetNextWindowSize(viewport->WorkSize);
         ImGui::SetNextWindowViewport(viewport->ID);
         ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
         ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
@@ -207,9 +209,7 @@ void UVK::Editor::runEditor(FVector4& colour, GLFrameBuffer& fb, Camera& camera,
         dockspace_flags |= ImGuiDockNodeFlags_PassthruCentralNode;
     }
     else
-    {
         dockspace_flags &= ~ImGuiDockNodeFlags_PassthruCentralNode;
-    }
 
 
     if (dockspace_flags & ImGuiDockNodeFlags_PassthruCentralNode)
@@ -243,9 +243,7 @@ void UVK::Editor::runEditor(FVector4& colour, GLFrameBuffer& fb, Camera& camera,
         //ImGui_ImplVulkan_RenderDrawData(ImGui::GetDrawData(), );
     }
     else
-    {
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-    }
 
     if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
     {
@@ -259,10 +257,10 @@ void UVK::Editor::runEditor(FVector4& colour, GLFrameBuffer& fb, Camera& camera,
 void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& camera, UVK::Level* lvl)
 {
     ImGuiStyle& style = ImGui::GetStyle();
-    
+
     if ((Input::getAction("editor-bind-modifier") == Keys::KeyPressed || Input::getAction("editor-bind-modifier") == Keys::KeyRepeat) && (Input::getAction("editor-shift") == Keys::KeyPressed || Input::getAction("editor-shift") == Keys::KeyRepeat) && (Input::getAction("editor-level-saveas") == Keys::KeyPressed || Input::getAction("editor-level-saveas") == Keys::KeyRepeat))
     {
-        bShowSaveLevelWidget = true;
+        bools.bShowSaveLevelWidget = true;
     }
     else if ((Input::getAction("editor-bind-modifier") == Keys::KeyPressed || Input::getAction("editor-bind-modifier") == Keys::KeyRepeat) && (Input::getAction("editor-level-save") == Keys::KeyPressed || Input::getAction("editor-level-save") == Keys::KeyRepeat))
     {
@@ -271,99 +269,90 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
     }
     else if ((Input::getAction("editor-bind-modifier") == Keys::KeyPressed || Input::getAction("editor-bind-modifier") == Keys::KeyRepeat) && (Input::getAction("editor-shift") == Keys::KeyPressed || Input::getAction("editor-shift") == Keys::KeyRepeat) && (Input::getAction("editor-new-file") == Keys::KeyPressed || Input::getAction("editor-new-file") == Keys::KeyRepeat))
     {
-        bShowCreateFile1 = true;
+        bools.bShowCreateFile1 = true;
     }
     else if ((Input::getAction("editor-bind-modifier") == Keys::KeyPressed || Input::getAction("editor-bind-modifier") == Keys::KeyRepeat) && (Input::getAction("editor-level-new") == Keys::KeyPressed || Input::getAction("editor-level-new") == Keys::KeyRepeat))
     {
-        bShowSaveWarning = true;
+        bools.bShowSaveWarning = true;
     }
     else if ((Input::getAction("editor-bind-modifier") == Keys::KeyPressed || Input::getAction("editor-bind-modifier") == Keys::KeyRepeat) && (Input::getAction("editor-level-open") == Keys::KeyPressed || Input::getAction("editor-level-open") == Keys::KeyRepeat))
     {
-        bShowOpenLevelWidget = true;
+        bools.bShowOpenLevelWidget = true;
     }
-    else if ((Input::getAction("editor-bind-modifier") == Keys::KeyPressed || Input::getAction("editor-bind-modifier") == Keys::KeyRepeat) && (Input::getAction("editor-shift") == Keys::KeyPressed || Input::getAction("editor-shift") == Keys::KeyRepeat) && (Input::getAction("editor-exit") == Keys::KeyPressed || Input::getAction("editor-exit") == Keys::KeyRepeat))
+    else if (((Input::getAction("editor-bind-modifier") == Keys::KeyPressed || Input::getAction("editor-bind-modifier") == Keys::KeyRepeat) && Input::getAction("editor-undo") == Keys::KeyPressed) && !bools.bEditorUsingTextbox)
     {
-        logger.consoleLog("Shutting down editor!", UVK_LOG_TYPE_NOTE);
-        glfwSetWindowShouldClose(global.window.getWindow(), GL_TRUE);
+        global.instance->stateTracker.undo();
+    }
+    else if (((Input::getAction("editor-bind-modifier") == Keys::KeyPressed || Input::getAction("editor-bind-modifier") == Keys::KeyRepeat) && Input::getAction("editor-redo") == Keys::KeyPressed) && !bools.bEditorUsingTextbox)
+    {
+        global.instance->stateTracker.redo();
     }
 
-    
     if (ImGui::BeginMenuBar())
     {
         if (ImGui::BeginMenu("File"))
         {
-            if (ImGui::MenuItem("Save Level", "CTRL+S"))
+            if (ImGui::MenuItem("Save Level", keys.editor_level_save.c_str()))
             {
                 // TODO: Change this for file indexing :D
-                bShowDirectSaveWarning = true;
-                goto end1;
+                bools.bShowDirectSaveWarning = true;
             }
 
-            if (ImGui::MenuItem("Save Level As", "CTRL+SHIFT+S"))
+            if (ImGui::MenuItem("Save Level As", keys.editor_level_saveas.c_str()))
             {
-                bShowSaveLevelWidget = true;
-                goto end1;
+                bools.bShowSaveLevelWidget = true;
             }
 
-            if (ImGui::MenuItem("New Level", "CTRL+N"))
+            if (ImGui::MenuItem("New Level", keys.editor_level_new.c_str()))
             {
-                bShowSaveWarning = true;
-                goto end1;
+                bools.bShowSaveWarning = true;
             }
 
-            if (ImGui::MenuItem("Open Level", "CTRL+O"))
+            if (ImGui::MenuItem("Open Level", keys.editor_level_open.c_str()))
             {
-                bShowOpenLevelWidget = true;
-                goto end1;
+                bools.bShowOpenLevelWidget = true;
             }
 
-            if (ImGui::MenuItem("New File", "CTRL+SHIFT+N"))
+            if (ImGui::MenuItem("New File", keys.editor_new_file.c_str()))
             {
-                bShowCreateFile1 = true;
-                goto end1;
+                bools.bShowCreateFile1 = true;
             }
 
             if (ImGui::MenuItem("Remove File"))
             {
-                bShowRemoveFile = true;
-                goto end1;
+                bools.bShowRemoveFile = true;
             }
 
             if (ImGui::MenuItem("Regenerate files"))
             {
-                bShowGenerateWarning = true;
-                goto end1;
+                bools.bShowGenerateWarning = true;
             }
 
             if (ImGui::MenuItem("Ship Project"))
             {
-                bShowShip = true;
-                goto end1;
+                bools.bShowShip = true;
             }
 
-            if (ImGui::MenuItem("Exit", "CTRL+SHIFT+W"))
+            if (ImGui::MenuItem("Exit"))
             {
                 //glfwSetWindowShouldClose(global.window.getWindow(), GL_TRUE);
-                bShowExitWarning = true;
+                bools.bShowExitWarning = true;
             }
-end1:
 
             ImGui::EndMenu();
         }
         if (ImGui::BeginMenu("Edit"))
         {
-            if (ImGui::MenuItem("Undo", "CTRL+Z"))
+            if (ImGui::MenuItem("Undo", keys.editor_undo.c_str()))
             {
-
-                goto end2;
+                global.instance->stateTracker.undo();
             }
 
-            if (ImGui::MenuItem("Redo", "CTRL+Y"))
+            if (ImGui::MenuItem("Redo", keys.editor_redo.c_str()))
             {
-
+                global.instance->stateTracker.redo();
             }
 
-end2:
             ImGui::EndMenu();
         }
 
@@ -371,53 +360,59 @@ end2:
         {
             if (ImGui::MenuItem("Game Settings"))
             {
-                bShowGameSettings = true;
-                goto end3;
+                bools.bShowGameSettings = true;
             }
 
             if (ImGui::MenuItem("Window Settings"))
             {
-                bShowWindowSettings = true;
-                goto end3;
+                bools.bShowWindowSettings = true;
             }
 
             if (ImGui::MenuItem("Renderer Settings"))
             {
-                bShowRendererSettings = true;
-                goto end3;
+                bools.bShowRendererSettings = true;
             }
 
             if (ImGui::MenuItem("Editor Keybind Settings"))
             {
-                bShowKeybindSettings = true;
-                goto end3;
+                bools.bShowKeybindSettings = true;
             }
 
             if (ImGui::MenuItem("Game Keybind Settings"))
             {
-                bShowGameKeybinds = true;
-                goto end3;
+                bools.bShowGameKeybinds = true;
             }
 
             if (ImGui::MenuItem("Theme Editor"))
             {
-                bShowThemeSettings = true;
+                bools.bShowThemeSettings = true;
             }
-end3:
+
             ImGui::EndMenu();
         }
         if (ImGui::BeginMenu("View"))
         {
-            ImGui::Checkbox("Filesystem", &bShowFilesystem);
-            ImGui::Checkbox("Statistics", &bShowStatistics);
-            ImGui::Checkbox("Viewport", &bShowViewport);
-            ImGui::Checkbox("Details Panel", &bShowDetailsPanel);
-            ImGui::Checkbox("Terminal Emulator", &bShowTerminalEmulator);
-            ImGui::Checkbox("Scene Hierarchy", &bShowSceneHierarchy);
-            ImGui::Checkbox("World Settings", &bShowWorldSettings);
-            ImGui::Checkbox("Toolbar", &bShowToolbar);
-            ImGui::Checkbox("Tools", &bShowTools);
-            ImGui::Checkbox("Memory Editor", &bShowMemoryEditor);
+            ImGui::Checkbox("Filesystem", &bools.bShowFilesystem);
+            ImGui::Checkbox("Statistics", &bools.bShowStatistics);
+            ImGui::Checkbox("Viewport", &bools.bShowViewport);
+            ImGui::Checkbox("Details Panel", &bools.bShowDetailsPanel);
+            ImGui::Checkbox("Terminal Emulator", &bools.bShowTerminalEmulator);
+            ImGui::Checkbox("Scene Hierarchy", &bools.bShowSceneHierarchy);
+            ImGui::Checkbox("World Settings", &bools.bShowWorldSettings);
+            ImGui::Checkbox("Toolbar", &bools.bShowToolbar);
+            ImGui::Checkbox("Tools", &bools.bShowTools);
+            ImGui::Checkbox("Memory Editor", &bools.bShowMemoryEditor);
+            ImGui::Checkbox("Developer Console", &bools.bShowDeveloperConsole);
+
+            if (!moduleManager.getIndependentModules().empty())
+            {
+                ImGui::Separator();
+
+                for (auto& a : moduleManager.getIndependentModules())
+                {
+                    ImGui::Checkbox(a.name, &a.bEnabled);
+                }
+            }
 
             ImGui::EndMenu();
         }
@@ -426,15 +421,13 @@ end3:
         {
             if (ImGui::MenuItem("About us"))
             {
-                bShowAboutUs = true;
-                goto end4;
+                bools.bShowAboutUs = true;
             }
 
             if (ImGui::MenuItem("Help"))
             {
-                bShowHelp = true;
+                bools.bShowHelp = true;
             }
-end4:
             ImGui::EndMenu();
         }
         ImGui::EndMenuBar();
@@ -442,148 +435,103 @@ end4:
 
     ImGui::End();
 
-    if (bShowDirectSaveWarning)
-    {
-        Warnings::displaySaveWarning(bShowDirectSaveWarning);
-    }
+    if (bools.bShowDirectSaveWarning)
+        Warnings::displaySaveWarning(bools.bShowDirectSaveWarning);
 
-    if (bShowExitWarning)
-    {
-        Warnings::displayExitWarning(bShowExitWarning);
-    }
+    if (bools.bShowExitWarning)
+        Warnings::displayExitWarning(bools.bShowExitWarning);
 
-    if (bShowGenerateWarning)
-    {
-        Warnings::displayGenerateWarning(bShowGenerateWarning);
-    }
+    if (bools.bShowGenerateWarning)
+        Warnings::displayGenerateWarning(bools.bShowGenerateWarning);
 
-    if (bShowSaveWarning)
-    {
-        NewLevel::display(bShowSaveWarning);
-    }
+    if (bools.bShowSaveWarning)
+        NewLevel::display(bools.bShowSaveWarning);
 
-    if (bShowSaveLevelWidget)
-    {
-        SaveLevel::display(bShowSaveLevelWidget, location, colour);
-    }
+    if (bools.bShowSaveLevelWidget)
+        bools.bEditorUsingTextbox = SaveLevel::display(bools.bShowSaveLevelWidget, location, colour) ? true : bools.bEditorUsingTextbox;
 
-    if (bShowOpenLevelWidget)
-    {
-        OpenLevelWidget::display(openLevel, bShowOpenLevelWidget, frameTimeData[1], colour);
-    }
+    if (bools.bShowOpenLevelWidget)
+        bools.bEditorUsingTextbox = OpenLevelWidget::display(openLevel, bools.bShowOpenLevelWidget, frameTimeData[1], colour) ? true : bools.bEditorUsingTextbox;
 
-    if (bShowCreateFile1)
-    {
-        CreateFile::display(selectedFile, fileOutLocation, bShowCreateFile1);
-    }
+    if (bools.bShowCreateFile1)
+        bools.bEditorUsingTextbox = CreateFile::display(fileOutLocation, bools.bShowCreateFile1) ? true : bools.bEditorUsingTextbox;
 
-    if (bShowSceneHierarchy)
-    {
-        SceneHierarchy::display(selectedEntity, entAppend, entNum, bShowSceneHierarchy);
-    }
+    if (bools.bShowDetailsPanel)
+        bools.bEditorUsingTextbox = DetailsPanel::display(selectedEntity, lvl, bools.bShowDetailsPanel, moduleManager, bools.bDestroyEntity) ? true : bools.bEditorUsingTextbox;
 
-    if (bShowViewport)
+    if (bools.bShowSceneHierarchy)
+        SceneHierarchy::display(selectedEntity, entAppend, entNum, bools.bShowSceneHierarchy);
+
+    if (bools.bShowViewport)
     {
         style.WindowPadding = ImVec2(0.0f, 0.0f);
-        EditorViewport::display(fb, viewportWidth, viewportHeight, bShowViewport, camera, selectedEntity, lvl->gameMode->pawn->camera.projection().data());
+        EditorViewport::display(fb, viewportWidth, viewportHeight, bools.bShowViewport, camera, selectedEntity, UVK::Level::getPawn(lvl)->camera.projection().data(), bools.bEditorViewportFocused);
         style.WindowPadding = ImVec2(8.0f, 8.0f);
-    }
-
-    if (bShowDetailsPanel)
-    {
-        DetailsPanel::display(selectedEntity, lvl, bShowDetailsPanel, bDestroyEntity);
     }
 
 #ifndef __MINGW32__
-    if (bShowFilesystem)
-    {
-        Filesystem::display(pt, fileTextures, texturePreviews, bShowFilesystem);
-    }
+    if (bools.bShowFilesystem)
+        bools.bEditorUsingTextbox = Filesystem::display(pt, fileTextures, filesystemWidgetData, bools.bShowFilesystem) ? true : bools.bEditorUsingTextbox;
 #endif
 
-    if (bShowToolbar)
+    if (bools.bShowToolbar)
     {
         style.WindowPadding = ImVec2(0.0f, 0.0f);
-        TopToolbar::display(play, bShowToolbar);
+        bools.bEditorUsingTextbox = TopToolbar::display(play, projectName, moduleManager, bools.bShowToolbar) ? true : bools.bEditorUsingTextbox;
         style.WindowPadding = ImVec2(8.0f, 8.0f);
     }
 
-    if (bShowTools)
-    {
-        ImGui::Begin("Tools", &bShowTools);
-        ImGui::Text("Coming soon!");
-        ImGui::End();
-    }
+    if (bools.bShowTools)
+        bools.bEditorUsingTextbox = Tools::display(moduleManager, bools.bShowTools) ? true : bools.bEditorUsingTextbox;
 
-    if (bShowTerminalEmulator)
-    {
-        TerminalEmulator::display(terminalCommand, bFinalisedCommand, bShowTerminalEmulator);
-    }
+    if (bools.bShowTerminalEmulator)
+        bools.bEditorUsingTextbox = TerminalEmulator::display(terminalCommand, bools.bFinalisedCommand, bools.bShowTerminalEmulator) ? true : bools.bEditorUsingTextbox;
 
-    if (bShowMemoryEditor)
-    {
-        ImGuiMemoryEditor::display(bShowMemoryEditor);
-    }
+    if (bools.bShowMemoryEditor)
+        ImGuiMemoryEditor::display(bools.bShowMemoryEditor);
 
-    if (bShowStatistics)
-    {
-        Statistics::display(frameTimeData, bShowStatistics);
-    }
+    if (bools.bShowStatistics)
+        Statistics::display(frameTimeData, bools.bShowStatistics);
 
-    if (bShowWorldSettings)
-    {
-        WorldSettings::display(colour, global.ambientLight, global.levelName, bShowWorldSettings);
-    }
+    if (bools.bShowWorldSettings)
+        bools.bEditorUsingTextbox = WorldSettings::display(colour, global.ambientLight, global.levelName, bools.bShowWorldSettings) ? true : bools.bEditorUsingTextbox;
 
-    if (bShowAboutUs)
-    {
-        About::display(engineVersion, projectName, projectVersion, logoTxt, bShowAboutUs);
-    }
+    if (bools.bShowAboutUs)
+        About::display(engineVersion, projectName, projectVersion, logoTxt, bools.bShowAboutUs);
 
-    if (bShowHelp)
-    {
-        Help::display(bShowHelp);
-    }
+    if (bools.bShowHelp)
+        Help::display(bools.bShowHelp);
 
-    if (bShowRemoveFile)
-    {
-        RemoveFile::display(bShowRemoveFile);
-    }
+    if (bools.bShowRemoveFile)
+        bools.bEditorUsingTextbox = RemoveFile::display(bools.bShowRemoveFile) ? true : bools.bEditorUsingTextbox;
 
-    if (bShowShip)
-    {
-        Shipping::display(bShowShip);
-    }
+    if (bools.bShowShip)
+        bools.bEditorUsingTextbox = Shipping::display(bools.bShowShip) ? true : bools.bEditorUsingTextbox;
 
-    if (bShowWindowSettings)
-    {
-        Settings::displayWindow(bShowWindowSettings);
-    }
+    if (bools.bShowWindowSettings)
+        bools.bEditorUsingTextbox = Settings::displayWindow(bools.bShowWindowSettings) ? true : bools.bEditorUsingTextbox;
 
-    if (bShowRendererSettings)
-    {
-        Settings::displayRenderer(bShowRendererSettings);
-    }
+    if (bools.bShowRendererSettings)
+        bools.bEditorUsingTextbox = Settings::displayRenderer(bools.bShowRendererSettings, filesystemWidgetData) ? true : bools.bEditorUsingTextbox;
 
-    if (bShowKeybindSettings)
-    {
-        Settings::displayKeybindEditor(bShowKeybindSettings);
-    }
+    if (bools.bShowKeybindSettings)
+        bools.bEditorUsingTextbox = Settings::displayKeybindEditor(bools.bShowKeybindSettings) ? true : bools.bEditorUsingTextbox;
 
-    if (bShowGameKeybinds)
-    {
-        Settings::displayKeybindGame(bShowGameKeybinds);
-    }
+    if (bools.bShowGameKeybinds)
+        bools.bEditorUsingTextbox = Settings::displayKeybindGame(bools.bShowGameKeybinds) ? true : bools.bEditorUsingTextbox;
 
-    if (bShowThemeSettings)
-    {
-        Settings::displayThemeEditor(bShowThemeSettings);
-    }
+    if (bools.bShowThemeSettings)
+        bools.bEditorUsingTextbox = Settings::displayThemeEditor(bools.bShowThemeSettings) ? true : bools.bEditorUsingTextbox;
 
-    if (bShowGameSettings)
-    {
-        Settings::displayProjectSettings(projectName, projectVersion, engineVersion, startupLevel, bShowGameSettings);
-    }
+    if (bools.bShowGameSettings)
+        bools.bEditorUsingTextbox = Settings::displayProjectSettings(projectName, projectVersion, engineVersion, startupLevel, bools.bShowGameSettings) ? true : bools.bEditorUsingTextbox;
+
+    if (bools.bShowDeveloperConsole)
+        loggerwidget.displayFull(bools.bShowDeveloperConsole, bools.bEditorUsingTextbox);
+
+    bool bReturn = false;
+    moduleManager.renderIndependentModule(bReturn);
+    bools.bEditorUsingTextbox = bReturn ? true : bools.bEditorUsingTextbox;
 #endif
 }
 
@@ -627,3 +575,9 @@ void UVK::Editor::destroyContext()
     //ImTTY::Terminal.DestroyContext();
     global.window.destroyWindow();
 }
+#else
+UVK::Editor::Editor()
+{
+    global.instance->editor = this;
+}
+#endif

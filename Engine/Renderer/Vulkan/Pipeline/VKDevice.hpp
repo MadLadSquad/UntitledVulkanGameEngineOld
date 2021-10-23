@@ -1,8 +1,8 @@
 // VKDevice.hpp
-// Last update 16/8/2021 by Madman10K
+// Last update 2/9/2021 by Madman10K
 #pragma once
 #ifndef __APPLE__
-    #include <vulkan/vulkan.h>
+#include <vulkan/vulkan.h>
 #include "../Components/VKStructs.hpp"
 #include "VKSwapchain.hpp"
 

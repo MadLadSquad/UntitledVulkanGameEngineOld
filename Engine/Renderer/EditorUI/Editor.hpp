@@ -1,16 +1,15 @@
 // Editor.hpp
-// Last update 2/8/2021 by Madman10K
+// Last update 17/10/2021 by Madman10K
 #pragma once
-#include <iostream>
-#include <utility>
+#include <Renderer/Camera/Camera.hpp>
+#include <Renderer/Textures/Texture.hpp>
+#include <Renderer/OpenGL/Components/GLFrameBuffer.hpp>
 #include <Core/Actor.hpp>
-#include <Core.hpp>
-#include "Widgets/EditorViewport.hpp"
-#include "../Textures/Texture.hpp"
-#include <Audio/Audio.hpp>
+#include <UVKLogImGui.h>
 
 namespace UVK
 {
+#ifndef PRODUCTION
     /**
      * @brief Controls the whole editor and related operations
      */
@@ -18,8 +17,15 @@ namespace UVK
     {
     public:
         Editor() = default;
+        Editor(const Editor&) = delete;
+        void operator=(Editor const&) = delete;
     private:
         friend class GLPipeline;
+        friend class EditorModules;
+        friend class EditorPawn;
+        friend class Utility;
+        friend class Renderer;
+        friend struct RendererSettings;
 
         double* getFrameTimeData()
         {
@@ -38,47 +44,85 @@ namespace UVK
 
         Texture play;
         Texture logoTxt;
-
         Texture fileTextures[8];
-
-        std::unordered_map<std::string, UVK::Texture> texturePreviews;
 
         int entNum = 0;
         int viewportWidth = 0, viewportHeight = 0;
-        uint8_t selectedFile = 0;
 
         Actor selectedEntity{};
 
-        bool bShowOpenLevelWidget= false;
-        bool bShowSaveLevelWidget = false;
-        bool bFinalisedCommand = false;
-        bool bShowCreateFile1 = false;
-        bool bShowAboutUs = false;
-        bool bShowSaveWarning = false;
-        bool bShowHelp = false;
-        bool bDestroyEntity = false;
-        bool bShowFilesystem = true;
-        bool bShowStatistics = false;
-        bool bShowViewport = true;
-        bool bShowDetailsPanel = true;
-        bool bShowTerminalEmulator = true;
-        bool bShowSceneHierarchy = true;
-        bool bShowWorldSettings = true;
-        bool bShowToolbar = true;
-        bool bShowTools = true;
-        bool bShowMemoryEditor = true;
-        bool bShowRemoveFile = false;
-        bool bShowShip = false;
-        bool bShowWindowSettings = false;
-        bool bShowRendererSettings = false;
-        bool bShowKeybindSettings = false;
-        bool bShowThemeSettings = false;
-        bool bShowGameKeybinds = false;
-        bool bShowGameSettings = false;
-        bool bShowDirectSaveWarning = false;
-        bool bShowExitWarning = false;
-        bool bShowGenerateWarning = false;
-
+        struct Booleans
+        {
+            Booleans()
+            {
+                bShowOpenLevelWidget = false;
+                bShowSaveLevelWidget = false;
+                bFinalisedCommand = false;
+                bShowCreateFile1 = false;
+                bShowAboutUs = false;
+                bShowSaveWarning = false;
+                bShowHelp = false;
+                bDestroyEntity = false;
+                bShowFilesystem = true;
+                bShowStatistics = false;
+                bShowViewport = true;
+                bShowDetailsPanel = true;
+                bShowTerminalEmulator = true;
+                bShowSceneHierarchy = true;
+                bShowWorldSettings = true;
+                bShowToolbar = true;
+                bShowTools = true;
+                bShowMemoryEditor = true;
+                bShowRemoveFile = false;
+                bShowShip = false;
+                bShowWindowSettings = false;
+                bShowRendererSettings = false;
+                bShowKeybindSettings = false;
+                bShowThemeSettings = false;
+                bShowGameKeybinds = false;
+                bShowGameSettings = false;
+                bShowDirectSaveWarning = false;
+                bShowExitWarning = false;
+                bShowGenerateWarning = false;
+                bShowDeveloperConsole = true;
+                bEditorViewportFocused = false;
+                bEditorUsingTextbox = false;
+                bRecordingUndoRedoTime = false;
+            }
+            bool bShowOpenLevelWidget;
+            bool bShowSaveLevelWidget;
+            bool bFinalisedCommand;
+            bool bShowCreateFile1;
+            bool bShowAboutUs;
+            bool bShowSaveWarning;
+            bool bShowHelp;
+            bool bDestroyEntity;
+            bool bShowFilesystem;
+            bool bShowStatistics;
+            bool bShowViewport;
+            bool bShowDetailsPanel;
+            bool bShowTerminalEmulator;
+            bool bShowSceneHierarchy;
+            bool bShowWorldSettings;
+            bool bShowToolbar;
+            bool bShowTools;
+            bool bShowMemoryEditor;
+            bool bShowRemoveFile;
+            bool bShowShip;
+            bool bShowWindowSettings;
+            bool bShowRendererSettings;
+            bool bShowKeybindSettings;
+            bool bShowThemeSettings;
+            bool bShowGameKeybinds;
+            bool bShowGameSettings;
+            bool bShowDirectSaveWarning;
+            bool bShowExitWarning;
+            bool bShowGenerateWarning;
+            bool bShowDeveloperConsole;
+            bool bEditorViewportFocused;
+            bool bEditorUsingTextbox;
+            bool bRecordingUndoRedoTime;
+        } bools = Booleans();
         void displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& camera, UVK::Level* lvl);
 
         std::string openLevel;
@@ -93,9 +137,39 @@ namespace UVK
         std::string startupLevel;
         UVK::String colTheme{};
 
-        double frameTimeData[2] = { 0.0, 0.0 };
+        EditorModuleManager moduleManager;
+
 #ifndef __MINGW32__
         std_filesystem::path pt;
+        double frameTimeData[2] = { 0.0, 0.0 };
 #endif
+
+        /**
+         * @brief Contains strings for the different keys used in editor hints
+         * @note Naming conventions are broken here due to the fact that the names should resemble their YAML form
+         */
+        struct EditorKeys
+        {
+            std::string editor_level_save;
+            std::string editor_level_new;
+            std::string editor_level_saveas;
+            std::string editor_level_open;
+            std::string editor_new_file;
+            std::string editor_undo;
+            std::string editor_redo;
+        };
+        UVKLogImGui loggerwidget;
+        EditorKeys keys;
+
+        FilesystemWidgetData filesystemWidgetData{};
     };
+#else
+    class Editor
+    {
+    public:
+        Editor();
+
+        EditorModuleManager moduleManager;
+    };
+#endif
 }

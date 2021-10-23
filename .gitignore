@@ -14,3 +14,7 @@ uvproj.yaml
 Content/Engine/brick.jpg
 *.spv
 Content/Res/
+UntitledVulkanGameEngine/
+docs/
+Content/entttest.uvklevel
+cmake-build-relwithdebinfo/

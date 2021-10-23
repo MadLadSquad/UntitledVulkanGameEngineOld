@@ -1,6 +1,5 @@
 // UI.cpp
-// Last update 18/7/2021 by Madman10K
-#include <GL/glew.h>
+// Last update 2/9/2021 by Madman10K
 #include "UI.hpp"
 #include <imgui.h>
 #include <imgui_impl_opengl3.h>
@@ -8,7 +7,6 @@
 #include <imgui_impl_glfw.h>
 #include <Core/Global.hpp>
 #include <Core/Interfaces/UInterface.hpp>
-
 
 void UVK::UIInternal::init()
 {
@@ -46,8 +44,8 @@ void UVK::UIInternal::update()
 
     ImGuiViewport* viewport = ImGui::GetMainViewport();
     ImGui::SetNextWindowBgAlpha(1.0f);
-    ImGui::SetNextWindowPos(viewport->GetWorkPos());
-    ImGui::SetNextWindowSize(viewport->GetWorkSize());
+    ImGui::SetNextWindowPos(viewport->WorkPos);
+    ImGui::SetNextWindowSize(viewport->WorkSize);
     ImGui::SetNextWindowViewport(viewport->ID);
 
     bool bIsOpen = true;

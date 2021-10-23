@@ -1,7 +1,22 @@
 // GLFrameBuffer.cpp
-// Last update 2/7/2021 by Madman10K
+// Last update 2/9/2021 by Madman10K
 #include <GL/glew.h>
 #include "GLFrameBuffer.hpp"
+
+UVK::GLFrameBuffer::GLFrameBuffer(int width, int height)
+{
+    init(width, height);
+}
+
+uint32_t UVK::GLFrameBuffer::getFramebuffer() const
+{
+    return FBO;
+}
+
+uint32_t UVK::GLFrameBuffer::getFramebufferTexture() const
+{
+    return framebufferTexture;
+}
 
 void UVK::GLFrameBuffer::init(int width, int height)
 {
@@ -26,4 +41,19 @@ void UVK::GLFrameBuffer::init(int width, int height)
         logger.consoleLog("Could not create framebuffer", UVK_LOG_TYPE_ERROR);
     }
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
+void UVK::GLFrameBuffer::unbindFramebuffer()
+{
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
+void UVK::GLFrameBuffer::destroyFramebuffer()
+{
+    glDeleteFramebuffers(1, &FBO);
+}
+
+void UVK::GLFrameBuffer::useFramebuffer() const
+{
+    glBindFramebuffer(GL_FRAMEBUFFER, FBO);
 }

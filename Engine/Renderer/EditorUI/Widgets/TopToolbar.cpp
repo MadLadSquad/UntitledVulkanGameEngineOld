@@ -1,11 +1,13 @@
 // TopToolbar.cpp
-// Last update 12/8/2021 by Madman10K
+// Last update 17/10/2021 by Madman10K
 #include "TopToolbar.hpp"
-#include <imgui.h>
-
 #ifndef PRODUCTION
-void TopToolbar::display(UVK::Texture &play, bool& bShow)
+#include <imgui.h>
+#include <Renderer/EditorUI/Modules/EditorModule.hpp>
+
+bool TopToolbar::display(UVK::Texture& play, const std::string& projectName, const UVK::EditorModuleManager& modules, bool& bShow)
 {
+    bool bReturn = false;
     int8_t lnt = 0;
 
     ImGui::Begin("Toolbar", &bShow);
@@ -13,11 +15,13 @@ void TopToolbar::display(UVK::Texture &play, bool& bShow)
     if (ImGui::ImageButton((void*)(intptr_t)play.getImage(), ImVec2((float)50, (float)50), ImVec2(0.0f, 0.0f), ImVec2(1.0f, 1.0f), 0))
     {
 #ifdef _WIN32
-        lnt = system("Game.exe");
+        lnt = system(static_cast<std::string>(projectName + ".exe").c_str());
 #else
-        lnt = system("./Game");
+        lnt = system(static_cast<std::string>("./" + projectName).c_str());
 #endif
     }
+
+    modules.renderTopBar(bReturn);
 
     if (lnt)
     {
@@ -25,5 +29,6 @@ void TopToolbar::display(UVK::Texture &play, bool& bShow)
     }
 
     ImGui::End();
+    return bReturn;
 }
 #endif

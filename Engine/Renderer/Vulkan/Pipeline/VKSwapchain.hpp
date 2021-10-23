@@ -50,16 +50,16 @@ namespace UVK
         static VkExtent2D findSwapchainExtent(const VkSurfaceCapabilitiesKHR& surfaceCapabilities);
         VkImageView createImageView(VkImage image, VkFormat format, VkImageAspectFlags aspectFlags);
 
-        VkSurfaceKHR surface;
-        VkFormat swapchainFormat;
-        VkExtent2D swapchainExtent;
+        VkSurfaceKHR surface{};
+        VkFormat swapchainFormat{};
+        VkExtent2D swapchainExtent{};
         VkSwapchainKHR swapchain = VK_NULL_HANDLE;
 
-        VkRenderPass* renderPass;
+        VkRenderPass* renderPass = nullptr;
 
-        VKInstance* instance;
-        Device* device;
-        VkPipeline* graphicsPipeline;
+        VKInstance* instance = nullptr;
+        Device* device = nullptr;
+        VkPipeline* graphicsPipeline = nullptr;
 
         std::vector<VKSwapchainImage> images;
         std::vector<VKFramebuffer> framebuffers;
