@@ -1,8 +1,7 @@
 #!/bin/bash
-# shellcheck disable=SC2162
-read -p "Enter Your Application Name: " prjname # read the project name
+read -rp "Enter Your Application Name: " prjname # read the project name
 while true; do
-    read -p "Do you want to download offline documentation Y(Yes)/N(No): " yn
+    read -rp "Do you want to download offline documentation Y(Yes)/N(No): " yn
     case $yn in
         [Yy]* ) git clone https://github.com/MadLadSquad/UntitledVulkanGameEngine.wiki.git docs/; break;;
         [Nn]* ) break;;
@@ -10,12 +9,14 @@ while true; do
     esac
 done
 
-wdir=$(pwd)
-cd "C:/Program Files (x86)/Microsoft Visual Studio/2019/" || echo " " > /dev/null
-VSType=$(find Community -maxdepth 0 > /dev/null) || VSType=$(find Enterprise -maxdepth 0 > /dev/null) || VSType=$(find Professional -maxdepth 0 > /dev/null) || echo " " > /dev/null
-cd "${wdir}" || echo " " > /dev/null
+prjname=${prjname/ /} # Remove any spaces if the name contains them
 
-setx PATH "C:/Program Files (x86)/Microsoft Visual Studio/2019/${VSType}/MSBuild/Current/Bin/amd64/;%PATH%" || echo " " > /dev/null
+# Add VS compiler to path in VS
+wdir=$(pwd) # get the working dir since we are going to be returning there
+cd "C:/Program Files (x86)/Microsoft Visual Studio/2019/" || echo " " > /dev/null # Go to the Visual Studio dir
+VSType=$(find Community -maxdepth 0 > /dev/null) || VSType=$(find Enterprise -maxdepth 0 > /dev/null) || VSType=$(find Professional -maxdepth 0 > /dev/null) || echo " " > /dev/null # Set the VS type to one of the 3 types
+cd "${wdir}" || echo " " > /dev/null # Return to the old directory
+setx PATH "C:/Program Files (x86)/Microsoft Visual Studio/2019/${VSType}/MSBuild/Current/Bin/amd64/;%PATH%" || echo " " > /dev/null # Set the path
 
 cpus=$(grep -c processor /proc/cpuinfo) ## get the cpu threads for maximum performance when compiling
 echo -e "\x1B[32mCopiling with ${cpus} compute jobs!\033[0m"

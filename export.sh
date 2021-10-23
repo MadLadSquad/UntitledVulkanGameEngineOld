@@ -1,4 +1,5 @@
 #!/bin/bash
+# TODO: Currently we are depending on VS2019 on Windows and I would like to change that at some point
 function help()
 {
   echo "The following script helps you export your project for production"

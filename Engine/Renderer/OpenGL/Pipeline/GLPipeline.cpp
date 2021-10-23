@@ -32,6 +32,7 @@ void UVK::GLPipeline::begin(bool bHasEditor, Level* lvl)
     }
     else
     {
+#ifndef PRODUCTION
         if (global.currentLevel->gameMode == nullptr)
         {
             global.currentLevel->gameMode = GameMode::makeGameMode<EditorGameMode>();
@@ -41,7 +42,7 @@ void UVK::GLPipeline::begin(bool bHasEditor, Level* lvl)
         {
             global.currentLevel->gameMode->playerController->pawn = Pawn::makePawn<EditorPawn>();
         }
-
+#endif
         global.ui.init();
         global.instance->beginPlay();
         global.currentLevel->beginPlay();

@@ -168,7 +168,7 @@ namespace UVK
     {
     public:
         Editor();
-
+        FilesystemWidgetData filesystemWidgetData{};
         EditorModuleManager moduleManager;
     };
 #endif

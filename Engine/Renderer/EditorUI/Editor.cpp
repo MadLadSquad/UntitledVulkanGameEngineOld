@@ -30,7 +30,6 @@
 
 void UVK::Editor::initEditor()
 {
-    std::cout << sizeof(bools) << std::endl;
     global.instance->editor = this;
     UVK::Renderer::loadFilesystemSettings();
 
@@ -578,6 +577,6 @@ void UVK::Editor::destroyContext()
 #else
 UVK::Editor::Editor()
 {
-    global.instance->editor = this;
+//    global.instance->editor = this;
 }
 #endif

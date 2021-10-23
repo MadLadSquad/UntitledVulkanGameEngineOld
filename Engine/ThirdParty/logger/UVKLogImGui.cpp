@@ -97,4 +97,8 @@ void UVKLogImGui::displayFull(bool& bOpen, bool& bReturn)
     ImGui::End();
 }
 #endif
+#else
+void UVKLogImGui::showHelpMessage()
+{
+}
 #endif

@@ -65,6 +65,7 @@ std::string UVKLog::getCurrentTime()
 UVKLog::UVKLog()
 {
 #ifdef UVK_LOG_IMGUI
+#ifndef PRODUCTION
     const CommandType clear =
     {
         .cmd = "clear",
@@ -81,5 +82,6 @@ UVKLog::UVKLog()
 
     commands.emplace_back(clear);
     commands.emplace_back(help);
+#endif
 #endif
 }
