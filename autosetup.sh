@@ -10,6 +10,13 @@ while true; do
     esac
 done
 
+wdir=$(pwd)
+cd "C:/Program Files (x86)/Microsoft Visual Studio/2019/" || echo " " > /dev/null
+VSType=$(find Community -maxdepth 0 > /dev/null) || VSType=$(find Enterprise -maxdepth 0 > /dev/null) || VSType=$(find Professional -maxdepth 0 > /dev/null) || echo " " > /dev/null
+cd "${wdir}" || echo " " > /dev/null
+
+setx PATH "C:/Program Files (x86)/Microsoft Visual Studio/2019/${VSType}/MSBuild/Current/Bin/amd64/;%PATH%" || echo " " > /dev/null
+
 cpus=$(grep -c processor /proc/cpuinfo) ## get the cpu threads for maximum performance when compiling
 echo -e "\x1B[32mCopiling with ${cpus} compute jobs!\033[0m"
 
