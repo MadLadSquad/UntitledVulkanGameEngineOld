@@ -18,7 +18,7 @@ namespace UVK
     struct MeshComponentRaw
     {
         void createMesh(UVK::Actor* currentActor, GLfloat* vertices, uint32_t* indices, uint32_t vertexNum, uint32_t indexNum, UVK::String vertexShader, UVK::String fragmentShader, ShaderImportType type);
-        void render(glm::mat4& projection, Camera& camera);
+        void render(Camera& camera);
         void clearMesh();
 
         glm::mat4 mat;

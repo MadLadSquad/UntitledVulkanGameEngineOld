@@ -37,7 +37,7 @@ void UVK::GLEntityManager::tick(Camera* camera)
     for (const auto& a : global.ecs.data().view<MeshComponentRaw>())
     {
         auto& b = global.ecs.data().get<MeshComponentRaw>(a);
-        b.render(camera->projection().data(), *camera);
+        b.render(*camera);
     }
 }
 

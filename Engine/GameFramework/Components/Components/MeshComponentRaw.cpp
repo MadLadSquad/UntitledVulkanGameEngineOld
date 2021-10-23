@@ -42,7 +42,7 @@ void UVK::MeshComponentRaw::createMesh(UVK::Actor* currentActor, GLfloat* vertic
     core = &actor->get<CoreComponent>();
 }
 
-void UVK::MeshComponentRaw::render(glm::mat4& projection, Camera& camera)
+void UVK::MeshComponentRaw::render(Camera& camera)
 {
     mat = glm::mat4(1.0f);
     shader.useShader();
@@ -57,7 +57,7 @@ void UVK::MeshComponentRaw::render(glm::mat4& projection, Camera& camera)
     if (!global.bUsesVulkan)
     {
         glUniformMatrix4fv((int)uniformModel, 1, GL_FALSE, glm::value_ptr(mat));
-        glUniformMatrix4fv((int)uniformProjection, 1, GL_FALSE, glm::value_ptr(projection));
+        glUniformMatrix4fv((int)uniformProjection, 1, GL_FALSE, glm::value_ptr(camera.projection().data()));
         glUniformMatrix4fv((int)uniformView, 1, GL_FALSE, glm::value_ptr(camera.calculateViewMatrixRH()));
         mesh.render();
     }
