@@ -42,6 +42,11 @@ find Engine/ -name "Makefile" -exec rm -rf {} \; &> /dev/null && find Engine/ -n
 find Engine/ -name "*.pc" -exec rm -rf {} \; &> /dev/null && find . -type d -empty -exec rmdir {} \; &> /dev/null # Remove all PCs and dirs
 find . -type d -name "docs" -exec rm -rf {} \; &> /dev/null && find . -type d -empty -exec rmdir {} \; &> /dev/null # Remove all docs folders
 find Engine/ -name "*.tcl" -exec rm -rf {} \; &> /dev/null && find . -name "*.txt" -exec rm -rf {} \; &> /dev/null  # Remove all PCs and dirs
+find . -name "*.vcxproj*" -exec rm -rf {} \; &> /dev/null # Delete all vcproj and filter files since they aren't needed
+find . -name "*.vcxproj" -exec rm -rf {} \; &> /dev/null # Delete all vcproj files
+find . -name "x64" -type d -exec rm -rf "{}" \; &> /dev/null # Delete all x64 folders, that contain logs
+find . -name "*.dir" -type d -exec rm -rf "{}" \; &> /dev/null # Delete all object file folders
+find . -name "*.sln" -exec rm -rf {} \; &> /dev/null # Delete all VS solution files
 
 # Finish up
 cd .. || exit
