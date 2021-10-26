@@ -26,9 +26,7 @@ void UVK::AssetManager::loadRaw()
     {
         if (!a.is_directory())
         {
-            //uint64_t
-            //if ()
-            assets.emplace_back(Asset
+            assets.push_back(
             {
                 .name = a.path().filename(),
                 .id = uniformDistribution(engine),
