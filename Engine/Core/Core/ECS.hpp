@@ -1,5 +1,5 @@
 // ECS.hpp
-// Last update 2/7/2021 by Madman10K
+// Last update 26/10/2021 by Madman10K
 #pragma once
 #include <Core/Types.hpp>
 
@@ -18,7 +18,7 @@ namespace UVK
         template<typename T>
         EntityView<T> view()
         {
-            return EntityView<T>();
+            return EntityView<T>(pool);
         }
 
         UVK::EntityPool& data();

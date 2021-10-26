@@ -1,5 +1,5 @@
 // Audio.hpp
-// Last update 25/7/2021 by Madman10K
+// Last update 26/10/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 
@@ -12,7 +12,6 @@ namespace UVK
     {
         UVK_AUDIO_STATE_PAUSED,
         UVK_AUDIO_STATE_RUNNING,
-        UVK_AUDIO_STATE_RESUME,
         UVK_AUDIO_STATE_STOPPED
     };
 
@@ -33,11 +32,11 @@ namespace UVK
      */
     struct AudioSourceData
     {
+        AudioSourceData() = default;
         std::string location;
-        uint32_t source;
+        uint32_t source = 0;
         float pitch = 1.0f;
         float gain = 1.0f;
-        FVector position = FVector(0.0f, 0.0f, 0.0f);
         FVector velocity = FVector(0.0f, 0.0f, 0.0f);
         bool bLoop = false;
     };
@@ -80,11 +79,7 @@ namespace UVK
         void addSound(String loc);
         void removeSound();
 
-        ALuint& buffer()
-        {
-            return bufferI;
-        }
-
+        ALuint& buffer();
     private:
         ALuint bufferI = 0;
     };
@@ -96,24 +91,13 @@ namespace UVK
     {
     public:
         AudioSource() = default;
-        explicit AudioSource(const AudioSourceData& data);
-
+        void init();
+        void update(const UVK::FVector& position) const;
         void play();
 
-        AudioSourceData& audioData()
-        {
-            return audioDt;
-        }
-
-        AudioBuffer& buffer()
-        {
-            return buf;
-        }
-
-        AudioState& state()
-        {
-            return stt;
-        }
+        AudioSourceData& audioData();
+        AudioBuffer& buffer();
+        AudioState& state();
     private:
         AudioSourceData audioDt;
         AudioBuffer buf;

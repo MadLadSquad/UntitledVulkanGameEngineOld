@@ -1,5 +1,5 @@
 // Engine.hpp
-// Last update 2/9/2021 by Madman10K
+// Last update 26/10/2021 by Madman10K
 
 // A header file containing every include you would want from the engine
 #pragma once
@@ -17,3 +17,4 @@
 #include "Engine/Core/Core/Global.hpp"
 #include "GameFramework/GameplayClasses/Level/Level.hpp"
 #include "GameFramework/Components/Components/CoreComponent.hpp"
+#include "GameFramework/Components/Components.hpp"

@@ -1,5 +1,5 @@
 // Filesystem.cpp
-// Last update 18/10/2021 by Madman10K
+// Last update 26/10/2021 by Madman10K
 #include <GL/glew.h>
 #include "Filesystem.hpp"
 #ifndef PRODUCTION
@@ -102,6 +102,7 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::
                 deleteFile(pt, selectedFile);
                 bNewFolder = true;
                 bDeleteWarning = false;
+                bAccepted = false;
                 return bReturn;
             }
 
@@ -478,11 +479,11 @@ void Filesystem::deleteFile(std_filesystem::path& pt, std_filesystem::path& sele
 UVK::Texture* Filesystem::selectTextures(UVK::Texture* textures, const std_filesystem::path& path, std::vector<UVK::Texture>& previews, volatile bool& bPreviews, const int& currentIndex, volatile bool& bLoad)
 {
     // Constants for the file extensions
-    constexpr const char* audioExtensions[] = { ".wav", ".flac", ".m4a", ".ogg", ".mp3" };
-    constexpr const char* imageExtensions[] = { ".jpeg", ".jpg", ".tiff", ".gif", ".bmp", ".png", ".tga", ".psd", ".pic" };
-    constexpr const char* videoExtensions[] = { ".mov", ".m4v", ".mp4", ".mpeg", ".mkv", ".mpg", ".wmv", ".webm" };
-    constexpr const char* objExtensions[] = { ".obj", ".fbx", ".glb", ".gltf", ".mp3" };
-    constexpr const char* codeExtensions[] = { ".yaml", ".uvklevel", ".yml" };
+    static constexpr const char* audioExtensions[] = { ".wav", ".flac", ".m4a", ".ogg", ".mp3" };
+    static constexpr const char* imageExtensions[] = { ".jpeg", ".jpg", ".tiff", ".gif", ".bmp", ".png", ".tga", ".psd", ".pic" };
+    static constexpr const char* videoExtensions[] = { ".mov", ".m4v", ".mp4", ".mpeg", ".mkv", ".mpg", ".wmv", ".webm" };
+    static constexpr const char* objExtensions[] = { ".obj", ".fbx", ".glb", ".gltf", ".mp3" };
+    static constexpr const char* codeExtensions[] = { ".yaml", ".uvklevel", ".yml" };
 
     for (const auto& b : audioExtensions)
         if (path.filename().extension().string() == b)

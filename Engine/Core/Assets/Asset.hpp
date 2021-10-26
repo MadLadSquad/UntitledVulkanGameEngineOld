@@ -1,5 +1,5 @@
 // Asset.hpp
-// Last update 12/8/2021 by Madman10K
+// Last update 26/10/2021 by Madman10K
 #pragma once
 #include <Core/Types.hpp>
 
@@ -7,19 +7,23 @@ namespace UVK
 {
     enum AssetType
     {
-        UVK_ASSET_TYPE_TEXTURE,
-        UVK_ASSET_TYPE_SHADER,
-        UVK_ASSET_TYPE_MODEL,
-        UVK_ASSET_TYPE_AUDIO,
-        UVK_ASSET_TYPE_FONT,
-        UVK_ASSET_TYPE_VIDEO
+        ASSET_TYPE_TEXTURE,
+        ASSET_TYPE_MODEL,
+        ASSET_TYPE_AUDIO,
+        ASSET_TYPE_VIDEO,
+        ASSET_TYPE_CODE,
+        ASSET_TYPE_FONT,
+        ASSET_TYPE_SHADER,
+        ASSET_TYPE_UNKNOWN
     };
 
-    template<typename T>
     struct Asset
     {
-    public:
-        std::string location;
-        T* data;
+        std::string name;
+        uint64_t id;
+        AssetType assetType;
+#ifndef PRODUCTION
+        std::string path;
+#endif
     };
 }

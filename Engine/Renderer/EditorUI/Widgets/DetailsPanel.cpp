@@ -1,5 +1,5 @@
 // DetailsPanel.cpp
-// Last update 17/10/2021 by Madman10K
+// Last update 26/10/2021 by Madman10K
 #include "DetailsPanel.hpp"
 #ifndef PRODUCTION
 #include <imgui.h>
@@ -127,6 +127,10 @@ bool DetailsPanel::display(UVK::Actor& ent, UVK::Level* lvl, bool& bShow, const 
                 addComponent<UVK::MeshComponent>(ent);
             }
 
+            if (ImGui::MenuItem("Audio"))
+            {
+                addComponent<UVK::AudioComponent>(ent);
+            }
             //if (ImGui::MenuItem("Audio"))
             //{
             //    if (!ent.has<UVK::AudioComponent>())
@@ -159,13 +163,10 @@ bool DetailsPanel::display(UVK::Actor& ent, UVK::Level* lvl, bool& bShow, const 
                 removeComponent<UVK::MeshComponent>(ent);
             }
 
-            //if (ImGui::MenuItem("Audio##rm"))
-            //{
-            //    if (ent.has<UVK::AudioComponent>())
-            //    {
-            //        ent.remove<UVK::AudioComponent>();
-            //    }
-            //}
+            if (ImGui::MenuItem("Audio##rm"))
+            {
+                removeComponent<UVK::AudioComponent>(ent);
+            }
 
             ImGui::EndMenu();
         }
@@ -376,69 +377,57 @@ bool DetailsPanel::display(UVK::Actor& ent, UVK::Level* lvl, bool& bShow, const 
             }
         }
 
-        //if (ent.has<UVK::MeshComponentRaw>())
-        //{
-        //    ImGui::Separator();
-//
-        //    auto& cmp = ent.get<UVK::MeshComponentRaw>();
-        //}
-
 #ifndef __MINGW32__
         if (ent.has<UVK::AudioComponent>())
         {
             ImGui::Separator();
 
             auto& cmp = ent.get<UVK::AudioComponent>();
-            //UVK::AudioSourceData dt = cmp.data;
 
-            //ImGui::TextWrapped("Pitch");
-            //ImGui::SameLine();
-            //ImGui::SliderFloat("##Pitchpt", &dt.pitch, 0.5f, 2.0f);
-//
-            //ImGui::TextWrapped("Gain");
-            //ImGui::SameLine();
-            //ImGui::SliderFloat("##Gaingn", &dt.gain, 0.0f, 10.0f);
-//
-            //ImGui::TextWrapped("Repeat");
-            //ImGui::SameLine();
-            //ImGui::Checkbox("##Repeatrt", &dt.bLoop);
-//
-            //ImGui::TextWrapped("File Location");
-            //ImGui::SameLine();
-            //ImGui::InputText("##File Location fl", &dt.location);
-//
-            //cmp.data = dt;
-            //if (ImGui::Button("Play") && !dt.location.empty())
-            //{
-            //    ent.remove<UVK::AudioComponent>();
-            //    auto& comp = ent.add<UVK::AudioComponent>();
-            //    comp.init(dt);
-            //    comp.play();
-            //}
-            //ImGui::SameLine();
-            //if (ImGui::Button("Resume"))
-            //{
-            //    cmp.resume();
-            //}
-            //ImGui::SameLine();
-            //if (ImGui::Button("Pause"))
-            //{
-            //    cmp.pause();
-            //}
-            //ImGui::SameLine();
-            //if (ImGui::Button("Stop"))
-            //{
-            //    cmp.stop();
-            //}
-            //ImGui::SameLine();
-            //if (ImGui::Button("Replay"))
-            //{
-            //    cmp.stop();
-            //    cmp.play();
-            //}
-//
-            //DrawVec3Control("Position", cmp.data.position, 0.0f, 100.0f);
-            //DrawVec3Control("Velocity", cmp.data.velocity, 0.0f, 100.0f);
+            ImGui::TextWrapped("Pitch");
+            ImGui::SameLine();
+            ImGui::SliderFloat("##Pitchpt", &cmp.source.audioData().pitch, 0.5f, 2.0f);
+
+            ImGui::TextWrapped("Gain");
+            ImGui::SameLine();
+            ImGui::SliderFloat("##Gaingn", &cmp.source.audioData().gain, 0.0f, 10.0f);
+
+            ImGui::TextWrapped("Repeat");
+            ImGui::SameLine();
+            ImGui::Checkbox("##Repeatrt", &cmp.source.audioData().bLoop);
+
+            ImGui::TextWrapped("File Location");
+            ImGui::SameLine();
+            if (ImGui::InputText("##File Location fl", &cmp.source.audioData().location) || ImGui::IsItemFocused())
+                bReturn = true;
+
+            if (ImGui::Button("Play"))// && !cmp.source.audioData().location.empty())
+            {
+                if (cmp.source.state() != UVK::UVK_AUDIO_STATE_RUNNING)
+                {
+                    cmp.create(&ent);
+                    cmp.play();
+                }
+            }
+            ImGui::SameLine();
+            if (ImGui::Button("Resume"))
+                cmp.resume();
+            ImGui::SameLine();
+            if (ImGui::Button("Pause"))
+                cmp.pause();
+            ImGui::SameLine();
+            if (ImGui::Button("Stop"))
+            {
+                if (cmp.stop())
+                {
+                    UVK::AudioSourceData data = cmp.source.audioData();
+                    data.source = uint32_t();
+                    ent.remove<UVK::AudioComponent>();
+                    ent.add<UVK::AudioComponent>().source.audioData() = data;
+                }
+            }
+
+            DrawVec3Control("Velocity", cmp.source.audioData().velocity, 0.0f, 100.0f);
         }
 #endif
 

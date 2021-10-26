@@ -1,5 +1,5 @@
 // GLEntityManager.hpp
-// Last update 11/10/2021 by Madman10K
+// Last update 26/10/2021 by Madman10K
 #include <Core/Actor.hpp>
 #include "GLEntityManager.hpp"
 #include <GameFramework/Components/Components.hpp>
@@ -33,6 +33,11 @@ void UVK::GLEntityManager::tick(Camera* camera)
     //        //}
     //    }
     //}
+    for (const auto& a : global.ecs.data().view<AudioComponent>())
+    {
+        auto& b = global.ecs.data().get<AudioComponent>(a);
+        b.tick();
+    }
 
     for (const auto& a : global.ecs.data().view<MeshComponentRaw>())
     {

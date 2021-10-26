@@ -1,5 +1,5 @@
 // AssetManager.hpp
-// Last update 12/8/2021 by Madman10K
+// Last update 26/10/2021 by Madman10K
 #pragma once
 #include <unordered_map>
 #include "Asset.hpp"
@@ -12,28 +12,17 @@ namespace UVK
     class AssetManager
     {
     public:
-        AssetManager() = default;
+        static void findAsset(const std::string& name);
+        void load();
     private:
+#ifndef PRODUCTION
+        // Generates an asset layout archive file and records all the IDs
         void loadRaw();
-        // Archives are currently not supported but will be in development after 1.0
+#endif
+        // The asset archive is already there with all the assets, and we just load it from disk
+        // but also loading the IDs from a layout file
         void loadArchive();
-
-        //std::unordered_map<AssetType, std::vector<Asset>> assetMap;
-        std::vector<Asset<Texture>> textures;
-        std::vector<Asset<GLShader>> shaders;
-        std::vector<Asset<AudioSource>> audio;
-
-        friend class Assets;
-        friend class UVKGlobal;
-    };
-
-    class Assets
-    {
-    public:
-        static const std::vector<Asset<Texture>>& textures();
-        static const std::vector<Asset<GLShader>>& shaders();
-        static const std::vector<Asset<AudioSource>>& audio();
-        //template<typename T>
-        //static const std::vector<Asset<T>>& getAllAssetsOfType(AssetType type);
+        std::vector<Asset> assets;
+        static AssetType getAssetType(const std_filesystem::path& path);
     };
 }

@@ -1,5 +1,5 @@
 // AssetSlot.hpp
-// Last update 12/8/2021 by Madman10K
+// Last update 26/10/2021 by Madman10K
 #pragma once
 #include <Generated/BuildDef.hpp>
 #ifndef PRODUCTION
@@ -34,13 +34,13 @@ namespace AssetSlot
 
         if (ImGui::BeginCombo(static_cast<std::string>("##filename" + std::to_string(id)).c_str(), name.c_str()))
         {
-            for (auto& a : UVK::Assets::textures())
-            {
-                if (ImGui::MenuItem(a.location.c_str()))
-                {
-                    name = a.location;
-                }
-            }
+            //for (auto& a : UVK::Assets::textures())
+            //{
+            //    if (ImGui::MenuItem(a.location.c_str()))
+            //    {
+            //        name = a.location;
+            //    }
+            //}
             ImGui::EndCombo();
         }
         

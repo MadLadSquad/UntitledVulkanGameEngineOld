@@ -1,177 +1,82 @@
 // AssetManager.cpp
-// Last update 2/9/2021 by Madman10K
+// Last update 26/10/2021 by Madman10K
 #include "AssetManager.hpp"
 #include <Core/Defines.hpp>
 #include <Core/Global.hpp>
+#include <random>
 
-void UVK::AssetManager::loadRaw()
+void UVK::AssetManager::load()
 {
-#ifndef __MINGW32__
-
-    std_filesystem::path path("../Content/");
-
-    constexpr const char* audioExtensions[] = { ".wav", ".flac", ".m4a", ".ogg", ".mp3" };
-    constexpr const char* imageExtensions[] = { ".jpeg", ".jpg", ".tiff", ".gif", ".bmp", ".png", ".tga", ".psd", ".pic" };
-    constexpr const char* videoExtensions[] = { ".mov", ".m4v", ".mp4", ".mpeg", ".mkv", ".mpg", ".wmv", ".webm" };
-    constexpr const char* objExtensions[] = { ".obj", ".fbx", ".glb", ".gltf", ".mp3" };
-
-    for (auto& a : std_filesystem::recursive_directory_iterator(path))
-    {
-        if (!a.is_directory())
-        {
-            bool bFound = false;
-
-            for (auto& b : audioExtensions)
-            {
-                if (a.path().extension().string() == b)
-                {
-                    Asset<AudioSource> audioAsset = {};
-                    audioAsset.location = a.path().extension().string().c_str();
-                    audioAsset.data = nullptr;
-                    audio.push_back(audioAsset);
-                    bFound = true;
-                }
-            }
-
-            if (!bFound)
-            {
-                for (auto& b : imageExtensions)
-                {
-                    if (a.path().extension().string() == b)
-                    {
-                        Asset<Texture> textureAsset;
-                        textureAsset.location = a.path().string();
-                        textureAsset.data = nullptr;
-
-                        textures.push_back(textureAsset);
-                    }
-                }
-            }
-        }
-    }
-
-    /*for (auto& a : std_filesystem::directory_iterator(std_filesystem::path("../Generated/Shaders/")))
-    {
-        if (!a.is_directory())
-        {
-            if (a.path().extension().string() == ".glspv")
-            {
-
-            }
-        }
-    }*/
-    //for
-
-    /*
-    for (auto& a : std_filesystem::recursive_directory_iterator(path))
-    {
-        if (!a.is_directory())
-        {
-            bool bFound;
-
-            for (auto& b : audioExtensions)
-            {
-                if (a.path().extension().string() == b)
-                {
-                    bFound = true;
-                    Asset asset{};
-                    asset.location = a.path().string().c_str();
-                    assetMap[UVK_ASSET_TYPE_AUDIO].push_back(asset);
-                }
-            }
-
-            if (!bFound)
-            {
-                for (auto& b : imageExtensions)
-                {
-                    if (a.path().extension().string() == b)
-                    {
-                        bFound = true;
-                        Asset asset{};
-                        asset.location = a.path().string().c_str();
-                        assetMap[UVK_ASSET_TYPE_TEXTURE].push_back(asset);
-                    }
-                }
-            }
-
-            if (!bFound)
-            {
-                for (auto& b : videoExtensions)
-                {
-                    if (a.path().extension().string() == b)
-                    {
-                        bFound = true;
-                        Asset asset{};
-                        asset.location = a.path().string().c_str();
-                        assetMap[UVK_ASSET_TYPE_VIDEO].push_back(asset);
-                    }
-                }
-            }
-
-            if (!bFound)
-            {
-                for (auto& b : objExtensions)
-                {
-                    if (a.path().extension().string() == b)
-                    {
-                        bFound = true;
-                        Asset asset{};
-                        asset.location = a.path().string().c_str();
-                        assetMap[UVK_ASSET_TYPE_MODEL].push_back(asset);
-                    }
-                }
-            }
-
-            if (!bFound)
-            {
-                if (a.path().extension().string() == ".ttf")
-                {
-                    bFound = true;
-                    Asset asset{};
-                    asset.location = a.path().string().c_str();
-                    assetMap[UVK_ASSET_TYPE_FONT].push_back(asset);
-                }
-            }
-
-            if (!bFound)
-            {
-                if (a.path().extension().string() == ".spv")
-                {
-                    bFound = true;
-                    Asset asset{};
-                    asset.location = a.path().string().c_str();
-
-                    assetMap[UVK_ASSET_TYPE_SHADER].push_back(asset);
-                }
-            }
-
-            if (!bFound)
-            {
-                Asset asset{};
-                asset.location = a.path().string().c_str();
-                assetMap[UVK_ASSET_TYPE_UNKNOWN].push_back(asset);
-            }
-        }
-    }*/
+#ifndef PRODUCTION
+    loadRaw();
+#else
+    loadArchive();
 #endif
 }
 
+#ifndef PRODUCTION
+void UVK::AssetManager::loadRaw()
+{
+    std::random_device device;
+    std::mt19937_64 engine(device());
+    std::uniform_int_distribution<uint64_t> uniformDistribution;
+    uniformDistribution(engine);
+
+    for (auto& a : std_filesystem::recursive_directory_iterator(std_filesystem::path("../Content/")))
+    {
+        if (!a.is_directory())
+        {
+            //uint64_t
+            //if ()
+            assets.emplace_back(Asset
+            {
+                .name = a.path().filename(),
+                .id = uniformDistribution(engine),
+                .assetType = getAssetType(a.path()),
+                .path = a.path()
+            });
+        }
+    }
+}
+#endif
+
 void UVK::AssetManager::loadArchive()
 {
-    loadRaw();
+
 }
 
-const std::vector<UVK::Asset<UVK::Texture>>& UVK::Assets::textures()
+void UVK::AssetManager::findAsset(const std::string& name)
 {
-    return global.assetManager.textures;
+
 }
 
-const std::vector<UVK::Asset<UVK::GLShader>>& UVK::Assets::shaders()
+UVK::AssetType UVK::AssetManager::getAssetType(const std::filesystem::path& path)
 {
-    return global.assetManager.shaders;
-}
+    static constexpr const char* audioExtensions[] = { ".wav", ".flac", ".m4a", ".ogg", ".mp3" };
+    static constexpr const char* imageExtensions[] = { ".jpeg", ".jpg", ".tiff", ".gif", ".bmp", ".png", ".tga", ".psd", ".pic" };
+    static constexpr const char* videoExtensions[] = { ".mov", ".m4v", ".mp4", ".mpeg", ".mkv", ".mpg", ".wmv", ".webm" };
+    static constexpr const char* objExtensions[] = { ".obj", ".fbx", ".glb", ".gltf", ".mp3" };
+    static constexpr const char* codeExtensions[] = { ".yaml", ".uvklevel", ".yml" };
 
-const std::vector<UVK::Asset<UVK::AudioSource>>& UVK::Assets::audio()
-{
-    return global.assetManager.audio;
+    for (auto& a : audioExtensions)
+        if (path.filename().string() == std::string(a))
+            return UVK::ASSET_TYPE_AUDIO;
+    for (auto& a : imageExtensions)
+        if (path.filename().string() == std::string(a))
+            return UVK::ASSET_TYPE_TEXTURE;
+    for (auto& a : videoExtensions)
+        if (path.filename().string() == std::string(a))
+            return UVK::ASSET_TYPE_VIDEO;
+    for (auto& a : objExtensions)
+        if (path.filename().string() == std::string(a))
+            return UVK::ASSET_TYPE_MODEL;
+    for (auto& a : codeExtensions)
+        if (path.filename().string() == std::string(a))
+            return UVK::ASSET_TYPE_CODE;
+    if (path.filename().string() == ".ttf")
+        return UVK::ASSET_TYPE_FONT;
+    else if (path.filename().string() == ".vert" || path.filename().string() == ".frag" || path.filename().string() == ".gl" || path.filename().string() == ".glsl")
+        return UVK::ASSET_TYPE_SHADER;
+
+    return UVK::ASSET_TYPE_UNKNOWN;
 }

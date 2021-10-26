@@ -1,5 +1,5 @@
 // Level.cpp
-// Last update 22/9/2021 by Madman10K
+// Last update 26/9/2021 by Madman10K
 #include <GameFramework/Components/Components.hpp>
 #include <GameFramework/Components/Components/CoreComponent.hpp>
 #include <Core/Actor.hpp>
@@ -91,13 +91,12 @@ void UVK::Level::saveEntity(YAML::Emitter& out, entt::entity act)
 
     if (global.ecs.data().any_of<UVK::AudioComponent>(act))
     {
-        //auto& a = global.ecs.data().get<UVK::AudioComponent>(act);
-        //out << YAML::Key << "audio-pitch" << YAML::Value << a.data.pitch;
-        //out << YAML::Key << "audio-gain" << YAML::Value << a.data.gain;
-        //out << YAML::Key << "audio-loop" << YAML::Value << a.data.bLoop;
-        //out << YAML::Key << "audio-location" << YAML::Value << a.data.position;
-        //out << YAML::Key << "audio-velocity" << YAML::Value << a.data.velocity;
-        //out << YAML::Key << "audio-file" << YAML::Value << a.data.location;
+        auto& a = global.ecs.data().get<UVK::AudioComponent>(act);
+        out << YAML::Key << "audio-pitch" << YAML::Value << a.source.audioData().pitch;
+        out << YAML::Key << "audio-gain" << YAML::Value << a.source.audioData().gain;
+        out << YAML::Key << "audio-loop" << YAML::Value << a.source.audioData().bLoop;
+        out << YAML::Key << "audio-velocity" << YAML::Value << a.source.audioData().velocity;
+        out << YAML::Key << "audio-file" << YAML::Value << a.source.audioData().location;
     }
     out << YAML::EndMap;
 }
@@ -140,6 +139,16 @@ void UVK::Level::openInternal(UVK::String location)
         return;
     }
 
+    for (const auto& a : global.ecs.data().view<AudioComponent>())
+    {
+        auto& audio = global.ecs.data().get<AudioComponent>(a);
+        if (audio.source.state() != UVK_AUDIO_STATE_STOPPED)
+            audio.stop();
+    }
+    ECS::each([](Actor& act)
+    {
+        act.destroy();
+    });
     global.ecs.clear(); // Clear the ECS registry(contains all the actors)
     global.ui.clear(); // Clear the UI registry
     if (!global.bEditor)
@@ -175,18 +184,15 @@ void UVK::Level::openInternal(UVK::String location)
 
             auto act = Actor(name, id, devName);
 
-            if (entity["audio-pitch"] && entity["audio-gain"] && entity["audio-location"])
+            if (entity["audio-pitch"] && entity["audio-gain"] && entity["audio-loop"] && entity["audio-velocity"] && entity["audio-file"])
             {
-                //auto& a = act.add<UVK::AudioComponent>();
+                auto& a = act.add<UVK::AudioComponent>();
 
-                //UVK::AudioSourceData data;
-                //data.pitch = entity["audio-pitch"].as<float>();
-                //data.gain = entity["audio-gain"].as<float>();
-                //data.bLoop = entity["audio-loop"].as<bool>();
-                //data.position = entity["audio-location"].as<FVector>();
-                //data.velocity = entity["audio-velocity"].as<FVector>();
-                //data.location = entity["audio-file"].as<std::string>();
-                //a.init(data);
+                a.source.audioData().pitch = entity["audio-pitch"].as<float>();
+                a.source.audioData().gain = entity["audio-gain"].as<float>();
+                a.source.audioData().bLoop = entity["audio-loop"].as<bool>();
+                a.source.audioData().velocity = entity["audio-velocity"].as<FVector>();
+                a.source.audioData().location = entity["audio-file"].as<std::string>();
             }
         }
         logger.consoleLog("Iterated entities", UVK_LOG_TYPE_SUCCESS);
