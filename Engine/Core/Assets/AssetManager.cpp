@@ -28,10 +28,10 @@ void UVK::AssetManager::loadRaw()
         {
             Asset asset =
             {
-                .name = a.path().filename(),
+                .name = a.path().filename().string(),
                 .id = uniformDistribution(engine),
                 .assetType = getAssetType(a.path()),
-                .path = a.path()
+                .path = a.path().string()
             };
             assets.push_back(asset);
         }
