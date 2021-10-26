@@ -26,24 +26,20 @@ void UVK::AssetManager::loadRaw()
     {
         if (!a.is_directory())
         {
-            assets.push_back(
+            Asset asset =
             {
                 .name = a.path().filename(),
                 .id = uniformDistribution(engine),
                 .assetType = getAssetType(a.path()),
                 .path = a.path()
-            });
+            };
+            assets.push_back(asset);
         }
     }
 }
 #endif
 
 void UVK::AssetManager::loadArchive()
-{
-
-}
-
-void UVK::AssetManager::findAsset(const std::string& name)
 {
 
 }
@@ -77,4 +73,18 @@ UVK::AssetType UVK::AssetManager::getAssetType(const std::filesystem::path& path
         return UVK::ASSET_TYPE_SHADER;
 
     return UVK::ASSET_TYPE_UNKNOWN;
+}
+
+UVK::AssetManager::~AssetManager()
+{
+    assets.clear();
+}
+
+std::vector<UVK::Asset> UVK::AssetManager::getAllAssetsWithName(const char* name)
+{
+    std::vector<Asset> vect;
+    for (auto& a : global.assetManager.assets)
+        if (a.name == name)
+            vect.emplace_back(a);
+    return vect;
 }
