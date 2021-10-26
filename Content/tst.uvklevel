@@ -1,0 +1,30 @@
+name: yes
+background-colour: [0.524509788, 0.239114761, 0.239114761, 1]
+ambient-light: [9.99999997e-07, 0, 0, 1]
+actors:
+  - actor: Decoy
+    id: 0
+    dev-name: a
+    uuid: 2596289584326087973
+    standart: true
+    translation: [0, 0, 0]
+    rotation: [0, 0, 0]
+    scale: [1, 1, 1]
+    audio-pitch: 1
+    audio-gain: 1
+    audio-loop: true
+    audio-velocity: [0, 0, 0]
+    audio-file: and.wav
+  - actor: Decoy2
+    id: 0
+    dev-name: a
+    uuid: 2596289584326087977
+    standart: true
+    translation: [0, 0, 0]
+    rotation: [0, 0, 0]
+    scale: [1, 1, 1]
+    audio-pitch: 1
+    audio-gain: 1
+    audio-loop: true
+    audio-velocity: [0, 0, 0]
+    audio-file: and.wav

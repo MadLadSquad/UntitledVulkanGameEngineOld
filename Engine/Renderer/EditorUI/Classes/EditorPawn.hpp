@@ -20,7 +20,7 @@ namespace UVK
             id = 330;
             devName = "EditorPawn";
 
-            actor.create(name, id, devName);
+            actor.createInternal(name, id, devName, false);
         }
 
         virtual void beginPlay() override;
@@ -30,7 +30,6 @@ namespace UVK
         {
 
         }
-
     private:
         void move(float deltaTime);
         void moveMouse();

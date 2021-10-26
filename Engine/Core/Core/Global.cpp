@@ -33,7 +33,7 @@ bool& UVK::UVKGlobal::getEditor()
     return bEditor;
 }
 
-void UVK::UVKGlobal::openLevelInternal(UVK::String name)
+void UVK::UVKGlobal::openLevelInternal(UVK::String name, bool bfirst)
 {
-    UVK::Level::openInternal(name);
+    UVK::Level::openInternal(name, bfirst);
 }

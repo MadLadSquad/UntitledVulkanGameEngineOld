@@ -7,6 +7,7 @@
 #include <GameFramework/Components/Components/CoreComponent.hpp>
 #include <GameFramework/Components/Components/MeshComponentRaw.hpp>
 #include <GameFramework/Components/Components/MeshComponent.hpp>
+#include <GameFramework/Components/Components/AudioComponent.hpp>
 
 namespace UVK
 {
@@ -19,7 +20,8 @@ namespace UVK
         CoreComponent deltaCoreComponent;
         MeshComponent meshComponent;
         MeshComponentRaw meshComponentRaw;
-        bool bHasComponents[2];
+        AudioComponent audioComponent;
+        bool bHasComponents[3];
         bool* bChanged = nullptr;
         volatile bool* vbChanged = nullptr;
         std_filesystem::path* path = nullptr;

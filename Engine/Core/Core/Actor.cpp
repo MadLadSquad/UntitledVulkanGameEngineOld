@@ -19,11 +19,10 @@ void UVK::Actor::create(const std::string& nameN, uint64_t idN, const std::strin
     entity = global.ecs.data().create();
     auto& a = add<CoreComponent>();
 
-    if (idN == 330 && nameN.find("Editor") == std::string::npos)
-        idN = 331;
-
     a.name = nameN;
     a.id = idN;
+    a.uuid.generate();
+    a.bHasUUID = true;
     a.devName = devNameN;
 }
 
@@ -79,4 +78,25 @@ void UVK::Actor::clear()
 
     if (has<CoreComponent>())
         remove<CoreComponent>();
+}
+
+void UVK::Actor::createInternal(const std::string& nameN, uint64_t idN, const std::string& devNameN, bool bUsingUUID)
+{
+    entity = global.ecs.data().create();
+    auto& a = add<CoreComponent>();
+
+    a.name = nameN;
+    a.id = idN;
+    if (bUsingUUID)
+    {
+        a.uuid.generate();
+        a.bHasUUID = true;
+    }
+    else
+    {
+        a.uuid.id = 330;
+        a.bHasUUID = false;
+    }
+
+    a.devName = devNameN;
 }

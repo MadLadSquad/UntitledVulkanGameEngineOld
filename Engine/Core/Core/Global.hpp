@@ -5,6 +5,7 @@
 #include <Renderer/Window/Window.hpp>
 #include <Renderer/UI/UI.hpp>
 #include <Assets/AssetManager.hpp>
+#include "UUID.hpp"
 
 namespace UVK
 {
@@ -37,11 +38,13 @@ namespace UVK
         Level* currentLevel = nullptr;
         AssetManager assetManager;
 
-        static void openLevelInternal(UVK::String name);
+        static void openLevelInternal(UVK::String name, bool bfirst = false);
 
         std::string levelLocation;
         bool bUsesVulkan{};
     private:
+        IDManager idManager;
+
         RendererSettings rendererSettings;
 
         std::string levelName;
@@ -82,6 +85,7 @@ namespace UVK
         friend class Assets;
         friend class StateTracker;
         friend class Utility;
+        friend class IDManager;
         friend struct MeshComponentRaw;
         friend struct RendererSettings;
     };

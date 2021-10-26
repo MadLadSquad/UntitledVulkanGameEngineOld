@@ -55,4 +55,5 @@
 
 #define COMPONENT_MESH_RAW 0
 #define COMPONENT_MESH 1
+#define COMPONENT_AUDIO 2
 //#define GLEW_STATIC

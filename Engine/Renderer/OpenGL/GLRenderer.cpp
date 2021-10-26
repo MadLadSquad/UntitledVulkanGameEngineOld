@@ -6,7 +6,7 @@
 #include <GameFramework/Components/Components.hpp>
 
 UVK::GLRenderer::GLRenderer(Level* level, const bool& bUsesEditor, UVK::String theme)
-    : colTheme(std::move(theme))
+    : colTheme(theme)
 {
     bEditor = bUsesEditor;
     start(level);
@@ -16,7 +16,9 @@ void UVK::GLRenderer::start(UVK::Level* level) const noexcept
 {
     GLPipeline pipeline(bEditor, level);
 #ifdef DEVELOPMENT
-    Actor maikati("Maikati", 0, "a");
+    Actor maikati;
+    maikati.createInternal("Maikati", 0, "a", false);
+
 
     unsigned int indices[] = {
             0, 3, 1,

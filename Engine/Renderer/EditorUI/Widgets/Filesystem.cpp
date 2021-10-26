@@ -7,6 +7,7 @@
 #include <imgui.h>
 #include <cpp/imgui_stdlib.h>
 #include <State/StateTracker.hpp>
+#include <GameFramework/Components/Components/CoreComponent.hpp>
 
 #ifndef __MINGW32__
 bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::FilesystemWidgetData& data, bool& bShow)

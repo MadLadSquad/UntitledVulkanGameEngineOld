@@ -2,6 +2,7 @@
 // Last update 2/9/2021 by Madman10K
 #include "ECS.hpp"
 #include <GameFramework/Components/Components/CoreComponent.hpp>
+#include <Core/Actor.hpp>
 
 void UVK::ECSManager::clear()
 {
@@ -9,11 +10,11 @@ void UVK::ECSManager::clear()
     {
         if (pool.any_of<CoreComponent>(ent))
         {
-            if (pool.get<CoreComponent>(ent).id != 330)
-                pool.destroy(ent);
+            UVK::Actor act(ent);
+            act.destroy();
         }
     });
-    //pool.clear(); // TODO: Keep a close eye on this line
+    pool.clear(); // TODO: Keep a close eye on this line
 }
 
 UVK::EntityPool& UVK::ECSManager::data()

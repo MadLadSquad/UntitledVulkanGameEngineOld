@@ -87,7 +87,7 @@ namespace UVK
     private:
         friend class UVKGlobal;
 
-        static void openInternal(String file);
+        static void openInternal(String file, bool first = false);
         /**
          * @brief Utility function to save an entity
          * @param out a YAML::Emitter reference to the emitter

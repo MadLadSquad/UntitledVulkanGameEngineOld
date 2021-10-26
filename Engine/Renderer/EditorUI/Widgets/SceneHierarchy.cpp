@@ -12,7 +12,7 @@ void SceneHierarchy::destroyEntity(UVK::Actor& selectedEntity)
 {
     const auto& a = selectedEntity.get<UVK::CoreComponent>();
 
-    if (a.id != 330)
+    if (a.standart())
     {
         UVK::Transaction transaction =
         {
@@ -27,6 +27,11 @@ void SceneHierarchy::destroyEntity(UVK::Actor& selectedEntity)
                 if (payload.bHasComponents[COMPONENT_MESH_RAW])
                 {
                     payload.affectedEntity.add<UVK::MeshComponentRaw>() = payload.meshComponentRaw;
+                }
+
+                if (payload.bHasComponents[COMPONENT_AUDIO])
+                {
+                    payload.affectedEntity.add<UVK::AudioComponent>() = payload.audioComponent;
                 }
             },
             .redofunc = [](UVK::TransactionPayload& payload)
@@ -50,6 +55,12 @@ void SceneHierarchy::destroyEntity(UVK::Actor& selectedEntity)
             transaction.transactionPayload.meshComponentRaw = selectedEntity.get<UVK::MeshComponentRaw>();
             transaction.transactionPayload.bHasComponents[COMPONENT_MESH_RAW] = true;
         }
+
+        if (selectedEntity.has<UVK::AudioComponent>())
+        {
+            transaction.transactionPayload.audioComponent = selectedEntity.get<UVK::AudioComponent>();
+            transaction.transactionPayload.bHasComponents[COMPONENT_AUDIO] = true;
+        }
         UVK::StateTracker::push(transaction);
 
         selectedEntity.clear();
@@ -65,6 +76,7 @@ void SceneHierarchy::addEntity(int& entNum)
     b.name = "NewEntity" + std::to_string(entNum);
     b.id = 0;
     b.devName = "a";
+    b.uuid.generate();
 
     UVK::Transaction transaction =
     {

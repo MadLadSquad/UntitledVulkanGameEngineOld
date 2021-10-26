@@ -2,6 +2,8 @@
 // Last update 13/10/2021 by Madman10K
 #pragma once
 #include <Core/Global.hpp>
+#include "UUID.hpp"
+
 
 namespace UVK
 {
@@ -48,6 +50,10 @@ namespace UVK
         void destroy();
         entt::entity& data();
     private:
+        friend class GLRenderer;
+        friend class EditorPawn;
+
+        void createInternal(const std::string& nameN, uint64_t idN, const std::string& devNameN, bool bUsingUUID);
         entt::entity entity = entt::null;
     };
 }

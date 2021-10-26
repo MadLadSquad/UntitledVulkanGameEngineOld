@@ -84,7 +84,7 @@ std::vector<UVK::Asset> UVK::AssetManager::getAllAssetsWithName(const char* name
 {
     std::vector<Asset> vect;
     for (auto& a : global.assetManager.assets)
-        if (a.name == name)
+        if (a.name == std::string(name))
             vect.emplace_back(a);
     return vect;
 }

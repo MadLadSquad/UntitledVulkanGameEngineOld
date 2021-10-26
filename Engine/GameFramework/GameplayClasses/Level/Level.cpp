@@ -87,6 +87,11 @@ void UVK::Level::saveEntity(YAML::Emitter& out, entt::entity act)
         out << YAML::Key << "actor" << YAML::Value << a.name;
         out << YAML::Key << "id" << YAML::Value << a.id;
         out << YAML::Key << "dev-name" << YAML::Value << a.devName;
+        out << YAML::Key << "uuid" << YAML::Value << a.uuid.data();
+        out << YAML::Key << "standart" << YAML::Value << a.standart();
+        out << YAML::Key << "translation" << YAML::Value << a.translation;
+        out << YAML::Key << "rotation" << YAML::Value << a.rotation;
+        out << YAML::Key << "scale" << YAML::Value << a.scale;
     }
 
     if (global.ecs.data().any_of<UVK::AudioComponent>(act))
@@ -114,7 +119,7 @@ void UVK::Level::save(String location)
     {
         const auto& b = global.ecs.data().get<CoreComponent>(entityID);
 
-        if (b.id != 330 && b.name.find("Editor") == std::string::npos)
+        if (b.standart())
         {
             saveEntity(out, entityID);
         }
@@ -126,7 +131,7 @@ void UVK::Level::save(String location)
     fileout << out.c_str();
 }
 
-void UVK::Level::openInternal(UVK::String location)
+void UVK::Level::openInternal(UVK::String location, bool first)
 {
     YAML::Node out;
     try
@@ -139,23 +144,22 @@ void UVK::Level::openInternal(UVK::String location)
         return;
     }
 
-    for (const auto& a : global.ecs.data().view<AudioComponent>())
+    if (!first)
     {
-        auto& audio = global.ecs.data().get<AudioComponent>(a);
-        if (audio.source.state() != UVK_AUDIO_STATE_STOPPED)
-            audio.stop();
+        for (const auto& a : global.ecs.data().view<AudioComponent>())
+        {
+            auto& audio = global.ecs.data().get<AudioComponent>(a);
+            if (audio.source.state() != UVK_AUDIO_STATE_STOPPED)
+                audio.stop();
+        }
+        global.ecs.clear(); // Clear the ECS registry(contains all the actors)
+        global.ui.clear(); // Clear the UI registry
+        if (!global.bEditor)
+        {
+            Events::callEnd(); // If running in a game environment call all the end events
+        }
+        Events::clear(); // Reset all scriptable objects, clear the event queue and add them again
     }
-    ECS::each([](Actor& act)
-    {
-        act.destroy();
-    });
-    global.ecs.clear(); // Clear the ECS registry(contains all the actors)
-    global.ui.clear(); // Clear the UI registry
-    if (!global.bEditor)
-    {
-        Events::callEnd(); // If running in a game environment call all the end events
-    }
-    Events::clear(); // Reset all scriptable objects, clear the event queue and add them again
 
     logger.consoleLog("Opening level with location: ", UVK_LOG_TYPE_NOTE, location);
 
@@ -177,12 +181,13 @@ void UVK::Level::openInternal(UVK::String location)
             auto id = entity["id"].as<uint64_t>();
             auto devName = entity["dev-name"].as<std::string>();
 
-            if (id == 330 && name.find("Editor") == std::string::npos)
-            {
-                id = 331;
-            }
-
             auto act = Actor(name, id, devName);
+            auto& core = act.get<CoreComponent>();
+            core.uuid.id = entity["uuid"].as<uint64_t>();
+            core.bHasUUID = entity["standart"].as<bool>();
+            core.translation = entity["translation"].as<FVector>();
+            core.rotation = entity["rotation"].as<FVector>();
+            core.scale = entity["scale"].as<FVector>();
 
             if (entity["audio-pitch"] && entity["audio-gain"] && entity["audio-loop"] && entity["audio-velocity"] && entity["audio-file"])
             {
