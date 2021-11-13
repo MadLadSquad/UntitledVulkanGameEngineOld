@@ -43,6 +43,7 @@ namespace UVK
         friend class StateTracker;
         friend class Renderer;
         friend class Utility;
+        friend struct EditorPointer;
         friend struct RendererSettings;
 
         Editor* editor = nullptr;

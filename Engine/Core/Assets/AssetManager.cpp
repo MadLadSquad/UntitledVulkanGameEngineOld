@@ -88,3 +88,12 @@ std::vector<UVK::Asset> UVK::AssetManager::getAllAssetsWithName(const char* name
             vect.emplace_back(a);
     return vect;
 }
+
+std::vector<UVK::Asset> UVK::AssetManager::getAllAssetsOfType(UVK::AssetType type)
+{
+    std::vector<Asset> vect;
+    for (auto& a : global.assetManager.assets)
+        if (a.assetType == type)
+            vect.emplace_back(a);
+    return vect;
+}

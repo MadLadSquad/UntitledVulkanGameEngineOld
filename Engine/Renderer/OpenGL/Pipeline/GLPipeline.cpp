@@ -5,7 +5,6 @@
 #include <Renderer/EditorUI/Classes/EditorLevel.hpp>
 #include <Renderer/OpenGL/Pipeline/GLEntityManager.hpp>
 #include "GLPipeline.hpp"
-#include <GameFramework/Components/Components/CoreComponent.hpp>
 
 void UVK::GLPipeline::begin(bool bHasEditor, Level* lvl)
 {
@@ -108,7 +107,7 @@ void UVK::GLPipeline::tick()
         glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         
-        ed.runEditor(global.colour, fb, UVK::Level::getPawn(UVK::global.currentLevel)->camera, global.currentLevel);
+        ed.runEditor(global.colour, fb, UVK::Level::getPawn(UVK::global.currentLevel)->camera, global.currentLevel, deltaTime);
     }
 #endif
     global.finalizeOpening();

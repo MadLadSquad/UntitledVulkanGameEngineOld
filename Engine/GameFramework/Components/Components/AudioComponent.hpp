@@ -33,4 +33,26 @@ namespace UVK
         UVK::CoreComponent* core = nullptr;
         UVK::Actor* actor = nullptr;
     };
+
+    struct StreamedAudioComponent
+    {
+    public:
+        void create(UVK::Actor* act, const char* file);
+        void create(UVK::Actor* act);
+        void create();
+
+        void tick();
+
+        bool pause();
+        bool stop();
+        bool resume();
+        void play();
+
+        AudioSourceStreamed source;
+    private:
+        std::string currentFile;
+
+        UVK::CoreComponent* core = nullptr;
+        UVK::Actor* actor = nullptr;
+    };
 }

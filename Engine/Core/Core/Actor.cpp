@@ -76,6 +76,13 @@ void UVK::Actor::clear()
         remove<MeshComponent>();
     }
 
+    if (has<AudioComponent>())
+    {
+        auto& audio = get<AudioComponent>();
+        audio.stop();
+        remove<AudioComponent>();
+    }
+
     if (has<CoreComponent>())
         remove<CoreComponent>();
 }

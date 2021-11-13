@@ -1,65 +1,8 @@
-// Audio.cpp
-// Last update 26/10/2021 by Madman10K
-#include "Audio.hpp"
-#include <sndfile.h>
+// RegularAudio.hpp
+// Last update 29/10/2021 by Madman10K
+#include "RegularAudio.hpp"
 
 #ifndef __MINGW32__
-void UVK::AudioManager::createDevice()
-{
-    device = alcOpenDevice(nullptr);
-
-    if (!device)
-    {
-        logger.consoleLog("Failed to get sound device", UVK_LOG_TYPE_ERROR);
-        return;
-    }
-
-    context = alcCreateContext(device, nullptr);
-
-    if (!context)
-    {
-        logger.consoleLog("Failed to get sound context", UVK_LOG_TYPE_ERROR);
-        return;
-    }
-
-    if (!alcMakeContextCurrent(context))
-    {
-        logger.consoleLog("Failed to use the context", UVK_LOG_TYPE_ERROR);
-        return;
-    }
-
-    String name = nullptr;
-
-    if (alcIsExtensionPresent(device, "ALC_ENUMERATE_ALL_EXT"))
-    {
-        name = alcGetString(device, ALC_ALL_DEVICES_SPECIFIER);
-    }
-    if (!name || alcGetError(device) != AL_NO_ERROR)
-    {
-        name = alcGetString(device, ALC_DEVICE_SPECIFIER);
-        return;
-    }
-
-    logger.consoleLog("Loaded sound device \"", UVK_LOG_TYPE_SUCCESS, name, "\"");
-}
-
-void UVK::AudioManager::destroyDevice()
-{
-    alcMakeContextCurrent(nullptr);
-    alcDestroyContext(context);
-    alcCloseDevice(device);
-}
-
-UVK::AudioManager::~AudioManager()
-{
-    destroyDevice();
-}
-
-UVK::AudioManager::AudioManager()
-{
-    createDevice();
-}
-
 UVK::AudioBuffer::AudioBuffer(String loc)
 {
     addSound(loc);
@@ -91,34 +34,7 @@ void UVK::AudioBuffer::addSound(String loc)
 
     format = AL_NONE;
 
-    switch (sfinfo.channels)
-    {
-    case 1:
-        format = AL_FORMAT_MONO16;
-        break;
-    case 2:
-        format = AL_FORMAT_STEREO16;
-        break;
-    case 3:
-        if (sf_command(sndfile, SFC_WAVEX_GET_AMBISONIC, nullptr, 0) == SF_AMBISONIC_B_FORMAT)
-        {
-            format = AL_FORMAT_BFORMAT2D_16;
-        }
-        break;
-    case 4:
-        if (sf_command(sndfile, SFC_WAVEX_GET_AMBISONIC, nullptr, 0) == SF_AMBISONIC_B_FORMAT)
-        {
-            format = AL_FORMAT_BFORMAT3D_16;
-        }
-        break;
-    }
-
-    if (!format)
-    {
-        logger.consoleLog("Unsupported channel count: ", UVK_LOG_TYPE_ERROR, sfinfo.channels);
-        sf_close(sndfile);
-        return;
-    }
+    findFormat(format, sfinfo, sndfile);
 
     memoryBuffer = static_cast<short*>(malloc((size_t)(sfinfo.frames * sfinfo.channels) * sizeof(short)));
 
@@ -134,9 +50,7 @@ void UVK::AudioBuffer::addSound(String loc)
     byteNum = (ALsizei)(frameNum * sfinfo.channels) * (ALsizei)sizeof(short);
     bufferI = 0;
 
-    ALuint buffs[1] = {bufferI};
-    alGenBuffers(1, buffs);
-    bufferI = buffs[0];
+    alGenBuffers(1, &bufferI);
     alBufferData(bufferI, format, memoryBuffer, byteNum, sfinfo.samplerate);
 
     free(memoryBuffer);
@@ -144,14 +58,13 @@ void UVK::AudioBuffer::addSound(String loc)
 
     error = alGetError();
 
-    if (error != AL_NO_ERROR)
+    if (error != AL_NO_ERROR && error != AL_INVALID_NAME)
     {
         logger.consoleLog("OpenAL error: ", UVK_LOG_TYPE_ERROR, alGetString(error));
 
         if (bufferI && alIsBuffer(bufferI))
         {
-            ALuint buffers[1] = {bufferI};
-            alDeleteBuffers(1, buffers);
+            alDeleteBuffers(1, &bufferI);
         }
 
         return;
@@ -162,14 +75,46 @@ void UVK::AudioBuffer::removeSound()
 {
     if (alIsBuffer(bufferI) && bufferI)
     {
-        ALuint buffers[1] = {bufferI};
-        alDeleteBuffers(1, buffers);
+        alDeleteBuffers(1, &bufferI);
     }
 }
 
 ALuint& UVK::AudioBuffer::buffer()
 {
     return bufferI;
+}
+
+void UVK::AudioBuffer::findFormat(ALenum& format, const SF_INFO& info, SNDFILE* sndfile)
+{
+    switch (info.channels)
+    {
+        case 1:
+            format = AL_FORMAT_MONO16;
+            break;
+        case 2:
+            format = AL_FORMAT_STEREO16;
+            break;
+        case 3:
+            if (sf_command(sndfile, SFC_WAVEX_GET_AMBISONIC, nullptr, 0) == SF_AMBISONIC_B_FORMAT)
+            {
+                format = AL_FORMAT_BFORMAT2D_16;
+            }
+            break;
+        case 4:
+            if (sf_command(sndfile, SFC_WAVEX_GET_AMBISONIC, nullptr, 0) == SF_AMBISONIC_B_FORMAT)
+            {
+                format = AL_FORMAT_BFORMAT3D_16;
+            }
+            break;
+    }
+
+    if (!format)
+    {
+        logger.consoleLog("Unsupported channel count: ", UVK_LOG_TYPE_ERROR, info.channels);
+        sf_close(sndfile);
+        sndfile = nullptr;
+        return;
+    }
 }
 
 void UVK::AudioSource::play()
@@ -211,12 +156,9 @@ void UVK::AudioSource::update(const UVK::FVector& position) const
 
 void UVK::AudioSource::init()
 {
+    alGenSources(1, &audioDt.source);
     buf = AudioBuffer(audioDt.location.c_str());
-    uint32_t srcs[1] = {audioDt.source};
-    alGenSources(1, srcs);
-    audioDt.source = srcs[0];
     update({0.0f, 0.0f, 0.0f});
     alSourcei(audioDt.source, AL_BUFFER, (ALint)buf.buffer());
 }
-
 #endif

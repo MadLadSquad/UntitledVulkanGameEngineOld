@@ -15,6 +15,7 @@ namespace UVK
         void load();
         ~AssetManager();
         static std::vector<Asset> getAllAssetsWithName(const char* name);
+        static std::vector<Asset> getAllAssetsOfType(AssetType type);
     private:
 #ifndef PRODUCTION
         // Generates an asset layout archive file and records all the IDs

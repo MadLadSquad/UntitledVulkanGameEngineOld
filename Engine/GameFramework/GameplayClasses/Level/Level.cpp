@@ -146,12 +146,12 @@ void UVK::Level::openInternal(UVK::String location, bool first)
 
     if (!first)
     {
-        for (const auto& a : global.ecs.data().view<AudioComponent>())
-        {
-            auto& audio = global.ecs.data().get<AudioComponent>(a);
-            if (audio.source.state() != UVK_AUDIO_STATE_STOPPED)
-                audio.stop();
-        }
+        //for (const auto& a : global.ecs.data().view<AudioComponent>())
+        //{
+        //    auto& audio = global.ecs.data().get<AudioComponent>(a);
+        //    if (audio.source.state() != UVK_AUDIO_STATE_STOPPED)
+        //        audio.stop();
+        //}
         global.ecs.clear(); // Clear the ECS registry(contains all the actors)
         global.ui.clear(); // Clear the UI registry
         if (!global.bEditor)

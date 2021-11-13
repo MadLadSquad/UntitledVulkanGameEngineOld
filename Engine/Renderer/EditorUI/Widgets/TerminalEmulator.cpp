@@ -13,9 +13,7 @@ bool TerminalEmulator::display(std::string& terminalCommand, bool& bFinalisedCom
         bReturn = true;
     ImGui::SameLine();
     if (ImGui::Button("Send##TTY"))
-    {
         bFinalisedCommand = true;
-    }
 
     //auto a = ImTTY::Terminal.DrawContents(terminalCommand, bFinalisedCommand);
 

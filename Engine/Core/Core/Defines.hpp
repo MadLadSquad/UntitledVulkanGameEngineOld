@@ -34,6 +34,7 @@
 #define FS_ICON_MODEL 5
 #define FS_ICON_UNKNOWN 6
 #define FS_ICON_CODE 7
+#define FS_ICON_CLOSE 8
 
 #define FC_GAME_MODE 1
 #define FC_GAME_STATE 2

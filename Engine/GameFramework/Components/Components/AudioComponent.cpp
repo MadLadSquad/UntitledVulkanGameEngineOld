@@ -56,6 +56,7 @@ bool UVK::AudioComponent::stop()
         source.state() = UVK_AUDIO_STATE_STOPPED;
         alSourceStop(source.buffer().buffer());
         alDeleteSources(1, &source.audioData().source);
+        source.audioData().source = 0;
         source.buffer().removeSound();
         return true;
     }
@@ -76,4 +77,57 @@ bool UVK::AudioComponent::resume()
 void UVK::AudioComponent::play()
 {
     source.play();
+}
+
+void UVK::StreamedAudioComponent::create(UVK::Actor* act, const char* file)
+{
+    actor = act;
+
+    core = &actor->get<CoreComponent>();
+    source = AudioSourceStreamed();
+    source.audioData().location = file;
+    source.init();
+}
+
+void UVK::StreamedAudioComponent::create(UVK::Actor* act)
+{
+    actor = act;
+    std::string a = source.audioData().location;
+    core = &actor->get<CoreComponent>();
+    source = AudioSourceStreamed();
+    source.audioData().location = a;
+    source.init();
+}
+
+void UVK::StreamedAudioComponent::create()
+{
+    std::string a = source.audioData().location;
+    source = AudioSourceStreamed();
+    source.audioData().location = a;
+    source.init();
+}
+
+void UVK::StreamedAudioComponent::tick()
+{
+
+}
+
+bool UVK::StreamedAudioComponent::pause()
+{
+    return false;
+}
+
+bool UVK::StreamedAudioComponent::stop()
+{
+    return false;
+}
+
+bool UVK::StreamedAudioComponent::resume()
+{
+    return false;
+}
+
+void UVK::StreamedAudioComponent::play()
+{
+
 }

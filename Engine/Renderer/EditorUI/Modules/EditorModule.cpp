@@ -21,28 +21,20 @@ void UVK::EditorModuleManager::addIndependentModule(const UVK::IndependentModule
 void UVK::EditorModuleManager::renderDetailsPanelModules(UVK::Actor* actor, bool& bReturn) const
 {
     for (auto& a : detailsPanelModules)
-    {
         a(actor, bReturn);
-    }
 }
 
 void UVK::EditorModuleManager::renderToolsModule(const CurrentToolType& type, bool& bReturn) const
 {
     for (auto& a : toolsModules)
-    {
         a(type, bReturn);
-    }
 }
 
 void UVK::EditorModuleManager::renderIndependentModule(bool& bReturn)
 {
     for (auto& a : independentModules)
-    {
         if (a.bEnabled)
-        {
             a.func(a.name, a.bEnabled, bReturn);
-        }
-    }
 }
 
 void UVK::EditorModuleManager::addTopBar(const std::function<void(bool&)>& func)
@@ -53,9 +45,7 @@ void UVK::EditorModuleManager::addTopBar(const std::function<void(bool&)>& func)
 void UVK::EditorModuleManager::renderTopBar(bool& bReturn) const
 {
     for (auto& a : topBarModules)
-    {
         a(bReturn);
-    }
 }
 
 const std::vector<std::function<void(const UVK::CurrentToolType&, bool&)>>& UVK::EditorModuleManager::getToolsModules() const
