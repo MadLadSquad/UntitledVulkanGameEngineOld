@@ -15,7 +15,7 @@ bool OpenLevelWidget::display(std::string &openLevel, bool &bShowOpenLevelWidget
     {
         ImGui::TextWrapped("File location: Content/");
         ImGui::SameLine();
-        if (ImGui::InputText("##File location", &openLevel) || ImGui::IsItemFocused())
+        if (ImGui::InputText("##File location", &openLevel) || ImGui::IsItemActive())
             bReturn = true;
         ImGui::SameLine();
         ImGui::TextWrapped(".uvklevel");

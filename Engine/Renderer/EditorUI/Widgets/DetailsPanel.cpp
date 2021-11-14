@@ -178,19 +178,19 @@ bool DetailsPanel::display(UVK::Actor& ent, UVK::Level* lvl, bool& bShow, const 
 
             ImGui::TextWrapped("Name");
             ImGui::SameLine();
-            if (ImGui::InputText("##Name##inputactorname", &a.name) || ImGui::IsItemFocused())
+            if (ImGui::InputText("##Name##inputactorname", &a.name) || ImGui::IsItemActive())
                 bReturn = true;
 
             ImGui::TextWrapped("ID");
             ImGui::SameLine();
-            if (ImGui::InputScalar("##ID##inputactoridentifier", ImGuiDataType_U64, &a.id) || ImGui::IsItemFocused())
+            if (ImGui::InputScalar("##ID##inputactoridentifier", ImGuiDataType_U64, &a.id) || ImGui::IsItemActive())
                 bReturn = true;
             if (a.id == 330 && a.name.find("Editor") == std::string::npos)
                 a.id += 1;
 
             ImGui::TextWrapped("Development Name");
             ImGui::SameLine();
-            if (ImGui::InputText("##Development Name##devname", &a.devName) || ImGui::IsItemFocused())
+            if (ImGui::InputText("##Development Name##devname", &a.devName) || ImGui::IsItemActive())
                 bReturn = true;
 
             static UVK::FVector pastTranslation;
@@ -398,7 +398,7 @@ bool DetailsPanel::display(UVK::Actor& ent, UVK::Level* lvl, bool& bShow, const 
 
             ImGui::TextWrapped("File Location");
             ImGui::SameLine();
-            if (ImGui::InputText("##File Location fl", &cmp.source.audioData().location) || ImGui::IsItemFocused())
+            if (ImGui::InputText("##File Location fl", &cmp.source.audioData().location) || ImGui::IsItemActive())
                 bReturn = true;
 
             if (ImGui::Button("Play"))// && !cmp.source.audioData().location.empty())

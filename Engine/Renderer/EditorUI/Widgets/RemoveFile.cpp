@@ -23,7 +23,7 @@ bool RemoveFile::display(bool& bShow)
 
         ImGui::TextWrapped("File Location: Source/");
         ImGui::SameLine();
-        if (ImGui::InputText("##File to delete", &in) || ImGui::IsItemFocused())
+        if (ImGui::InputText("##File to delete", &in) || ImGui::IsItemActive())
             bReturn = true;
 
         if (ImGui::Button("Close##delete"))

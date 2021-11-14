@@ -52,7 +52,7 @@ void UVKLogImGui::display(bool& bReturn)
     }
 
     static std::string command;
-    if (ImGui::InputTextWithHint("##Input", "Enter any command here", &command) || ImGui::IsItemFocused())
+    if (ImGui::InputTextWithHint("##Input", "Enter any command here", &command) || ImGui::IsItemActive())
         bReturn = true;
 
     ImGui::SameLine();

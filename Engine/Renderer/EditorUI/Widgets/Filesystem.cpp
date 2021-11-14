@@ -217,7 +217,7 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::
         }
         if (bRenaming && a.path() == selectedFile)
         {
-            if (ImGui::InputText(("##Rename" + a.path().string()).c_str(), &renameText) || ImGui::IsItemFocused())
+            if (ImGui::InputText(("##Rename" + a.path().string()).c_str(), &renameText) || ImGui::IsItemActive())
                 bReturn = true;
             // I don't think it's useful to set it as any other key really
             if (UVK::Input::getKey(Keys::Enter) == Keys::KeyPressed)

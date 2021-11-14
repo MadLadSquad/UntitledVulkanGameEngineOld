@@ -9,8 +9,9 @@ bool TerminalEmulator::display(std::string& terminalCommand, bool& bFinalisedCom
 {
     bool bReturn = false;
     ImGui::Begin("Terminal Emulator", &bShow);
-    if (ImGui::InputText("TTY command", &terminalCommand) || ImGui::IsItemFocused())
+    if (ImGui::InputText("TTY command", &terminalCommand) || ImGui::IsItemActive())
         bReturn = true;
+
     ImGui::SameLine();
     if (ImGui::Button("Send##TTY"))
         bFinalisedCommand = true;

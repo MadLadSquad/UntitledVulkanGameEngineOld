@@ -14,7 +14,7 @@ bool SaveLevel::display(bool &bOpen, std::string& location, UVK::FVector4& colou
     {
         ImGui::TextWrapped("Location: Content/");
         ImGui::SameLine();
-        if (ImGui::InputText("##location##inputlocationsave", &location) || ImGui::IsItemFocused())
+        if (ImGui::InputText("##location##inputlocationsave", &location) || ImGui::IsItemActive())
             bReturn = true;
         ImGui::SameLine();
         ImGui::TextWrapped(".uvklevel");

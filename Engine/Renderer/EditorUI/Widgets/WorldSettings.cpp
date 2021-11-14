@@ -10,7 +10,7 @@ bool WorldSettings::display(UVK::FVector4& colour, UVK::FVector4& ambientLight, 
 
     ImGui::TextWrapped("Level name");
     ImGui::SameLine();
-    if (ImGui::InputText("##Level Name ln", &name) || ImGui::IsItemFocused())
+    if (ImGui::InputText("##Level Name ln", &name) || ImGui::IsItemActive())
         bReturn = true;
 
     ImGui::TextWrapped("Colour background");

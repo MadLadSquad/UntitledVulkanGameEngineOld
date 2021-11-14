@@ -70,7 +70,7 @@ bool CreateFile::display(std::string& fileOutLocation, bool& bShowCreateFile1)
         ImGui::Text("Selected file type: %s", str.c_str());
         ImGui::TextWrapped("Location: Source/");
         ImGui::SameLine();
-        if (ImGui::InputText("##Location##genfile", &fileOutLocation) || ImGui::IsItemFocused())
+        if (ImGui::InputText("##Location##genfile", &fileOutLocation) || ImGui::IsItemActive())
             bReturn = true;
 
         if (ImGui::Button("Cancel"))

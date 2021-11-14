@@ -263,8 +263,6 @@ void UVK::Editor::runEditor(FVector4& colour, GLFrameBuffer& fb, Camera& camera,
 void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& camera, UVK::Level* lvl, const float& deltaTime)
 {
     accumulateUndoRedo += deltaTime;
-    if (bools.bEditorUsingTextbox)
-        std::cout << "Using textbox" << std::endl;
     ImGuiStyle& style = ImGui::GetStyle();
 
     if ((Input::getAction("editor-bind-modifier") == Keys::KeyPressed || Input::getAction("editor-bind-modifier") == Keys::KeyRepeat) && (Input::getAction("editor-shift") == Keys::KeyPressed || Input::getAction("editor-shift") == Keys::KeyRepeat) && (Input::getAction("editor-level-saveas") == Keys::KeyPressed || Input::getAction("editor-level-saveas") == Keys::KeyRepeat))
@@ -419,7 +417,6 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
     }
     if (bools.bShowTools)
         bools.bEditorUsingTextbox = Tools::display(moduleManager, bools.bShowTools) ? true : bools.bEditorUsingTextbox;
-    // TODO: Fix the bug with the bUsingTextbox!
     if (bools.bShowTerminalEmulator)
         bools.bEditorUsingTextbox = TerminalEmulator::display(terminalCommand, bools.bFinalisedCommand, bools.bShowTerminalEmulator) ? true : bools.bEditorUsingTextbox;
     if (bools.bShowMemoryEditor)
@@ -448,8 +445,6 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
         bools.bEditorUsingTextbox = Settings::displayThemeEditor(bools.bShowThemeSettings) ? true : bools.bEditorUsingTextbox;
     if (bools.bShowGameSettings)
         bools.bEditorUsingTextbox = Settings::displayProjectSettings(projectName, projectVersion, engineVersion, startupLevel, bools.bShowGameSettings) ? true : bools.bEditorUsingTextbox;
-
-    // TODO: Fix the bug with the bUsingTextbox!
     if (bools.bShowDeveloperConsole)
         loggerwidget.displayFull(bools.bShowDeveloperConsole, bools.bEditorUsingTextbox);
     moduleManager.renderIndependentModule(bools.bEditorUsingTextbox);
