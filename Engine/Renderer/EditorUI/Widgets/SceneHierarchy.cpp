@@ -1,5 +1,5 @@
 // SceneHierarchy.cpp
-// Last update 17/10/2021 by Madman10K
+// Last update 29/11/2021 by Madman10K
 #include "SceneHierarchy.hpp"
 #ifndef PRODUCTION
 #include <Core/Actor.hpp>
@@ -103,14 +103,16 @@ void SceneHierarchy::display(UVK::Actor& selectedEntity, std::string& entAppend,
 {
     bool bDestroy = false;
 
+    static std::vector<std::pair<std::string, size_t>> folders;
+
     ImGui::Begin("Scene Hierarchy", &bShow, ImGuiWindowFlags_MenuBar);
     ImGui::BeginMenuBar();
 
     if (ImGui::MenuItem("+ Add Entity##scn"))
-    {
         addEntity(entNum);
-    }
-    if (ImGui::MenuItem("- Destroy Entity##scn")) bDestroy = true;
+    if (ImGui::MenuItem("- Destroy Entity##scn"))
+        bDestroy = true;
+    if (ImGui::MenuItem("+ Add Folder##scn"));
 
     ImGui::EndMenuBar();
 
@@ -119,16 +121,12 @@ void SceneHierarchy::display(UVK::Actor& selectedEntity, std::string& entAppend,
         const auto& b = UVK::ECS::data().get<UVK::CoreComponent>(a);
 
         if (ImGui::Selectable(static_cast<std::string>(b.name + ", " + std::to_string(b.id)).c_str()))
-        {
             if (UVK::ECS::data().valid(a))
                 selectedEntity.data() = a;
-        }
     }
 
     if (bDestroy && UVK::ECS::data().valid(selectedEntity.data()))
-    {
         destroyEntity(selectedEntity);
-    }
 
     ImGui::End();
 }

@@ -15,10 +15,8 @@ namespace UVK
         InputAction() = default;
 
         // Used for doing comparing the state
-        bool operator==(uint8_t st) const
-        {
-            return state == st;
-        }
+        bool operator==(const uint8_t& st) const;
+        bool operator!=(const uint8_t& st) const;
 
         std::string name{};
         uint16_t keyCode{};

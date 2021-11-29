@@ -1,5 +1,5 @@
 // Window.cpp
-// Last update 2/9/2021 by Madman10K
+// Last update 29/11/2021 by Madman10K
 #include <GL/glew.h>
 #include "Window.hpp"
 #include <glfw3.h>
@@ -485,4 +485,14 @@ uint8_t UVK::Input::getKey(uint16_t key)
 std::vector<UVK::InputAction>& UVK::Input::getActions()
 {
     return global.inputActionList;
+}
+
+bool UVK::InputAction::operator!=(const uint8_t& st) const
+{
+    return state != st;
+}
+
+bool UVK::InputAction::operator==(const uint8_t& st) const
+{
+    return state == st;
 }

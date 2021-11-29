@@ -1,5 +1,5 @@
 // Filesystem.cpp
-// Last update 26/10/2021 by Madman10K
+// Last update 29/11/2021 by Madman10K
 #include <GL/glew.h>
 #include "Filesystem.hpp"
 #ifndef PRODUCTION
@@ -7,7 +7,6 @@
 #include <imgui.h>
 #include <cpp/imgui_stdlib.h>
 #include <State/StateTracker.hpp>
-#include <GameFramework/Components/Components/CoreComponent.hpp>
 
 #ifndef __MINGW32__
 bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::FilesystemWidgetData& data, bool& bShow)
@@ -23,6 +22,14 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::
     volatile static bool bNewFolder = true;
     static unsigned int fileNum = 0;
     static std::vector<UVK::Texture> previews;
+
+    // CTRL/SHIFT select
+    static std::vector<std_filesystem::path> selectedFiles;
+    static std_filesystem::path currentSelectedFile;
+
+    // Right click popup
+    static std_filesystem::path selectedEditFile;
+    static bool bCalledFromEditPopup = false;
 
     // Variables for renaming
     static bool bRenaming = false;
@@ -49,9 +56,6 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::
     if (bCurrentlyUsingPreviews && (previews.size() != data.maxFileNum || bNewFolder))
         previews.resize(data.maxFileNum);
 
-    // The current file represented as a string
-    static std_filesystem::path selectedFile;
-
     ImGui::Begin("Filesystem##Widget", &bShow, ImGuiWindowFlags_MenuBar);
 
     if (ImGui::BeginMenuBar())
@@ -64,7 +68,10 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::
         }
 
         if (ImGui::MenuItem("- Remove File"))
+        {
             bDeleteWarning = true;
+            bCalledFromEditPopup = false;
+        }
 
         if (ImGui::MenuItem("+ Add Directory"))
         {
@@ -73,10 +80,11 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::
             return bReturn;
         }
 
-        if ((ImGui::MenuItem("* Rename File") || UVK::Input::getAction("editor-filesystem-rename") == Keys::KeyPressed) && !selectedFile.empty())
+        if ((ImGui::MenuItem("* Rename File") || UVK::Input::getAction("editor-filesystem-rename") == Keys::KeyPressed) && !currentSelectedFile.empty())
         {
             bRenaming = true;
-            renameText = selectedFile.filename().string();
+            bCalledFromEditPopup = false;
+            renameText = currentSelectedFile.filename().string();
         }
 
         ImGui::EndMenuBar();
@@ -100,10 +108,21 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::
             ImGui::SameLine();
             if (ImGui::Button("Delete##FileDeletion") && bAccepted)
             {
-                deleteFile(pt, selectedFile);
+                if (bCalledFromEditPopup)
+                    deleteFile(pt, selectedEditFile);
+                else
+                {
+                    if (!currentSelectedFile.empty())
+                        deleteFile(pt, currentSelectedFile);
+                    for (auto& a : selectedFiles)
+                        deleteFile(pt, a);
+                }
+                currentSelectedFile.clear();
+                selectedFiles.clear();
                 bNewFolder = true;
                 bDeleteWarning = false;
                 bAccepted = false;
+
                 return bReturn;
             }
 
@@ -121,6 +140,13 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::
     auto p = pt.string();
     UVK::Utility::sanitiseFilepath(p, true);
     pt = std_filesystem::path(p);
+
+    // Delete file/s using the Delete key
+    if (UVK::Input::getKey(Keys::Delete) == Keys::KeyPressed)
+    {
+        bDeleteWarning = true;
+        bCalledFromEditPopup = false;
+    }
 
     ImGui::PushStyleColor(ImGuiCol_Button, { 0.0f, 0.0f, 0.0f, 0.0f });
     if (!(p == "../Content/" || p == "../Content"))
@@ -154,6 +180,7 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::
             UVK::StateTracker::push(transaction);
             pt = pt.parent_path();
             bNewFolder = true;
+            selectedFiles.clear();
             return bReturn;
         }
 
@@ -169,6 +196,14 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::
 
         if (a.is_directory())
         {
+            auto it = std::find(selectedFiles.begin(), selectedFiles.end(), path);
+            bool bFileSelected = (it != selectedFiles.end());
+            if (bFileSelected || currentSelectedFile == path)
+            {
+                bFileSelected = true; // Needed so that we can pop the colours
+                ImGui::PushStyleColor(ImGuiCol_Button, { 0.87f, 0.64f, 0.03, 1.0f });
+                ImGui::PushStyleColor(ImGuiCol_ButtonHovered, { 1.0f, 0.94f, 0.30f, 1.0f });
+            }
             ImGui::ImageButton((void*)(intptr_t)textures[FS_ICON_FOLDER].getImage(), ImVec2(data.imageSize, data.imageSize));
             if (ImGui::IsItemHovered())
             {
@@ -200,35 +235,133 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::
                     };
                     UVK::StateTracker::push(transaction);
                     pt = pt / path.filename();
-                    selectedFile.clear();
+                    selectedFiles.clear();
                     bNewFolder = true;
                     return bReturn;
                 }
+                else if (ImGui::IsMouseClicked(ImGuiMouseButton_Right))
+                {
+                    ImGui::OpenPopup("##FSEditPopup");
+                    selectedEditFile = path;
+                }
+                else if (ImGui::IsMouseClicked(ImGuiMouseButton_Left))
+                {
+                    if (UVK::Input::getAction("editor-bind-modifier") == Keys::KeyPressed || UVK::Input::getAction("editor-bind-modifier") == Keys::KeyRepeat)
+                    {
+                        if (bFileSelected)
+                        {
+                            if (it != selectedFiles.end())
+                                selectedFiles.erase(it);
+                            else
+                                currentSelectedFile.clear();
+                        }
+                        else
+                            selectedFiles.push_back(path);
+                    }
+                    else
+                        currentSelectedFile = path;
+                }
+            }
 
-                if (ImGui::IsMouseClicked(ImGuiMouseButton_Left))
-                    selectedFile = path;
+            if (bFileSelected)
+            {
+                ImGui::PopStyleColor();
+                ImGui::PopStyleColor();
             }
         }
         else
         {
-            ImGui::ImageButton((void*)(intptr_t)(selectTextures(textures, a, previews, bCurrentlyUsingPreviews, i, bNewFolder)->getImage()), ImVec2(data.imageSize, data.imageSize));
-            if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Left))
-                selectedFile = path;
-        }
-        if (bRenaming && a.path() == selectedFile)
-        {
-            if (ImGui::InputText(("##Rename" + a.path().string()).c_str(), &renameText) || ImGui::IsItemActive())
-                bReturn = true;
-            // I don't think it's useful to set it as any other key really
-            if (UVK::Input::getKey(Keys::Enter) == Keys::KeyPressed)
+            auto it = std::find(selectedFiles.begin(), selectedFiles.end(), path);
+            bool bFileSelected = (it != selectedFiles.end());
+            if (bFileSelected || currentSelectedFile == path)
             {
-                std_filesystem::rename(path.parent_path()/path.filename(), path.parent_path()/renameText);
+                bFileSelected = true; // Needed so that we can pop the colours
+                ImGui::PushStyleColor(ImGuiCol_Button, { 0.87f, 0.64f, 0.03, 1.0f });
+                ImGui::PushStyleColor(ImGuiCol_ButtonHovered, { 1.0f, 0.94f, 0.30f, 1.0f });
+            }
+            ImGui::ImageButton((void*)(intptr_t)(selectTextures(textures, a, previews, bCurrentlyUsingPreviews, i, bNewFolder)->getImage()), ImVec2(data.imageSize, data.imageSize));
+            if (ImGui::IsItemHovered())
+            {
+                if (ImGui::IsMouseClicked(ImGuiMouseButton_Left))
+                {
+                    if (UVK::Input::getAction("editor-bind-modifier") == Keys::KeyPressed || UVK::Input::getAction("editor-bind-modifier") == Keys::KeyRepeat)
+                    {
+                        if (bFileSelected)
+                        {
+                            if (it != selectedFiles.end())
+                                selectedFiles.erase(it);
+                            else
+                                currentSelectedFile.clear();
+                        }
+                        else
+                            selectedFiles.push_back(path);
+                    }
+                    else
+                        currentSelectedFile = path;
+                }
+                else if (ImGui::IsMouseClicked(ImGuiMouseButton_Right))
+                {
+                    ImGui::OpenPopup("##FSEditPopup");
+                    selectedEditFile = path;
+                }
+            }
+            if (bFileSelected)
+            {
+                ImGui::PopStyleColor();
+                ImGui::PopStyleColor();
+            }
+        }
+        if (selectedEditFile == path && ImGui::BeginPopup("##FSEditPopup"))
+        {
+            if (ImGui::MenuItem("Delete##FSEditorPopup"))
+            {
+                bDeleteWarning = true;
+                bCalledFromEditPopup = true;
+            }
 
-                bRenaming = false;
+            if (ImGui::MenuItem("Rename##FSEditorPopup"))
+            {
+                bRenaming = true;
+                bCalledFromEditPopup = true;
+                renameText = selectedEditFile.filename().string();
+            }
+
+            if (ImGui::MenuItem("New Folder##FSEditorPopup"))
+            {
+                createFolder(pt);
                 bNewFolder = true;
-
                 return bReturn;
             }
+
+            if (ImGui::MenuItem("New File##FSEditorPopup"))
+            {
+                createFile(pt);
+                bNewFolder = true;
+                return bReturn;
+            }
+            ImGui::EndPopup();
+        }
+
+        if (bRenaming)
+        {
+            if ((bCalledFromEditPopup && a.path() == selectedEditFile) || (!bCalledFromEditPopup && a.path() == currentSelectedFile))
+            {
+                if (ImGui::InputText(("##Rename" + a.path().string()).c_str(), &renameText) || ImGui::IsItemActive())
+                    bReturn = true;
+                // I don't think it's useful to set it as any other key really
+                if (UVK::Input::getKey(Keys::Enter) == Keys::KeyPressed)
+                {
+                    std_filesystem::rename(path.parent_path()/path.filename(), path.parent_path()/renameText);
+
+                    bRenaming = false;
+                    bNewFolder = true;
+
+                    return bReturn;
+                }
+            }
+            else
+                // path.filename().c_str() shows only the first letter of a filename on Windows for some reason
+                ImGui::TextWrapped("%s", path.filename().string().c_str());
         }
         else
             // path.filename().c_str() shows only the first letter of a filename on Windows for some reason

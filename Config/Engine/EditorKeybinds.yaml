@@ -49,3 +49,5 @@ bindings:
     val: 89
   - key: editor-filesystem-rename
     val: 291
+  - key: editor-filesystem-select
+    val: 0
