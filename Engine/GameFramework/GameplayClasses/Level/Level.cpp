@@ -6,6 +6,7 @@
 #include <Events/Events.hpp>
 #include <Engine/Core/Core/Global.hpp>
 #include "Level.hpp"
+#include <Renderer/EditorUI/Widgets/SceneHierarchy.hpp>
 
 // Creates bindings for a FVector
 namespace YAML {
@@ -159,6 +160,12 @@ void UVK::Level::openInternal(UVK::String location, bool first)
             Events::callEnd(); // If running in a game environment call all the end events
         }
         Events::clear(); // Reset all scriptable objects, clear the event queue and add them again
+
+        Actor temp = Actor();
+        std::string tempStr;
+        int tmpInt = 1;
+        bool tmpBool = true;
+        SceneHierarchy::display(temp, tempStr, tmpInt, tmpBool, true);
     }
 
     logger.consoleLog("Opening level with location: ", UVK_LOG_TYPE_NOTE, location);

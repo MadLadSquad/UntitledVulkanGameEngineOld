@@ -10,6 +10,8 @@
 
 void SceneHierarchy::destroyEntity(UVK::Actor& selectedEntity)
 {
+    if (!selectedEntity.has<UVK::CoreComponent>())
+        return;
     const auto& a = selectedEntity.get<UVK::CoreComponent>();
 
     if (a.standart())
@@ -99,35 +101,84 @@ void SceneHierarchy::addEntity(int& entNum)
     entNum++;
 }
 
-void SceneHierarchy::display(UVK::Actor& selectedEntity, std::string& entAppend, int& entNum, bool& bShow)
+void SceneHierarchy::display(UVK::Actor& selectedEntity, std::string& entAppend, int& entNum, bool& bShow, const bool& bReset)
 {
-    bool bDestroy = false;
-
     static std::vector<std::pair<std::string, size_t>> folders;
+    static std::vector<UVK::Actor> selectedEntities;
 
-    ImGui::Begin("Scene Hierarchy", &bShow, ImGuiWindowFlags_MenuBar);
-    ImGui::BeginMenuBar();
-
-    if (ImGui::MenuItem("+ Add Entity##scn"))
-        addEntity(entNum);
-    if (ImGui::MenuItem("- Destroy Entity##scn"))
-        bDestroy = true;
-    if (ImGui::MenuItem("+ Add Folder##scn"));
-
-    ImGui::EndMenuBar();
-
-    for (auto& a: UVK::ECS::data().view<UVK::CoreComponent>())
+    if (bReset)
     {
-        const auto& b = UVK::ECS::data().get<UVK::CoreComponent>(a);
-
-        if (ImGui::Selectable(static_cast<std::string>(b.name + ", " + std::to_string(b.id)).c_str()))
-            if (UVK::ECS::data().valid(a))
-                selectedEntity.data() = a;
+        selectedEntities.clear();
+        folders.clear();
     }
+    else
+    {
+        ImGui::Begin("Scene Hierarchy", &bShow, ImGuiWindowFlags_MenuBar);
+        ImGui::BeginMenuBar();
 
-    if (bDestroy && UVK::ECS::data().valid(selectedEntity.data()))
-        destroyEntity(selectedEntity);
+        if (ImGui::MenuItem("+ Add Entity##scn"))
+            addEntity(entNum);
+        if (ImGui::MenuItem("- Destroy Entity##scn") || (UVK::Input::getKey(Keys::Delete) == Keys::KeyPressed && ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows)))
+        {
+            if (selectedEntity.valid())
+                destroyEntity(selectedEntity);
+            for (auto& a : selectedEntities)
+                if (a.valid())
+                    destroyEntity(a);
 
-    ImGui::End();
+            ImGui::SetWindowFocus("Viewport##1");
+        }
+        if (ImGui::MenuItem("+ Add Folder##scn"));
+        ImGui::EndMenuBar();
+
+        size_t i = 0;
+        for (auto& a : UVK::ECS::data().view<UVK::CoreComponent>())
+        {
+            const auto& b = UVK::ECS::data().get<UVK::CoreComponent>(a);
+
+            auto it = std::find(selectedEntities.begin(), selectedEntities.end(), a);
+            bool bDrawHighlighted = false;
+            if (selectedEntity == a || (it != selectedEntities.end() && *it == a))
+            {
+                bDrawHighlighted = true; // Needed so that we can pop the colours
+                ImGui::PushStyleColor(ImGuiCol_Button, { 0.87f, 0.64f, 0.03, 1.0f });
+                ImGui::PushStyleColor(ImGuiCol_ButtonHovered, { 1.0f, 0.94f, 0.30f, 1.0f });
+            }
+            else
+                ImGui::PushStyleColor(ImGuiCol_Button, { 0.0f, 0.0f, 0.0f, 0.0f, });
+
+            if (ImGui::Button(static_cast<std::string>(b.name + ", " + std::to_string(b.id) + "##" + std::to_string(i)).c_str(), { ImGui::GetContentRegionAvailWidth(), 17.0f }))
+            {
+                if (UVK::Input::getAction("editor-bind-modifier") == Keys::KeyPressed)
+                {
+                    if (it != selectedEntities.end() && *it == a)
+                        selectedEntities.erase(it);
+                    else if (selectedEntity == a)
+                        selectedEntity.data() = entt::null;
+                    else
+                        selectedEntities.emplace_back(a);
+                }
+                else if (selectedEntity == a)
+                {
+                    selectedEntity.data() = entt::null;
+                    selectedEntities.clear();
+                }
+                else
+                {
+                    selectedEntity.data() = a;
+                    selectedEntities.clear();
+                }
+            }
+
+            if (bDrawHighlighted)
+            {
+                ImGui::PopStyleColor();
+                ImGui::PopStyleColor();
+            }
+            else
+                ImGui::PopStyleColor();
+        }
+        ImGui::End();
+    }
 }
 #endif

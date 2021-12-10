@@ -58,37 +58,36 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::
 
     ImGui::Begin("Filesystem##Widget", &bShow, ImGuiWindowFlags_MenuBar);
 
-    if (ImGui::BeginMenuBar())
+    ImGui::BeginMenuBar();
+
+    if (ImGui::MenuItem("+ Add File"))
     {
-        if (ImGui::MenuItem("+ Add File"))
-        {
-            createFile(pt);
-            bNewFolder = true;
-            return bReturn;
-        }
-
-        if (ImGui::MenuItem("- Remove File"))
-        {
-            bDeleteWarning = true;
-            bCalledFromEditPopup = false;
-        }
-
-        if (ImGui::MenuItem("+ Add Directory"))
-        {
-            createFolder(pt);
-            bNewFolder = true;
-            return bReturn;
-        }
-
-        if ((ImGui::MenuItem("* Rename File") || UVK::Input::getAction("editor-filesystem-rename") == Keys::KeyPressed) && !currentSelectedFile.empty())
-        {
-            bRenaming = true;
-            bCalledFromEditPopup = false;
-            renameText = currentSelectedFile.filename().string();
-        }
-
-        ImGui::EndMenuBar();
+        createFile(pt);
+        bNewFolder = true;
+        return bReturn;
     }
+
+    if (ImGui::MenuItem("- Remove File") || (UVK::Input::getKey(Keys::Delete) == Keys::KeyPressed && ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows)))
+    {
+        bDeleteWarning = true;
+        bCalledFromEditPopup = false;
+    }
+
+    if (ImGui::MenuItem("+ Add Directory"))
+    {
+        createFolder(pt);
+        bNewFolder = true;
+        return bReturn;
+    }
+
+    if (ImGui::MenuItem("* Rename File") || (UVK::Input::getAction("editor-filesystem-rename") == Keys::KeyPressed && ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows) && !currentSelectedFile.empty()))
+    {
+        bRenaming = true;
+        bCalledFromEditPopup = false;
+        renameText = currentSelectedFile.filename().string();
+    }
+
+    ImGui::EndMenuBar();
 
     if (bDeleteWarning)
     {
@@ -115,7 +114,8 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::
                     if (!currentSelectedFile.empty())
                         deleteFile(pt, currentSelectedFile);
                     for (auto& a : selectedFiles)
-                        deleteFile(pt, a);
+                        if (!a.empty())
+                            deleteFile(pt, a);
                 }
                 currentSelectedFile.clear();
                 selectedFiles.clear();
@@ -140,13 +140,6 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::
     auto p = pt.string();
     UVK::Utility::sanitiseFilepath(p, true);
     pt = std_filesystem::path(p);
-
-    // Delete file/s using the Delete key
-    if (UVK::Input::getKey(Keys::Delete) == Keys::KeyPressed)
-    {
-        bDeleteWarning = true;
-        bCalledFromEditPopup = false;
-    }
 
     ImGui::PushStyleColor(ImGuiCol_Button, { 0.0f, 0.0f, 0.0f, 0.0f });
     if (!(p == "../Content/" || p == "../Content"))
@@ -181,6 +174,7 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::
             pt = pt.parent_path();
             bNewFolder = true;
             selectedFiles.clear();
+
             return bReturn;
         }
 
@@ -237,6 +231,11 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::
                     pt = pt / path.filename();
                     selectedFiles.clear();
                     bNewFolder = true;
+                    if (bFileSelected)
+                    {
+                        ImGui::PopStyleColor();
+                        ImGui::PopStyleColor();
+                    }
                     return bReturn;
                 }
                 else if (ImGui::IsMouseClicked(ImGuiMouseButton_Right))
@@ -259,7 +258,10 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::
                             selectedFiles.push_back(path);
                     }
                     else
+                    {
                         currentSelectedFile = path;
+                        selectedFiles.clear();
+                    }
                 }
             }
 
@@ -297,7 +299,10 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::
                             selectedFiles.push_back(path);
                     }
                     else
+                    {
                         currentSelectedFile = path;
+                        selectedFiles.clear();
+                    }
                 }
                 else if (ImGui::IsMouseClicked(ImGuiMouseButton_Right))
                 {

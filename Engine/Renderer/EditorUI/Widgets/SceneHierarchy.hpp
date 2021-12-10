@@ -16,6 +16,6 @@ namespace SceneHierarchy
 {
     void addEntity(int& entNum);
     void destroyEntity(UVK::Actor& selectedEntity);
-    void display(UVK::Actor& selectedEntity, std::string& entAppend, int& entNum, bool& bShow);
+    void display(UVK::Actor& selectedEntity, std::string& entAppend, int& entNum, bool& bShow, const bool& bReset = false);
 }
 #endif
