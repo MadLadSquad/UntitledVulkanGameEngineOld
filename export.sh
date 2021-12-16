@@ -23,7 +23,19 @@ echo -e "\x1B[32mCopiling with ${jobs} compute jobs!\033[0m"
 echo -e "\x1B[32m--------------------------------------------------------------------------------\033[0m"
 cd Exported/ || exit # Enter the Exported folder
 
-cmake .. -G "Visual Studio 16 2019" || cmake .. -G "Unix Makefiles" || exit # Either cmake using VS or Make
+# Add VS compiler to path in VS
+wdir=$(pwd) # get the working dir since we are going to be returning there
+cd "C:/Program Files (x86)/Microsoft Visual Studio/" || echo " " > /dev/null # Go to the Visual Studio dir
+VSVer=$(find "2022" -maxdepth 0 > /dev/null) || VSVer=$(find "2019" -maxdepth 0 > /dev/null) || VSVer=$(find "2017" -maxdepth 0 > /dev/null) || echo " " > /dev/null
+cd "${wdir}" || echo " " > /dev/null # Return to the old directory
+
+if [ "$VSVer" == "2022" ]; then VSShortVer="17"
+elif [ "$VSVer" == "2019" ]; then VSShortVer="16"
+elif [ "$VSVer" == "2017" ]; then VSShortVer="15"
+else VSShortVer="1"
+fi
+
+cmake .. -G "Visual Studio ${VSShortVer} ${VSVer}" || cmake .. -G "Unix Makefiles" || exit # Either cmake using VS or Make
 # Compile for Release x64 for Windows or just `make`
 MSBuild.exe "$1".sln -property:Configuration=Release -property:Platform=x64 -property:maxCpuCount="${jobs}" || make -j "${jobs}" || exit
 

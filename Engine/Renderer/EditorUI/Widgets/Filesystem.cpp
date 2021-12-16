@@ -374,6 +374,25 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::
 
         ImGui::NextColumn();
     }
+    if (ImGui::IsMouseClicked(ImGuiMouseButton_Right) && !ImGui::IsPopupOpen("##FSEditPopup") && ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows) && ImGui::IsWindowHovered(ImGuiHoveredFlags_RootAndChildWindows))
+        ImGui::OpenPopup("##FSEditPopup2");
+    if (ImGui::BeginPopup("##FSEditPopup2"))
+    {
+        if (ImGui::MenuItem("New Folder##FSEditorPopup"))
+        {
+            createFolder(pt);
+            bNewFolder = true;
+            return bReturn;
+        }
+
+        if (ImGui::MenuItem("New File##FSEditorPopup"))
+        {
+            createFile(pt);
+            bNewFolder = true;
+            return bReturn;
+        }
+        ImGui::EndPopup();
+    }
     bNewFolder = false;
     ImGui::PopStyleColor();
     ImGui::Columns(1);

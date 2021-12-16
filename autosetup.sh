@@ -1,4 +1,14 @@
 #!/bin/bash
+while true; do
+    echo -e "Before we begin, if you're on Windows, check that your Visual Studio instance is installed under \"C:/Program Files (x86)/Microsoft Visual Studio/\"!"
+    read -rp "Start installation? Y(Yes)/N(No): " yn
+    case $yn in
+        [Yy]* ) break;;
+        [Nn]* ) exit;;
+        * ) echo "Please answer with Y(Yes) or N(No)!";;
+    esac
+done
+
 read -rp "Enter Your Application Name: " prjname # read the project name
 while true; do
     read -rp "Do you want to download offline documentation Y(Yes)/N(No): " yn
@@ -13,10 +23,19 @@ prjname=${prjname/ /} # Remove any spaces if the name contains them
 
 # Add VS compiler to path in VS
 wdir=$(pwd) # get the working dir since we are going to be returning there
-cd "C:/Program Files (x86)/Microsoft Visual Studio/2019/" || echo " " > /dev/null # Go to the Visual Studio dir
+cd "C:/Program Files (x86)/Microsoft Visual Studio/" || echo " " > /dev/null # Go to the Visual Studio dir
+VSVer=$(find "2022" -maxdepth 0 > /dev/null) || VSVer=$(find "2019" -maxdepth 0 > /dev/null) || VSVer=$(find "2017" -maxdepth 0 > /dev/null) || echo " " > /dev/null
+cd "${VSVer}" || echo " " > /dev/null # Go to the Visual Studio Version dir
 VSType=$(find Community -maxdepth 0 > /dev/null) || VSType=$(find Enterprise -maxdepth 0 > /dev/null) || VSType=$(find Professional -maxdepth 0 > /dev/null) || echo " " > /dev/null # Set the VS type to one of the 3 types
 cd "${wdir}" || echo " " > /dev/null # Return to the old directory
-setx PATH "C:/Program Files (x86)/Microsoft Visual Studio/2019/${VSType}/MSBuild/Current/Bin/amd64/;%PATH%" || echo " " > /dev/null # Set the path
+setx PATH "C:/Program Files (x86)/Microsoft Visual Studio/${VSVer}/${VSType}/MSBuild/Current/Bin/amd64/;%PATH%" || echo " " > /dev/null # Set the path
+
+if [ "$VSVer" == "2022" ]; then VSShortVer="17"
+elif [ "$VSVer" == "2019" ]; then VSShortVer="16"
+elif [ "$VSVer" == "2017" ]; then VSShortVer="15"
+else VSShortVer="1"
+fi
+
 
 cpus=$(grep -c processor /proc/cpuinfo) ## get the cpu threads for maximum performance when compiling
 echo -e "\x1B[32mCopiling with ${cpus} compute jobs!\033[0m"
@@ -51,7 +70,7 @@ echo " "
 cd UVKBuildTool/ || exit
 mkdir build || exit # Will store our compiled binary
 cd build || exit
-cmake .. -G "Visual Studio 16 2019" || cmake .. -G "Unix Makefiles" || exit # Generate the UVKBuildTool project files
+cmake .. -G "Visual Studio ${VSShortVer} ${VSVer}" || cmake .. -G "Unix Makefiles" || exit # Generate the UVKBuildTool project files
 
 # Try to run MSBuild first, if it fails we are either on a non-Windows system or the user doesn't have Visual Studio installed
 MSBuild.exe UVKBuildTool.sln -property:Configuration=Release -property:Platform=x64 -property:maxCpuCount="${cpus}" || make -j "${cpus}" || exit
@@ -73,7 +92,7 @@ echo -e "\x1B[32mCompiling ${prjname} ...\033[0m"
 echo -e "\x1B[32m--------------------------------------------------------------------------------\033[0m"
 echo " "
 
-cmake .. -G "Visual Studio 16 2019" || cmake .. -G "Unix Makefiles" || exit # Generate build files for the project
+cmake .. -G "Visual Studio ${VSShortVer} ${VSVer}" || cmake .. -G "Unix Makefiles" || exit # Generate build files for the project
 
 # Try to run MSBuild first, if it fails we are either on a non-windows system or the user doesn't have Visual Studio installed
 MSBuild.exe "${prjname}".sln -property:Configuration=Release -property:Platform=x64 -property:maxCpuCount="${cpus}" || make -j "${cpus}" || exit
