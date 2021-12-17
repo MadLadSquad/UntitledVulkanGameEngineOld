@@ -19,8 +19,6 @@ namespace UVK
             name = "Editor Pawn";
             id = 330;
             devName = "EditorPawn";
-
-            actor.createInternal(name, id, devName, false);
         }
 
         virtual void beginPlay() override;

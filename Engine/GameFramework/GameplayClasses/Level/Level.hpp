@@ -48,7 +48,7 @@ namespace UVK
                 delete global.currentLevel;
                 T* lvl = new T();
                 global.currentLevel = lvl;
-                T::openInternal(location.c_str());
+                T::openInternal(location.c_str(), false);
                 global.currentLevel->beginPlay();
             };
         }

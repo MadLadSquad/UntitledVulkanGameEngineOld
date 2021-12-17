@@ -9,6 +9,7 @@
 #ifndef PRODUCTION
 void UVK::EditorPawn::beginPlay()
 {
+    actor.createInternal(name, id, devName, false);
     if (!global.getEditor())
         logger.consoleLog("You are currently using an Editor Pawn ingame. This is a safety measure in order to prevent instant crashes of your game, however, the code for the EditorPawn will not compile in production which will cause a crash!", UVK_LOG_TYPE_ERROR);
 

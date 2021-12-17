@@ -86,7 +86,8 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::
         bCalledFromEditPopup = false;
         renameText = currentSelectedFile.filename().string();
     }
-
+    ImGui::Separator();
+    ImGui::Text("%s", pt.string().c_str());
     ImGui::EndMenuBar();
 
     if (bDeleteWarning)
@@ -145,6 +146,34 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::
     if (!(p == "../Content/" || p == "../Content"))
     {
         ImGui::ImageButton((void*)(intptr_t)textures[FS_ICON_FOLDER].getImage(), ImVec2(data.imageSize, data.imageSize));
+        if (ImGui::BeginDragDropTarget())
+        {
+            if (const auto* payload = ImGui::AcceptDragDropPayload("ENGINE_FS_WIDGET_LVL"))
+            {
+                std::string str = (const char*)payload->Data;
+                str.erase(payload->DataSize + strlen(".uvklevel"));
+
+                try
+                {
+                    std_filesystem::copy(std_filesystem::path(str), std_filesystem::path(str).parent_path() / "../ " / std_filesystem::path(str).filename());
+                    std_filesystem::remove_all(std_filesystem::path(str));
+                }
+                catch (std_filesystem::filesystem_error&){}
+            }
+            else if (payload = ImGui::AcceptDragDropPayload("ENGINE_FS_WIDGET_ALL"))
+            {
+                std::string str = (const char*)payload->Data;
+                str.erase(payload->DataSize);
+
+                try
+                {
+                    std_filesystem::copy(std_filesystem::path(str), std_filesystem::path(str).parent_path() / ".." / std_filesystem::path(str).filename());
+                    std_filesystem::remove_all(std_filesystem::path(str));
+                }
+                catch (std_filesystem::filesystem_error&){}
+            }
+            ImGui::EndDragDropTarget();
+        }
         if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
         {
             UVK::Transaction transaction =
@@ -174,6 +203,7 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::
             pt = pt.parent_path();
             bNewFolder = true;
             selectedFiles.clear();
+            currentSelectedFile.clear();
 
             return bReturn;
         }
@@ -187,7 +217,7 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::
     {
         i++;
         auto& path = a.path();
-
+        ImGui::PushID(path.string().c_str());
         if (a.is_directory())
         {
             auto it = std::find(selectedFiles.begin(), selectedFiles.end(), path);
@@ -199,6 +229,34 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::
                 ImGui::PushStyleColor(ImGuiCol_ButtonHovered, { 1.0f, 0.94f, 0.30f, 1.0f });
             }
             ImGui::ImageButton((void*)(intptr_t)textures[FS_ICON_FOLDER].getImage(), ImVec2(data.imageSize, data.imageSize));
+            if (ImGui::BeginDragDropTarget())
+            {
+                if (const auto* payload = ImGui::AcceptDragDropPayload("ENGINE_FS_WIDGET_LVL"))
+                {
+                    std::string str = (const char*)payload->Data;
+                    str.erase(payload->DataSize + strlen(".uvklevel"));
+
+                    try
+                    {
+                        std_filesystem::copy(std_filesystem::path(str), path);
+                        std_filesystem::remove_all(std_filesystem::path(str));
+                    }
+                    catch (std_filesystem::filesystem_error&){}
+                }
+                else if (payload = ImGui::AcceptDragDropPayload("ENGINE_FS_WIDGET_ALL"))
+                {
+                    std::string str = (const char*)payload->Data;
+                    str.erase(payload->DataSize);
+
+                    try
+                    {
+                        std_filesystem::copy(std_filesystem::path(str), path);
+                        std_filesystem::remove_all(std_filesystem::path(str));
+                    }
+                    catch (std_filesystem::filesystem_error&){}
+                }
+                ImGui::EndDragDropTarget();
+            }
             if (ImGui::IsItemHovered())
             {
                 if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
@@ -231,6 +289,7 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::
                     pt = pt / path.filename();
                     selectedFiles.clear();
                     bNewFolder = true;
+                    currentSelectedFile.clear();
                     if (bFileSelected)
                     {
                         ImGui::PopStyleColor();
@@ -316,6 +375,22 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::
                 ImGui::PopStyleColor();
             }
         }
+
+        if (ImGui::BeginDragDropSource())
+        {
+            if (!a.is_directory())
+                ImGui::Image((void*)(intptr_t)(selectTextures(textures, a, previews, bCurrentlyUsingPreviews, i, bNewFolder)->getImage()), ImVec2(data.imageSize, data.imageSize));
+            else
+                ImGui::Image((void*)(intptr_t)textures[FS_ICON_FOLDER].getImage(), ImVec2(data.imageSize, data.imageSize));
+            ImGui::Text("%s", path.string().c_str());
+            if (path.string().ends_with(".uvklevel"))
+                ImGui::SetDragDropPayload("ENGINE_FS_WIDGET_LVL", path.string().c_str(), path.string().size() - strlen(".uvklevel"), ImGuiCond_Once);
+            else
+                ImGui::SetDragDropPayload("ENGINE_FS_WIDGET_ALL", path.string().c_str(), path.string().size(), ImGuiCond_Once);
+
+            ImGui::EndDragDropSource();
+        }
+
         if (selectedEditFile == path && ImGui::BeginPopup("##FSEditPopup"))
         {
             if (ImGui::MenuItem("Delete##FSEditorPopup"))
@@ -373,26 +448,30 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::
             ImGui::TextWrapped("%s", path.filename().string().c_str());
 
         ImGui::NextColumn();
+        ImGui::PopID();
     }
-    if (ImGui::IsMouseClicked(ImGuiMouseButton_Right) && !ImGui::IsPopupOpen("##FSEditPopup") && ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows) && ImGui::IsWindowHovered(ImGuiHoveredFlags_RootAndChildWindows))
-        ImGui::OpenPopup("##FSEditPopup2");
-    if (ImGui::BeginPopup("##FSEditPopup2"))
-    {
-        if (ImGui::MenuItem("New Folder##FSEditorPopup"))
-        {
-            createFolder(pt);
-            bNewFolder = true;
-            return bReturn;
-        }
-
-        if (ImGui::MenuItem("New File##FSEditorPopup"))
-        {
-            createFile(pt);
-            bNewFolder = true;
-            return bReturn;
-        }
-        ImGui::EndPopup();
-    }
+    // For some reason the neat popups that we tried to add when right-clicking on empty space after everything else is rendered
+    // conflict with the other popups, also true fo SceneHierarchy
+    // TODO: Fix someday
+    //if (ImGui::IsMouseClicked(ImGuiMouseButton_Right) && !ImGui::IsPopupOpen("##FSEditPopup") && ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows))
+    //    ImGui::OpenPopup("##FSEditPopup2");
+    //if (ImGui::BeginPopup("##FSEditPopup2"))
+    //{
+    //    if (ImGui::MenuItem("New Folder##FSEditorPopupA"))
+    //    {
+    //        createFolder(pt);
+    //        bNewFolder = true;
+    //        return bReturn;
+    //    }
+    //
+    //    if (ImGui::MenuItem("New File##FSEditorPopupA"))
+    //    {
+    //        createFile(pt);
+    //        bNewFolder = true;
+    //        return bReturn;
+    //    }
+    //    ImGui::EndPopup();
+    //}
     bNewFolder = false;
     ImGui::PopStyleColor();
     ImGui::Columns(1);

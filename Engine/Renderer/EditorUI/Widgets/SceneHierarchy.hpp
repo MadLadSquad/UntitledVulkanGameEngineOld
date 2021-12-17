@@ -17,11 +17,12 @@ namespace SceneHierarchy
     struct Folder
     {
         std::string name;
+        bool bValid = true; // Saving if a folder is valid for later
         std::vector<UVK::Actor> contents;
     };
 
     UVK::Actor addEntity(int& entNum);
     void destroyEntity(UVK::Actor& selectedEntity);
-    void display(UVK::Actor& selectedEntity, std::string& entAppend, int& entNum, bool& bShow, const bool& bReset = false);
+    bool display(UVK::Actor& selectedEntity, std::string& entAppend, int& entNum, bool& bShow, const bool& bReset = false);
 }
 #endif

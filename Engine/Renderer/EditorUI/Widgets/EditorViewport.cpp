@@ -11,6 +11,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <GameFramework/GameplayClasses/Level/Level.hpp>
 #include <GameFramework/Components/Components/CoreComponent.hpp>
+#include <Renderer/EditorUI/Classes/EditorLevel.hpp>
 
 void EditorViewport::display(UVK::GLFrameBuffer& fb, int& viewportWidth, int& viewportHeight, bool& bShow, UVK::Camera& camera, UVK::Actor& entity, glm::mat4& projection, bool& bFocused)
 {
@@ -30,6 +31,17 @@ void EditorViewport::display(UVK::GLFrameBuffer& fb, int& viewportWidth, int& vi
         UVK::Level::getPawn(UVK::global.currentLevel)->camera.projection().aspectRatio() = ImGui::GetWindowWidth() / ImGui::GetWindowHeight();
     }
     ImGui::Image((void*)(intptr_t)fb.getFramebufferTexture(), ImVec2((float)viewportWidth, (float)viewportHeight), ImVec2(0, 1), ImVec2(1, 0));
+
+    if (ImGui::BeginDragDropTarget())
+    {
+        if (const auto* payload = ImGui::AcceptDragDropPayload("ENGINE_FS_WIDGET_LVL"))
+        {
+            std::string str = (const char*)payload->Data;
+            str.erase(payload->DataSize); // Erase everything after payload->DataSize so that if the \0 is placed or doesn't exist we can fix it
+            UVK::Level::open<UVK::EditorLevel>(str);
+        }
+        ImGui::EndDragDropTarget();
+    }
 
     static int16_t operationType = -1;
     bool snap;

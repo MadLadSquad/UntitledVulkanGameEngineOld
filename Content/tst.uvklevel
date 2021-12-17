@@ -4,7 +4,7 @@ ambient-light: [9.99999997e-07, 0, 0, 1]
 actors:
   - actor: Decoy
     id: 0
-    dev-name: a
+    dev-name: atest
     uuid: 2596289584326087973
     standart: true
     translation: [0, 0, 0]
