@@ -719,8 +719,8 @@ UVK::Texture* Filesystem::selectTextures(UVK::Texture* textures, const std_files
     static constexpr const char* audioExtensions[] = { ".wav", ".flac", ".m4a", ".ogg", ".mp3" };
     static constexpr const char* imageExtensions[] = { ".jpeg", ".jpg", ".tiff", ".gif", ".bmp", ".png", ".tga", ".psd", ".pic" };
     static constexpr const char* videoExtensions[] = { ".mov", ".m4v", ".mp4", ".mpeg", ".mkv", ".mpg", ".wmv", ".webm" };
-    static constexpr const char* objExtensions[] = { ".obj", ".fbx", ".glb", ".gltf", ".mp3" };
-    static constexpr const char* codeExtensions[] = { ".yaml", ".uvklevel", ".yml" };
+    static constexpr const char* objExtensions[] = { ".obj", ".fbx", ".glb", ".gltf" };
+    static constexpr const char* codeExtensions[] = { ".yaml", ".uvklevel", ".yml", ".glsl", ".vshader.glsl", ".fshader.glsl", ".vshader", ".fshader" };
 
     for (const auto& b : audioExtensions)
         if (path.filename().extension().string() == b)

@@ -286,13 +286,18 @@ skip:; // Semicolon needed to remove compiler error
                         UVK::Actor act;
                         act.data() = *((entt::entity*)(payload->Data));
 
-                        a.contents.emplace_back(act);
+                        for (auto& folder : folders)
+                        {
+                            for (auto ff = folder.contents.begin(); ff != folder.contents.end();)
+                            {
+                                if (*ff == act)
+                                    ff = folder.contents.erase(ff);
+                                else
+                                    ++ff;
+                            }
+                        }
 
-                        //for (auto& f : folders)
-                        //    if (&f != &a)
-                        //        for (auto it = f.contents.begin(); it != f.contents.end(); it++)
-                        //            if (*it == act)
-                        //                f.contents.erase(it);
+                        a.contents.emplace_back(act);
                     }
                     ImGui::EndDragDropTarget();
                 }

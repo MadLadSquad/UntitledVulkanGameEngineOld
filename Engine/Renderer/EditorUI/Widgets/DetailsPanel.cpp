@@ -1,6 +1,8 @@
 // DetailsPanel.cpp
 // Last update 26/10/2021 by Madman10K
 #include "DetailsPanel.hpp"
+#include "AssetSlot.hpp"
+
 #ifndef PRODUCTION
 #include <imgui.h>
 #include <cpp/imgui_stdlib.h>
@@ -382,52 +384,49 @@ bool DetailsPanel::display(UVK::Actor& ent, UVK::Level* lvl, bool& bShow, const 
         {
             ImGui::Separator();
 
-            auto& cmp = ent.get<UVK::AudioComponent>();
+            auto& audio = ent.get<UVK::AudioComponent>();
 
             ImGui::TextWrapped("Pitch");
             ImGui::SameLine();
-            ImGui::SliderFloat("##Pitchpt", &cmp.source.audioData().pitch, 0.5f, 2.0f);
+            ImGui::SliderFloat("##Pitchpt", &audio.source.audioData().pitch, 0.5f, 2.0f);
 
             ImGui::TextWrapped("Gain");
             ImGui::SameLine();
-            ImGui::SliderFloat("##Gaingn", &cmp.source.audioData().gain, 0.0f, 10.0f);
+            ImGui::SliderFloat("##Gaingn", &audio.source.audioData().gain, 0.0f, 10.0f);
 
             ImGui::TextWrapped("Repeat");
             ImGui::SameLine();
-            ImGui::Checkbox("##Repeatrt", &cmp.source.audioData().bLoop);
+            ImGui::Checkbox("##Repeatrt", &audio.source.audioData().bLoop);
 
-            ImGui::TextWrapped("File Location");
-            ImGui::SameLine();
-            if (ImGui::InputText("##File Location fl", &cmp.source.audioData().location) || ImGui::IsItemActive())
-                bReturn = true;
+            AssetSlot::displayAudio(0, nullptr, audio.source.audioData().location);
 
             if (ImGui::Button("Play"))// && !cmp.source.audioData().location.empty())
             {
-                if (cmp.source.state() != UVK::UVK_AUDIO_STATE_RUNNING)
+                if (audio.source.state() != UVK::UVK_AUDIO_STATE_RUNNING)
                 {
-                    cmp.create(&ent);
-                    cmp.play();
+                    audio.create(&ent);
+                    audio.play();
                 }
             }
             ImGui::SameLine();
             if (ImGui::Button("Resume"))
-                cmp.resume();
+                audio.resume();
             ImGui::SameLine();
             if (ImGui::Button("Pause"))
-                cmp.pause();
+                audio.pause();
             ImGui::SameLine();
             if (ImGui::Button("Stop"))
             {
-                if (cmp.stop())
+                if (audio.stop())
                 {
-                    UVK::AudioSourceData data = cmp.source.audioData();
+                    UVK::AudioSourceData data = audio.source.audioData();
                     data.source = uint32_t();
                     ent.remove<UVK::AudioComponent>();
                     ent.add<UVK::AudioComponent>().source.audioData() = data;
                 }
             }
 
-            DrawVec3Control("Velocity", cmp.source.audioData().velocity, 0.0f, 100.0f);
+            DrawVec3Control("Velocity", audio.source.audioData().velocity, 0.0f, 100.0f);
         }
 #endif
 

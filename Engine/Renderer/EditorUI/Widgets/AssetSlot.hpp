@@ -10,14 +10,14 @@
 
 namespace AssetSlot
 {
-    void assetSlotBegin(UVK::Texture& thumbnail, const int32_t& id);
+    void assetSlotBegin(UVK::Texture& thumbnail, const int32_t& id, const std::function<void(void)>& function);
     void assetSlotEnd();
 
-    void displayTexture(int32_t id, UVK::Texture* asset);
-    void displayAudio(int32_t id, UVK::Texture* asset);
-    void displayShaders(int32_t id, UVK::Texture* asset);
-    void displayVideo(int32_t id, UVK::Texture* asset);
-    void displayFont(int32_t id, UVK::Texture* asset);
-    void displayModel(int32_t id, UVK::Texture* asset);
+    void displayTexture(int32_t id, UVK::Texture* asset, std::string& name);
+    void displayAudio(int32_t id, UVK::Texture* asset, std::string& name);
+    void displayShaders(int32_t id, UVK::Texture* asset, std::string& name);
+    void displayVideo(int32_t id, UVK::Texture* asset, std::string& name);
+    void displayFont(int32_t id, UVK::Texture* asset, std::string& name);
+    void displayModel(int32_t id, UVK::Texture* asset, std::string& name);
 }
 #endif
