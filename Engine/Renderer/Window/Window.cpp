@@ -169,6 +169,7 @@ void UVK::WindowInternal::destroyWindow()
 {
     glfwDestroyWindow(windowMain);
     glfwTerminate();
+
 }
 
 void UVK::WindowInternal::dumpConfig()

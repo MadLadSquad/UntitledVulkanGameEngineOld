@@ -134,6 +134,7 @@ namespace UVK
     public:
         struct Folder
         {
+            ~Folder() = default;
             std::string name;
             bool bValid = true; // Saving if a folder is valid for later
             std::vector<UVK::Actor> contents;

@@ -9,45 +9,80 @@
 #include <State/StateTracker.hpp>
 #include <cpp/imgui_stdlib.h>
 
-void SceneHierarchy::duplicateEntity(UVK::Actor& currentPopupEntity, const bool& bDrawHighlighted)
+void SceneHierarchy::duplicateEntity(UVK::Actor& currentPopupEntity, const bool& bDrawHighlighted, const bool& nopop)
 {
-    UVK::Actor actor;
-    actor.data() = UVK::ECS::data().create();
-    auto& coreComponent = actor.add<UVK::CoreComponent>();
-    coreComponent = currentPopupEntity.get<UVK::CoreComponent>();
-    coreComponent.name += "Copy";
-
+    auto& coreComponent = currentPopupEntity.get<UVK::CoreComponent>();
+    UVK::Actor actor(coreComponent.name, coreComponent.id, coreComponent.devName);
+    auto& a = actor.add<UVK::CoreComponent>();
+    a = coreComponent;
+    a.name += "Copy";
+    static size_t i = 0;
+    UVK::ECS::each([&](UVK::Actor& act){
+        if (act.has<UVK::CoreComponent>())
+        {
+            auto& core = act.get<UVK::CoreComponent>();
+            if (core.name == a.name)
+            {
+                a.name += std::to_string(i);
+                i++;
+            }
+        }
+    });
     if (currentPopupEntity.has<UVK::AudioComponent>())
         actor.add<UVK::AudioComponent>() = currentPopupEntity.get<UVK::AudioComponent>();
 
     // TODO: Add more components
-    if (bDrawHighlighted)
-        ImGui::PopStyleColor(2);
-    else
-        ImGui::PopStyleColor();
-    ImGui::EndPopup();
+    if (!nopop)
+    {
+        if (bDrawHighlighted)
+            ImGui::PopStyleColor(2);
+        else
+            ImGui::PopStyleColor();
+    }
 }
 
 void SceneHierarchy::duplicateFolder(UVK::Editor::Folder* currentPopupFolder, std::vector<UVK::Editor::Folder>& folders)
 {
-    UVK::Editor::Folder newFolder;
-    newFolder.name = currentPopupFolder->name + "Copy";
-    newFolder.bValid = true;
-    for (auto& f : currentPopupFolder->contents)
+    if (currentPopupFolder != nullptr)
     {
-        UVK::Actor actor;
-        actor.data() = UVK::ECS::data().create();
-        auto& coreComponent = actor.add<UVK::CoreComponent>();
-        coreComponent = f.get<UVK::CoreComponent>();
-        coreComponent.name += "Copy";
+        // Ugly ass try-catch block because I get an exception on L51 for some reason. Function works as intended when using this method??????????
+        // TODO: FIX THIS HOLY SHIT
+        try
+        {
+            UVK::Editor::Folder newFolder;
+            static size_t i = 0;
+            newFolder.name = currentPopupFolder->name + "Copy" + std::to_string(i);
+            i++;
+            newFolder.bValid = true;
+            for (auto& f : currentPopupFolder->contents)
+            {
+                auto& coreComponent = f.get<UVK::CoreComponent>();
+                UVK::Actor actor(coreComponent.name, coreComponent.id, coreComponent.devName);
+                auto& a = actor.add<UVK::CoreComponent>();
+                a = coreComponent;
+                a.name += "Copy";
+                static size_t i = 0;
+                UVK::ECS::each([&](UVK::Actor& act){
+                    if (act.has<UVK::CoreComponent>())
+                    {
+                        auto& core = act.get<UVK::CoreComponent>();
+                        if (core.name == a.name)
+                        {
+                            a.name += std::to_string(i);
+                            i++;
+                        }
+                    }
+                });
+                if (f.has<UVK::AudioComponent>())
+                    actor.add<UVK::AudioComponent>() = f.get<UVK::AudioComponent>();
 
-        if (f.has<UVK::AudioComponent>())
-            actor.add<UVK::AudioComponent>() = f.get<UVK::AudioComponent>();
+                // TODO: Add more components
+                newFolder.contents.push_back(actor);
+            }
 
-        // TODO: Add more components
-        newFolder.contents.push_back(actor);
+            folders.push_back(newFolder);
+        } catch (std::bad_alloc&) { return; }
     }
-    folders.push_back(newFolder);
 }
 
 void SceneHierarchy::destroyEntity(UVK::Actor& selectedEntity)
@@ -218,13 +253,16 @@ bool SceneHierarchy::display(UVK::Actor& selectedEntity, std::string& entAppend,
         }
         if (ImGui::MenuItem("+ 2x Duplicate"))
         {
-            ImGui::PushStyleColor(ImGuiCol_CheckMark, { 0.0f, 0.0f, 0.0f, 0.0f });
             for (auto& a : selectedFolders)
-                duplicateFolder(a, folders);
+                if (a != nullptr && a->bValid)
+                    duplicateFolder(a, folders);
             for (auto& a : selectedEntities)
-                duplicateEntity(a, false);
-            duplicateFolder(selectedFolder, folders);
-            duplicateEntity(selectedEntity, false);
+                if (a.valid())
+                    duplicateEntity(a, false);
+            if (selectedFolder != nullptr && selectedFolder->bValid)
+                duplicateFolder(selectedFolder, folders);
+            if (selectedEntity.valid())
+                duplicateEntity(selectedEntity, false);
             return bReturn;
         }
         ImGui::EndMenuBar();
@@ -350,7 +388,7 @@ bool SceneHierarchy::display(UVK::Actor& selectedEntity, std::string& entAppend,
                 }
                 if (ImGui::MenuItem("+ 2x Duplicate"))
                 {
-                    duplicateEntity(currentPopupEntity, bDrawHighlighted);
+                    duplicateEntity(currentPopupEntity, bDrawHighlighted, false);
                     return bReturn;
                 }
                 ImGui::EndPopup();
@@ -558,7 +596,7 @@ skip:; // Semicolon needed to remove compiler error
                                 }
                                 if (ImGui::MenuItem("+ 2x Duplicate"))
                                 {
-                                    duplicateEntity(currentPopupEntity, bDrawHighlighted);
+                                    duplicateEntity(currentPopupEntity, bDrawHighlighted, false);
                                     return bReturn;
                                 }
                                 ImGui::EndPopup();
