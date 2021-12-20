@@ -26,6 +26,7 @@ namespace UVK
         friend class Utility;
         friend class Renderer;
         friend class EditorPointer;
+        friend class Level;
         friend struct RendererSettings;
 
         double* getFrameTimeData()
@@ -130,6 +131,15 @@ namespace UVK
         EditorKeys keys;
 
         FilesystemWidgetData filesystemWidgetData{};
+    public:
+        struct Folder
+        {
+            std::string name;
+            bool bValid = true; // Saving if a folder is valid for later
+            std::vector<UVK::Actor> contents;
+        };
+    private:
+        std::vector<Folder> currentLevelFolders;
     };
     class GameInstance;
 

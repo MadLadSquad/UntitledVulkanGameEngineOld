@@ -95,6 +95,18 @@ void UVK::Level::saveEntity(YAML::Emitter& out, entt::entity act)
         out << YAML::Key << "scale" << YAML::Value << a.scale;
     }
 
+    for (auto& a : global.instance->editor->currentLevelFolders)
+    {
+        for (auto& b : a.contents)
+        {
+            if (b == act)
+            {
+                out << YAML::Key << "sh-folder-name" << YAML::Value << a.name;
+                goto exit_folder_setting;
+            }
+        }
+    }
+exit_folder_setting:
     if (global.ecs.data().any_of<UVK::AudioComponent>(act))
     {
         auto& a = global.ecs.data().get<UVK::AudioComponent>(act);
@@ -165,7 +177,7 @@ void UVK::Level::openInternal(UVK::String location, bool first)
         std::string tempStr;
         int tmpInt = 1;
         bool tmpBool = true;
-        SceneHierarchy::display(temp, tempStr, tmpInt, tmpBool, true);
+        SceneHierarchy::display(temp, tempStr, tmpInt, tmpBool, global.instance->editor->currentLevelFolders, true);
     }
 
     logger.consoleLog("Opening level with location: ", UVK_LOG_TYPE_NOTE, location);
@@ -195,7 +207,26 @@ void UVK::Level::openInternal(UVK::String location, bool first)
             core.translation = entity["translation"].as<FVector>();
             core.rotation = entity["rotation"].as<FVector>();
             core.scale = entity["scale"].as<FVector>();
+            if (entity["sh-folder-name"] && global.bEditor)
+            {
+                for (auto& a : global.instance->editor->currentLevelFolders)
+                {
+                    if (a.name == entity["sh-folder-name"].as<std::string>())
+                    {
+                        a.contents.emplace_back(act);
+                        goto escape_editor_folders;
+                    }
+                }
 
+                UVK::Editor::Folder folder =
+                {
+                    .name = entity["sh-folder-name"].as<std::string>(),
+                    .bValid = true,
+                    .contents = { act }
+                };
+                global.instance->editor->currentLevelFolders.emplace_back(folder);
+            }
+escape_editor_folders:
             if (entity["audio-pitch"] && entity["audio-gain"] && entity["audio-loop"] && entity["audio-velocity"] && entity["audio-file"])
             {
                 auto& a = act.add<UVK::AudioComponent>();

@@ -9,6 +9,47 @@
 #include <State/StateTracker.hpp>
 #include <cpp/imgui_stdlib.h>
 
+void SceneHierarchy::duplicateEntity(UVK::Actor& currentPopupEntity, const bool& bDrawHighlighted)
+{
+    UVK::Actor actor;
+    actor.data() = UVK::ECS::data().create();
+    auto& coreComponent = actor.add<UVK::CoreComponent>();
+    coreComponent = currentPopupEntity.get<UVK::CoreComponent>();
+    coreComponent.name += "Copy";
+
+    if (currentPopupEntity.has<UVK::AudioComponent>())
+        actor.add<UVK::AudioComponent>() = currentPopupEntity.get<UVK::AudioComponent>();
+
+    // TODO: Add more components
+    if (bDrawHighlighted)
+        ImGui::PopStyleColor(2);
+    else
+        ImGui::PopStyleColor();
+    ImGui::EndPopup();
+}
+
+void SceneHierarchy::duplicateFolder(UVK::Editor::Folder* currentPopupFolder, std::vector<UVK::Editor::Folder>& folders)
+{
+    UVK::Editor::Folder newFolder;
+    newFolder.name = currentPopupFolder->name + "Copy";
+    newFolder.bValid = true;
+    for (auto& f : currentPopupFolder->contents)
+    {
+        UVK::Actor actor;
+        actor.data() = UVK::ECS::data().create();
+        auto& coreComponent = actor.add<UVK::CoreComponent>();
+        coreComponent = f.get<UVK::CoreComponent>();
+        coreComponent.name += "Copy";
+
+        if (f.has<UVK::AudioComponent>())
+            actor.add<UVK::AudioComponent>() = f.get<UVK::AudioComponent>();
+
+        // TODO: Add more components
+        newFolder.contents.push_back(actor);
+    }
+    folders.push_back(newFolder);
+}
+
 void SceneHierarchy::destroyEntity(UVK::Actor& selectedEntity)
 {
     if (!selectedEntity.has<UVK::CoreComponent>())
@@ -103,16 +144,15 @@ UVK::Actor SceneHierarchy::addEntity(int& entNum)
     return UVK::Actor(a);
 }
 
-bool SceneHierarchy::display(UVK::Actor& selectedEntity, std::string& entAppend, int& entNum, bool& bShow, const bool& bReset)
+bool SceneHierarchy::display(UVK::Actor& selectedEntity, std::string& entAppend, int& entNum, bool& bShow, std::vector<UVK::Editor::Folder>& folders, const bool& bReset)
 {
-    static std::vector<Folder> folders;
-    static std::vector<Folder*> selectedFolders;
-    static Folder* selectedFolder = nullptr;
+    static std::vector<UVK::Editor::Folder*> selectedFolders;
+    static UVK::Editor::Folder* selectedFolder = nullptr;
     static std::vector<UVK::Actor> selectedEntities;
     static bool bDeleteWarning = false;
     static bool bCalledFromPopup = false;
     static UVK::Actor currentPopupEntity;
-    static Folder* currentPopupFolder = nullptr;
+    static UVK::Editor::Folder* currentPopupFolder = nullptr;
     static std::string* folderName = nullptr;
     bool bReturn = false;
 
@@ -135,23 +175,57 @@ bool SceneHierarchy::display(UVK::Actor& selectedEntity, std::string& entAppend,
         ImGui::Begin("Scene Hierarchy", &bShow, ImGuiWindowFlags_MenuBar);
         ImGui::BeginMenuBar();
 
-        if (ImGui::MenuItem("+ Add Entity##scn"))
+        if (ImGui::MenuItem("+ Entity##scn"))
         {
             auto ent = addEntity(entNum);
             if (selectedFolders.empty() && selectedFolder != nullptr)
                 selectedFolder->contents.emplace_back(ent);
         }
-        if (ImGui::MenuItem("- Destroy Entity##scn") || (UVK::Input::getKey(Keys::Delete) == Keys::KeyPressed && ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows)))
+        if (ImGui::MenuItem("- Entity##scn") || (UVK::Input::getKey(Keys::Delete) == Keys::KeyPressed && ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows)))
             bDeleteWarning = true;
-        if (ImGui::MenuItem("+ Add Folder##scn"))
+        if (ImGui::MenuItem("+ Folder##scn"))
         {
             size_t i = 0;
             for (auto& a : folders)
                 if (a.name == ("NewFolder" + std::to_string(i)))
                     i++;
 
-            Folder fld = {"NewFolder" + std::to_string(i), true, {}};
+            UVK::Editor::Folder fld = {"NewFolder" + std::to_string(i), true, {}};
             folders.emplace_back(fld);
+        }
+        if (ImGui::MenuItem("- Folder Member"))
+        {
+            for (auto& f : selectedEntities)
+            {
+                for (auto& a : folders)
+                {
+                    if (!a.bValid)
+                        continue;
+                    for (auto it = a.contents.begin(); it != a.contents.end();)
+                    {
+                        if (it->valid() && f.valid())
+                        {
+                            if (*it == f || (selectedEntity.valid() && *it == selectedEntity))
+                                it = a.contents.erase(it);
+                            else
+                                ++it;
+                        }
+                        else
+                            ++it;
+                    }
+                }
+            }
+        }
+        if (ImGui::MenuItem("+ 2x Duplicate"))
+        {
+            ImGui::PushStyleColor(ImGuiCol_CheckMark, { 0.0f, 0.0f, 0.0f, 0.0f });
+            for (auto& a : selectedFolders)
+                duplicateFolder(a, folders);
+            for (auto& a : selectedEntities)
+                duplicateEntity(a, false);
+            duplicateFolder(selectedFolder, folders);
+            duplicateEntity(selectedEntity, false);
+            return bReturn;
         }
         ImGui::EndMenuBar();
 
@@ -200,6 +274,27 @@ bool SceneHierarchy::display(UVK::Actor& selectedEntity, std::string& entAppend,
                 }
             }
 
+            if (ImGui::BeginDragDropTarget())
+            {
+                if (const auto payload = ImGui::AcceptDragDropPayload("ENGINE_SH_WIDGET_ENTITY2"))
+                {
+                    for (auto& f : selectedEntities)
+                    {
+                        for (auto& folder : folders)
+                        {
+                            for (auto ff = folder.contents.begin(); ff != folder.contents.end();)
+                            {
+                                if (*ff == f || (selectedEntity.valid() && selectedEntity == *ff))
+                                    ff = folder.contents.erase(ff);
+                                else
+                                    ++ff;
+                            }
+                        }
+                    }
+                }
+                ImGui::EndDragDropTarget();
+            }
+
             if (ImGui::IsItemHovered() && UVK::Input::getKey(Keys::MouseButtonRight) == Keys::KeyPressed && ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows))
             {
                 ImGui::OpenPopup("##RightClickCategory0");
@@ -208,28 +303,56 @@ bool SceneHierarchy::display(UVK::Actor& selectedEntity, std::string& entAppend,
 
             if (currentPopupEntity.data() == a && ImGui::BeginPopup("##RightClickCategory0"))
             {
-                if (ImGui::MenuItem("New Entity"))
+                if (ImGui::MenuItem("+ New Entity"))
                 {
                     auto ent = addEntity(entNum);
                     if (selectedFolders.empty() && selectedFolder != nullptr)
                         selectedFolder->contents.emplace_back(ent);
                 }
-                if (ImGui::MenuItem("New Folder"))
+                if (ImGui::MenuItem("+ New Folder"))
                 {
                     size_t j = 0;
                     for (auto& c : folders)
                         if (c.name == ("NewFolder" + std::to_string(j)))
                             i++;
 
-                    Folder fld = {"NewFolder" + std::to_string(j), true, {}};
+                    UVK::Editor::Folder fld = {"NewFolder" + std::to_string(j), true, {}};
                     folders.emplace_back(fld);
                 }
-                if (ImGui::MenuItem("Delete Entity"))
+                ImGui::Separator();
+                if (ImGui::MenuItem("- Delete Entity"))
                 {
                     bDeleteWarning = true;
                     bCalledFromPopup = true;
                 }
-
+                if (ImGui::MenuItem("* Remove From Folder"))
+                {
+                    if (currentPopupEntity.valid())
+                    {
+                        for (auto& f : folders)
+                        {
+                            if (!f.bValid)
+                                continue;
+                            for (auto ff = f.contents.begin(); ff != f.contents.end();)
+                            {
+                                if (ff->valid())
+                                {
+                                    if (*ff == currentPopupEntity)
+                                        ff = f.contents.erase(ff);
+                                    else
+                                        ++ff;
+                                }
+                                else
+                                    ++ff;
+                            }
+                        }
+                    }
+                }
+                if (ImGui::MenuItem("+ 2x Duplicate"))
+                {
+                    duplicateEntity(currentPopupEntity, bDrawHighlighted);
+                    return bReturn;
+                }
                 ImGui::EndPopup();
             }
 
@@ -276,28 +399,35 @@ skip:; // Semicolon needed to remove compiler error
                 {
                     if (const auto* payload = ImGui::AcceptDragDropPayload("ENGINE_SH_WIDGET_ENTITY1"))
                     {
-                        UVK::Actor act;
-                        act.data() = *((entt::entity*)(payload->Data));
-
-                        a.contents.emplace_back(act);
+                        for (auto& f : selectedEntities)
+                            if (f.valid())
+                                a.contents.emplace_back(f);
+                        if (selectedEntity.valid())
+                            a.contents.emplace_back(selectedEntity);
                     }
                     else if (payload = ImGui::AcceptDragDropPayload("ENGINE_SH_WIDGET_ENTITY2"))
                     {
-                        UVK::Actor act;
-                        act.data() = *((entt::entity*)(payload->Data));
-
-                        for (auto& folder : folders)
+                        for (auto& f : selectedEntities)
                         {
-                            for (auto ff = folder.contents.begin(); ff != folder.contents.end();)
+                            if (f.valid())
                             {
-                                if (*ff == act)
-                                    ff = folder.contents.erase(ff);
-                                else
-                                    ++ff;
+                                for (auto& folder : folders)
+                                {
+                                    for (auto ff = folder.contents.begin(); ff != folder.contents.end();)
+                                    {
+                                        if (*ff == f || (selectedEntity.valid() && selectedEntity == *ff))
+                                            ff = folder.contents.erase(ff);
+                                        else
+                                            ++ff;
+                                    }
+                                }
                             }
                         }
-
-                        a.contents.emplace_back(act);
+                        for (auto& f : selectedEntities)
+                            if (f.valid())
+                                a.contents.emplace_back(f);
+                        if (selectedEntity.valid())
+                            a.contents.emplace_back(selectedEntity);
                     }
                     ImGui::EndDragDropTarget();
                 }
@@ -381,28 +511,56 @@ skip:; // Semicolon needed to remove compiler error
 
                             if (currentPopupEntity == b && ImGui::BeginPopup("##RightClickCategory0"))
                             {
-                                if (ImGui::MenuItem("New Entity"))
+                                if (ImGui::MenuItem("+ New Entity"))
                                 {
                                     auto ent = addEntity(entNum);
                                     if (selectedFolders.empty() && selectedFolder != nullptr)
                                         selectedFolder->contents.emplace_back(ent);
                                 }
-                                if (ImGui::MenuItem("New Folder"))
+                                if (ImGui::MenuItem("+ New Folder"))
                                 {
                                     size_t f = 0;
                                     for (auto& ff : folders)
                                         if (ff.name == ("NewFolder" + std::to_string(f)))
                                             i++;
 
-                                    Folder fld = {"NewFolder" + std::to_string(f), true, {}};
+                                    UVK::Editor::Folder fld = {"NewFolder" + std::to_string(f), true, {}};
                                     folders.emplace_back(fld);
                                 }
-                                if (ImGui::MenuItem("Delete Entity"))
+                                ImGui::Separator();
+                                if (ImGui::MenuItem("- Delete Entity"))
                                 {
                                     bDeleteWarning = true;
                                     bCalledFromPopup = true;
                                 }
-
+                                if (ImGui::MenuItem("* Remove From Folder"))
+                                {
+                                    if (currentPopupEntity.valid())
+                                    {
+                                        for (auto& f : folders)
+                                        {
+                                            if (!f.bValid)
+                                                continue;
+                                            for (auto ff = f.contents.begin(); ff != f.contents.end();)
+                                            {
+                                                if (ff->valid())
+                                                {
+                                                    if (*ff == currentPopupEntity)
+                                                        ff = f.contents.erase(ff);
+                                                    else
+                                                        ++ff;
+                                                }
+                                                else
+                                                    ++ff;
+                                            }
+                                        }
+                                    }
+                                }
+                                if (ImGui::MenuItem("+ 2x Duplicate"))
+                                {
+                                    duplicateEntity(currentPopupEntity, bDrawHighlighted);
+                                    return bReturn;
+                                }
                                 ImGui::EndPopup();
                             }
 
@@ -431,27 +589,33 @@ skip:; // Semicolon needed to remove compiler error
 
                 if (currentPopupFolder == &a && ImGui::BeginPopup("##RightClickCategory1"))
                 {
-                    if (ImGui::MenuItem("New Entity"))
+                    if (ImGui::MenuItem("+ New Entity"))
                     {
                         auto ent = addEntity(entNum);
                         if (selectedFolders.empty() && selectedFolder != nullptr)
                             selectedFolder->contents.emplace_back(ent);
                     }
-                    if (ImGui::MenuItem("New Folder"))
+                    if (ImGui::MenuItem("+ New Folder"))
                     {
                         size_t j = 0;
                         for (auto& c : folders)
                             if (c.name == ("NewFolder" + std::to_string(j)))
                                 i++;
 
-                        Folder fld = {"NewFolder" + std::to_string(j), true, {}};
+                        UVK::Editor::Folder fld = {"NewFolder" + std::to_string(j), true, {}};
                         folders.emplace_back(fld);
                     }
-                    if (ImGui::MenuItem("Delete Folder"))
+                    ImGui::Separator();
+                    if (ImGui::MenuItem("- Delete Folder"))
                     {
                         bDeleteWarning = true;
                         bCalledFromPopup = true;
                         currentPopupEntity.data() = entt::null;
+                    }
+                    if (ImGui::MenuItem("+ 2x Duplicate"))
+                    {
+                        duplicateFolder(currentPopupFolder, folders);
+                        return bReturn;
                     }
                     ImGui::Text("Folder Name: ");
                     ImGui::SameLine();

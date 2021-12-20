@@ -86,6 +86,17 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::
         bCalledFromEditPopup = false;
         renameText = currentSelectedFile.filename().string();
     }
+
+    if (ImGui::MenuItem("+ 2x Duplicate") || (UVK::Input::getAction("editor-bind-modifier") == Keys::KeyPressed && (UVK::Input::getKey(Keys::C) == Keys::KeyPressed || UVK::Input::getKey(Keys::D) == Keys::KeyPressed) && ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows) && !currentSelectedFile.empty()))
+    {
+        try
+        {
+            for (auto& a : selectedFiles)
+                std_filesystem::copy(a, std_filesystem::path(a.string() + "Copy"));
+            std_filesystem::copy(currentSelectedFile, std_filesystem::path(currentSelectedFile.string() + "Copy"));
+        }
+        catch (std_filesystem::filesystem_error&){}
+    }
     ImGui::Separator();
     ImGui::Text("%s", pt.string().c_str());
     ImGui::EndMenuBar();
@@ -150,25 +161,29 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::
         {
             if (const auto* payload = ImGui::AcceptDragDropPayload("ENGINE_FS_WIDGET_LVL"))
             {
-                std::string str = (const char*)payload->Data;
-                str.erase(payload->DataSize + strlen(".uvklevel"));
-
                 try
                 {
-                    std_filesystem::copy(std_filesystem::path(str), std_filesystem::path(str).parent_path() / "../ " / std_filesystem::path(str).filename());
-                    std_filesystem::remove_all(std_filesystem::path(str));
+                    for (auto& f : selectedFiles)
+                    {
+                        std_filesystem::copy(f, f.parent_path() / "../ " / f.filename());
+                        std_filesystem::remove_all(f);
+                    }
+                    std_filesystem::copy(currentSelectedFile, currentSelectedFile.parent_path() / ".." / currentSelectedFile.filename());
+                    std_filesystem::remove_all(currentSelectedFile);
                 }
                 catch (std_filesystem::filesystem_error&){}
             }
             else if (payload = ImGui::AcceptDragDropPayload("ENGINE_FS_WIDGET_ALL"))
             {
-                std::string str = (const char*)payload->Data;
-                str.erase(payload->DataSize);
-
                 try
                 {
-                    std_filesystem::copy(std_filesystem::path(str), std_filesystem::path(str).parent_path() / ".." / std_filesystem::path(str).filename());
-                    std_filesystem::remove_all(std_filesystem::path(str));
+                    for (auto& f : selectedFiles)
+                    {
+                        std_filesystem::copy(f, f.parent_path() / ".." / f.filename());
+                        std_filesystem::remove_all(f);
+                    }
+                    std_filesystem::copy(currentSelectedFile, currentSelectedFile.parent_path() / ".." / currentSelectedFile.filename());
+                    std_filesystem::remove_all(currentSelectedFile);
                 }
                 catch (std_filesystem::filesystem_error&){}
             }
@@ -233,25 +248,29 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::
             {
                 if (const auto* payload = ImGui::AcceptDragDropPayload("ENGINE_FS_WIDGET_LVL"))
                 {
-                    std::string str = (const char*)payload->Data;
-                    str.erase(payload->DataSize + strlen(".uvklevel"));
-
                     try
                     {
-                        std_filesystem::copy(std_filesystem::path(str), path);
-                        std_filesystem::remove_all(std_filesystem::path(str));
+                        for (auto& f : selectedFiles)
+                        {
+                            std_filesystem::copy(f, path);
+                            std_filesystem::remove_all(f);
+                        }
+                        std_filesystem::copy(currentSelectedFile, path);
+                        std_filesystem::remove_all(currentSelectedFile);
                     }
                     catch (std_filesystem::filesystem_error&){}
                 }
                 else if (payload = ImGui::AcceptDragDropPayload("ENGINE_FS_WIDGET_ALL"))
                 {
-                    std::string str = (const char*)payload->Data;
-                    str.erase(payload->DataSize);
-
                     try
                     {
-                        std_filesystem::copy(std_filesystem::path(str), path);
-                        std_filesystem::remove_all(std_filesystem::path(str));
+                        for (auto& f : selectedFiles)
+                        {
+                            std_filesystem::copy(f, path);
+                            std_filesystem::remove_all(f);
+                        }
+                        std_filesystem::copy(currentSelectedFile, path);
+                        std_filesystem::remove_all(currentSelectedFile);
                     }
                     catch (std_filesystem::filesystem_error&){}
                 }
@@ -302,9 +321,9 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::
                     ImGui::OpenPopup("##FSEditPopup");
                     selectedEditFile = path;
                 }
-                else if (ImGui::IsMouseClicked(ImGuiMouseButton_Left))
+                else if (UVK::Input::getKey(Keys::MouseButtonLeft) == Keys::KeyPressed)
                 {
-                    if (UVK::Input::getAction("editor-bind-modifier") == Keys::KeyPressed || UVK::Input::getAction("editor-bind-modifier") == Keys::KeyRepeat)
+                    if (UVK::Input::getAction("editor-bind-modifier") == Keys::KeyPressed)
                     {
                         if (bFileSelected)
                         {
@@ -343,9 +362,9 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::
             ImGui::ImageButton((void*)(intptr_t)(selectTextures(textures, a, previews, bCurrentlyUsingPreviews, i, bNewFolder)->getImage()), ImVec2(data.imageSize, data.imageSize));
             if (ImGui::IsItemHovered())
             {
-                if (ImGui::IsMouseClicked(ImGuiMouseButton_Left))
+                if (UVK::Input::getKey(Keys::MouseButtonLeft) == Keys::KeyPressed)
                 {
-                    if (UVK::Input::getAction("editor-bind-modifier") == Keys::KeyPressed || UVK::Input::getAction("editor-bind-modifier") == Keys::KeyRepeat)
+                    if (UVK::Input::getAction("editor-bind-modifier") == Keys::KeyPressed)
                     {
                         if (bFileSelected)
                         {
@@ -393,30 +412,42 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::
 
         if (selectedEditFile == path && ImGui::BeginPopup("##FSEditPopup"))
         {
-            if (ImGui::MenuItem("Delete##FSEditorPopup"))
-            {
-                bDeleteWarning = true;
-                bCalledFromEditPopup = true;
-            }
-
-            if (ImGui::MenuItem("Rename##FSEditorPopup"))
-            {
-                bRenaming = true;
-                bCalledFromEditPopup = true;
-                renameText = selectedEditFile.filename().string();
-            }
-
-            if (ImGui::MenuItem("New Folder##FSEditorPopup"))
+            if (ImGui::MenuItem("+ New Folder##FSEditorPopup"))
             {
                 createFolder(pt);
                 bNewFolder = true;
                 return bReturn;
             }
 
-            if (ImGui::MenuItem("New File##FSEditorPopup"))
+            if (ImGui::MenuItem("+ New File##FSEditorPopup"))
             {
                 createFile(pt);
                 bNewFolder = true;
+                return bReturn;
+            }
+
+            ImGui::Separator();
+
+            if (ImGui::MenuItem("- Delete##FSEditorPopup"))
+            {
+                bDeleteWarning = true;
+                bCalledFromEditPopup = true;
+            }
+
+            if (ImGui::MenuItem("* Rename##FSEditorPopup"))
+            {
+                bRenaming = true;
+                bCalledFromEditPopup = true;
+                renameText = selectedEditFile.filename().string();
+            }
+
+            if (ImGui::MenuItem("+ 2x Duplicate##FSEditorPopup"))
+            {
+                try
+                {
+                    std_filesystem::copy(selectedEditFile, std_filesystem::path(selectedEditFile.string() + "Copy"));
+                }
+                catch (std_filesystem::filesystem_error&){}
                 return bReturn;
             }
             ImGui::EndPopup();

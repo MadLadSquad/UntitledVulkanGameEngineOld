@@ -4,6 +4,7 @@
 #include <Generated/BuildDef.hpp>
 #ifndef PRODUCTION
 #include <iostream>
+#include "Renderer/EditorUI/Editor.hpp"
 
 namespace UVK
 {
@@ -14,15 +15,10 @@ namespace UVK
  */
 namespace SceneHierarchy
 {
-    struct Folder
-    {
-        std::string name;
-        bool bValid = true; // Saving if a folder is valid for later
-        std::vector<UVK::Actor> contents;
-    };
-
     UVK::Actor addEntity(int& entNum);
     void destroyEntity(UVK::Actor& selectedEntity);
-    bool display(UVK::Actor& selectedEntity, std::string& entAppend, int& entNum, bool& bShow, const bool& bReset = false);
+    bool display(UVK::Actor& selectedEntity, std::string& entAppend, int& entNum, bool& bShow, std::vector<UVK::Editor::Folder>& folders, const bool& bReset = false);
+    void duplicateFolder(UVK::Editor::Folder* currentPopupFolder, std::vector<UVK::Editor::Folder>& folders);
+    void duplicateEntity(UVK::Actor& currentPopupEntity, const bool& bDrawHighlighted);
 }
 #endif
