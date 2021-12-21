@@ -1,5 +1,5 @@
 // UI.hpp
-// Last update 18/7/2021 by Madman10K
+// Last update 21/12/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 
@@ -16,6 +16,7 @@ namespace UVK
         void addEventImgui(const std::function<void(void)>& func);
     private:
         friend class GLPipeline;
+        friend class VulkanRenderer;
         friend class Level;
 
         void init();

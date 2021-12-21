@@ -1,5 +1,5 @@
 // Editor.hpp
-// Last update 17/10/2021 by Madman10K
+// Last update 21/12/2021 by Madman10K
 #pragma once
 #include <Renderer/Camera/Camera.hpp>
 #include <Renderer/Textures/Texture.hpp>
@@ -20,6 +20,7 @@ namespace UVK
         Editor(const Editor&) = delete;
         void operator=(Editor const&) = delete;
     private:
+        friend class VulkanRenderer;
         friend class GLPipeline;
         friend class EditorModules;
         friend class EditorPawn;

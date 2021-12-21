@@ -1,7 +1,8 @@
 // GameInstance.hpp
-// Last update 22/9/2021 by Madman10K
+// Last update 21/12/2021 by Madman10K
 #include "GameInstance.hpp"
 #include <Core/Global.hpp>
+#include <glfw3.h>
 
 UVK::GameInstance::GameInstance()
 {

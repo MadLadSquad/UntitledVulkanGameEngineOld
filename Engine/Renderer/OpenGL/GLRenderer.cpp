@@ -1,9 +1,10 @@
 // GLRenderer.cpp
-// Last update 22/9/2021 by Madman10K
+// Last update 21/12/2021 by Madman10K
 #include "GLRenderer.hpp"
 #include "../../Core/Events/Events.hpp"
 #include <Renderer/OpenGL/Pipeline/GLPipeline.hpp>
 #include <GameFramework/Components/Components.hpp>
+#include <glfw3.h>
 
 UVK::GLRenderer::GLRenderer(Level* level, const bool& bUsesEditor, UVK::String theme)
     : colTheme(theme)

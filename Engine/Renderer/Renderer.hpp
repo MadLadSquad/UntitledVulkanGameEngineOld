@@ -1,13 +1,10 @@
 // Renderer.hpp
-// Last update 6/7/2021 by Madman10K
+// Last update 21/12/2021 by Madman10K
 #pragma once
-#include "OpenGL/GLRenderer.hpp"
-#include "Vulkan/VulkanRenderer.hpp"
-#include <yaml.h>
 
 namespace UVK
 {
-    //struct RendererSettings;
+    struct RendererSettings;
     /**
      * @brief Manages the currently used renderer and can switch renderers
      */

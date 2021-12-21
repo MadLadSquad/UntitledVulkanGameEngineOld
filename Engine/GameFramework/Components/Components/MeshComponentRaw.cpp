@@ -1,5 +1,5 @@
 // MeshComponentRaw.cpp
-// Last update 22/9/2021 by Madman10K
+// Last update 21/12/2021 by Madman10K
 #include <GL/glew.h>
 #include "CoreComponent.hpp"
 #include "MeshComponentRaw.hpp"
@@ -70,30 +70,4 @@ void UVK::MeshComponentRaw::clearMesh()
 
     index.clear();
     vertex.clear();
-}
-
-void UVK::MeshComponentRawVK::start(UVK::Actor* currentActor, UVK::VKDevice& device, VkQueue& transQueue, VkCommandPool& transCommandPool, const std::vector<VKVertex>& vert, const std::vector<uint32_t>& index)
-{
-    //mesh = VKMesh(&device, transQueue, transCommandPool, vert, index);
-    mesh.create();
-
-    actor = currentActor;
-
-    core = &actor->get<UVK::CoreComponent>();
-}
-
-void UVK::MeshComponentRawVK::render(const std::vector<VkCommandBuffer>& commandBuffers, const int32_t& index)
-{
-    mat = glm::mat4(1.0f);
-
-    Math::translate(mat, core->translation);
-    Math::rotate(mat, core->rotation);
-    Math::scale(mat, core->scale);
-
-    //mesh.render(commandBuffers, index);
-}
-
-void UVK::MeshComponentRawVK::destroy()
-{
-    mesh.clear();
 }

@@ -1,7 +1,6 @@
 // Events.hpp
-// Last update 13/9/2021 by Madman10K
+// Last update 21/12/2021 by Madman10K
 #pragma once
-#include <Core.hpp>
 
 namespace UVK
 {
@@ -18,6 +17,7 @@ namespace UVK
     private:
         friend class Level;
         friend class GLPipeline;
+        friend class VulkanRenderer;
         friend class Actor;
 
         static void callTick(float deltaTime);

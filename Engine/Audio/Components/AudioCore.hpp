@@ -1,11 +1,11 @@
 // AudioCore.hpp
-// Last update 29/10/2021 by Madman10K
+// Last update 21/12/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 #ifndef __MINGW32__
-    #include "AL/al.h"
-    #include "AL/alc.h"
-    #include "AL/alext.h"
+    #include <AL/al.h>
+    #include <AL/alc.h>
+    #include <AL/alext.h>
     #include <sndfile.h>
 #endif
 

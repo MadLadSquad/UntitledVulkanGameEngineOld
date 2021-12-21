@@ -1,15 +1,7 @@
 // VulkanRenderer.hpp
-// Last update 16/8/2021 by Madman10K
+// Last update 21/12/2021 by Madman10K
 #pragma once
-#include <Core.hpp>
-#include "Components/VKStructs.hpp"
-#include "Pipeline/VKPipeline.hpp"
-#ifndef __APPLE__
-    #include <vulkan/vulkan.h>
-#endif
-#include <glfw3.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
+#include "Renderer/EditorUI/Editor.hpp"
 
 namespace UVK
 {
@@ -26,8 +18,8 @@ namespace UVK
         friend class Renderer;
 
         void run();
-
-        VKPipeline pipeline;
+        Editor ed;
+        UVK::String colTheme;
 #ifndef __APPLE__
 
 #endif

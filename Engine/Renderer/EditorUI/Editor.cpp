@@ -1,5 +1,5 @@
 // Editor.cpp
-// Last update 17/10/2021 by Madman10K
+// Last update 21/12/2021 by Madman10K
 #include "Editor.hpp"
 #ifndef PRODUCTION
 #include "Widgets/SceneHierarchy.hpp"
@@ -27,6 +27,7 @@
 #include <Engine/Core/Core/Global.hpp>
 #include <GameFramework/GameplayClasses/Level/Level.hpp>
 #include <imgui_impl_vulkan.h>
+#include <glfw3.h>
 
 void UVK::Editor::initEditor()
 {

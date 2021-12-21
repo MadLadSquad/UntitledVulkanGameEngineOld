@@ -1,5 +1,5 @@
 // UI.cpp
-// Last update 2/9/2021 by Madman10K
+// Last update 21/12/2021 by Madman10K
 #include "UI.hpp"
 #include <imgui.h>
 #include <imgui_impl_opengl3.h>
@@ -7,6 +7,7 @@
 #include <imgui_impl_glfw.h>
 #include <Core/Global.hpp>
 #include <Core/Interfaces/UInterface.hpp>
+#include <glfw3.h>
 
 void UVK::UIInternal::init()
 {

@@ -1,5 +1,5 @@
 // Global.hpp
-// Last update 11/10/2021 by Madman10K
+// Last update 21/12/2021 by Madman10K
 #pragma once
 #include <Core/ECS.hpp>
 #include <Renderer/Window/Window.hpp>
@@ -71,6 +71,7 @@ namespace UVK
         friend class Editor;
         friend class GLPipeline;
         friend class GLEntityManager;
+        friend class VKEntityManager;
         friend class ECS;
         friend class WindowInternal;
         friend class Input;
@@ -86,6 +87,7 @@ namespace UVK
         friend class StateTracker;
         friend class Utility;
         friend class IDManager;
+        friend class VulkanRenderer;
         friend struct MeshComponentRaw;
         friend struct RendererSettings;
     };

@@ -1,10 +1,11 @@
 // GLPipeline.cpp
-// Last update 22/9/2021 by Madman10K
+// Last update 21/12/2021 by Madman10K
 #include <GL/glew.h>
 #include <Events/Events.hpp>
 #include <Renderer/EditorUI/Classes/EditorLevel.hpp>
 #include <Renderer/OpenGL/Pipeline/GLEntityManager.hpp>
 #include "GLPipeline.hpp"
+#include <glfw3.h>
 
 void UVK::GLPipeline::begin(bool bHasEditor, Level* lvl)
 {

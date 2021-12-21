@@ -1,11 +1,10 @@
 // MeshComponentRaw.hpp
-// Last update 22/9/2021 by Madman10K
+// Last update 21/12/2021 by Madman10K
 #pragma once
+#include <GL/glew.h>
 #include <glm/gtx/quaternion.hpp>
 #include <../Renderer/OpenGL/Components/GLMesh.hpp>
 #include <Renderer/Camera/Camera.hpp>
-#include <Renderer/Vulkan/Components/VKMesh.hpp>
-#include <Renderer/Vulkan/Components/VKStructs.hpp>
 
 namespace UVK
 {
@@ -39,18 +38,5 @@ namespace UVK
 
         GLMesh mesh;
         GLShader shader;
-    };
-
-    struct MeshComponentRawVK
-    {
-        void start(UVK::Actor* currentActor, UVK::VKDevice& device, VkQueue& transQueue, VkCommandPool& transCommandPool, const std::vector<VKVertex>& vert, const std::vector<uint32_t>& index);
-        void render(const std::vector<VkCommandBuffer>& commandBuffers, const int32_t& index);
-        void destroy();
-
-        glm::mat4 mat;
-    private:
-        UVK::CoreComponent* core = nullptr;
-        Actor* actor = nullptr;
-        VKMesh mesh;
     };
 }

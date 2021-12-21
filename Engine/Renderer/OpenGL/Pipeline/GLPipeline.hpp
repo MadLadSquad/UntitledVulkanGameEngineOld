@@ -1,9 +1,10 @@
 // GLPipeline.hpp
-// Last update 6/7/2021 by Madman10K
+// Last update 21/12/2021 by Madman10K
 #pragma once
 #include <Renderer/OpenGL/Components/GLFrameBuffer.hpp>
 #include <Renderer/EditorUI/Editor.hpp>
 #include <Renderer/UI/UI.hpp>
+#include <GL/glew.h>
 
 namespace UVK
 {

@@ -1,11 +1,12 @@
 // Warnings.cpp
-// Last update 1/8/2021 by Madman10K
+// Last update 21/12/2021 by Madman10K
 #include <GL/glew.h>
 #include "Warnings.hpp"
 #ifndef PRODUCTION
 #include <imgui.h>
 #include <Core/Global.hpp>
 #include <GameFramework/GameplayClasses/Level/Level.hpp>
+#include <glfw3.h>
 
 void Warnings::displayExitWarning(bool& bOpen)
 {

@@ -1,9 +1,10 @@
 // Camera.cpp
-// Last update 22/9/2021 by Madman10K
+// Last update 21/12/2021 by Madman10K
 #include "Camera.hpp"
 #include <Engine/Core/Core/Global.hpp>
 #include <Core/Actor.hpp>
 #include <GameFramework/Components/Components/CoreComponent.hpp>
+#include <glm/glm/gtc/matrix_transform.hpp>
 
 UVK::Camera::Camera(const CoreComponent& coreComponent, FVector position, FVector rot, FVector up)
 {
