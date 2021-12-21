@@ -18,7 +18,6 @@ namespace SceneHierarchy
     UVK::Actor addEntity(int& entNum);
     void destroyEntity(UVK::Actor& selectedEntity);
     bool display(UVK::Actor& selectedEntity, std::string& entAppend, int& entNum, bool& bShow, std::vector<UVK::Editor::Folder>& folders, const bool& bReset = false);
-    void duplicateFolder(UVK::Editor::Folder* currentPopupFolder, std::vector<UVK::Editor::Folder>& folders);
-    void duplicateEntity(UVK::Actor& currentPopupEntity, const bool& bDrawHighlighted, const bool& nopop = true);
+    UVK::Actor duplicateEntity(UVK::Actor& currentPopupEntity, const bool& bDrawHighlighted, const bool& nopop = true);
 }
 #endif

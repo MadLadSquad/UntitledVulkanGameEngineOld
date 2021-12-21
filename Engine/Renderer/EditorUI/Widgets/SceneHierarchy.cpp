@@ -9,7 +9,7 @@
 #include <State/StateTracker.hpp>
 #include <cpp/imgui_stdlib.h>
 
-void SceneHierarchy::duplicateEntity(UVK::Actor& currentPopupEntity, const bool& bDrawHighlighted, const bool& nopop)
+UVK::Actor SceneHierarchy::duplicateEntity(UVK::Actor& currentPopupEntity, const bool& bDrawHighlighted, const bool& nopop)
 {
     auto& coreComponent = currentPopupEntity.get<UVK::CoreComponent>();
     UVK::Actor actor(coreComponent.name, coreComponent.id, coreComponent.devName);
@@ -28,8 +28,8 @@ void SceneHierarchy::duplicateEntity(UVK::Actor& currentPopupEntity, const bool&
             }
         }
     });
-    if (currentPopupEntity.has<UVK::AudioComponent>())
-        actor.add<UVK::AudioComponent>() = currentPopupEntity.get<UVK::AudioComponent>();
+    //if (currentPopupEntity.has<UVK::AudioComponent>())
+    //    actor.add<UVK::AudioComponent>() = currentPopupEntity.get<UVK::AudioComponent>();
 
     // TODO: Add more components
     if (!nopop)
@@ -39,50 +39,7 @@ void SceneHierarchy::duplicateEntity(UVK::Actor& currentPopupEntity, const bool&
         else
             ImGui::PopStyleColor();
     }
-}
-
-void SceneHierarchy::duplicateFolder(UVK::Editor::Folder* currentPopupFolder, std::vector<UVK::Editor::Folder>& folders)
-{
-    if (currentPopupFolder != nullptr)
-    {
-        // Ugly ass try-catch block because I get an exception on L51 for some reason. Function works as intended when using this method??????????
-        // TODO: FIX THIS HOLY SHIT
-        try
-        {
-            UVK::Editor::Folder newFolder;
-            static size_t i = 0;
-            newFolder.name = currentPopupFolder->name + "Copy" + std::to_string(i);
-            i++;
-            newFolder.bValid = true;
-            for (auto& f : currentPopupFolder->contents)
-            {
-                auto& coreComponent = f.get<UVK::CoreComponent>();
-                UVK::Actor actor(coreComponent.name, coreComponent.id, coreComponent.devName);
-                auto& a = actor.add<UVK::CoreComponent>();
-                a = coreComponent;
-                a.name += "Copy";
-                static size_t i = 0;
-                UVK::ECS::each([&](UVK::Actor& act){
-                    if (act.has<UVK::CoreComponent>())
-                    {
-                        auto& core = act.get<UVK::CoreComponent>();
-                        if (core.name == a.name)
-                        {
-                            a.name += std::to_string(i);
-                            i++;
-                        }
-                    }
-                });
-                if (f.has<UVK::AudioComponent>())
-                    actor.add<UVK::AudioComponent>() = f.get<UVK::AudioComponent>();
-
-                // TODO: Add more components
-                newFolder.contents.push_back(actor);
-            }
-
-            folders.push_back(newFolder);
-        } catch (std::bad_alloc&) { return; }
-    }
+    return actor;
 }
 
 void SceneHierarchy::destroyEntity(UVK::Actor& selectedEntity)
@@ -253,16 +210,17 @@ bool SceneHierarchy::display(UVK::Actor& selectedEntity, std::string& entAppend,
         }
         if (ImGui::MenuItem("+ 2x Duplicate"))
         {
-            for (auto& a : selectedFolders)
-                if (a != nullptr && a->bValid)
-                    duplicateFolder(a, folders);
             for (auto& a : selectedEntities)
+            {
                 if (a.valid())
+                {
                     duplicateEntity(a, false);
-            if (selectedFolder != nullptr && selectedFolder->bValid)
-                duplicateFolder(selectedFolder, folders);
+                }
+            }
             if (selectedEntity.valid())
+            {
                 duplicateEntity(selectedEntity, false);
+            }
             return bReturn;
         }
         ImGui::EndMenuBar();
@@ -649,11 +607,6 @@ skip:; // Semicolon needed to remove compiler error
                         bDeleteWarning = true;
                         bCalledFromPopup = true;
                         currentPopupEntity.data() = entt::null;
-                    }
-                    if (ImGui::MenuItem("+ 2x Duplicate"))
-                    {
-                        duplicateFolder(currentPopupFolder, folders);
-                        return bReturn;
                     }
                     ImGui::Text("Folder Name: ");
                     ImGui::SameLine();
