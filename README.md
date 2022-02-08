@@ -21,15 +21,14 @@
 The Untitled Vulkan Game Engine is a 3D, C++ game engine made for ease of use, simplicity and performance
 
 ### Features
--   OpenGL renderer
 -   Vulkan renderer
 -   Native scripting
 -   Editor
 -   Levels
--   3D audio
+-   Full audio system including 3D audio
 -   UI
 -   Game framework
--   Full docs
+-   Full and up to date docs
 -   Simple naming and feature implementation
 -   Production shipping and export
 -   Windows, Linux and BSD support
