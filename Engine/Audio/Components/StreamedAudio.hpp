@@ -1,5 +1,5 @@
 // StreamedAudio.hpp
-// Last update 29/10/2021 by Madman10K
+// Last update 7/2/2022 by Madman10K
 #pragma once
 #include "AudioCore.hpp"
 
@@ -9,7 +9,7 @@ namespace UVK
     /**
      * @brief Just a buffer for audio but streamed
      */
-    class AudioBufferStreamed
+    class UVK_PUBLIC_API AudioBufferStreamed
     {
     public:
         AudioBufferStreamed() = default;
@@ -34,9 +34,9 @@ namespace UVK
     };
 
     /**
- * @brief The physical audio source in the scene but streamed
- */
-    class AudioSourceStreamed
+     * @brief The physical audio source in the scene but streamed
+     */
+    class UVK_PUBLIC_API AudioSourceStreamed
     {
     public:
         AudioSourceStreamed();

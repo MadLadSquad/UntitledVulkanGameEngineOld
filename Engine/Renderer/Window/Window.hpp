@@ -1,5 +1,5 @@
 // Window.hpp
-// Last update 2/9/2021 by Madman10K
+// Last update 7/2/2022 by Madman10K
 #pragma once
 #include <iostream>
 #include <Core/Types.hpp>
@@ -10,7 +10,7 @@ namespace UVK
     /**
      * @brief The input action struct
      */
-    struct InputAction
+    struct UVK_PUBLIC_API InputAction
     {
         InputAction() = default;
 
@@ -26,7 +26,7 @@ namespace UVK
     /**
      * @brief Generic internal window data
      */
-    struct WindowData
+    struct UVK_PUBLIC_API WindowData
     {
         WindowData() = default;
 
@@ -42,7 +42,7 @@ namespace UVK
      * serves as an internal window abstraction. Our windowing system is based on GLFW so this class is fairly
      * minimal
      */
-    class WindowInternal
+    class UVK_PUBLIC_API WindowInternal
     {
     public:
         WindowInternal();
@@ -165,7 +165,7 @@ namespace UVK
     /**
      * @brief A standard cross-renderer input abstraction
      */
-    class Input
+    class UVK_PUBLIC_API Input
     {
     public:
         Input() = delete;

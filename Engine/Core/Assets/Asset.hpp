@@ -1,7 +1,8 @@
 // Asset.hpp
-// Last update 26/10/2021 by Madman10K
+// Last update 7/2/2022 by Madman10K
 #pragma once
 #include <Core/Types.hpp>
+#include <Core/Defines.hpp>
 
 namespace UVK
 {
@@ -17,7 +18,7 @@ namespace UVK
         ASSET_TYPE_UNKNOWN
     };
 
-    struct Asset
+    struct UVK_PUBLIC_API Asset
     {
         std::string name;
         uint64_t id;

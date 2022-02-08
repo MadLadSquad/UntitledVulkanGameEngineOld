@@ -1,11 +1,11 @@
 // Projection.hpp
-// Last update 25/7/2021 by Madman10K
+// Last update 7/2/2022 by Madman10K
 #pragma once
 #include <Core/Types.hpp>
 
 namespace UVK
 {
-    class Projection
+    class UVK_PUBLIC_API Projection
     {
     public:
         Projection() = default;

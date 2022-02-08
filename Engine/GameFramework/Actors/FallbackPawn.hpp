@@ -1,11 +1,11 @@
 // FallbackPawn.hpp
-// Last update 22/9/2021 by Madman10K
+// Last update 7/2/2022 by Madman10K
 #pragma once
 #include "Pawn.hpp"
 
 namespace UVK
 {
-    class FallbackPawn : public UVK::Pawn
+    class UVK_PUBLIC_API FallbackPawn : public UVK::Pawn
     {
     public:
         FallbackPawn();

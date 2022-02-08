@@ -27,6 +27,7 @@ void UVK::Events::callTick(float deltaTime)
             break;
         }
     }
+    global.modtick(deltaTime);
 }
 
 void UVK::Events::callBegin()
@@ -45,6 +46,7 @@ void UVK::Events::callBegin()
             break;
         }
     }
+    global.modbegin();
 }
 
 void UVK::Events::callEnd()
@@ -63,4 +65,5 @@ void UVK::Events::callEnd()
             break;
         }
     }
+    global.modend();
 }

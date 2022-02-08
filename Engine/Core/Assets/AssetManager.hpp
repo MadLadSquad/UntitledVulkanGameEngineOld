@@ -1,5 +1,5 @@
 // AssetManager.hpp
-// Last update 26/10/2021 by Madman10K
+// Last update 7/2/2022 by Madman10K
 #pragma once
 #include <unordered_map>
 #include "Asset.hpp"
@@ -9,7 +9,7 @@
 
 namespace UVK
 {
-    class AssetManager
+    class UVK_PUBLIC_API AssetManager
     {
     public:
         void load();

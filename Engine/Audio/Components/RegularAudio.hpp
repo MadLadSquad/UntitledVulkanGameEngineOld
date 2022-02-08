@@ -1,5 +1,5 @@
 // RegularAudio.hpp
-// Last update 29/10/2021 by Madman10K
+// Last update 7/2/2022 by Madman10K
 #pragma once
 #include "AudioCore.hpp"
 
@@ -9,7 +9,7 @@ namespace UVK
     /**
      * @brief Just a buffer for audio
      */
-    class AudioBuffer
+    class UVK_PUBLIC_API AudioBuffer
     {
     public:
         AudioBuffer() = default;
@@ -28,7 +28,7 @@ namespace UVK
     /**
      * @brief The physical audio source in the scene
      */
-    class AudioSource
+    class UVK_PUBLIC_API AudioSource
     {
     public:
         AudioSource() = default;

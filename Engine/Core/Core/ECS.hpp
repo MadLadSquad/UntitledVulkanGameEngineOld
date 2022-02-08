@@ -1,5 +1,5 @@
 // ECS.hpp
-// Last update 26/10/2021 by Madman10K
+// Last update 7/2/2022 by Madman10K
 #pragma once
 #include <Core/Types.hpp>
 
@@ -8,7 +8,7 @@ namespace UVK
     /**
      * @brief A manager responsible for the ECS, not to be confused with the actor manager
      */
-    class ECSManager
+    class UVK_PUBLIC_API ECSManager
     {
     public:
         ECSManager() = default;

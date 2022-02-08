@@ -13,6 +13,16 @@
 #define LogColBlue "\x1B[34m"
 #define LogColNull "\033[0m"
 
+#ifdef _WIN32
+#ifdef UVK_LIB_COMPILE
+        #define UVK_PUBLIC_API __declspec(dllexport)
+    #else
+        #define UVK_PUBLIC_API __declspec(dllimport)
+    #endif
+#else
+#define UVK_PUBLIC_API
+#endif
+
 enum LogType
 {
     UVK_LOG_TYPE_WARNING,
@@ -22,14 +32,14 @@ enum LogType
     UVK_LOG_TYPE_MESSAGE
 };
 
-struct CommandType
+struct UVK_PUBLIC_API CommandType
 {
     std::string cmd; // the name of the command;
     std::string cmdHint; // shown in the help message
     std::function<void(void)> func; // executes the command instructions
 };
 
-class Timer
+class UVK_PUBLIC_API Timer
 {
 public:
     void startRecording();
@@ -44,7 +54,7 @@ private:
     std::chrono::time_point<std::chrono::high_resolution_clock> start;
 };
 
-class UVKLog
+class UVK_PUBLIC_API UVKLog
 {
 public:
     UVKLog();
@@ -71,7 +81,7 @@ public:
         switch (messageType)
         {
         case UVK_LOG_TYPE_WARNING:
-            ss << LogColYellow << "[" << getCurrentTime() << "] Warning: " << message;
+            ss << LogColYellow << "[" << getCurrentTime() << "] Warning: ";
             break;
         case UVK_LOG_TYPE_ERROR:
             ss << LogColRed << "[" << getCurrentTime() << "] Error: ";
@@ -117,7 +127,7 @@ public:
         switch (messageType)
         {
             case UVK_LOG_TYPE_WARNING:
-                ss << "] Warning: " << message;
+                ss << "] Warning: ";
                 break;
             case UVK_LOG_TYPE_ERROR:
                 ss << "] Error: ";

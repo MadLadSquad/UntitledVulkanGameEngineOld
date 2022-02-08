@@ -1,12 +1,12 @@
 // AudioManager.hpp
-// Last update 29/10/2021 by Madman10K
+// Last update 7/2/2022 by Madman10K
 #pragma once
 #include "AudioCore.hpp"
 
 namespace UVK
 {
 #ifdef __MINGW32__
-    class AudioManager
+    class UVK_PUBLIC_API AudioManager
     {
     public:
         char a = 'a';
@@ -16,7 +16,7 @@ namespace UVK
     /**
      * @brief Creates and Destroys an audio device and context
      */
-    class AudioManager
+    class UVK_PUBLIC_API AudioManager
     {
     public:
         AudioManager();

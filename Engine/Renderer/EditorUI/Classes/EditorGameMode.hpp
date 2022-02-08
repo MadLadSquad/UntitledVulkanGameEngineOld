@@ -1,5 +1,5 @@
 // EditorGameMode.hpp
-// Last update 2/9/2021 by Madman10K
+// Last update 7/2/2022 by Madman10K
 #pragma once
 #include <GameFramework/GameplayClasses/GameMode.hpp>
 #include "EditorPawn.hpp"
@@ -7,7 +7,7 @@
 #ifndef PRODUCTION
 namespace UVK
 {
-    class EditorGameMode : public GameMode
+    class UVK_PUBLIC_API EditorGameMode : public GameMode
     {
     public:
         EditorGameMode();

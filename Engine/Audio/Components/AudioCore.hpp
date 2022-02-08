@@ -24,7 +24,7 @@ namespace UVK
     /**
      * @brief All the data that the audio source will ever need
      */
-    struct AudioSourceData
+    struct UVK_PUBLIC_API AudioSourceData
     {
         AudioSourceData() = default;
         std::string location;

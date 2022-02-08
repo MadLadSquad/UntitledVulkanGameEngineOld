@@ -1,5 +1,5 @@
 // AudioComponent.hpp
-// Last update 26/9/2021 by Madman10K
+// Last update 7/2/2022 by Madman10K
 #pragma once
 #include <Core.hpp>
 #include <Audio/Audio.hpp>
@@ -12,7 +12,7 @@ namespace UVK
     /**
      * @brief A simple audio component
      */
-    struct AudioComponent
+    struct UVK_PUBLIC_API AudioComponent
     {
     public:
         void create(UVK::Actor* act, const char* file);
@@ -34,7 +34,7 @@ namespace UVK
         UVK::Actor* actor = nullptr;
     };
 
-    struct StreamedAudioComponent
+    struct UVK_PUBLIC_API StreamedAudioComponent
     {
     public:
         void create(UVK::Actor* act, const char* file);

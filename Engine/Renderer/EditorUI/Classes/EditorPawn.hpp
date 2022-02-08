@@ -1,5 +1,5 @@
 // EditorPawn.hpp
-// Last update 22/9/2021 by Madman10K
+// Last update 7/2/2022 by Madman10K
 #pragma once
 #include <Engine/Core/Core/Global.hpp>
 #include <GameFramework/Actors/Pawn.hpp>
@@ -11,7 +11,7 @@ namespace UVK
 {
     class CoreComponent;
 
-    class EditorPawn : public Pawn
+    class UVK_PUBLIC_API EditorPawn : public Pawn
     {
     public:
         EditorPawn()

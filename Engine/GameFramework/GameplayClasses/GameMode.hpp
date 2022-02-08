@@ -1,5 +1,5 @@
 // GameMode.hpp
-// Last update 27/8/2021 by Madman10K
+// Last update 7/2/2022 by Madman10K
 #pragma once
 #include <Core.hpp>
 #include "GameState.hpp"
@@ -12,7 +12,7 @@ namespace UVK
     /**
      * @brief A game mode contains pointers to a GameState, PlayerState, PlayerController and a Pawn
      */
-    class GameMode
+    class UVK_PUBLIC_API GameMode
     {
     public:
         GameMode() = default;

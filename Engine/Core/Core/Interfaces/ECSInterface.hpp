@@ -1,5 +1,5 @@
 // ECSInterface.hpp
-// Last update 22/9/2021 by Madman10K
+// Last update 7/2/2022 by Madman10K
 #pragma once
 #include <functional>
 #include <Core/Types.hpp>
@@ -8,7 +8,7 @@ namespace UVK
 {
     class Actor;
 
-    class ECS
+    class UVK_PUBLIC_API ECS
     {
     public:
         ECS() = delete;

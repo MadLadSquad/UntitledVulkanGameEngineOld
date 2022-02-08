@@ -1,12 +1,12 @@
 // UInterface.hpp
-// Last update 17/7/2021 by Madman10K
+// Last update 7/2/2022 by Madman10K
 #pragma once
 #include <functional>
 #include <imgui.h>
 
 namespace UVK
 {
-    class UI
+    class UVK_PUBLIC_API UI
     {
     public:
         UI() = delete;

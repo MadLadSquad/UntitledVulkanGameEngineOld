@@ -1,5 +1,5 @@
 // Theme.hpp
-// Last update 11/10/2021 by Madman10K
+// Last update 7/2/2022 by Madman10K
 #pragma once
 #include <Generated/BuildDef.hpp>
 #ifndef PRODUCTION
@@ -13,7 +13,7 @@ namespace UVK
      * @brief The editor theme class is used to load theme files to customize the editor
      * @note You can find documentation here: https://github.com/MadLadSquad/UntitledVulkanGameEngine/wiki/Themes
      */
-    class EditorTheme
+    class UVK_PUBLIC_API EditorTheme
     {
     public:
         EditorTheme() = default;

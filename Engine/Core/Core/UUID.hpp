@@ -1,11 +1,11 @@
 // UUID.hpp
-// Last update 26/10/2021 by Madman10K
+// Last update 7/2/2022 by Madman10K
 #pragma once
 #include <random>
 
 namespace UVK
 {
-    class IDManager
+    class UVK_PUBLIC_API IDManager
     {
     public:
         static void generate(uint64_t& id);
@@ -16,7 +16,7 @@ namespace UVK
         std::uniform_int_distribution<uint64_t> uniformDistribution;
     };
 
-    struct UUID
+    struct UVK_PUBLIC_API UUID
     {
     public:
         UUID() = default;

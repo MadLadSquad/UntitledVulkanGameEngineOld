@@ -1,5 +1,5 @@
 // Camera.cpp
-// Last update 22/9/2021 by Madman10K
+// Last update 7/2/2022 by Madman10K
 #pragma once
 #include "Projection.hpp"
 #include <Core/Interfaces/WindowInterface.hpp>
@@ -12,7 +12,7 @@ namespace UVK
     /**
      * @brief A cross-renderer camera abstraction
      */
-    class Camera
+    class UVK_PUBLIC_API Camera
     {
     public:
         Camera() = default;

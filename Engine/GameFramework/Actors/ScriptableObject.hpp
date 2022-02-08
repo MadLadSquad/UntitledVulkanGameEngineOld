@@ -1,6 +1,7 @@
 // ScriptableObject.hpp
-// Last update 13/9/2021 by Madman10K
+// Last update 7/2/2022 by Madman10K
 #pragma once
+#include <Core/Defines.hpp>
 
 namespace UVK
 {
@@ -15,7 +16,7 @@ namespace UVK
     /**
      * @brief A simple class to add additional functionality based on an actor in the scene
      */
-    class ScriptableObject
+    class UVK_PUBLIC_API ScriptableObject
     {
     public:
         ScriptableObject() = default;

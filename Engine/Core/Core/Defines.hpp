@@ -1,8 +1,17 @@
 // Defines.hpp
-// Last update 11/10/2021 by Madman10K
+// Last update 7/2/2022 by Madman10K
 #pragma once
 #include <any>
 #include "Generated/BuildDef.hpp"
+#ifdef _WIN32
+#ifdef UVK_LIB_COMPILE
+        #define UVK_PUBLIC_API __declspec(dllexport)
+    #else
+        #define UVK_PUBLIC_API __declspec(dllimport)
+    #endif
+#else
+    #define UVK_PUBLIC_API
+#endif
 #include <logger/UVKLog.h>
 #include "Utility.hpp"
 

@@ -1,5 +1,5 @@
 // Events.hpp
-// Last update 21/12/2021 by Madman10K
+// Last update 7/2/2022 by Madman10K
 #pragma once
 
 namespace UVK
@@ -8,7 +8,7 @@ namespace UVK
     /**
      * @brief A class to handle calling of events of scriptable objects
      */
-    class Events
+    class UVK_PUBLIC_API Events
     {
     public:
         Events() = delete;

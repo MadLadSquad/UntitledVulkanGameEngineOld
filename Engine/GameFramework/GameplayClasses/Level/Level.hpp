@@ -1,5 +1,5 @@
 // Level.hpp
-// Last update 27/8/2021 by Madman10K
+// Last update 7/2/2022 by Madman10K
 #pragma once
 #include <Core.hpp>
 #include "../GameMode.hpp"
@@ -12,7 +12,7 @@ namespace UVK
      * @brief A level class can have it's own scripted events but it has the functionality of opening and saving level
      * files
      */
-    class Level
+    class UVK_PUBLIC_API Level
     {
     public:
         Level() = default;

@@ -1,5 +1,5 @@
 // PlayerController.hpp
-// Last update 27/8/2021 by Madman10K
+// Last update 7/2/2022 by Madman10K
 #pragma once
 #include <Core.hpp>
 #include "../Actors/Pawn.hpp"
@@ -10,7 +10,7 @@ namespace UVK
      * @brief A player controller is the so called "soul" of the player. It can possess pawns as well as have
      * the standard events
      */
-    class PlayerController
+    class UVK_PUBLIC_API PlayerController
     {
     public:
         PlayerController() = default;

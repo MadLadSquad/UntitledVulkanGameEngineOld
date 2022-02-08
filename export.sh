@@ -1,5 +1,4 @@
 #!/bin/bash
-# TODO: Currently we are depending on VS2019 on Windows and I would like to change that at some point
 function help()
 {
   echo "The following script helps you export your project for production"
@@ -32,7 +31,7 @@ cd "${wdir}" || echo " " > /dev/null # Return to the old directory
 if [ "$VSVer" == "2022" ]; then VSShortVer="17"
 elif [ "$VSVer" == "2019" ]; then VSShortVer="16"
 elif [ "$VSVer" == "2017" ]; then VSShortVer="15"
-else VSShortVer="1"
+else exit
 fi
 
 cmake .. -G "Visual Studio ${VSShortVer} ${VSVer}" || cmake .. -G "Unix Makefiles" || exit # Either cmake using VS or Make

@@ -1,5 +1,5 @@
 // GLShader.hpp
-// Last update 2/7/2021 by Madman10K
+// Last update 7/2/2022 by Madman10K
 #pragma once
 #include <iostream>
 #include <fstream>
@@ -30,7 +30,7 @@ namespace UVK
     /**
      * @brief OpenGL specific text shader class
      */
-	class GLShader
+	class UVK_PUBLIC_API GLShader
     {
     public:
 		GLShader() = default;
@@ -57,7 +57,7 @@ namespace UVK
     /**
      * @brief OpenGL specific spirv shader class
      */
-	class GLShaderSPV
+	class UVK_PUBLIC_API GLShaderSPV
     {
     public:
         GLShaderSPV() = default;

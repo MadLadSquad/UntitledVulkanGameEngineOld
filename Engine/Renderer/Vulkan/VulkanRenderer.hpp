@@ -1,5 +1,5 @@
 // VulkanRenderer.hpp
-// Last update 21/12/2021 by Madman10K
+// Last update 7/2/2022 by Madman10K
 #pragma once
 #include "Renderer/EditorUI/Editor.hpp"
 
@@ -8,7 +8,7 @@ namespace UVK
     /**
      * @brief The vulkan specific renderer class
      */
-    class VulkanRenderer
+    class UVK_PUBLIC_API VulkanRenderer
     {
     public:
         VulkanRenderer() = default;

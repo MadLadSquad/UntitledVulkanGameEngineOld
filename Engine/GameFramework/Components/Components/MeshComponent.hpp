@@ -1,5 +1,5 @@
 // MeshComponent.hpp
-// Last update 17/7/2021 by Madman10K
+// Last update 7/2/2022 by Madman10K
 #pragma once
 #include <../Renderer/OpenGL/Components/GLMesh.hpp>
 #include <Renderer/Camera/Camera.hpp>
@@ -9,7 +9,7 @@ namespace UVK
     /**
      * @brief A simple mesh component
      */
-    struct MeshComponent
+    struct UVK_PUBLIC_API MeshComponent
     {
         void createMesh(UVK::String modelLocation, UVK::String vertexShader, UVK::String fragmentShader, ShaderImportType type);
         void render(glm::mat4 projection, Camera& camera);

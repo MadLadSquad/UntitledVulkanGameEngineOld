@@ -1,14 +1,16 @@
 // Renderer.hpp
-// Last update 21/12/2021 by Madman10K
+// Last update 7/2/2022 by Madman10K
 #pragma once
+#include <Core/Defines.hpp>
 
 namespace UVK
 {
+    class Level;
     struct RendererSettings;
     /**
      * @brief Manages the currently used renderer and can switch renderers
      */
-    class Renderer
+    class UVK_PUBLIC_API Renderer
     {
     public:
         Renderer() = delete;

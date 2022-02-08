@@ -1,5 +1,5 @@
 // Level.cpp
-// Last update 26/9/2021 by Madman10K
+// Last update 7/2/2022 by Madman10K
 #include <GameFramework/Components/Components.hpp>
 #include <GameFramework/Components/Components/CoreComponent.hpp>
 #include <Core/Actor.hpp>
@@ -173,11 +173,17 @@ void UVK::Level::openInternal(UVK::String location, bool first)
         }
         Events::clear(); // Reset all scriptable objects, clear the event queue and add them again
 
-        Actor temp = Actor();
-        std::string tempStr;
-        int tmpInt = 1;
-        bool tmpBool = true;
-        SceneHierarchy::display(temp, tempStr, tmpInt, tmpBool, global.instance->editor->currentLevelFolders, true);
+        // This thing should not compile if we're compiling for production and also shouldn't run if we're running without the editor
+#ifndef PRODUCTION
+        if (global.bEditor)
+        {
+            Actor temp = Actor();
+            std::string tempStr;
+            int tmpInt = 1;
+            bool tmpBool = true;
+            SceneHierarchy::display(temp, tempStr, tmpInt, tmpBool, global.instance->editor->currentLevelFolders, true);
+        }
+#endif
     }
 
     logger.consoleLog("Opening level with location: ", UVK_LOG_TYPE_NOTE, location);

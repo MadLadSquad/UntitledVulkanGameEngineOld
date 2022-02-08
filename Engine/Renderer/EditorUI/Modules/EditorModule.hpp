@@ -1,8 +1,9 @@
 // EditorModule.hpp
-// Last update 13/9/2021 by Madman10K
+// Last update 7/2/2022 by Madman10K
 #pragma once
 #include <functional>
 #include <vector>
+#include <Core/Defines.hpp>
 
 namespace UVK
 {
@@ -22,7 +23,7 @@ namespace UVK
         const char* name;
     };
 
-    class EditorModuleManager
+    class UVK_PUBLIC_API EditorModuleManager
     {
     public:
         EditorModuleManager() = default;

@@ -7,7 +7,7 @@
 #if __has_include(<imgui.h>)
 #include "imgui.h"
 
-class UVKLogImGui
+class UVK_PUBLIC_API UVKLogImGui
 {
 public:
     void displayFull(bool& bOpen, bool& bReturn);

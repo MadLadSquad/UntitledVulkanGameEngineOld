@@ -1,8 +1,7 @@
 // Global.cpp
-// Last update 26/10/2021 by Madman10K
+// Last update 7/2/2022 by Madman10K
 #include "Global.hpp"
 #include <GameFramework/GameplayClasses/Level/Level.hpp>
-#include <glm/glm/gtx/quaternion.hpp>
 
 UVK::UVKGlobal::UVKGlobal()
 {

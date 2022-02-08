@@ -46,3 +46,6 @@
 [submodule "Engine/ThirdParty/glew"]
 	path = Engine/ThirdParty/glew
 	url = https://github.com/MadLadSquad/glew-cmake.git
+[submodule "Engine/ThirdParty/urll"]
+	path = Engine/ThirdParty/urll
+	url = https://github.com/MadLadSquad/UntitledRuntimeLibraryLoader.git

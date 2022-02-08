@@ -1,5 +1,5 @@
 // Pawn.hpp
-// Last update 22/9/2021 by Madman10K
+// Last update 7/2/2022 by Madman10K
 #pragma once
 #include <Core.hpp>
 #include <Renderer/Camera/Camera.hpp>
@@ -10,7 +10,7 @@ namespace UVK
     /**
      * @brief an actor that the player can control
      */
-    class Pawn
+    class UVK_PUBLIC_API Pawn
     {
     public:
         Pawn() = default;

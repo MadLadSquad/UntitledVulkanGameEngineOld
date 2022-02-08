@@ -1,20 +1,17 @@
 // Utility.hpp
-// Last update 27/8/2021 by Madman10K
+// Last update 7/2/2022 by Madman10K
 #pragma once
+#include <Core/Defines.hpp>
 #include <iostream>
 #include "Types.hpp"
-#ifdef _WIN32
 
-#else
-    #include <sys/resource.h>
-#endif
 
 namespace UVK
 {
     /**
      * @brief A namespace of useful utility functions
      */
-    class Utility
+    class UVK_PUBLIC_API Utility
     {
     public:
         Utility() = delete;
@@ -38,7 +35,7 @@ namespace UVK
         static std::string keyToText(const uint16_t& key, bool bLong);
     };
 
-    class Math
+    class UVK_PUBLIC_API Math
     {
     public:
         static void translate(glm::mat4& mat, FVector vt);

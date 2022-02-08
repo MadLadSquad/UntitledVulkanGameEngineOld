@@ -1,12 +1,12 @@
 // SettingsManager.hpp
-// Last update 18/7/2021 by Madman10K
+// Last update 7/2/2022 by Madman10K
 #pragma once
 
 namespace UVK
 {
     struct RendererSettings;
 
-    class SettingsManager
+    class UVK_PUBLIC_API SettingsManager
     {
     public:
         SettingsManager() = delete;

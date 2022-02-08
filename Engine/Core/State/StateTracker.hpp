@@ -1,9 +1,10 @@
 // StateTracker.hpp
-// Last update 17/10/2021 by Madman10K
+// Last update 7/2/2022 by Madman10K
 #pragma once
 #include <vector>
 #include <cstdint>
 #include <Core/Actor.hpp>
+#include <deque>
 #include <GameFramework/Components/Components/CoreComponent.hpp>
 #include <GameFramework/Components/Components/MeshComponentRaw.hpp>
 #include <GameFramework/Components/Components/MeshComponent.hpp>
@@ -13,7 +14,7 @@ namespace UVK
 {
     class Actor;
 
-    struct TransactionPayload
+    struct UVK_PUBLIC_API TransactionPayload
     {
         Actor affectedEntity; // The entity that is going to be affected, can be empty
         CoreComponent coreComponent;
@@ -27,7 +28,7 @@ namespace UVK
         std_filesystem::path* path = nullptr;
     };
 
-    struct Transaction
+    struct UVK_PUBLIC_API Transaction
     {
         ~Transaction()
         {
@@ -50,7 +51,7 @@ namespace UVK
      * @brief Tracks state changes for the editor and actors. Handles things like Undo/Redo, stores states
      * of components and much more
      */
-    class StateTracker
+    class UVK_PUBLIC_API StateTracker
     {
     public:
         StateTracker() = default;

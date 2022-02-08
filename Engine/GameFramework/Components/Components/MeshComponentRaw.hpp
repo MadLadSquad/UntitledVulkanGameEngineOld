@@ -1,5 +1,5 @@
 // MeshComponentRaw.hpp
-// Last update 21/12/2021 by Madman10K
+// Last update 7/2/2022 by Madman10K
 #pragma once
 #include <GL/glew.h>
 #include <glm/gtx/quaternion.hpp>
@@ -14,7 +14,7 @@ namespace UVK
     /**
      * @brief A mesh component used for debugging
      */
-    struct MeshComponentRaw
+    struct UVK_PUBLIC_API MeshComponentRaw
     {
         void createMesh(UVK::Actor* currentActor, GLfloat* vertices, uint32_t* indices, uint32_t vertexNum, uint32_t indexNum, UVK::String vertexShader, UVK::String fragmentShader, ShaderImportType type);
         void render(Camera& camera);

@@ -1,12 +1,12 @@
 // EditorPlayerController.hpp
-// Last update 27/8/2021 by Madman10K
+// Last update 7/2/2022 by Madman10K
 #pragma once
 #ifndef PRODUCTION
 #include <GameFramework/GameplayClasses/PlayerController.hpp>
 
 namespace UVK
 {
-    class EditorPlayerController : public PlayerController
+    class UVK_PUBLIC_API EditorPlayerController : public PlayerController
     {
     public:
         EditorPlayerController();

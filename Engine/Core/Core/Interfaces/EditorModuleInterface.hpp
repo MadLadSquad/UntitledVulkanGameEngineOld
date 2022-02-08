@@ -1,5 +1,5 @@
 // EditorModules.hpp
-// Last update 17/10/2021 by Madman10K
+// Last update 7/2/2022 by Madman10K
 #pragma once
 #include <Renderer/EditorUI/Modules/EditorModule.hpp>
 
@@ -8,7 +8,7 @@ namespace UVK
     class Actor;
     struct IndependentModuleData;
 
-    class EditorModules
+    class UVK_PUBLIC_API EditorModules
     {
     public:
         EditorModules() = delete;

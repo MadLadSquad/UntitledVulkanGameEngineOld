@@ -1,5 +1,5 @@
 // Editor.hpp
-// Last update 21/12/2021 by Madman10K
+// Last update 7/2/2022 by Madman10K
 #pragma once
 #include <Renderer/Camera/Camera.hpp>
 #include <Renderer/Textures/Texture.hpp>
@@ -13,7 +13,7 @@ namespace UVK
     /**
      * @brief Controls the whole editor and related operations
      */
-    class Editor
+    class UVK_PUBLIC_API Editor
     {
     public:
         Editor() = default;

@@ -1,5 +1,5 @@
 // GLMesh.hpp
-// Last update 2/7/2021 by Madman10K
+// Last update 7/2/2022 by Madman10K
 #pragma once
 #include "GLShader.hpp"
 
@@ -8,7 +8,7 @@ namespace UVK
     /**
      * @brief OpenGL specific mesh class
      */
-    class GLMesh
+    class UVK_PUBLIC_API GLMesh
     {
     public:
 		GLMesh() = default;

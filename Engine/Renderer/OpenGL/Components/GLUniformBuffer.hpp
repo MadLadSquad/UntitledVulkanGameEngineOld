@@ -1,10 +1,11 @@
 // GLUniformBuffer.hpp
-// Last update 7/7/2021 by Madman10K
+// Last update 7/2/2022 by Madman10K
 #pragma once
+#include <Core/Defines.hpp>
 
 namespace UVK
 {
-    class GLUniformBuffer
+    class UVK_PUBLIC_API GLUniformBuffer
     {
     public:
         GLUniformBuffer()

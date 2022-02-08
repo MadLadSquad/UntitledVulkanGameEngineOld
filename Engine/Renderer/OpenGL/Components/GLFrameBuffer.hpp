@@ -8,7 +8,7 @@ namespace UVK
     /**
      * @brief OpenGL specific framebuffer class
      */
-    class GLFrameBuffer
+    class UVK_PUBLIC_API GLFrameBuffer
     {
     public:
         GLFrameBuffer() = default;

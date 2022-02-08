@@ -1,5 +1,5 @@
 // GameInstance.hpp
-// Last update 22/9/2021 by Madman10K
+// Last update 7/2/2022 by Madman10K
 #pragma once
 #include <Core.hpp>
 #include <GameFramework/Actors/ActorManager.hpp>
@@ -12,7 +12,7 @@ namespace UVK
     /**
      * @brief The instance of the application
      */
-    class GameInstance
+    class UVK_PUBLIC_API GameInstance
     {
     public:
         GameInstance();

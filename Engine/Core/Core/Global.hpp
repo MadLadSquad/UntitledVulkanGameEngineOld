@@ -1,5 +1,5 @@
 // Global.hpp
-// Last update 21/12/2021 by Madman10K
+// Last update 7/2/2022 by Madman10K
 #pragma once
 #include <Core/ECS.hpp>
 #include <Renderer/Window/Window.hpp>
@@ -9,7 +9,7 @@
 
 namespace UVK
 {
-    struct RendererSettings
+    struct UVK_PUBLIC_API RendererSettings
     {
         RendererSettings() = default;
         std::string themeLoc;
@@ -23,7 +23,7 @@ namespace UVK
     class Level;
     class GameInstance;
 
-    class UVKGlobal
+    class UVK_PUBLIC_API UVKGlobal
     {
     public:
         UVKGlobal();
@@ -42,6 +42,10 @@ namespace UVK
 
         std::string levelLocation;
         bool bUsesVulkan{};
+
+        std::function<void(void)> modbegin = [](){};
+        std::function<void(float)> modtick = [](float){};
+        std::function<void(void)> modend = [](){};
     private:
         IDManager idManager;
 
@@ -88,6 +92,7 @@ namespace UVK
         friend class Utility;
         friend class IDManager;
         friend class VulkanRenderer;
+        friend class Events;
         friend struct MeshComponentRaw;
         friend struct RendererSettings;
     };
