@@ -4,7 +4,7 @@
 #include <any>
 #include "Generated/BuildDef.hpp"
 #ifdef _WIN32
-#ifdef UVK_LIB_COMPILE
+    #ifdef UVK_LIB_COMPILE
         #define UVK_PUBLIC_API __declspec(dllexport)
     #else
         #define UVK_PUBLIC_API __declspec(dllimport)
