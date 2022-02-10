@@ -14,6 +14,6 @@ namespace UVK
  */
 namespace TopToolbar
 {
-    bool display(UVK::Texture& play, std::string& projectName, const UVK::EditorModuleManager& modules, bool& bShow);
+    bool display(UVK::Texture& play, const std::string& projectName, const UVK::EditorModuleManager& modules, bool& bShow);
 }
 #endif
