@@ -4,8 +4,9 @@
 #ifndef PRODUCTION
 #include <imgui.h>
 #include <Renderer/EditorUI/Modules/EditorModule.hpp>
+#include <imguiex/uexec/uexec.h>
 
-bool TopToolbar::display(UVK::Texture& play, const std::string& projectName, const UVK::EditorModuleManager& modules, bool& bShow)
+bool TopToolbar::display(UVK::Texture& play, std::string& projectName, const UVK::EditorModuleManager& modules, bool& bShow)
 {
     bool bReturn = false;
     int8_t lnt = 0;
@@ -17,6 +18,12 @@ bool TopToolbar::display(UVK::Texture& play, const std::string& projectName, con
 #ifdef _WIN32
         lnt = system(static_cast<std::string>(projectName + ".exe").c_str());
 #else
+        static uexec::ScriptRunner runner;
+        char* const args[] = { projectName.data(), nullptr };
+        runner.init(args, 1);
+        runner.updateBufferSize();
+        runner.update(true);
+
         lnt = system(static_cast<std::string>("./" + projectName).c_str());
 #endif
     }
