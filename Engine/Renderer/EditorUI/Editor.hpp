@@ -47,6 +47,8 @@ namespace UVK
         }
 
         Texture play;
+        Texture restart;
+        Texture stop;
         Texture logoTxt;
         Texture fileTextures[9];
 

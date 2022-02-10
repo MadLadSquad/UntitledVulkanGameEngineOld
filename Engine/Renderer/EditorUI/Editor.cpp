@@ -105,6 +105,12 @@ void UVK::Editor::initEditor()
 
     fileTextures[FS_ICON_CLOSE] = Texture(static_cast<std::string>(pt.string() + "Engine/close.png"));
     fileTextures[FS_ICON_CLOSE].loadImgui();
+
+    restart = Texture(static_cast<std::string>(pt.string() + "Engine/refresh.png"));
+    restart.loadImgui();
+
+    stop = Texture(static_cast<std::string>(pt.string() + "Engine/stop.png"));
+    stop.loadImgui();
 #else
     play = Texture(static_cast<std::string>("../Content/Engine/play.png"));
     play.loadImgui();
@@ -138,6 +144,12 @@ void UVK::Editor::initEditor()
 
     fileTextures[FS_ICON_CLOSE] = Texture("../Content/Engine/close.png");
     fileTextures[FS_ICON_CLOSE].loadImgui();
+
+    restart = Texture("../Content/Engine/refresh.png"));
+    restart.loadImgui();
+
+    stop = Texture("../Content/Engine/stop.png"));
+    stop.loadImgui();
 #endif
     ImGui::CreateContext();
     ImPlot::CreateContext();
@@ -413,7 +425,7 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
     if (bools.bShowToolbar)
     {
         style.WindowPadding = ImVec2(0.0f, 0.0f);
-        bools.bEditorUsingTextbox = TopToolbar::display(play, projectName, moduleManager, bools.bShowToolbar) ? true : bools.bEditorUsingTextbox;
+        bools.bEditorUsingTextbox = TopToolbar::display(play, projectName, moduleManager, bools.bShowToolbar, restart, stop) ? true : bools.bEditorUsingTextbox;
         style.WindowPadding = ImVec2(8.0f, 8.0f);
     }
     if (bools.bShowTools)
