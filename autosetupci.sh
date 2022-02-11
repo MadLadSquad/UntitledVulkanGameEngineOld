@@ -31,10 +31,12 @@ echo -e "\x1B[32mCompiling build tool and generating files ...\033[0m"
 echo -e "\x1B[32m--------------------------------------------------------------------------------\033[0m"
 echo " "
 
+mkdir WrapperSource || exit
+
 cd UVKBuildTool/ || exit
 mkdir build || exit # Will store our compiled binary
 cd build || exit
-mkdir WrapperSource || exit
+
 cmake .. || exit # Generate the UVKBuildTool project files
 
 # Try to run MSBuild first, if it fails we are either on a non-Windows system or the user doesn't have Visual Studio installed
