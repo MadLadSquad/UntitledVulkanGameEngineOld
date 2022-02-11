@@ -145,10 +145,10 @@ void UVK::Editor::initEditor()
     fileTextures[FS_ICON_CLOSE] = Texture("../Content/Engine/close.png");
     fileTextures[FS_ICON_CLOSE].loadImgui();
 
-    restart = Texture("../Content/Engine/refresh.png"));
+    restart = Texture("../Content/Engine/refresh.png");
     restart.loadImgui();
 
-    stop = Texture("../Content/Engine/stop.png"));
+    stop = Texture("../Content/Engine/stop.png");
     stop.loadImgui();
 #endif
     ImGui::CreateContext();
