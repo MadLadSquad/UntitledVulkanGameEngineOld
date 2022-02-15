@@ -8,6 +8,7 @@
 
 namespace UVK
 {
+    class UVK_PUBLIC_API UVKGlobal;
     /**
      * @brief A namespace of useful utility functions
      */
@@ -33,6 +34,7 @@ namespace UVK
          */
         static void keyToText(std::string& text, const uint16_t& key, bool bLong);
         static std::string keyToText(const uint16_t& key, bool bLong);
+        static UVKGlobal& getGlobal();
     };
 
     class UVK_PUBLIC_API Math

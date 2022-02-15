@@ -30,7 +30,7 @@ namespace UVK
 
         virtual ~ScriptableObject() = default;
 
-        ScriptableObjectActivityFlags activityFlags;
+        ScriptableObjectActivityFlags activityFlags = SCRIPTABLE_OBJECT_ACTIVITY_FLAG_ACTIVE;
 
         template<typename T>
         static T* cast(ScriptableObject* so)

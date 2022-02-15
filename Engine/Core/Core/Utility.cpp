@@ -828,6 +828,11 @@ std::string UVK::Utility::keyToText(const uint16_t& key, bool bLong)
     return txt;
 }
 
+UVK::UVKGlobal& UVK::Utility::getGlobal()
+{
+    return global;
+}
+
 void UVK::Math::translate(glm::mat4& mat, UVK::FVector vt)
 {
     if (global.bUsesVulkan)
