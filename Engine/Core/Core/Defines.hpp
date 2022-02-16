@@ -28,12 +28,12 @@
     #error "Compiling against MinGW is not supported!"
 #endif
 
-#ifndef PRODUCTION
-    #define ENABLE_FAST_IO(x) std::ios_base::sync_with_stdio(!(x)); \
+#ifdef PRODUCTION
+    #define UVK_START(x) std::ios_base::sync_with_stdio(!(x)); \
     logger.setCrashOnError(true); \
     UVK::Utility::removeConsole()
 #else
-    #define ENABLE_FAST_IO(x) std::ios_base::sync_with_stdio(!(x))
+    #define UVK_START(x) std::ios_base::sync_with_stdio(!(x))
 #endif
 
 #define FS_ICON_AUDIO 0
