@@ -28,9 +28,10 @@
     #error "Compiling against MinGW is not supported!"
 #endif
 
-#ifdef PRODUCTION
+#ifndef PRODUCTION
     #define ENABLE_FAST_IO(x) std::ios_base::sync_with_stdio(!(x)); \
-    logger.setCrashOnError(true)
+    logger.setCrashOnError(true); \
+    UVK::Utility::removeConsole()
 #else
     #define ENABLE_FAST_IO(x) std::ios_base::sync_with_stdio(!(x))
 #endif

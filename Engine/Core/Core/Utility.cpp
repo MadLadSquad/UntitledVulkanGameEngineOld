@@ -5,6 +5,9 @@
 #include <glm/glm/gtx/quaternion.hpp>
 #include <GameFramework/GameplayClasses/GameInstance.hpp>
 #include <Renderer/EditorUI/Editor.hpp>
+#ifdef _WIN32
+    #include <windows.h>
+#endif
 
 void UVK::Utility::keyToText(std::string& text, const uint16_t& key, bool bLong)
 {
@@ -831,6 +834,15 @@ std::string UVK::Utility::keyToText(const uint16_t& key, bool bLong)
 UVK::UVKGlobal& UVK::Utility::getGlobal()
 {
     return global;
+}
+
+void UVK::Utility::removeConsole()
+{
+#ifdef _WIN32
+    HWND cnsl = GetConsoleWindow();
+    ShowWindow(cnsl, 0);
+    FreeConsole();
+#endif
 }
 
 void UVK::Math::translate(glm::mat4& mat, UVK::FVector vt)

@@ -25,7 +25,7 @@ cd Exported/ || exit # Enter the Exported folder
 # Add VS compiler to path in VS
 wdir=$(pwd) # get the working dir since we are going to be returning there
 cd "C:/Program Files (x86)/Microsoft Visual Studio/" || echo " " > /dev/null # Go to the Visual Studio dir
-VSVer=$(find "2022" -maxdepth 0 > /dev/null) || VSVer=$(find "2019" -maxdepth 0 > /dev/null) || VSVer=$(find "2017" -maxdepth 0 > /dev/null) || echo " " > /dev/null
+VSVer=$(find "2022" -maxdepth 0 2> /dev/null) || VSVer=$(find "2019" -maxdepth 0 2> /dev/null) || VSVer=$(find "2017" -maxdepth 0 2> /dev/null) || echo " " > /dev/null
 cd "${wdir}" || echo " " > /dev/null # Return to the old directory
 
 if [ "$VSVer" == "2022" ]; then VSShortVer="17"
@@ -45,7 +45,9 @@ cd ../Engine/ThirdParty/vulkan/ || exit # Change into the Vulkan directory which
 (cp sndfile.dll ../../../Exported/ &> /dev/null && echo -e "\x1B[32msndfile.dll required for this system!\033[0m") || echo -e "\x1B[32msndfile.dll not required for this system!\033[0m" # Copy the sndfile.dll file (responsible for loading and operating with sound files)
 cd ../../../Exported/ || exit # Go back into the build directory
 (cp sndfile.dll Release/ &> /dev/null && echo -e "\x1B[32mInstalled sndfile.dll!\033[0m") || echo -e "\x1B[32mNo need to install sndfile.dll!\033[0m" # Finally copy the libraries to the Release folder because that is where Visual Studio builds
-cp Release/"$1".exe . &> /dev/null  || echo -e "\x1B[32mProject Installed!\033[0m"
+cp Release/"$1".exe . &> /dev/null || echo -e "\x1B[32mProject Installed!\033[0m"
+cp Release/"${1}Modded.exe" . &> /dev/null || echo -e "\x1B[32mModded Project Installed!\033[0m"
+cp Release/UntitledVulkanGameEngine.dll . &> /dev/null || echo -e "\x1B[32mEngine Installed!\x1B[0m"
 
 # Cleanup the directory
 rm -rf "CMake*" "Makefile" "*.cmake" &> /dev/null  # Remove all CMake files and Makefiles
