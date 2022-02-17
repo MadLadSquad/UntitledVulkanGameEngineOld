@@ -2,6 +2,9 @@
 // Last update 7/2/2022 by Madman10K
 #include "Global.hpp"
 #include <GameFramework/GameplayClasses/Level/Level.hpp>
+#ifdef _WIN32
+    #include <windows.h>
+#endif
 
 UVK::UVKGlobal::UVKGlobal()
 {
@@ -13,6 +16,9 @@ UVK::UVKGlobal::~UVKGlobal()
 {
     delete currentLevel;
     delete instance;
+#ifdef _WIN32
+    //ExitProcess(0);
+#endif
 }
 
 void UVK::UVKGlobal::finalizeOpening()
