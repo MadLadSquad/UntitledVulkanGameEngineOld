@@ -16,13 +16,13 @@ UVK::Actor SceneHierarchy::duplicateEntity(UVK::Actor& currentPopupEntity, const
     auto& a = actor.add<UVK::CoreComponent>();
     a = coreComponent;
     a.name += "Copy";
-    static size_t i = 0;
     UVK::ECS::each([&](UVK::Actor& act){
         if (act.has<UVK::CoreComponent>())
         {
             auto& core = act.get<UVK::CoreComponent>();
             if (core.name == a.name)
             {
+                static size_t i = 0;
                 a.name += std::to_string(i);
                 i++;
             }
@@ -380,9 +380,9 @@ skip:; // Semicolon needed to remove compiler error
         for (auto& a : folders)
         {
             auto folderit = std::find(selectedFolders.begin(), selectedFolders.end(), &a);
-            bool bSelected = false;
             if (a.bValid)
             {
+                bool bSelected = false;
                 if ((folderit != selectedFolders.end() || &a == selectedFolder))
                 {
                     ImGui::PushStyleColor(ImGuiCol_Header, { 0.87f, 0.64f, 0.03, 1.0f });

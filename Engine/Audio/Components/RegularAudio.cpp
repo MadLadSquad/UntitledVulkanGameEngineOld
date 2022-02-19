@@ -12,9 +12,9 @@ void UVK::AudioBuffer::addSound(String loc)
 {
     ALenum error;
     ALenum format;
-    SNDFILE* sndfile = nullptr;
+    SNDFILE* sndfile;
     SF_INFO sfinfo;
-    short* memoryBuffer = nullptr;
+    short* memoryBuffer;
     sf_count_t frameNum;
     ALsizei byteNum;
 

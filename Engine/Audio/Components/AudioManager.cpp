@@ -30,15 +30,9 @@ void UVK::AudioManager::createDevice()
     String name = nullptr;
 
     if (alcIsExtensionPresent(device, "ALC_ENUMERATE_ALL_EXT"))
-    {
         name = alcGetString(device, ALC_ALL_DEVICES_SPECIFIER);
-    }
     if (!name || alcGetError(device) != AL_NO_ERROR)
-    {
         name = alcGetString(device, ALC_DEVICE_SPECIFIER);
-        return;
-    }
-
     logger.consoleLog("Loaded sound device \"", UVK_LOG_TYPE_SUCCESS, name, "\"");
 }
 
