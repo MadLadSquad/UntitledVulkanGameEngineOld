@@ -173,7 +173,7 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::
                 }
                 catch (std_filesystem::filesystem_error&){}
             }
-            else if (payload = ImGui::AcceptDragDropPayload("ENGINE_FS_WIDGET_ALL"))
+            else if ((payload = ImGui::AcceptDragDropPayload("ENGINE_FS_WIDGET_ALL")))
             {
                 try
                 {
@@ -260,7 +260,7 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::
                     }
                     catch (std_filesystem::filesystem_error&){}
                 }
-                else if (payload = ImGui::AcceptDragDropPayload("ENGINE_FS_WIDGET_ALL"))
+                else if ((payload = ImGui::AcceptDragDropPayload("ENGINE_FS_WIDGET_ALL")))
                 {
                     try
                     {

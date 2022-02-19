@@ -190,6 +190,8 @@ bool DetailsPanel::display(UVK::Actor& ent, UVK::Level* lvl, bool& bShow, const 
             if (a.id == 330 && a.name.find("Editor") == std::string::npos)
                 a.id += 1;
 
+            ImGui::TextWrapped("UUID: %lu", a.uuid.data());
+
             ImGui::TextWrapped("Development Name");
             ImGui::SameLine();
             if (ImGui::InputText("##Development Name##devname", &a.devName) || ImGui::IsItemActive())

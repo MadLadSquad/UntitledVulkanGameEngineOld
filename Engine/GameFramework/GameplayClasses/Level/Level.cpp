@@ -178,10 +178,9 @@ void UVK::Level::openInternal(UVK::String location, bool first)
         if (global.bEditor)
         {
             Actor temp = Actor();
-            std::string tempStr;
             int tmpInt = 1;
             bool tmpBool = true;
-            SceneHierarchy::display(temp, tempStr, tmpInt, tmpBool, global.instance->editor->currentLevelFolders, true);
+            SceneHierarchy::display(temp, tmpInt, tmpBool, global.instance->editor->currentLevelFolders, true);
         }
 #endif
     }

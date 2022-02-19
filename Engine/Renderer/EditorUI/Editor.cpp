@@ -84,7 +84,7 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
     if (bools.bShowDetailsPanel)
         bools.bEditorUsingTextbox = DetailsPanel::display(selectedEntity, lvl, bools.bShowDetailsPanel, moduleManager, bools.bDestroyEntity) ? true : bools.bEditorUsingTextbox;
     if (bools.bShowSceneHierarchy)
-        bools.bEditorUsingTextbox = SceneHierarchy::display(selectedEntity, strings.entAppend, entNum, bools.bShowSceneHierarchy, currentLevelFolders) ? true : bools.bEditorUsingTextbox;
+        bools.bEditorUsingTextbox = SceneHierarchy::display(selectedEntity, entNum, bools.bShowSceneHierarchy, currentLevelFolders) ? true : bools.bEditorUsingTextbox;
     if (bools.bShowViewport)
     {
         style.WindowPadding = ImVec2(0.0f, 0.0f);

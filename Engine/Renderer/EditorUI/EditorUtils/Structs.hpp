@@ -48,7 +48,6 @@ namespace UVK
         std::string location;
         std::string name;
         std::string fileOutLocation;
-        std::string entAppend;
         std::string terminalCommand;
         UVK::String colTheme{};
         std::string engineVersion;
