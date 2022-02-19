@@ -1,12 +1,12 @@
 // Level.cpp
-// Last update 7/2/2022 by Madman10K
+// Last update 18/2/2022 by Madman10K
 #include <GameFramework/Components/Components.hpp>
 #include <GameFramework/Components/Components/CoreComponent.hpp>
 #include <Core/Actor.hpp>
 #include <Events/Events.hpp>
 #include <Engine/Core/Core/Global.hpp>
 #include "Level.hpp"
-#include <Renderer/EditorUI/Widgets/SceneHierarchy.hpp>
+#include <Renderer/EditorUI/Widgets/Windows/SceneHierarchy.hpp>
 
 // Creates bindings for a FVector
 namespace YAML {
@@ -224,7 +224,7 @@ void UVK::Level::openInternal(UVK::String location, bool first)
                     }
                 }
 
-                UVK::Editor::Folder folder =
+                UVK::EditorFolder folder =
                 {
                     .name = entity["sh-folder-name"].as<std::string>(),
                     .bValid = true,

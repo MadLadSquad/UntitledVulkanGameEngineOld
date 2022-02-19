@@ -1,7 +1,8 @@
 // UUID.hpp
-// Last update 7/2/2022 by Madman10K
+// Last update 18/2/2022 by Madman10K
 #pragma once
 #include <random>
+#include <Core/Defines.hpp>
 
 namespace UVK
 {

@@ -1,5 +1,5 @@
 // Renderer.hpp
-// Last update 7/2/2022 by Madman10K
+// Last update 18/2/2022 by Madman10K
 #pragma once
 #include <Core/Defines.hpp>
 
@@ -34,7 +34,6 @@ namespace UVK
         friend class Editor;
 
         void loadSettings();
-        static void loadFilesystemSettings();
         void startRenderer(UVK::Level* lvl, bool bUsesEditor);
 
         RendererSettings* rs{};

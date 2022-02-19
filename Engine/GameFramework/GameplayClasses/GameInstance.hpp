@@ -1,9 +1,7 @@
 // GameInstance.hpp
-// Last update 7/2/2022 by Madman10K
+// Last update 18/2/2022 by Madman10K
 #pragma once
-#include <Core.hpp>
 #include <GameFramework/Actors/ActorManager.hpp>
-#include <Events/Events.hpp>
 #include <Core/State/StateTracker.hpp>
 
 namespace UVK
@@ -43,6 +41,8 @@ namespace UVK
         friend class StateTracker;
         friend class Renderer;
         friend class Utility;
+        friend class EditorResources;
+        friend class EditorGUIUtils;
         friend struct EditorPointer;
         friend struct RendererSettings;
 

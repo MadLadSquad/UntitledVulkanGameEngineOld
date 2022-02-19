@@ -1,5 +1,5 @@
 // StateTracker.hpp
-// Last update 7/2/2022 by Madman10K
+// Last update 18/2/2022 by Madman10K
 #pragma once
 #include <vector>
 #include <cstdint>
@@ -61,7 +61,7 @@ namespace UVK
         static void push(const Transaction& transaction);
         void init();
     private:
-        friend class Editor;
+        friend class EditorGUIUtils;
 
         // Pushing adds a transaction to the transactions list and undo stack while also checking
         // if the transaction is within boundaries. If it isn't it starts overriding old transactions

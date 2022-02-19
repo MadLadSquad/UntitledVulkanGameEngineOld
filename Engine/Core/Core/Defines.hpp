@@ -1,5 +1,5 @@
 // Defines.hpp
-// Last update 7/2/2022 by Madman10K
+// Last update 18/2/2022 by Madman10K
 #pragma once
 #include <any>
 #include "Generated/BuildDef.hpp"
@@ -13,7 +13,6 @@
     #define UVK_PUBLIC_API
 #endif
 #include <logger/UVKLog.h>
-#include "Utility.hpp"
 
 // This is for MinGW32 because it is retarded
 #ifndef __MINGW32__

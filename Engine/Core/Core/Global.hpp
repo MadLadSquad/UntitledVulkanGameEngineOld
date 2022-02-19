@@ -1,5 +1,5 @@
 // Global.hpp
-// Last update 7/2/2022 by Madman10K
+// Last update 18/2/2022 by Madman10K
 #pragma once
 #include <Core/ECS.hpp>
 #include <Renderer/Window/Window.hpp>
@@ -15,7 +15,6 @@ namespace UVK
         std::string themeLoc;
         bool bVsync = false;
         bool bVsyncImmediate = true;
-        uint32_t maxSavedTransactions = 0;
 
         void saveSettings() const;
     };
@@ -93,6 +92,7 @@ namespace UVK
         friend class IDManager;
         friend class VulkanRenderer;
         friend class Events;
+        friend class EditorUtilSettings;
         friend struct MeshComponentRaw;
         friend struct RendererSettings;
     };

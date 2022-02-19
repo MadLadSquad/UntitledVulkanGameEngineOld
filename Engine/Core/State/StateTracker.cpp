@@ -68,5 +68,5 @@ void UVK::StateTracker::push(const UVK::Transaction& transaction)
 
 void UVK::StateTracker::init()
 {
-    transactionSize = global.rendererSettings.maxSavedTransactions;
+    transactionSize = global.instance->editor->settings.maxSavedTransactions;
 }

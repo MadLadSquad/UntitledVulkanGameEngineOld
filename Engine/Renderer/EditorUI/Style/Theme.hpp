@@ -1,5 +1,5 @@
 // Theme.hpp
-// Last update 7/2/2022 by Madman10K
+// Last update 18/2/2022 by Madman10K
 #pragma once
 #include <Generated/BuildDef.hpp>
 #ifndef PRODUCTION
@@ -25,7 +25,7 @@ namespace UVK
 
         static void save(UVK::String filename, UVK::String font, int fontSz);
     private:
-        friend class Editor;
+        friend class EditorUtilSettings;
 
         void setTheme(UVK::String theme);
         void useTheme();

@@ -1,5 +1,5 @@
 // Types.hpp
-// Last update 18/7/2021 by Madman10K
+// Last update 18/2/2022 by Madman10K
 #pragma once
 #define GLM_FORCE_DEPTH_ZERO_TO_ONE
 #include <vector>
@@ -29,7 +29,7 @@ namespace UVK
     {
         float padding = 20.0f;
         float imageSize = 50.0f;
-        int maxFileNum = 64;
+        uint32_t maxFileNum = 64;
         bool bUsePreviews = false;
     };
 }

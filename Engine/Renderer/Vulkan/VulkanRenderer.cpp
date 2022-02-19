@@ -1,5 +1,5 @@
 // VulkanRenderer.cpp
-// Last update 21/12/2021 by Madman10K
+// Last update 18/2/2022 by Madman10K
 #ifndef __APPLE__
 #define GLFW_INCLUDE_VULKAN
 #include "VulkanRenderer.hpp"
@@ -7,6 +7,7 @@
 #include "VKEntityManager.hpp"
 #include <Engine/Core/Core/Global.hpp>
 #include <glfw3.h>
+#include <Core/Events/Events.hpp>
 
 void UVK::VulkanRenderer::run()
 {
