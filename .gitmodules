@@ -37,9 +37,6 @@
 [submodule "Engine/ThirdParty/assimp"]
 	path = Engine/ThirdParty/assimp
 	url = https://github.com/MadLadSquad/assimp.git
-[submodule "Engine/ThirdParty/imguiex/umath"]
-	path = Engine/ThirdParty/imguiex/umath
-	url = https://github.com/MadLadSquad/UntitledMath.git
 [submodule "Engine/ThirdParty/freetype"]
 	path = Engine/ThirdParty/freetype
 	url = https://github.com/MadLadSquad/freetype.git
