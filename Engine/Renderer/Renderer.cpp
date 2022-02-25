@@ -31,11 +31,6 @@ void UVK::RendererSettings::saveSettings() const
     out << YAML::Key << "theme" << YAML::Value << themeLoc;
     out << YAML::Key << "v-sync" << YAML::Value << bVsync;
     out << YAML::Key << "v-sync-immediate" << YAML::Value << bVsyncImmediate;
-    //out << YAML::Key << "max-saved-transactions" << YAML::Value << maxSavedTransactions;
-    //out << YAML::Key << "filesystem-file-padding" << YAML::Value << global.instance->editor->filesystemWidgetData.padding;
-    //out << YAML::Key << "filesystem-file-thumbnail-size" << YAML::Value << global.instance->editor->filesystemWidgetData.imageSize;
-    //out << YAML::Key << "filesystem-using-previews" << YAML::Value << global.instance->editor->filesystemWidgetData.bUsePreviews;
-    //out << YAML::Key << "filesystem-max-preview-files" << YAML::Value << global.instance->editor->filesystemWidgetData.maxFileNum;
 
     out << YAML::EndMap;
 

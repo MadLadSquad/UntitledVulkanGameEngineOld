@@ -9,4 +9,11 @@ namespace UVK
     public:
 
     };
+
+    struct QueueFamilyIndices
+    {
+        int graphicsFamily = -1;
+
+        bool valid();
+    };
 }

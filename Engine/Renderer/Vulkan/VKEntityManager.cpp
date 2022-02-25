@@ -24,4 +24,3 @@ void UVK::VKEntityManager::clean()
 {
     global.ecs.clear();
 }
-

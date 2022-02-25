@@ -4,9 +4,17 @@
 
 namespace UVK
 {
-    class Instance
+
+    class VKInstance
     {
     public:
+        VKInstance() = default;
+        void create();
+        void destroy();
+        VkInstance& data();
+    private:
+        static bool checkInstanceExtensionsSupport(const char** extensions, uint32_t count);
 
+        VkInstance instance;
     };
 }
