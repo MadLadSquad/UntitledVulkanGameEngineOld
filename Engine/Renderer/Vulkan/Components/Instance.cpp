@@ -81,3 +81,8 @@ VkInstance& UVK::VKInstance::data()
 {
     return instance;
 }
+
+UVK::VKInstance::~VKInstance()
+{
+    destroy();
+}

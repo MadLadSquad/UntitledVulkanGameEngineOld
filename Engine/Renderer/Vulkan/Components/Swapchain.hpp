@@ -12,6 +12,7 @@ namespace UVK
     public:
         Swapchain() = default;
         Swapchain(VKInstance& inst, VKDevice& dev);
+        ~Swapchain();
 
         void createSurface();
         void destroySurface();

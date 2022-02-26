@@ -16,8 +16,9 @@ void UVK::VulkanRenderer::run()
 {
     global.window.createWindow();
     VKInstance instance{};
+    Swapchain swapchain{};
     VKDevice device(instance);
-    Swapchain swapchain(instance, device);
+    swapchain = Swapchain(instance, device);
     instance.create();
     swapchain.createSurface();
     device.createDevice(swapchain);
@@ -26,8 +27,5 @@ void UVK::VulkanRenderer::run()
     {
         glfwPollEvents();
     }
-    device.destroyDevice();
-    swapchain.destroySurface();
-    instance.destroy();
 }
 #endif

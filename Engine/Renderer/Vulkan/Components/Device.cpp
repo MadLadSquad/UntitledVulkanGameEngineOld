@@ -190,3 +190,8 @@ continue_to_other_device_in_list:;
     logger.consoleLog("Loaded Vulkan device ", UVK_LOG_TYPE_SUCCESS, physicalDeviceProperties.deviceName);
     return lastSavedIndex;
 }
+
+UVK::VKDevice::~VKDevice()
+{
+    destroyDevice();
+}

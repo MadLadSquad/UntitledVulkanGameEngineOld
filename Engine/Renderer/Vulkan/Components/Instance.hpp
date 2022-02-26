@@ -9,6 +9,7 @@ namespace UVK
     {
     public:
         VKInstance() = default;
+        ~VKInstance();
         void create();
         void destroy();
         VkInstance& data();

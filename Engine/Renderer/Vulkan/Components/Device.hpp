@@ -13,7 +13,7 @@ namespace UVK
     public:
         VKDevice() = default;
         explicit VKDevice(VKInstance& instance);
-        ~VKDevice() = default;
+        ~VKDevice();
 
         void createDevice(Swapchain& surface);
         void destroyDevice();

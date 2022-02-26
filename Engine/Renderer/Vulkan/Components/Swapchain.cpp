@@ -58,3 +58,12 @@ bool UVK::Swapchain::getSwapchainDetails(VkPhysicalDevice& dev)
 
     return bReturn;
 }
+
+UVK::Swapchain::~Swapchain()
+{
+    static bool bFirst = true;
+    if (bFirst)
+        bFirst = false;
+    else
+        destroySurface();
+}
