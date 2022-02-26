@@ -1,11 +1,11 @@
 // Device.cpp
-// Last update 21/12/2021 by Madman10K
+// Last update 26/02/2022 by Madman10K
 #include "Device.hpp"
+#include "Swapchain.hpp"
 
-
-void UVK::VKDevice::createDevice()
+void UVK::VKDevice::createDevice(Swapchain& swapchain)
 {
-    auto families = createPhysicalDevice();
+    auto families = createPhysicalDevice(swapchain);
 
     uint32_t queueFamilyCount = 0;
 
@@ -14,34 +14,45 @@ void UVK::VKDevice::createDevice()
     vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice, &queueFamilyCount, queueFamilyList.data());
 
     constexpr float priority = 1.0f;
-    const VkDeviceQueueCreateInfo queueCreateInfo =
+
+    VkDeviceQueueCreateInfo createInfos[] =
     {
-        .sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO,
-        .queueFamilyIndex = static_cast<uint32_t>(families.graphicsFamily),
-        .queueCount = 1,
-        .pQueuePriorities = &priority,
+        {
+            .sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO,
+            .queueFamilyIndex = static_cast<uint32_t>(families.graphicsFamily),
+            .queueCount = 1,
+            .pQueuePriorities = &priority
+        },
+        {
+            .sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO,
+            .queueFamilyIndex = static_cast<uint32_t>(families.presentationFamily),
+            .queueCount = 1,
+            .pQueuePriorities = &priority
+        }
     };
 
     constexpr VkPhysicalDeviceFeatures deviceFeatures = {};
 
+    const uint32_t queueInfoCount = families.graphicsFamily == families.presentationFamily ? 1 : 2;
+
     const VkDeviceCreateInfo deviceCreateInfo =
     {
         .sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO,
-        .queueCreateInfoCount = 1,
-        .pQueueCreateInfos = &queueCreateInfo,
-        .enabledExtensionCount = 0,
-        .ppEnabledExtensionNames = nullptr,
+        .queueCreateInfoCount = queueInfoCount,
+        .pQueueCreateInfos = createInfos,
+        .enabledExtensionCount = deviceExtensions.size(),
+        .ppEnabledExtensionNames = deviceExtensions.data(),
         .pEnabledFeatures = &deviceFeatures
     };
 
     auto result = vkCreateDevice(physicalDevice, &deviceCreateInfo, nullptr, &device);
     if (result != VK_SUCCESS)
     {
-        logger.consoleLog("Failed to create a logical device!", UVK_LOG_TYPE_ERROR);
+        logger.consoleLog("Failed to create a logical device! Error code: ", UVK_LOG_TYPE_ERROR, result);
         throw std::runtime_error(" ");
     }
-    VkQueue queue;
     vkGetDeviceQueue(device, families.graphicsFamily, 0, &queue);
+    vkGetDeviceQueue(device, families.presentationFamily, 0, &presentationQueue);
 }
 
 void UVK::VKDevice::destroyDevice()
@@ -64,7 +75,7 @@ UVK::VKDevice::VKDevice(UVK::VKInstance& instance)
     this->instance = &instance;
 }
 
-UVK::QueueFamilyIndices UVK::VKDevice::createPhysicalDevice()
+UVK::QueueFamilyIndices UVK::VKDevice::createPhysicalDevice(Swapchain& swapchain)
 {
     uint32_t deviceCount;
     vkEnumeratePhysicalDevices(instance->data(), &deviceCount, nullptr);
@@ -108,6 +119,8 @@ exit_embedded_loop:
 
         QueueFamilyIndices families = {};
         uint32_t queueFamilyCount = 0;
+        uint32_t extensionCount = 0;
+        std::vector<VkExtensionProperties> extensions;
 
         vkGetPhysicalDeviceQueueFamilyProperties(devices[i], &queueFamilyCount, nullptr);
         std::vector<VkQueueFamilyProperties> queueFamilyList(queueFamilyCount);
@@ -120,6 +133,11 @@ exit_embedded_loop:
             if (a.queueCount > 0 && a.queueFlags & VK_QUEUE_GRAPHICS_BIT)
             {
                 families.graphicsFamily = j;
+                VkBool32 bSupportsPresentation = false;
+                vkGetPhysicalDeviceSurfaceSupportKHR(devices[i], j, swapchain.surface, &bSupportsPresentation);
+
+                if (bSupportsPresentation)
+                    families.presentationFamily = j;
                 goto skip_family_validity_check;
             }
         }
@@ -127,12 +145,38 @@ exit_embedded_loop:
         if (!families.valid())
             continue;
 skip_family_validity_check:
+        vkEnumerateDeviceExtensionProperties(devices[i], nullptr, &extensionCount, nullptr);
+        if (extensionCount == 0)
+            continue;
+        extensions.resize(extensionCount);
+        vkEnumerateDeviceExtensionProperties(devices[i], nullptr, &extensionCount, extensions.data());
+
+        for (const auto& a : deviceExtensions)
+        {
+            bool bHasExtension = false;
+            for (const auto& f : extensions)
+            {
+                if (strcmp(a, f.extensionName) == 0)
+                {
+                    bHasExtension = true;
+                    goto breakout;
+                }
+            }
+breakout:
+            if (!bHasExtension)
+                goto continue_to_other_device_in_list;
+        }
+
+        if (!swapchain.getSwapchainDetails(devices[i]))
+            continue;
+
         if (size > largestMemorySize)
         {
             largestMemorySize = size;
             largestMemorySizeFoundIndex = i;
             lastSavedIndex = families;
         }
+continue_to_other_device_in_list:;
     }
 
     if (!bFoundDiscreteDevice || largestMemorySizeFoundIndex == 0)

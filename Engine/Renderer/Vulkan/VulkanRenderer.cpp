@@ -1,5 +1,5 @@
 // VulkanRenderer.cpp
-// Last update 18/2/2022 by Madman10K
+// Last update 26/02/2022 by Madman10K
 #ifndef __APPLE__
 #define GLFW_INCLUDE_VULKAN
 #include "VulkanRenderer.hpp"
@@ -7,6 +7,7 @@
 #include "VKEntityManager.hpp"
 #include "Components/Instance.hpp"
 #include "Components/Device.hpp"
+#include "Components/Swapchain.hpp"
 #include <Engine/Core/Core/Global.hpp>
 #include <glfw3.h>
 #include <Core/Events/Events.hpp>
@@ -16,14 +17,17 @@ void UVK::VulkanRenderer::run()
     global.window.createWindow();
     VKInstance instance{};
     VKDevice device(instance);
+    Swapchain swapchain(instance, device);
     instance.create();
-    device.createDevice();
+    swapchain.createSurface();
+    device.createDevice(swapchain);
 
     while (!glfwWindowShouldClose(global.window.getWindow()))
     {
         glfwPollEvents();
     }
     device.destroyDevice();
+    swapchain.destroySurface();
     instance.destroy();
 }
 #endif
