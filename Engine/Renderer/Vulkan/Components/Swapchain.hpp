@@ -33,14 +33,14 @@ namespace UVK
 
         SwapchainDetails details;
         VkSurfaceKHR surface{};
-        VkSwapchainKHR swapchain;
+        VkSwapchainKHR swapchain{};
 
         VKInstance* instance = nullptr;
         VKDevice* device = nullptr;
 
-        VkSurfaceFormatKHR surfaceFormat;
+        VkSurfaceFormatKHR surfaceFormat{};
         VkPresentModeKHR presentationMode;
-        VkExtent2D extent;
+        VkExtent2D extent{};
 
         std::vector<SwapchainImage> swapchainImages;
     };
