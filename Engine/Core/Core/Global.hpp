@@ -93,6 +93,7 @@ namespace UVK
         friend class VulkanRenderer;
         friend class Events;
         friend class EditorUtilSettings;
+        friend class Swapchain;
         friend struct MeshComponentRaw;
         friend struct RendererSettings;
     };

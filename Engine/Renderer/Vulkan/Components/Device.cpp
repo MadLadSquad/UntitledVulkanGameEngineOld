@@ -5,7 +5,7 @@
 
 void UVK::VKDevice::createDevice(Swapchain& swapchain)
 {
-    auto families = createPhysicalDevice(swapchain);
+    indices = createPhysicalDevice(swapchain);
 
     uint32_t queueFamilyCount = 0;
 
@@ -19,13 +19,13 @@ void UVK::VKDevice::createDevice(Swapchain& swapchain)
     {
         {
             .sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO,
-            .queueFamilyIndex = static_cast<uint32_t>(families.graphicsFamily),
+            .queueFamilyIndex = static_cast<uint32_t>(indices.graphicsFamily),
             .queueCount = 1,
             .pQueuePriorities = &priority
         },
         {
             .sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO,
-            .queueFamilyIndex = static_cast<uint32_t>(families.presentationFamily),
+            .queueFamilyIndex = static_cast<uint32_t>(indices.presentationFamily),
             .queueCount = 1,
             .pQueuePriorities = &priority
         }
@@ -33,7 +33,7 @@ void UVK::VKDevice::createDevice(Swapchain& swapchain)
 
     constexpr VkPhysicalDeviceFeatures deviceFeatures = {};
 
-    const uint32_t queueInfoCount = families.graphicsFamily == families.presentationFamily ? 1 : 2;
+    const uint32_t queueInfoCount = indices.graphicsFamily == indices.presentationFamily ? 1 : 2;
 
     const VkDeviceCreateInfo deviceCreateInfo =
     {
@@ -51,8 +51,8 @@ void UVK::VKDevice::createDevice(Swapchain& swapchain)
         logger.consoleLog("Failed to create a logical device! Error code: ", UVK_LOG_TYPE_ERROR, result);
         throw std::runtime_error(" ");
     }
-    vkGetDeviceQueue(device, families.graphicsFamily, 0, &queue);
-    vkGetDeviceQueue(device, families.presentationFamily, 0, &presentationQueue);
+    vkGetDeviceQueue(device, indices.graphicsFamily, 0, &queue);
+    vkGetDeviceQueue(device, indices.presentationFamily, 0, &presentationQueue);
 }
 
 void UVK::VKDevice::destroyDevice()

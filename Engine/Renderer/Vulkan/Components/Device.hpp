@@ -21,6 +21,8 @@ namespace UVK
         VkDevice& getDevice();
         VkPhysicalDevice& getPhysicalDevice();
     private:
+        friend class Swapchain;
+
         QueueFamilyIndices createPhysicalDevice(Swapchain& surface);
 
         VkQueue queue;
@@ -28,5 +30,6 @@ namespace UVK
         VKInstance* instance;
         VkDevice device;
         VkPhysicalDevice physicalDevice;
+        QueueFamilyIndices indices;
     };
 }

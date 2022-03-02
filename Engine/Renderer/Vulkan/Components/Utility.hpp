@@ -30,4 +30,10 @@ namespace UVK
 
         bool valid();
     };
+
+    struct SwapchainImage
+    {
+        VkImage image;
+        VkImageView imageView;
+    };
 }

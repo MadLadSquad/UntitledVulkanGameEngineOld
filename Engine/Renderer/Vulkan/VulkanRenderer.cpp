@@ -15,17 +15,21 @@
 void UVK::VulkanRenderer::run()
 {
     global.window.createWindow();
+
     VKInstance instance{};
     Swapchain swapchain{};
     VKDevice device(instance);
     swapchain = Swapchain(instance, device);
+
     instance.create();
     swapchain.createSurface();
     device.createDevice(swapchain);
+    swapchain.createSwapchain();
 
     while (!glfwWindowShouldClose(global.window.getWindow()))
     {
         glfwPollEvents();
     }
+    swapchain.destroySwapchain();
 }
 #endif
