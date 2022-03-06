@@ -80,6 +80,7 @@ MSBuild.exe UVKBuildTool.sln -property:Configuration=Release -property:Platform=
 # If on Windows copy the UVKBuildTool executable from the Release folder, this will absolutely fail on any non-Windows system in which
 # case we will just echo an empty message
 cp Release/UVKBuildTool.exe . || echo " " || exit
+cp Release/UVKBuildToolLib.dll . || cp Release/libUVKBuildToolLib.dll . || echo " "
 
 # Windows uses .exe files so the first instruction will fail on any non-Windows system
 ./UVKBuildTool.exe --install || ./UVKBuildTool --install || exit
@@ -101,6 +102,7 @@ cmake .. -G "Visual Studio ${VSShortVer} ${VSVer}" || cmake .. -G "Unix Makefile
 # Compiler the Shader Compiler
 MSBuild.exe UVKShaderCompiler.sln -property:Configuration=Release -property:Platform=x64 -property:maxCpuCount="${cpus}" || make -j "${cpus}" || exit
 cp Release/UVKShaderCompiler.exe . || echo " " || exit
+cp Release/UVKShaderCompilerLib.dll . || cp Release/libUVKShaderCompilerLib.dll . || echo " "
 cd ../../
 
 cd build || exit
