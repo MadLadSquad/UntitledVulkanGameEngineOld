@@ -84,79 +84,7 @@ bool CreateFile::display(std::string& fileOutLocation, bool& bShowCreateFile1, c
 
         if (ImGui::Button("Create"))
         {
-            std::string gen;
             UBT::makeTemplate(fileOutLocation, sf, prjname.c_str());
-
-//          switch (sf)
-//            {
-//#ifdef _WIN32
-//            case 1:
-//                gen = "cd ../UVKBuildTool/build && UVKBuildTool.exe --game-mode " + fileOutLocation + " && cd ../../";
-//                break;
-//            case 2:
-//                gen = "cd ../UVKBuildTool/build && UVKBuildTool.exe --game-state " + fileOutLocation + " && cd ../../";
-//                break;
-//            case 3:
-//                gen = "cd ../UVKBuildTool/build && UVKBuildTool.exe --player-state " + fileOutLocation + " && cd ../../";
-//                break;
-//            case 4:
-//                gen = "cd ../UVKBuildTool/build && UVKBuildTool.exe --player-controller " + fileOutLocation + " && cd ../../";
-//                break;
-//            case 5:
-//                gen = "cd ../UVKBuildTool/build && UVKBuildTool.exe --pawn " + fileOutLocation + " && cd ../../";
-//                break;
-//            case 6:
-//                gen = "cd ../UVKBuildTool/build && UVKBuildTool.exe --level " + fileOutLocation + " && cd ../../";
-//                break;
-//            case 7:
-//                gen = "cd ../UVKBuildTool/build && UVKBuildTool.exe --scriptable-object " + fileOutLocation + " --add && cd ../../";
-//                break;
-//#else
-//                case 1:
-//                    gen = "cd ../UVKBuildTool/build && ./UVKBuildTool --game-mode " + fileOutLocation + " && cd ../../";
-//                    break;
-//                case 2:
-//                    gen = "cd ../UVKBuildTool/build && ./UVKBuildTool --game-state " + fileOutLocation + " && cd ../../";
-//                    break;
-//                case 3:
-//                    gen = "cd ../UVKBuildTool/build && ./UVKBuildTool --player-state " + fileOutLocation + " && cd ../../";
-//                    break;
-//                case 4:
-//                    gen = "cd ../UVKBuildTool/build && ./UVKBuildTool --player-controller " + fileOutLocation + " && cd ../../";
-//                    break;
-//                case 5:
-//                    gen = "cd ../UVKBuildTool/build && ./UVKBuildTool --pawn " + fileOutLocation + " && cd ../../";
-//                    break;
-//                case 6:
-//                    gen = "cd ../UVKBuildTool/build && ./UVKBuildTool --level " + fileOutLocation + " && cd ../../";
-//                    break;
-//                case 7:
-//                    gen = "cd ../UVKBuildTool/build && ./UVKBuildTool --scriptable-object " + fileOutLocation + " --add && cd ../../";
-//                    break;
-//#endif
-//                case 1:
-//                    UBT::makeTemplate(fileOutLocation, )
-//                    break;
-//                case 2:
-//                    break;
-//                case 3:
-//                    break;
-//                case 4:
-//                    break;
-//                case 5:
-//                    break;
-//                case 6:
-//                    break;
-//                case 7:
-//                    break;
-//                default:
-//                    break;
-//            }
-
-//          if (system(gen.c_str()))
-//          {
-//              logger.consoleLog("Error when generating files!", UVK_LOG_TYPE_ERROR);
-//          }
 
             bShowCreateFile1 = false;
             fileOutLocation = "";

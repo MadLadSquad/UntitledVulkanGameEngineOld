@@ -87,16 +87,6 @@ void Warnings::displayGenerateWarning(bool& bOpen)
             UBT::generateMain(startupLevelName.c_str(), name.c_str());
             UBT::generateDef();
             bOpen = false;
-//#ifdef _WIN32
-//            std::string temp = "cd ../UVKBuildTool/build/ && UVKBuildTool.exe --generate && cd ../../";
-//#else
-//            std::string temp = "cd ../UVKBuildTool/build/ && ./UVKBuildTool --generate && cd ../../";
-//#endif
-//
-//            if (system(temp.c_str()))
-//            {
-//                logger.consoleLog("Error when regenerating files!", UVK_LOG_TYPE_ERROR);
-//            }
         }
 
         ImGui::EndPopup();
