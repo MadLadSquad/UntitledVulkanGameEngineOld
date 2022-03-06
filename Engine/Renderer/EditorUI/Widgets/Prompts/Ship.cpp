@@ -3,14 +3,12 @@
 #include "Ship.hpp"
 #ifndef PRODUCTION
 #include "imgui.h"
-#include <future>
+#include <UVKBuildTool/src/ReleaseBuild.hpp>
 
-bool Shipping::display(bool& bShow)
+bool Shipping::display(bool& bShow, const std::string& prjname)
 {
-    bool bReturn = false;
     if (!ImGui::IsPopupOpen("Shipping"))
         ImGui::OpenPopup("Shipping");
-
     if (ImGui::BeginPopupModal("Shipping", &bShow))
     {
         ImGui::TextWrapped("Compile your program for testing or production!");
@@ -35,21 +33,11 @@ bool Shipping::display(bool& bShow)
 
         if (ImGui::Button("Compile##compile"))
         {
-            auto a = std::async(std::launch::async, [&]() {
-                int8_t lnt;
-#ifndef _WIN32
-                lnt = system("cd ../UVKBuildTool/build/ && ./UVKBuildTool --build");
-#else
-                lnt = system("cd ../UVKBuildTool/build/ && UVKBuildTool.exe --build");
-#endif
-                return lnt;
-            });
-            a.get();
-
+            UBT::relBuild(prjname);
             bShow = false;
         }
         ImGui::EndPopup();
     }
-    return bReturn;
+    return false;
 }
 #endif

@@ -11,6 +11,6 @@
 namespace CreateFile
 {
     // Creates a file
-    bool display(std::string& fileOutLocation, bool& bShowCreateFile1);
+    bool display(std::string& fileOutLocation, bool& bShowCreateFile1, const std::string& prjname);
 }
 #endif

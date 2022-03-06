@@ -41,34 +41,53 @@ void Statistics::display(double* data, bool& bShow)
 
     static ImPlotAxisFlags rt_axis = ImPlotAxisFlags_NoTickLabels;
 
-    ImPlot::SetNextPlotLimitsX(0, 0.5f, ImGuiCond_Always);
-    ImPlot::SetNextPlotLimitsY(0, 1);
-
-    if (ImPlot::BeginPlot("##Rolling", nullptr, nullptr, ImVec2(-1, 150), 0, rt_axis, rt_axis))
+    //ImPlot::SetNextPlotLimitsX(0, 0.5f, ImGuiCond_Always);
+    //ImPlot::SetNextPlotLimitsY(0, 1);
+    if (ImPlot::BeginPlot("##Rolling", ImVec2(-1, 150), 0))
+    //if (ImPlot::BeginPlot("##Rolling", nullptr, nullptr, ImVec2(-1, 150), 0, rt_axis, rt_axis))
     {
+        ImPlot::SetupAxis(ImAxis_X1, nullptr, rt_axis);
+        ImPlot::SetupAxis(ImAxis_Y1, nullptr, rt_axis);
+        ImPlot::SetupAxisLimits(ImAxis_X1, 0, 0.5f, ImGuiCond_Always);
+        ImPlot::SetupAxisLimits(ImAxis_Y1, 0, 1);
+
         ImPlot::PlotLine("##Framerate", &rdata.Data[0].x, &rdata.Data[0].y, rdata.Data.size(), 0, 2 * sizeof(float));
         ImPlot::EndPlot();
     }
 
     ImGui::Text("Frame Timing Charts:");
 
-    ImPlot::SetNextPlotLimitsX(0, 0.5f, ImGuiCond_Always);
-    ImPlot::SetNextPlotLimitsY(0, 1);
-    if (ImPlot::BeginPlot("##Rollingaaaaa", nullptr, nullptr, ImVec2(-1, 150), 0, rt_axis, rt_axis))
+    //ImPlot::SetNextPlotLimitsX(0, 0.5f, ImGuiCond_Always);
+    //ImPlot::SetNextPlotLimitsY(0, 1);
+
+    if (ImPlot::BeginPlot("##Rollingaaaaa", ImVec2(-1, 150), 0))
+    //if (ImPlot::BeginPlot("##Rollingaaaaa", nullptr, nullptr, ImVec2(-1, 150), 0, rt_axis, rt_axis))
     {
+        ImPlot::SetupAxis(ImAxis_X1, nullptr, rt_axis);
+        ImPlot::SetupAxis(ImAxis_Y1, nullptr, rt_axis);
+        ImPlot::SetupAxisLimits(ImAxis_X1, 0, 0.5f, ImGuiCond_Always);
+        ImPlot::SetupAxisLimits(ImAxis_Y1, 0, 1);
+
         ImPlot::PlotLine("##Frametime", &rdata1.Data[0].x, &rdata1.Data[0].y, rdata1.Data.size(), 0, 2 * sizeof(float));
         ImPlot::EndPlot();
     }
 
     ImGui::Text("Loading time (in ms): ");
 
-    ImPlot::SetNextPlotLimits(0,1,0,1,ImGuiCond_Always);
-    if (ImPlot::BeginPlot("##Pie1", nullptr, nullptr, ImVec2(350,350), ImPlotFlags_Equal | ImPlotFlags_NoMousePos, ImPlotAxisFlags_NoDecorations, ImPlotAxisFlags_NoDecorations))
+
+    //ImPlot::SetNextPlotLimits(0,1,0,1,ImGuiCond_Always);
+
+    //if (ImPlot::BeginPlot("##Pie1", nullptr, nullptr, ImVec2(350,350), ImPlotFlags_Equal | ImPlotFlags_NoMousePos, ImPlotAxisFlags_NoDecorations, ImPlotAxisFlags_NoDecorations))
+    if (ImPlot::BeginPlot("##Pie1", ImVec2(350, 350), ImPlotFlags_Equal | ImPlotFlags_NoMouseText))
     {
         static const char* labels[] = { "Start", "Last Level"};
         double dt[] = { data[0], data[1] };
 
-        ImPlot::SetLegendLocation(ImPlotLocation_North | ImPlotLocation_West, ImPlotOrientation_Horizontal);
+        ImPlot::SetupAxis(ImAxis_X1, nullptr, ImPlotAxisFlags_NoDecorations);
+        ImPlot::SetupAxis(ImAxis_Y1, nullptr, ImPlotAxisFlags_NoDecorations);
+        ImPlot::SetupAxesLimits(0, 1, 0, 1, ImPlotCond_Always);
+
+        ImPlot::SetupLegend(ImPlotLocation_North | ImPlotLocation_West, ImPlotLegendFlags_Horizontal);
         ImPlot::PlotPieChart(labels, dt, 2, 0.5, 0.5, 0.4, true, "%.3f");
         ImPlot::EndPlot();
     }

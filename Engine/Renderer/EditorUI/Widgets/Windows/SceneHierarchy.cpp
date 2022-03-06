@@ -270,7 +270,7 @@ bool SceneHierarchy::display(UVK::Actor& selectedEntity, int& entNum, bool& bSho
             else
                 ImGui::PushStyleColor(ImGuiCol_Button, { 0.0f, 0.0f, 0.0f, 0.0f, });
 
-            if (ImGui::Button(static_cast<std::string>(b.name + ", " + std::to_string(b.id) + "##" + std::to_string(i)).c_str(), { ImGui::GetContentRegionAvailWidth(), 17.0f }))
+            if (ImGui::Button(static_cast<std::string>(b.name + ", " + std::to_string(b.id) + "##" + std::to_string(i)).c_str(), { ImGui::GetContentRegionAvail().x, 17.0f }))
             {
                 if (UVK::Input::getAction("editor-bind-modifier") == Keys::KeyPressed)
                 {

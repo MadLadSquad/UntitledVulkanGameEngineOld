@@ -25,15 +25,21 @@
 #include <Renderer/EditorUI/Widgets/Info/About.hpp>
 #include <Renderer/EditorUI/Widgets/Settings/Settings.hpp>
 
-#include <imguiex/imguizmo/ImGuizmo.h>
-#include <GameFramework/GameplayClasses/Level/Level.hpp>
-#include <imgui_impl_vulkan.h>
 #include <Renderer/EditorUI/EditorUtils/Resources.hpp>
 #include <Renderer/EditorUI/EditorUtils/Settings.hpp>
 #include <Renderer/EditorUI/EditorUtils/GUI.hpp>
 
+#include <UVKBuildTool/src/Utility.h>
+
+#include <imguiex/imguizmo/ImGuizmo.h>
+#include <GameFramework/GameplayClasses/Level/Level.hpp>
+#include <imgui_impl_vulkan.h>
+
 void UVK::Editor::initEditor()
 {
+    // Set the UVKBuildTool path
+    UBT::setPath("../");
+
     Timer tm;
     tm.startRecording();
     EditorResources::loadConfigs(*this);
@@ -80,7 +86,7 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
     if (bools.bShowOpenLevelWidget)
         bools.bEditorUsingTextbox = OpenLevelWidget::display(strings.openLevel, bools.bShowOpenLevelWidget, frameTimeData[1], colour) ? true : bools.bEditorUsingTextbox;
     if (bools.bShowCreateFile1)
-        bools.bEditorUsingTextbox = CreateFile::display(strings.fileOutLocation, bools.bShowCreateFile1) ? true : bools.bEditorUsingTextbox;
+        bools.bEditorUsingTextbox = CreateFile::display(strings.fileOutLocation, bools.bShowCreateFile1, strings.projectName) ? true : bools.bEditorUsingTextbox;
     if (bools.bShowDetailsPanel)
         bools.bEditorUsingTextbox = DetailsPanel::display(selectedEntity, lvl, bools.bShowDetailsPanel, moduleManager, bools.bDestroyEntity) ? true : bools.bEditorUsingTextbox;
     if (bools.bShowSceneHierarchy)
@@ -118,7 +124,7 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
     if (bools.bShowRemoveFile)
         bools.bEditorUsingTextbox = RemoveFile::display(bools.bShowRemoveFile) ? true : bools.bEditorUsingTextbox;
     if (bools.bShowShip)
-        bools.bEditorUsingTextbox = Shipping::display(bools.bShowShip) ? true : bools.bEditorUsingTextbox;
+        bools.bEditorUsingTextbox = Shipping::display(bools.bShowShip, strings.projectName) ? true : bools.bEditorUsingTextbox;
     if (bools.bShowWindowSettings)
         bools.bEditorUsingTextbox = UVK::SettingsWidgets::displayWindow(bools.bShowWindowSettings) ? true : bools.bEditorUsingTextbox;
     if (bools.bShowRendererSettings)

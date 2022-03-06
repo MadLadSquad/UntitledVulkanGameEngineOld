@@ -11,9 +11,14 @@
 #include <Engine/Core/Core/Global.hpp>
 #include <glfw3.h>
 #include <Core/Events/Events.hpp>
+#include <UVKShaderCompiler/Src/Functions.hpp>
 
 void UVK::VulkanRenderer::run()
 {
+    // Set the UVKShaderCompiler path and check for recompilation
+    USC::setPrefixDir("../");
+    USC::checkForCompile();
+
     global.window.createWindow();
 
     VKInstance instance{};

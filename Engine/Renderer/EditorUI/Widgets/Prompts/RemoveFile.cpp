@@ -5,6 +5,7 @@
 #include <Core.hpp>
 #include <imgui.h>
 #include <cpp/imgui_stdlib.h>
+#include <UVKBuildTool/src/ActorListGenerator.hpp>
 
 bool RemoveFile::display(bool& bShow)
 {
@@ -35,32 +36,20 @@ bool RemoveFile::display(bool& bShow)
 
         if (ImGui::Button("Delete##delete"))
         {
-            bool error = false;
-            std::string gen;
+
             if (bSO)
             {
 
 #ifndef __MINGW32__
-
+                UBT::removeClass(in);
                 try
                 {
-#ifndef _WIN32
-                    gen = "cd ../UVKBuildTool/build/ && ./UVKBuildTool --actor " + in + " --remove";
-#else
-                    gen = "cd ../UVKBuildTool/build/ && UVKBuildTool.exe --actor " + in + " --remove";
-#endif
                     std_filesystem::remove("../Source/" + in + ".hpp");
                     std_filesystem::remove("../Source/" + in + ".cpp");
                 }
                 catch (std_filesystem::filesystem_error&)
                 {
                     logger.consoleLog("Failed to delete files", UVK_LOG_TYPE_ERROR);
-                    error = true;
-                }
-
-                if (!error)
-                {
-                    bShow = false;
                 }
 #endif
             }
@@ -75,19 +64,10 @@ bool RemoveFile::display(bool& bShow)
                 catch (std_filesystem::filesystem_error&)
                 {
                     logger.consoleLog("Failed to delete files", UVK_LOG_TYPE_ERROR);
-                    error = true;
-                }
-
-                if (!error)
-                {
-                    bShow = false;
                 }
 #endif
             }
-            if (system(gen.c_str()))
-            {
 
-            }
         }
         ImGui::EndPopup();
     }

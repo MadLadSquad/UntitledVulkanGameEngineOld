@@ -6,6 +6,6 @@
 #ifndef PRODUCTION
 namespace Shipping
 {
-    bool display(bool& bShow);
+    bool display(bool& bShow, const std::string& prjname);
 }
 #endif

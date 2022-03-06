@@ -1,6 +1,7 @@
 // ThemeSettings.cpp
 // Last update 18/2/2022 by Madman10K
 #include "ThemeSettings.hpp"
+#include "Renderer/EditorUI/Style/Theme.hpp"
 #include <imgui.h>
 #include <cpp/imgui_stdlib.h>
 
@@ -212,15 +213,9 @@ void UVK::ThemeSettingsWidget::displayThemeSettings(bool& bReturn, bool& bOpen)
     ImGui::TextWrapped(".uvktheme");
 
     if (ImGui::Button("Close"))
-    {
         bOpen = false;
-    }
     ImGui::SameLine();
     if (ImGui::Button("Save"))
-    {
-#ifdef DEVELOPMENT
         UVK::EditorTheme::save(static_cast<std::string>("../Config/Settings/" + outName + ".uvktheme").c_str(), static_cast<std::string>("../Content/" + fontLoc).c_str(), fontSize);
-#endif
-    }
     ImGui::EndPopup();
 }
