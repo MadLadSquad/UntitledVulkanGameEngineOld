@@ -38,17 +38,17 @@ mkdir build || exit # Will store our compiled binary
 cd build || exit
 
 cmake .. || exit # Generate the UVKBuildTool project files
-ls
+
 # Try to run MSBuild first, if it fails we are either on a non-Windows system or the user doesn't have Visual Studio installed
 MSBuild.exe UVKBuildToolLib.sln -property:Configuration=Release -property:Platform=x64 -property:maxCpuCount="${cpus}" || make -j "${cpus}" || exit
 
 # If on Windows copy the UVKBuildTool executable from the Release folder, this will absolutely fail on any non-Windows system in which
 # case we will just echo an empty message
-cp Release/UVKBuildTool.exe . || echo " " || exit
+cp Release/UVKBuildTool.exe . || echo " "
 cp Release/UVKBuildToolLib.dll . || cp Release/libUVKBuildToolLib.dll . || echo " "
 
 # Windows uses .exe files so the first instruction will fail on any non-Windows system
-./UVKBuildTool.exe --install || ./UVKBuildTool --install || exit
+./UVKBuildTool.exe --install || ./UVKBuildTool --install
 cd ../../ || exit
 mkdir build || exit # Build folder used for compilation
 mkdir Exported  || exit # Exported folder used for storing production ready games you exported
