@@ -86,6 +86,23 @@ cp Release/UVKBuildTool.exe . || echo " " || exit
 cd ../../ || exit
 mkdir build || exit # Build folder used for compilation
 mkdir Exported  || exit # Exported folder used for storing production ready games you exported
+
+echo " "
+echo -e "\x1B[32m--------------------------------------------------------------------------------\033[0m"
+echo -e "\x1b[32mCompiling the ShaderCompiler ...\x1b[0m"
+echo -e "\x1b[32m--------------------------------------------------------------------------------\x1b[0m"
+echo " "
+
+cd UVKShaderCompiler/ || exit
+mkdir build
+cd build || exit
+cmake .. -G "Visual Studio ${VSShortVer} ${VSVer}" || cmake .. -G "Unix Makefiles" || exit
+
+# Compiler the Shader Compiler
+MSBuild.exe UVKShaderCompiler.sln -property:Configuration=Release -property:Platform=x64 -property:maxCpuCount="${cpus}" || make -j "${cpus}" || exit
+cp Release/UVKShaderCompiler.exe . || echo " " || exit
+cd ../../
+
 cd build || exit
 
 echo " "
