@@ -70,7 +70,7 @@ cmake .. || exit
 
 # Compiler the Shader Compiler
 MSBuild.exe UVKShaderCompilerLib.sln -property:Configuration=Release -property:Platform=x64 -property:maxCpuCount="${cpus}" || make -j "${cpus}" || exit
-cp Release/UVKShaderCompiler.exe . || echo " " || exit
+cp Release/UVKShaderCompiler.exe . || echo " "
 cp Release/UVKShaderCompilerLib.dll . || cp Release/libUVKShaderCompilerLib.dll . || echo " "
 cd ../../
 
