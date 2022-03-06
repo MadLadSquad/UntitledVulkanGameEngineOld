@@ -40,7 +40,7 @@ cd build || exit
 cmake .. || exit # Generate the UVKBuildTool project files
 ls
 # Try to run MSBuild first, if it fails we are either on a non-Windows system or the user doesn't have Visual Studio installed
-MSBuild.exe UVKBuildTool.sln -property:Configuration=Release -property:Platform=x64 -property:maxCpuCount="${cpus}" || make -j "${cpus}" || exit
+MSBuild.exe UVKBuildToolLib.sln -property:Configuration=Release -property:Platform=x64 -property:maxCpuCount="${cpus}" || make -j "${cpus}" || exit
 
 # If on Windows copy the UVKBuildTool executable from the Release folder, this will absolutely fail on any non-Windows system in which
 # case we will just echo an empty message
@@ -69,7 +69,7 @@ cd build || exit
 cmake .. || exit
 
 # Compiler the Shader Compiler
-MSBuild.exe UVKShaderCompiler.sln -property:Configuration=Release -property:Platform=x64 -property:maxCpuCount="${cpus}" || make -j "${cpus}" || exit
+MSBuild.exe UVKShaderCompilerLib.sln -property:Configuration=Release -property:Platform=x64 -property:maxCpuCount="${cpus}" || make -j "${cpus}" || exit
 cp Release/UVKShaderCompiler.exe . || echo " " || exit
 cp Release/UVKShaderCompilerLib.dll . || cp Release/libUVKShaderCompilerLib.dll . || echo " "
 cd ../../
