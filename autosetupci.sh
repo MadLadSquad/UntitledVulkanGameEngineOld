@@ -60,6 +60,10 @@ echo -e "\x1b[32m---------------------------------------------------------------
 echo " "
 
 cd UVKShaderCompiler/ || exit
+cd ThirdParty/shaderc/utils/ || exit
+./git-sync-deps
+cd ../../../ || exit
+
 mkdir build
 cd build || exit
 cmake .. || exit
