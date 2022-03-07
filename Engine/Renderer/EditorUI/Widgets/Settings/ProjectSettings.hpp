@@ -4,5 +4,5 @@
 
 namespace UVK::ProjectSettingsWidget
 {
-    void displayProjectSettings(bool& bReturn, std::string& name, std::string& ver, std::string& enginever, std::string& startupLevel, bool& bOpen);
+    void displayProjectSettings(bool& bReturn, std::string& name, std::string& ver, std::string& enginever, std::string& startupLevel, bool& bOpen, const YAML::Node& node);
 }

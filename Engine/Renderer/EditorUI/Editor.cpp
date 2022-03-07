@@ -136,7 +136,7 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
     if (bools.bShowThemeSettings)
         bools.bEditorUsingTextbox = UVK::SettingsWidgets::displayThemeEditor(bools.bShowThemeSettings) ? true : bools.bEditorUsingTextbox;
     if (bools.bShowGameSettings)
-        bools.bEditorUsingTextbox = UVK::SettingsWidgets::displayProjectSettings(strings.projectName, strings.projectVersion, strings.engineVersion, strings.startupLevel, bools.bShowGameSettings) ? true : bools.bEditorUsingTextbox;
+        bools.bEditorUsingTextbox = UVK::SettingsWidgets::displayProjectSettings(strings.projectName, strings.projectVersion, strings.engineVersion, strings.startupLevel, bools.bShowGameSettings, strings.node) ? true : bools.bEditorUsingTextbox;
     if (bools.bShowEditorSettings)
         bools.bEditorUsingTextbox = UVK::SettingsWidgets::displayEditorSettings(bools.bShowEditorSettings, *this);
     if (bools.bShowDeveloperConsole)

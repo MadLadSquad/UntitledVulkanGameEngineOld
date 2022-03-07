@@ -7,7 +7,7 @@
 #include <UVKBuildTool/src/ActorListGenerator.hpp>
 #include <UVKBuildTool/src/SourceGenerator.hpp>
 
-void UVK::ProjectSettingsWidget::displayProjectSettings(bool& bReturn, std::string& name, std::string& ver, std::string& enginever, std::string& startupLevel, bool& bOpen)
+void UVK::ProjectSettingsWidget::displayProjectSettings(bool& bReturn, std::string& name, std::string& ver, std::string& enginever, std::string& startupLevel, bool& bOpen, const YAML::Node& node)
 {
     ImGui::TextWrapped("Project Name");
     ImGui::SameLine();
@@ -31,7 +31,15 @@ void UVK::ProjectSettingsWidget::displayProjectSettings(bool& bReturn, std::stri
     ImGui::SameLine();
     ImGui::TextWrapped(".uvklevel");
 
-    ImGui::TextWrapped("If you click \"Save\" your project's generated files will be regenerated!");
+    ImGui::TextWrapped("Build settings");
+    if (ImGui::IsItemHovered())
+    {
+        ImGui::BeginTooltip();
+        ImGui::Text("These settings need to be edited manually in the uvproj.yaml file!");
+        ImGui::EndTooltip();
+    }
+    //ImGui::TextUnformatted("%s", node["additional-include-directories"]);
+    ImGui::Separator();
 
     if (ImGui::Button("Close"))
     {
@@ -45,13 +53,8 @@ void UVK::ProjectSettingsWidget::displayProjectSettings(bool& bReturn, std::stri
         o << YAML::BeginMap << YAML::Key << "name" << YAML::Value << name;
         o << YAML::Key << "startup-level" << YAML::Value << startupLevel;
         o << YAML::Key << "version" << YAML::Value << ver;
-        o << YAML::Key << "engine-version" << YAML::Value << enginever << YAML::EndMap;
+        o << YAML::Key << "engine-version" << YAML::Value << enginever;
 
-        std::ofstream out("../uvproj.yaml");
-        out << o.c_str();
-        out.close();
-
-        // The following lines are sourced from the main.cpp file in the UVKBuildTool CLI
         YAML::Node config;
         try
         {
@@ -63,6 +66,23 @@ void UVK::ProjectSettingsWidget::displayProjectSettings(bool& bReturn, std::stri
             throw std::runtime_error(" ");
         }
 
+        if (config["additional-include-directories"])
+            o << YAML::Key << "additional-include-directories" << YAML::Value << config["additional-include-directories"];
+        if (config["additional-subdirectories"])
+            o << YAML::Key << "additional-subdirectories" << YAML::Value << config["additional-subdirectories"];
+        if (config["additional-link-libraries"])
+            o << YAML::Key << "additional-link-libraries" << YAML::Value << config["additional-link-libraries"];
+        if (config["additional-source-libraries"])
+            o << YAML::Key << "additional-source-libraries" << YAML::Value << config["additional-source-libraries"];
+        if (config["additional-header-libraries"])
+            o << YAML::Key << "additional-header-libraries" << YAML::Value << config["additional-header-libraries"];
+        o << YAML::EndMap;
+
+        std::ofstream out("../uvproj.yaml");
+        out << o.c_str() << std::endl;// << std::endl << node["additional-include-directories"] << "\n" << node["additional-subdirectories"] << "\n" << node["additional-link-libraries"] << "\n" << node["additional-source-libraries"] << "\n" << node["additional-header-libraries"];
+        out.close();
+
+        // The following lines are sourced from the main.cpp file in the UVKBuildTool CLI
         bool bSetReadable;
 
         std::string startupLevelName;
@@ -100,6 +120,12 @@ void UVK::ProjectSettingsWidget::displayProjectSettings(bool& bReturn, std::stri
 //        {
 //
 //        }
+    }
+    if (ImGui::IsItemHovered())
+    {
+        ImGui::BeginTooltip();
+        ImGui::Text("If you click \"Save\" your project's generated files will be regenerated!");
+        ImGui::EndTooltip();
     }
     ImGui::EndPopup();
 }
