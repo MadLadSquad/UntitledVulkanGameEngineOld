@@ -46,12 +46,8 @@ MSBuild.exe UVKBuildTool.sln -property:Configuration=Release -property:Platform=
 # case we will just echo an empty message
 cp Release/UVKBuildTool.exe . || echo " "
 cp Release/UVKBuildToolLib.dll . || cp Release/libUVKBuildToolLib.dll . || echo " "
+cp yaml-cpp/Release/yaml-cpp.dll . || cp yaml-cpp/Release/libyaml-cpp.dll . || echo " "
 
-ls
-echo "--------"
-ls Release/
-echo "--------"
-ls yaml-cpp/
 # Windows uses .exe files so the first instruction will fail on any non-Windows system
 ./UVKBuildTool.exe --install || ./UVKBuildTool --install || exit
 cd ../../ || exit
