@@ -48,6 +48,10 @@ cp Release/UVKBuildTool.exe . || echo " "
 cp Release/UVKBuildToolLib.dll . || cp Release/libUVKBuildToolLib.dll . || echo " "
 
 ls
+echo "--------"
+ls Release/
+echo "--------"
+ls yaml-cpp/
 # Windows uses .exe files so the first instruction will fail on any non-Windows system
 ./UVKBuildTool.exe --install || ./UVKBuildTool --install || exit
 cd ../../ || exit
