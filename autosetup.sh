@@ -81,6 +81,7 @@ MSBuild.exe UVKBuildTool.sln -property:Configuration=Release -property:Platform=
 # case we will just echo an empty message
 cp Release/UVKBuildTool.exe . || echo " " || exit
 cp Release/UVKBuildToolLib.dll . || cp Release/libUVKBuildToolLib.dll . || echo " "
+cp yaml-cpp/Release/yaml-cpp.dll . || cp yaml-cpp/Release/libyaml-cpp.dll . || echo " "
 
 # Windows uses .exe files so the first instruction will fail on any non-Windows system
 ./UVKBuildTool.exe --install || ./UVKBuildTool --install || exit
@@ -106,6 +107,8 @@ cmake .. -G "Visual Studio ${VSShortVer} ${VSVer}" || cmake .. -G "Unix Makefile
 MSBuild.exe UVKShaderCompiler.sln -property:Configuration=Release -property:Platform=x64 -property:maxCpuCount="${cpus}" || make -j "${cpus}" || exit
 cp Release/UVKShaderCompiler.exe . || echo " " || exit
 cp Release/UVKShaderCompilerLib.dll . || cp Release/libUVKShaderCompilerLib.dll . || echo " "
+cp Release/*.dll . || echo " "
+./UVKShaderCompiler.exe --compile || ./UVKShaderCompiler --compile || exit
 cd ../../
 
 cd build || exit
