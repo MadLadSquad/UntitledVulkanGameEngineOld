@@ -49,8 +49,6 @@ cp Release/UVKBuildToolLib.dll . || cp Release/libUVKBuildToolLib.dll . || echo 
 
 # Windows uses .exe files so the first instruction will fail on any non-Windows system
 ./UVKBuildTool.exe --install || ./UVKBuildTool --install || exit
-echo "-------------------------------------------" && ls
-echo "-------------------------------------------" && ls ../../
 cd ../../ || exit
 mkdir build || exit # Build folder used for compilation
 mkdir Exported  || exit # Exported folder used for storing production ready games you exported
