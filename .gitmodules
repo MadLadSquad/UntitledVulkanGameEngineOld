@@ -49,6 +49,3 @@
 [submodule "Engine/ThirdParty/imguiex/uexec"]
 	path = Engine/ThirdParty/imguiex/uexec
 	url = https://github.com/MadLadSquad/UntitledExec.git
-[submodule "Engine/ThirdParty/Vulkan-ValidationLayers"]
-	path = Engine/ThirdParty/Vulkan-ValidationLayers
-	url = https://github.com/MadLadSquad/Vulkan-ValidationLayers.git
