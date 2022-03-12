@@ -111,7 +111,7 @@ UVK::VKInstance::~VKInstance()
     destroy();
 }
 
-bool UVK::VKInstance::checkValidationLayerSupport(std::vector<const char*>& validationLayers)
+bool UVK::VKInstance::checkValidationLayerSupport(const std::vector<const char*>& validationLayers)
 {
     uint32_t layerCount;
     vkEnumerateInstanceLayerProperties(&layerCount, nullptr);
