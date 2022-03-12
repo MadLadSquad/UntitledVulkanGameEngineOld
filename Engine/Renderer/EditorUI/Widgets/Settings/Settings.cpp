@@ -51,10 +51,10 @@ bool UVK::SettingsWidgets::displayThemeEditor(bool& bOpen)
     return bReturn;
 }
 
-bool UVK::SettingsWidgets::displayProjectSettings(std::string& name, std::string& ver, std::string& enginever, std::string& startupLevel, bool& bOpen, const YAML::Node& node)
+bool UVK::SettingsWidgets::displayProjectSettings(std::string& name, std::string& ver, std::string& enginever, std::string& startupLevel, bool& bOpen)
 {
     UVK_SETTINGS_WIDGET_BEGIN("Project Settings", ImGuiWindowFlags_None)
-        UVK::ProjectSettingsWidget::displayProjectSettings(bReturn, name, ver, enginever, startupLevel, bOpen, node);
+        UVK::ProjectSettingsWidget::displayProjectSettings(bReturn, name, ver, enginever, startupLevel, bOpen);
     return bReturn;
 }
 

@@ -23,7 +23,9 @@ namespace UVK
         VkSurfaceKHR& getSurface();
     private:
         friend class VKDevice;
-        bool getSwapchainDetails(VkPhysicalDevice& device);
+        friend class GraphicsPipeline;
+
+        bool getSwapchainDetails(VkPhysicalDevice& device, const QueueFamilyIndices& indices);
 
         VkImageView createImageView(const VkImage& image, const VkFormat& format, const VkImageAspectFlags& aspectFlags);
 

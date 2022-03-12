@@ -31,8 +31,14 @@ VkSurfaceKHR& UVK::Swapchain::getSurface()
     return surface;
 }
 
-bool UVK::Swapchain::getSwapchainDetails(VkPhysicalDevice& dev)
+bool UVK::Swapchain::getSwapchainDetails(VkPhysicalDevice& dev, const QueueFamilyIndices& indices)
 {
+    VkBool32 bSupportedPresentation;
+    vkGetPhysicalDeviceSurfaceSupportKHR(dev, indices.graphicsFamily, surface, &bSupportedPresentation);
+
+    if (bSupportedPresentation == VK_FALSE)
+        return false;
+
     vkGetPhysicalDeviceSurfaceCapabilitiesKHR(dev, surface, &details.surfaceCapabilities);
     uint32_t formatCount = 0;
     vkGetPhysicalDeviceSurfaceFormatsKHR(dev, surface, &formatCount, nullptr);
@@ -71,6 +77,7 @@ UVK::Swapchain::~Swapchain()
 void UVK::Swapchain::createSwapchain()
 {
     // TODO: check this function for resize
+    //getSwapchainDetails(device->physicalDevice);
     determineSurfaceFormats();
     determinePresentationMode();
     determineExtent();
@@ -123,7 +130,6 @@ void UVK::Swapchain::createSwapchain()
         logger.consoleLog("Failed to create a swapchain! Error code: ", UVK_LOG_TYPE_ERROR, result);
         throw std::runtime_error(" ");
     }
-
     uint32_t swapchainImageCount;
     vkGetSwapchainImagesKHR(device->device, swapchain, &swapchainImageCount, nullptr);
     std::vector<VkImage> tmpImages(swapchainImageCount);
@@ -149,13 +155,14 @@ void UVK::Swapchain::determineSurfaceFormats()
 {
     if (details.surfaceFormats.size() == 1 && details.surfaceFormats[0].format == VK_FORMAT_UNDEFINED)
     {
-        surfaceFormat = details.surfaceFormats[0];
+        surfaceFormat.format = VK_FORMAT_R8G8B8A8_UNORM;
+        surfaceFormat.colorSpace = VK_COLOR_SPACE_SRGB_NONLINEAR_KHR;
         return;
     }
 
     for (auto& a : details.surfaceFormats)
     {
-        if (a.format == VK_FORMAT_R8G8B8A8_UNORM && a.colorSpace == VK_COLOR_SPACE_SRGB_NONLINEAR_KHR)
+        if ((a.format == VK_FORMAT_R8G8B8A8_UNORM || a.format == VK_FORMAT_B8G8R8A8_UNORM) && a.colorSpace == VK_COLOR_SPACE_SRGB_NONLINEAR_KHR)
         {
             surfaceFormat = a;
             return;

@@ -54,7 +54,6 @@ namespace UVK
         std::string projectVersion;
         std::string projectName;
         std::string startupLevel;
-        YAML::Node node;
     };
 
     /**

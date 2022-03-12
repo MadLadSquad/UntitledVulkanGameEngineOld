@@ -17,11 +17,36 @@ namespace UVK
         std::vector<VkPresentModeKHR> presentationModes;
     };
 
-    class VKUtility
+    enum class VKShaderType
+    {
+        VK_SHADER_TYPE_NONE = 0,
+        VK_SHADER_TYPE_VERTEX = 0x00000001,
+        VK_SHADER_TYPE_FRAGMENT = 0x00000010,
+        VK_SHADER_TYPE_GEOMETRY = 0x00000008,
+        VK_SHADER_TYPE_COMPUTE = 0x00000020,
+        VK_SHADER_TYPE_TESSELLATION_CONTROL = 0x00000002,
+        VK_SHADER_TYPE_TESSELLATION_EVALUATION = 0x00000004,
+    };
+
+    struct VKShader
     {
     public:
+        VKShader() = default;
+        explicit VKShader(const char* fname);
+        void init(const char* fname);
 
+        std::vector<char> getShaderBytecode();
+        static void each(const std::function<void(VKShader&)>& func);
+
+        std::string name;
+        VKShaderType type = VKShaderType::VK_SHADER_TYPE_NONE;
+    private:
+        friend class GraphicsPipeline;
+
+        VkPipelineShaderStageCreateInfo info{};
+        VkShaderModule module;
     };
+
 
     struct QueueFamilyIndices
     {

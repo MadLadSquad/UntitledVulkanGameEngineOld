@@ -7,7 +7,7 @@
 #include <UVKBuildTool/src/ActorListGenerator.hpp>
 #include <UVKBuildTool/src/SourceGenerator.hpp>
 
-void UVK::ProjectSettingsWidget::displayProjectSettings(bool& bReturn, std::string& name, std::string& ver, std::string& enginever, std::string& startupLevel, bool& bOpen, const YAML::Node& node)
+void UVK::ProjectSettingsWidget::displayProjectSettings(bool& bReturn, std::string& name, std::string& ver, std::string& enginever, std::string& startupLevel, bool& bOpen)
 {
     ImGui::TextWrapped("Project Name");
     ImGui::SameLine();

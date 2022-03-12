@@ -40,8 +40,6 @@ void UVK::EditorResources::loadConfigs(Editor& editor)
         editor.strings.projectVersion = file["version"].as<std::string>();
         editor.strings.projectName = file["name"].as<std::string>();
         editor.strings.startupLevel = file["startup-level"].as<std::string>();
-
-        editor.strings.node = file;
     }
 
     try

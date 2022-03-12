@@ -167,7 +167,7 @@ breakout:
                 goto continue_to_other_device_in_list;
         }
 
-        if (!swapchain.getSwapchainDetails(devices[i]))
+        if (!swapchain.getSwapchainDetails(devices[i], families))
             continue;
 
         if (size > largestMemorySize)

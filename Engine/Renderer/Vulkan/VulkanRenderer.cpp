@@ -8,6 +8,7 @@
 #include "Components/Instance.hpp"
 #include "Components/Device.hpp"
 #include "Components/Swapchain.hpp"
+#include "Components/GraphicsPipeline.hpp"
 #include <Engine/Core/Core/Global.hpp>
 #include <glfw3.h>
 #include <Core/Events/Events.hpp>
@@ -25,11 +26,14 @@ void UVK::VulkanRenderer::run()
     Swapchain swapchain{};
     VKDevice device(instance);
     swapchain = Swapchain(instance, device);
+    GraphicsPipeline pipeline(device, swapchain);
 
     instance.create();
     swapchain.createSurface();
     device.createDevice(swapchain);
     swapchain.createSwapchain();
+    pipeline.createRenderPass();
+    pipeline.createGraphicsPipeline();
 
     while (!glfwWindowShouldClose(global.window.getWindow()))
     {
