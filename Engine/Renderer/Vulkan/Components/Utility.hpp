@@ -35,7 +35,7 @@ namespace UVK
         explicit VKShader(const char* fname);
         void init(const char* fname);
 
-        std::vector<char> getShaderBytecode();
+        std::vector<char> getShaderBytecode() const;
         static void each(const std::function<void(VKShader&)>& func);
 
         std::string name;
@@ -44,7 +44,7 @@ namespace UVK
         friend class GraphicsPipeline;
 
         VkPipelineShaderStageCreateInfo info{};
-        VkShaderModule module;
+        VkShaderModule module{};
     };
 
 
@@ -53,7 +53,7 @@ namespace UVK
         int graphicsFamily = -1;
         int presentationFamily = -1;
 
-        bool valid();
+        bool valid() const;
     };
 
     struct SwapchainImage

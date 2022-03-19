@@ -34,11 +34,19 @@ void UVK::VulkanRenderer::run()
     swapchain.createSwapchain();
     pipeline.createRenderPass();
     pipeline.createGraphicsPipeline();
+    swapchain.createFramebuffers(pipeline);
+    swapchain.createCommandPool();
+    swapchain.createCommandBuffers();
+
+    swapchain.recordCommands();
 
     while (!glfwWindowShouldClose(global.window.getWindow()))
     {
         glfwPollEvents();
     }
+    swapchain.destroyCommandBuffers();
+    swapchain.destroyCommandPool();
+    swapchain.destroyFramebuffers();
     swapchain.destroySwapchain();
 }
 #endif

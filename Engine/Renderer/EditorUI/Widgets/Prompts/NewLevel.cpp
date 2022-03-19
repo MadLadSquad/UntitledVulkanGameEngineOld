@@ -14,9 +14,7 @@ void NewLevel::display(bool &bShow)
         ImGui::TextWrapped("If you want to save your changes click Cancel and do so, otherwise you can click Create");
 
         if (ImGui::Button("Cancel"))
-        {
             bShow = false;
-        }
 
         ImGui::SameLine();
 

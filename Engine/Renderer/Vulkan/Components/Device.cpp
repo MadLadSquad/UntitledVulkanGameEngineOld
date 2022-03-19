@@ -65,11 +65,6 @@ VkDevice& UVK::VKDevice::getDevice()
     return device;
 }
 
-VkPhysicalDevice& UVK::VKDevice::getPhysicalDevice()
-{
-    return physicalDevice;
-}
-
 UVK::VKDevice::VKDevice(UVK::VKInstance& instance)
 {
     this->instance = &instance;

@@ -19,17 +19,16 @@ namespace UVK
         void destroyDevice();
 
         VkDevice& getDevice();
-        VkPhysicalDevice& getPhysicalDevice();
     private:
         friend class Swapchain;
 
         QueueFamilyIndices createPhysicalDevice(Swapchain& surface);
 
-        VkQueue queue;
-        VkQueue presentationQueue;
-        VKInstance* instance;
-        VkDevice device;
-        VkPhysicalDevice physicalDevice;
+        VkQueue queue{};
+        VkQueue presentationQueue{};
+        VKInstance* instance{};
+        VkDevice device{};
+        VkPhysicalDevice physicalDevice{};
         QueueFamilyIndices indices;
     };
 }

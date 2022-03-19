@@ -18,7 +18,7 @@ namespace UVK
         virtual ~GameState() = default;
 
         template<typename T>
-        static GameState* makeGameState()
+        [[maybe_unused]] static GameState* makeGameState()
         {
             T* gs = new T();
             return gs;
@@ -30,6 +30,6 @@ namespace UVK
             return static_cast<T*>(gs);
         }
 
-        static void destroyGameState(GameState* gs);
+        [[maybe_unused]] static void destroyGameState(GameState* gs);
     };
 }

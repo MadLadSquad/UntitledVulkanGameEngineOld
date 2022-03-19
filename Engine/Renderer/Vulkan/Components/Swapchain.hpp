@@ -7,6 +7,7 @@
 
 namespace UVK
 {
+    class GraphicsPipeline;
     class Swapchain
     {
     public:
@@ -19,6 +20,17 @@ namespace UVK
 
         void createSurface();
         void destroySurface();
+
+        void createFramebuffers(GraphicsPipeline& graphicsPipeline);
+        void destroyFramebuffers();
+
+        void createCommandPool();
+        void destroyCommandPool();
+
+        void createCommandBuffers();
+        void destroyCommandBuffers();
+
+        void recordCommands();
 
         VkSurfaceKHR& getSurface();
     private:
@@ -39,11 +51,16 @@ namespace UVK
 
         VKInstance* instance = nullptr;
         VKDevice* device = nullptr;
+        GraphicsPipeline* pipeline = nullptr;
 
         VkSurfaceFormatKHR surfaceFormat{};
-        VkPresentModeKHR presentationMode;
+        VkPresentModeKHR presentationMode{};
         VkExtent2D extent{};
 
-        std::vector<SwapchainImage> swapchainImages;
+        VkCommandPool commandPool;
+
+        std::vector<SwapchainImage> images;
+        std::vector<VkFramebuffer> framebuffers;
+        std::vector<VkCommandBuffer> commandBuffers;
     };
 }

@@ -22,7 +22,6 @@ void UVK::ECS::each(const std::function<void(Actor&)>& func)
     for (auto& a : view)
     {
         Actor act(a);
-
         func(act);
     }
 }

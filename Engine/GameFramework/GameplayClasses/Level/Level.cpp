@@ -131,11 +131,8 @@ void UVK::Level::save(String location)
     global.ecs.data().each([&](auto entityID)
     {
         const auto& b = global.ecs.data().get<CoreComponent>(entityID);
-
         if (b.standart())
-        {
             saveEntity(out, entityID);
-        }
     });
     out << YAML::EndSeq;
     out << YAML::EndMap;
@@ -168,9 +165,7 @@ void UVK::Level::openInternal(UVK::String location, bool first)
         global.ecs.clear(); // Clear the ECS registry(contains all the actors)
         global.ui.clear(); // Clear the UI registry
         if (!global.bEditor)
-        {
             Events::callEnd(); // If running in a game environment call all the end events
-        }
         Events::clear(); // Reset all scriptable objects, clear the event queue and add them again
 
         // This thing should not compile if we're compiling for production and also shouldn't run if we're running without the editor
@@ -247,9 +242,7 @@ escape_editor_folders:
     }
 
     if (!global.bEditor)
-    {
         Events::callBegin();
-    }
 }
 
 UVK::FVector4& UVK::Level::getAmbientLighting()

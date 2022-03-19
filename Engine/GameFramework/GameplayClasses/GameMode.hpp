@@ -31,7 +31,7 @@ namespace UVK
         void tickAutohandle(float deltaTime) const;
         void endAutohandle() const;
 
-        static Pawn* getPawn(UVK::GameMode* gm);
+        [[maybe_unused]] static Pawn* getPawn(UVK::GameMode* gm);
 
         template<typename T>
         static GameMode* makeGameMode()
@@ -40,7 +40,7 @@ namespace UVK
             return gm;
         }
 
-        static void destroyGameMode(GameMode* gm);
+        [[maybe_unused]] static void destroyGameMode(GameMode* gm);
 
         template<typename T>
         static T* cast(GameMode* gm)

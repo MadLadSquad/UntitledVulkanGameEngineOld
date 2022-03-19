@@ -32,9 +32,7 @@ bool Shipping::display(bool& bShow, const std::string& prjname)
         if (bShowPlay)
         {
             if (ImGui::Button("Close##compile"))
-            {
                 bShow = false;
-            }
 
             ImGui::SameLine();
 

@@ -63,9 +63,7 @@ void UVK::AudioBuffer::addSound(String loc)
         logger.consoleLog("OpenAL error: ", UVK_LOG_TYPE_ERROR, alGetString(error));
 
         if (bufferI && alIsBuffer(bufferI))
-        {
             alDeleteBuffers(1, &bufferI);
-        }
 
         return;
     }
@@ -74,9 +72,7 @@ void UVK::AudioBuffer::addSound(String loc)
 void UVK::AudioBuffer::removeSound()
 {
     if (alIsBuffer(bufferI) && bufferI)
-    {
         alDeleteBuffers(1, &bufferI);
-    }
 }
 
 ALuint& UVK::AudioBuffer::buffer()
@@ -88,24 +84,20 @@ void UVK::AudioBuffer::findFormat(ALenum& format, const SF_INFO& info, SNDFILE* 
 {
     switch (info.channels)
     {
-        case 1:
-            format = AL_FORMAT_MONO16;
-            break;
-        case 2:
-            format = AL_FORMAT_STEREO16;
-            break;
-        case 3:
-            if (sf_command(sndfile, SFC_WAVEX_GET_AMBISONIC, nullptr, 0) == SF_AMBISONIC_B_FORMAT)
-            {
-                format = AL_FORMAT_BFORMAT2D_16;
-            }
-            break;
-        case 4:
-            if (sf_command(sndfile, SFC_WAVEX_GET_AMBISONIC, nullptr, 0) == SF_AMBISONIC_B_FORMAT)
-            {
-                format = AL_FORMAT_BFORMAT3D_16;
-            }
-            break;
+    case 1:
+        format = AL_FORMAT_MONO16;
+        break;
+    case 2:
+        format = AL_FORMAT_STEREO16;
+        break;
+    case 3:
+        if (sf_command(sndfile, SFC_WAVEX_GET_AMBISONIC, nullptr, 0) == SF_AMBISONIC_B_FORMAT)
+            format = AL_FORMAT_BFORMAT2D_16;
+        break;
+    case 4:
+        if (sf_command(sndfile, SFC_WAVEX_GET_AMBISONIC, nullptr, 0) == SF_AMBISONIC_B_FORMAT)
+            format = AL_FORMAT_BFORMAT3D_16;
+        break;
     }
 
     if (!format)

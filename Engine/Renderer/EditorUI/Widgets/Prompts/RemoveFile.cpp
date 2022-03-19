@@ -28,9 +28,7 @@ bool RemoveFile::display(bool& bShow)
             bReturn = true;
 
         if (ImGui::Button("Close##delete"))
-        {
             bShow = false;
-        }
 
         ImGui::SameLine();
 

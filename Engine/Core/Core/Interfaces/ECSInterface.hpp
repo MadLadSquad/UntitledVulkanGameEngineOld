@@ -24,12 +24,10 @@ namespace UVK
         static void forEveryComponent(const std::function<void(Actor&)>& func)
         {
             auto view = data().view<T>();
+            // we call a function because due to bad dependency management we make a circular dependency
+            // here if the code in the call function was called inline here
             for (auto& a : view)
-            {
-                // we call a function because due to bad dependency management we make a circular dependency
-                // here if the code in the call function was called inline here
                 call(func, a);
-            }
         }
 
         static void each(const std::function<void(Actor&)>& func);

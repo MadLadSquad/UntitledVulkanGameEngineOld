@@ -20,9 +20,7 @@ bool SaveLevel::display(bool &bOpen, std::string& location, UVK::FVector4& colou
         ImGui::TextWrapped(".uvklevel");
 
         if (ImGui::Button("Cancel##cancelbuttononsave"))
-        {
             bOpen = false;
-        }
 
         ImGui::SameLine();
 

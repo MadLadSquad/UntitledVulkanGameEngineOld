@@ -15,14 +15,9 @@ void UVK::MeshComponentRaw::createMesh(UVK::Actor* currentActor, GLfloat* vertic
     actor = currentActor;
 
     for (int i = 0; i < indexNum; i++)
-    {
         index.push_back(indices[i]);
-    }
-
     for (int i = 0; i < vertexNum; i++)
-    {
         vertex.push_back(vertices[i]);
-    }
 
     mesh.createMesh(vertices, indices, vertexNum, indexNum);
 

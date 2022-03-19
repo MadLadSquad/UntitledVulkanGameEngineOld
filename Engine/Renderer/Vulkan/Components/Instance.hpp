@@ -31,7 +31,7 @@ namespace UVK
         VkInstance& data();
     private:
         static bool checkInstanceExtensionsSupport(const char** extensions, uint32_t count);
-        bool checkValidationLayerSupport(const std::vector<const char*>& validationLayers);
+        static bool checkValidationLayerSupport(const std::vector<const char*>& validationLayers);
 
         VkInstance instance;
         VkDebugReportCallbackEXT callback;

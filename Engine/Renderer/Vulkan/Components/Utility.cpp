@@ -3,12 +3,12 @@
 #include "Utility.hpp"
 #include <UVKShaderCompiler/Src/Functions.hpp>
 
-bool UVK::QueueFamilyIndices::valid()
+bool UVK::QueueFamilyIndices::valid() const
 {
     return graphicsFamily >= 0 && presentationFamily >= 0;
 }
 
-std::vector<char> UVK::VKShader::getShaderBytecode()
+std::vector<char> UVK::VKShader::getShaderBytecode() const
 {
     auto hash = USC::getShaderHash(name.c_str());
     bool bFound = false;

@@ -35,54 +35,32 @@ void UVK::EditorPawn::move(float deltaTime)
         Window::setCursorVisibility(false);
 
         if (UVK::Input::getAction("editor-move-forward") == Keys::KeyPressed || UVK::Input::getAction("editor-move-forward") == Keys::KeyRepeat)
-        {
             coreCache->translation += camera.front * moveSpeed * deltaTime;
-        }
         if (UVK::Input::getAction("editor-move-back") == Keys::KeyPressed || UVK::Input::getAction("editor-move-back") == Keys::KeyRepeat)
-        {
             coreCache->translation -= camera.front * moveSpeed * deltaTime;
-        }
         if (UVK::Input::getAction("editor-move-left") == Keys::KeyPressed || UVK::Input::getAction("editor-move-left") == Keys::KeyRepeat)
-        {
             coreCache->translation -= camera.right * moveSpeed * deltaTime;
-        }
         if (UVK::Input::getAction("editor-move-right") == Keys::KeyPressed || UVK::Input::getAction("editor-move-right") == Keys::KeyRepeat)
-        {
             coreCache->translation += camera.right * moveSpeed * deltaTime;
-        }
         if (UVK::Input::getAction("editor-move-down") == Keys::KeyPressed || UVK::Input::getAction("editor-move-down") == Keys::KeyRepeat)
-        {
             coreCache->translation -= camera.worldUp * moveSpeed * deltaTime;
-        }
         if (UVK::Input::getAction("editor-move-up") == Keys::KeyPressed || UVK::Input::getAction("editor-move-up") == Keys::KeyRepeat)
-        {
             coreCache->translation += camera.worldUp * moveSpeed * deltaTime;
-        }
 
         auto scroll = UVK::Input::getScroll();
 
         if (scroll.y > 0)
-        {
             coreCache->translation += camera.front * moveSpeed * deltaTime * 10.0f;
-        }
         else if (scroll.y < 0)
-        {
             coreCache->translation -= camera.front * moveSpeed * deltaTime * 10.0f;
-        }
 
         if (scroll.x > 0)
-        {
             coreCache->translation += camera.right * moveSpeed * deltaTime * 10.0f;
-        }
         else if (scroll.x < 0)
-        {
             coreCache->translation -= camera.right * moveSpeed * deltaTime * 10.0f;
-        }
     }
     else
-    {
         Window::setCursorVisibility(true);
-    }
 }
 
 void UVK::EditorPawn::moveMouse()
@@ -97,14 +75,9 @@ void UVK::EditorPawn::moveMouse()
         coreCache->rotation.y += camera.rotationOffset.y + change.y;
 
         if (coreCache->rotation.y > 89.9f)
-        {
             coreCache->rotation.y = 89.9f;
-        }
-
         if (coreCache->rotation.y <-89.9f)
-        {
             coreCache->rotation.y = -89.9f;
-        }
 
         camera.recalculate();
     }

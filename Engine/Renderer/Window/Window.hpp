@@ -54,8 +54,6 @@ namespace UVK
          * @return A pointer to a standard GLFWwindow
          */
         [[nodiscard]] GLFWwindow* getWindow() const;
-
-        bool& getVulkanResized();
     private:
         // Returns the frame-buffer width which in most cases is equal to the Window's internal rendering surface
         // width
@@ -84,7 +82,7 @@ namespace UVK
         friend class Renderer;
         friend class GLRenderer;
         friend class VulkanRenderer;
-        friend class VKSwapchain;
+        friend class Swapchain;
         friend class Input;
         friend class Editor;
         friend class Pawn;
@@ -149,7 +147,6 @@ namespace UVK
         GLFWwindow* windowMain = nullptr;
 
         bool bFirstMove = true;
-        bool bVulkanResized = false;
 
         double posX = 0;
         double posY = 0;

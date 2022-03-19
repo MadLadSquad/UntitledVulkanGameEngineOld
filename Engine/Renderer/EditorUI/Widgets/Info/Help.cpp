@@ -24,9 +24,7 @@ void Help::display(bool& bShow)
         ImGui::InputText("##id", link3, strlen(link3),  ImGuiInputTextFlags_ReadOnly);
 
         if (ImGui::Button("Close##Help"))
-        {
             bShow = false;
-        }
 
         ImGui::EndPopup();
     }

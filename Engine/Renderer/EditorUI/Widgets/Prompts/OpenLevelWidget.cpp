@@ -22,9 +22,7 @@ bool OpenLevelWidget::display(std::string &openLevel, bool &bShowOpenLevelWidget
 
         ImGui::TextWrapped("Keep in mind that clicking Submit WILL NOT SAVE any changes made to the level you are editing");
         if (ImGui::Button("Cancel"))
-        {
             bShowOpenLevelWidget = false;
-        }
 
         ImGui::SameLine();
 

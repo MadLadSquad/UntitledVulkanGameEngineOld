@@ -30,15 +30,8 @@ namespace UVK
         void setTheme(UVK::String theme);
         void useTheme();
 
-        std::pair<std::string, int> getFont()
-        {
-            return std::make_pair(fontLoc, fontSize);
-        }
-
-        [[nodiscard]] float getWindowRounding() const
-        {
-            return windowRounding;
-        }
+        std::pair<std::string, int> getFont();
+        [[nodiscard]] float getWindowRounding() const;
 
         ImVec4 textCol = ImVec4(1.0, 1.0, 1.0, 1.0);
 

@@ -165,4 +165,13 @@ void UVK::EditorTheme::save(UVK::String filename, UVK::String font, int fontSz)
     file.close();
 }
 
+std::pair<std::string, int> UVK::EditorTheme::getFont()
+{
+    return std::make_pair(fontLoc, fontSize);
+}
+
+float UVK::EditorTheme::getWindowRounding() const
+{
+    return windowRounding;
+}
 #endif

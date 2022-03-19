@@ -3,7 +3,7 @@
 #include "Swapchain.hpp"
 #include <glfw3.h>
 #include <Core/Core/Global.hpp>
-
+#include "GraphicsPipeline.hpp"
 
 void UVK::Swapchain::createSurface()
 {
@@ -137,7 +137,7 @@ void UVK::Swapchain::createSwapchain()
 
     for (const VkImage& image : tmpImages)
     {
-        swapchainImages.push_back({
+        images.push_back({
             image,
             createImageView(image, surfaceFormat.format, VK_IMAGE_ASPECT_COLOR_BIT)
         });
@@ -146,7 +146,7 @@ void UVK::Swapchain::createSwapchain()
 
 void UVK::Swapchain::destroySwapchain()
 {
-    for (const auto& a : swapchainImages)
+    for (const auto& a : images)
         vkDestroyImageView(device->device, a.imageView, nullptr);
     vkDestroySwapchainKHR(device->device, swapchain, nullptr);
 }
@@ -239,4 +239,143 @@ VkImageView UVK::Swapchain::createImageView(const VkImage& image, const VkFormat
         throw std::runtime_error(" ");
     }
     return imageView;
+}
+
+void UVK::Swapchain::createFramebuffers(GraphicsPipeline& graphicsPipeline)
+{
+    pipeline = &graphicsPipeline;
+    framebuffers.resize(images.size());
+
+    for (auto& a : framebuffers)
+    {
+        // Should be an array
+        const VkImageView attachments[1] = { images[0].imageView };
+        const VkFramebufferCreateInfo framebufferCreateInfo =
+        {
+            .sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO,
+            .renderPass = pipeline->renderPass,
+            .attachmentCount = 1,
+            .pAttachments = attachments,
+            .width = extent.width,
+            .height = extent.height,
+            .layers = 1
+        };
+
+        auto result = vkCreateFramebuffer(device->device, &framebufferCreateInfo, nullptr, &a);
+        if (result != VK_SUCCESS)
+        {
+            logger.consoleLog("Failed to create a Vulkan framebuffer! Error code: ", UVK_LOG_TYPE_ERROR, result);
+            throw std::runtime_error(" ");
+        }
+    }
+}
+
+void UVK::Swapchain::destroyFramebuffers()
+{
+    for (auto& a : framebuffers)
+        vkDestroyFramebuffer(device->device, a, nullptr);
+}
+
+void UVK::Swapchain::createCommandPool()
+{
+    const VkCommandPoolCreateInfo poolInfo =
+    {
+        .sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO,
+        .queueFamilyIndex = static_cast<uint32_t>(device->indices.graphicsFamily),
+    };
+
+    auto result = vkCreateCommandPool(device->device, &poolInfo, nullptr, &commandPool);
+    if (result != VK_SUCCESS)
+    {
+        logger.consoleLog("Couldn't create a Vulkan command pool! Error code: ", UVK_LOG_TYPE_ERROR, result);
+        throw std::runtime_error(" ");
+    }
+}
+
+void UVK::Swapchain::destroyCommandPool()
+{
+    vkDestroyCommandPool(device->device, commandPool, nullptr);
+}
+
+void UVK::Swapchain::createCommandBuffers()
+{
+    commandBuffers.resize(framebuffers.size());
+
+    const VkCommandBufferAllocateInfo commandBufferAllocateInfo =
+    {
+        .sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO,
+        .commandPool = commandPool,
+        .level = VK_COMMAND_BUFFER_LEVEL_PRIMARY,
+        .commandBufferCount = static_cast<uint32_t>(commandBuffers.size()),
+    };
+
+    auto result = vkAllocateCommandBuffers(device->device, &commandBufferAllocateInfo, commandBuffers.data());
+    if (result != VK_SUCCESS)
+    {
+        logger.consoleLog("Failed to allocate the Vulkan command buffers! Error code: ", UVK_LOG_TYPE_ERROR, result);
+        throw std::runtime_error(" ");
+    }
+}
+
+void UVK::Swapchain::destroyCommandBuffers()
+{
+
+}
+
+void UVK::Swapchain::recordCommands()
+{
+    constexpr VkCommandBufferBeginInfo commandBufferBeginInfo
+    {
+        .sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO,
+        .flags = VK_COMMAND_BUFFER_USAGE_SIMULTANEOUS_USE_BIT,
+    };
+
+    // TODO: Add depth attachment clear value
+    const VkClearValue clearValues[] =
+    {
+        {
+            .color = { global.colour.x, global.colour.y, global.colour.z, global.colour.w }
+        }
+    };
+
+    VkRenderPassBeginInfo renderPassBeginInfo =
+    {
+        .sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO,
+        .renderPass = pipeline->renderPass,
+        .renderArea =
+        {
+            .offset = { 0, 0 },
+            .extent = extent
+        },
+        .clearValueCount = 1,
+        .pClearValues = clearValues,
+    };
+
+    for (size_t i = 0; i < commandBuffers.size(); i++)
+    {
+        renderPassBeginInfo.framebuffer = framebuffers[i];
+
+        auto& a = commandBuffers[i];
+        auto result = vkBeginCommandBuffer(a, &commandBufferBeginInfo);
+        if (result != VK_SUCCESS)
+        {
+            logger.consoleLog("Failed to start recording the Vulkan command buffer! Error code: ", UVK_LOG_TYPE_ERROR, result);
+            throw std::runtime_error(" ");
+        }
+
+        vkCmdBeginRenderPass(commandBuffers[i], &renderPassBeginInfo, VK_SUBPASS_CONTENTS_INLINE);
+
+        vkCmdBindPipeline(commandBuffers[i], VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline->graphicsPipeline);
+        // TODO: add resources
+        vkCmdDraw(commandBuffers[i], 3, 1, 0, 0);
+
+        vkCmdEndRenderPass(commandBuffers[i]);
+
+        result = vkEndCommandBuffer(a);
+        if (result != VK_SUCCESS)
+        {
+            logger.consoleLog("Failed to stop recording the Vulkan command buffer! Error code: ", UVK_LOG_TYPE_ERROR, result);
+            throw std::runtime_error(" ");
+        }
+    }
 }

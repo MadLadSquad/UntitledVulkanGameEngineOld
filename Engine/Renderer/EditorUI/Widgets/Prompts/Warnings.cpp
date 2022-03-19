@@ -15,14 +15,11 @@ void Warnings::displayExitWarning(bool& bOpen)
 {
     if (!ImGui::IsPopupOpen("WARNING##EXITWARNING"))
         ImGui::OpenPopup("WARNING##EXITWARNING");
-
     if (ImGui::BeginPopupModal("WARNING##EXITWARNING", &bOpen))
     {
         ImGui::TextWrapped("WARNING: You are exiting the editor! Any changes that were not saved will not be!");
         if (ImGui::Button("Return##ed"))
-        {
             bOpen = false;
-        }
         ImGui::SameLine();
         if (ImGui::Button("Exit##ed"))
         {
@@ -38,14 +35,11 @@ void Warnings::displayGenerateWarning(bool& bOpen)
 {
     if (!ImGui::IsPopupOpen("WARNING##GENERATEWARNING"))
         ImGui::OpenPopup("WARNING##GENERATEWARNING");
-
     if (ImGui::BeginPopupModal("WARNING##GENERATEWARNING", &bOpen))
     {
         ImGui::TextWrapped("Regenerate files?");
         if (ImGui::Button("Close##ed"))
-        {
             bOpen = false;
-        }
         ImGui::SameLine();
         if (ImGui::Button("Regenerate##ed"))
         {
@@ -67,13 +61,9 @@ void Warnings::displayGenerateWarning(bool& bOpen)
             bool bSetReadable = i.is_open();
 
             if (config["startup-level"])
-            {
                 startupLevelName = config["startup-level"].as<std::string>();
-            }
             if (config["name"])
-            {
                 name = config["name"].as<std::string>();
-            }
 
             UBT::addIncludeDirectories(config, data);
             UBT::addSubdirectories(config, data);
@@ -97,19 +87,14 @@ void Warnings::displaySaveWarning(bool& bOpen)
 {
     if (!ImGui::IsPopupOpen("WARNING##SAVEWARNING"))
         ImGui::OpenPopup("WARNING##SAVEWARNING");
-
     if (ImGui::BeginPopupModal("WARNING##SAVEWARNING", &bOpen))
     {
         ImGui::TextWrapped("Save Level?");
         if (ImGui::Button("Close##ed"))
-        {
             bOpen = false;
-        }
         ImGui::SameLine();
         if (ImGui::Button("Save##ed"))
-        {
             UVK::Level::save(UVK::global.levelLocation.c_str());
-        }
 
         ImGui::EndPopup();
     }

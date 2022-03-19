@@ -18,9 +18,7 @@ void About::display(std::string& engineVersion, std::string& projectName, std::s
         ImGui::Image((void*)(intptr_t)logo.getImage(), ImVec2((float)logo.getWidth() - 100, (float)logo.getHeight() - 100));
 
         if (ImGui::Button("Close##AboutUS"))
-        {
             bShow = false;
-        }
         ImGui::EndPopup();
     }
 }

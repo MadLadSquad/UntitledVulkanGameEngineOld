@@ -14,11 +14,13 @@ namespace UVK
         void createRenderPass();
         void destroyGraphicsPipeline();
     private:
+        friend class Swapchain;
+
         VKDevice* device = nullptr;
         Swapchain* swapchain = nullptr;
 
-        VkPipelineLayout pipelineLayout;
-        VkRenderPass renderPass;
-        VkPipeline graphicsPipeline;
+        VkPipelineLayout pipelineLayout{};
+        VkRenderPass renderPass{};
+        VkPipeline graphicsPipeline{};
     };
 }

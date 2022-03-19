@@ -19,7 +19,7 @@ namespace UVK
         friend class VulkanRenderer;
         friend class Level;
 
-        void init();
+        static void init();
         void update();
         static void clean();
         void clear();

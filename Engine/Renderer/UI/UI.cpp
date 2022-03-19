@@ -73,13 +73,9 @@ void UVK::UIInternal::update()
 void UVK::UIInternal::clean()
 {
     if (global.bUsesVulkan)
-    {
         ImGui_ImplVulkan_Shutdown();
-    }
     else
-    {
         ImGui_ImplOpenGL3_Shutdown();
-    }
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
 }
@@ -101,14 +97,9 @@ void UVK::UIInternal::beginFrame()
 void UVK::UIInternal::renderUI()
 {
     for (auto& a : eventArr)
-    {
         a();
-    }
-
     for (auto& a : eventArrImGui)
-    {
         a();
-    }
 }
 
 void UVK::UIInternal::addEvent(const std::function<void(void)>& func)

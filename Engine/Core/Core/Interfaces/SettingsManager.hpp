@@ -19,7 +19,7 @@ namespace UVK
         static void saveEditorKeybindSettings();
         static void saveKeybindSettings();
         static void saveWindowSettings();
-        static void saveWindowAndKeybindSettings();
+        [[maybe_unused]] static void saveWindowAndKeybindSettings();
 
         static RendererSettings& getRendererSettings();
     };

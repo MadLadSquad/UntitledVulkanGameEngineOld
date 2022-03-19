@@ -17,7 +17,7 @@ namespace UVK
         virtual void endPlay() = 0;
 
         template<typename T>
-        static PlayerState* makePlayerState()
+        [[maybe_unused]] static PlayerState* makePlayerState()
         {
             T* ps = new T();
             return ps;

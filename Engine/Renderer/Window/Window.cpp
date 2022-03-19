@@ -63,7 +63,7 @@ void UVK::WindowInternal::framebufferSizeCallback(GLFWwindow* window, int width,
     if (global.bUsesVulkan)
     {
 
-        windowInst->bVulkanResized = true;
+        //windowInst->bVulkanResized = true;
     }
     else
     {
@@ -437,11 +437,6 @@ void UVK::WindowInternal::saveWindowSettings() const
     std::ofstream fileout("../Config/Settings/Window.yaml");
     fileout << out.c_str();
     fileout.close();
-}
-
-bool& UVK::WindowInternal::getVulkanResized()
-{
-    return bVulkanResized;
 }
 
 UVK::FVector2 UVK::Input::getLastMousePosition()
