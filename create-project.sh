@@ -62,9 +62,9 @@ echo -e "\x1B[32m---------------------------------------------------------------
 echo " "
 
 # We symlink the Engine source folder so that the cmake can work
-ln -rs "../../Engine/" Engine
-ln -rs "../../UVKBuildTool/" UVKBuildTool
-ln -rs "../../UVKShaderCompiler/" UVKShaderCompiler
+ln -rs "../../Engine/" Engine || mklink /D Engine ../../Engine/
+ln -rs "../../UVKBuildTool/" UVKBuildTool || mklink /D UVKBuildTool ../../UVKBuildTool/
+ln -rs "../../UVKShaderCompiler/" UVKShaderCompiler || mklink /D UVKShaderCompiler ../../UVKShaderCompiler/
 cp ../../export.sh .
 
 cd ../../UVKBuildTool/build || exit
