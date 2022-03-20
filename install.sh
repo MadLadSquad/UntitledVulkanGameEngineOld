@@ -65,7 +65,7 @@ mkdir build
 cd build || exit
 
 if [ "$1" == "ci" ]; then
-  cmake .. "" exit
+  cmake .. || exit
 else
   cmake .. -G "Visual Studio ${VSShortVer} ${VSVer}" || cmake .. -G "Unix Makefiles" || exit
 fi
