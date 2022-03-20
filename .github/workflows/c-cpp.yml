@@ -30,7 +30,7 @@ jobs:
       run: ./install.sh ci
     - name: Install the project
       shell: bash
-      run: ./create-project.sh Game
+      run: ./create-project.sh Game ci
   Windows:
     runs-on: windows-latest
     steps:
@@ -48,7 +48,7 @@ jobs:
     - name: Install the engine
       run: bash install.sh ci
     - name: Install the project
-      run: bash create-project.sh Game
+      run: bash create-project.sh Game ci
   #Windows:
   #  runs-on: windows-latest
   #  steps:
