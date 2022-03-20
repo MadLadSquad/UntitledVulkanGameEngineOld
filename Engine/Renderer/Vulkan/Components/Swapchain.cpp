@@ -246,10 +246,10 @@ void UVK::Swapchain::createFramebuffers(GraphicsPipeline& graphicsPipeline)
     pipeline = &graphicsPipeline;
     framebuffers.resize(images.size());
 
-    for (auto& a : framebuffers)
+    for (size_t i = 0; i < framebuffers.size(); i++)
     {
         // Should be an array
-        const VkImageView attachments[1] = { images[0].imageView };
+        const VkImageView attachments[1] = { images[i].imageView };
         const VkFramebufferCreateInfo framebufferCreateInfo =
         {
             .sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO,
@@ -261,7 +261,7 @@ void UVK::Swapchain::createFramebuffers(GraphicsPipeline& graphicsPipeline)
             .layers = 1
         };
 
-        auto result = vkCreateFramebuffer(device->device, &framebufferCreateInfo, nullptr, &a);
+        auto result = vkCreateFramebuffer(device->device, &framebufferCreateInfo, nullptr, &framebuffers[i]);
         if (result != VK_SUCCESS)
         {
             logger.consoleLog("Failed to create a Vulkan framebuffer! Error code: ", UVK_LOG_TYPE_ERROR, result);
@@ -327,7 +327,6 @@ void UVK::Swapchain::recordCommands()
     constexpr VkCommandBufferBeginInfo commandBufferBeginInfo
     {
         .sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO,
-        .flags = VK_COMMAND_BUFFER_USAGE_SIMULTANEOUS_USE_BIT,
     };
 
     // TODO: Add depth attachment clear value
@@ -377,5 +376,108 @@ void UVK::Swapchain::recordCommands()
             logger.consoleLog("Failed to stop recording the Vulkan command buffer! Error code: ", UVK_LOG_TYPE_ERROR, result);
             throw std::runtime_error(" ");
         }
+    }
+}
+
+void UVK::Swapchain::draw()
+{
+    static uint32_t currentFrame = 0;
+
+    vkWaitForFences(device->device, 1, &fences[currentFrame], VK_TRUE, std::numeric_limits<uint64_t>::max());
+    vkResetFences(device->device, 1, &fences[currentFrame]);
+
+    uint32_t imageIndex;
+    vkAcquireNextImageKHR(device->device, swapchain, std::numeric_limits<uint64_t>::max(), imageAvailable[currentFrame], VK_NULL_HANDLE, &imageIndex);
+
+    constexpr VkPipelineStageFlags waitStages[] =
+    {
+        VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT
+    };
+
+    const VkSubmitInfo submitInfo =
+    {
+        .sType = VK_STRUCTURE_TYPE_SUBMIT_INFO,
+        .waitSemaphoreCount = 1,
+        .pWaitSemaphores = &imageAvailable[currentFrame],
+        .pWaitDstStageMask = waitStages,
+        .commandBufferCount = 1,
+        .pCommandBuffers = &commandBuffers[imageIndex],
+        .signalSemaphoreCount = 1,
+        .pSignalSemaphores = &renderFinished[currentFrame]
+    };
+
+    auto result = vkQueueSubmit(device->queue, 1, &submitInfo, fences[currentFrame]);
+    if (result != VK_SUCCESS)
+    {
+        logger.consoleLog("Couldn't submit command buffer to the queue! Error code: ", UVK_LOG_TYPE_ERROR, result);
+        throw std::runtime_error(" ");
+    }
+
+    const VkPresentInfoKHR presentInfo =
+    {
+        .sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR,
+        .waitSemaphoreCount = 1,
+        .pWaitSemaphores = &renderFinished[currentFrame],
+        .swapchainCount = 1,
+        .pSwapchains = &swapchain,
+        .pImageIndices = &imageIndex
+    };
+
+    result = vkQueuePresentKHR(device->presentationQueue, &presentInfo);
+    if (result != VK_SUCCESS)
+    {
+        logger.consoleLog("Failed to present the image! Error code: ", UVK_LOG_TYPE_ERROR, result);
+        throw std::runtime_error(" ");
+    }
+    currentFrame = (currentFrame + 1) % VK_MAX_CONCURRENT_IMAGE_DRAW;
+}
+
+void UVK::Swapchain::createSynchronisation()
+{
+    imageAvailable.resize(VK_MAX_CONCURRENT_IMAGE_DRAW);
+    renderFinished.resize(VK_MAX_CONCURRENT_IMAGE_DRAW);
+    fences.resize(VK_MAX_CONCURRENT_IMAGE_DRAW);
+    constexpr VkSemaphoreCreateInfo semaphoreCreateInfo
+    {
+        .sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO,
+    };
+
+    constexpr VkFenceCreateInfo fenceCreateInfo =
+    {
+        .sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO,
+        .flags = VK_FENCE_CREATE_SIGNALED_BIT
+    };
+
+    for (size_t i = 0; i < VK_MAX_CONCURRENT_IMAGE_DRAW; i++)
+    {
+        auto result = vkCreateSemaphore(device->device, &semaphoreCreateInfo, nullptr, &imageAvailable[i]);
+        if (result != VK_SUCCESS)
+        {
+            logger.consoleLog("Failed to create the image available Vulkan semaphore! Error code: ", UVK_LOG_TYPE_ERROR, result);
+            throw std::runtime_error(" ");
+        }
+        result = vkCreateSemaphore(device->device, &semaphoreCreateInfo, nullptr, &renderFinished[i]);
+        if (result != VK_SUCCESS)
+        {
+            logger.consoleLog("Failed to create the render finished Vulkan semaphore! Error code: ", UVK_LOG_TYPE_ERROR, result);
+            throw std::runtime_error(" ");
+        }
+        result = vkCreateFence(device->device, &fenceCreateInfo, nullptr, &fences[i]);
+        if (result != VK_SUCCESS)
+        {
+            logger.consoleLog("Failed to create a fence! Error code: ", UVK_LOG_TYPE_ERROR, result);
+            throw std::runtime_error(" ");
+        }
+    }
+}
+
+void UVK::Swapchain::destroySynchronisation()
+{
+    vkDeviceWaitIdle(device->device);
+    for (size_t i = 0; i < VK_MAX_CONCURRENT_IMAGE_DRAW; i++)
+    {
+        vkDestroyFence(device->device, fences[i], nullptr);
+        vkDestroySemaphore(device->device, imageAvailable[i], nullptr);
+        vkDestroySemaphore(device->device, renderFinished[i], nullptr);
     }
 }

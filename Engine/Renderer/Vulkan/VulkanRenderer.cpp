@@ -39,11 +39,14 @@ void UVK::VulkanRenderer::run()
     swapchain.createCommandBuffers();
 
     swapchain.recordCommands();
+    swapchain.createSynchronisation();
 
     while (!glfwWindowShouldClose(global.window.getWindow()))
     {
         glfwPollEvents();
+        swapchain.draw();
     }
+    swapchain.destroySynchronisation();
     swapchain.destroyCommandBuffers();
     swapchain.destroyCommandPool();
     swapchain.destroyFramebuffers();

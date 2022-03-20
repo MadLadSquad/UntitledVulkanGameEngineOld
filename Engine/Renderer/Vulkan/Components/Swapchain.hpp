@@ -30,7 +30,11 @@ namespace UVK
         void createCommandBuffers();
         void destroyCommandBuffers();
 
+        void createSynchronisation();
+        void destroySynchronisation();
+
         void recordCommands();
+        void draw();
 
         VkSurfaceKHR& getSurface();
     private:
@@ -58,6 +62,10 @@ namespace UVK
         VkExtent2D extent{};
 
         VkCommandPool commandPool;
+
+        std::vector<VkSemaphore> imageAvailable;
+        std::vector<VkSemaphore> renderFinished;
+        std::vector<VkFence> fences;
 
         std::vector<SwapchainImage> images;
         std::vector<VkFramebuffer> framebuffers;
