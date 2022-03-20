@@ -18,6 +18,9 @@ while true; do
     esac
 done
 
+cpus=$(grep -c processor /proc/cpuinfo) ## get the cpu threads for maximum performance when compiling
+echo -e "\x1B[32mCopiling with ${cpus} compute jobs!\033[0m"
+
 wdir=$(pwd) # get the working dir since we are going to be returning there
 cd "C:/Program Files (x86)/Microsoft Visual Studio/" || (echo "cannot enter" && exit) # Go to the Visual Studio dir
 VSVer=$(find "2022" -maxdepth 0 2> /dev/null) || VSVer=$(find "2019" -maxdepth 0 2> /dev/null) || VSVer=$(find "2017" -maxdepth 0 2> /dev/null) || echo " " > /dev/null
