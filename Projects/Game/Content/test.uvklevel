@@ -1,0 +1,12 @@
+name: test
+background-colour: [0.622404873, 1, 0.524509788, 1]
+ambient-light: [0, 0, 0, 0]
+actors:
+  - actor: TestEntity
+    id: 0
+    dev-name: a
+    uuid: 12892120174871623168
+    standart: true
+    translation: [0, 0, 0]
+    rotation: [0, 0, 0]
+    scale: [1, 1, 1]

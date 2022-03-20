@@ -34,6 +34,7 @@ mkdir Exported || exit
 cp ../../Config/ . -r
 cp ../../Content/ . -r
 
+cd Config/ || exit
 touch Engine/GameKeybinds.yaml
 echo "\
 bindings:
@@ -41,7 +42,6 @@ bindings:
     val: 65
 " > Engine/GameKeybinds.yaml
 cd .. || exit
-
 echo " "
 echo -e "\x1B[32m--------------------------------------------------------------------------------\033[0m"
 echo -e "\x1B[32mCreating project file with default settings ...\033[0m"
@@ -62,11 +62,14 @@ echo -e "\x1B[32m---------------------------------------------------------------
 echo " "
 
 # We symlink the Engine source folder so that the cmake can work
-ln -s ../../Engine/ Engine/
+ln -s ../../Engine/ Engine
+ln -s ../../UVKBuildTool/ UVKBuildTool
+ln -s ../../UVKShaderCompiler/ UVKShaderCompiler
+cp ../../export.sh .
 
 cd ../../UVKBuildTool/build || exit
 ./UVKBuildTool.exe --install "../../Projects/${prjname}" || ./UVKBuildTool --install "../../Projects/${prjname}" || exit
-cd ../../UVKShaderCompiler/ || exit
+cd ../../UVKShaderCompiler/build || exit
 ./UVKShaderCompiler.exe --compile "../../Projects/${prjname}" || ./UVKShaderCompiler --compile "../../Projects/${prjname}" || exit
 cd "../../Projects/${prjname}" || exit
 cd build || exit

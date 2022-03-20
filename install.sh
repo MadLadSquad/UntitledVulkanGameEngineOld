@@ -71,5 +71,4 @@ MSBuild.exe UVKShaderCompiler.sln -property:Configuration=Release -property:Plat
 cp Release/UVKShaderCompiler.exe . || echo " " || exit
 cp Release/UVKShaderCompilerLib.dll . || cp Release/libUVKShaderCompilerLib.dll . || echo " "
 cp Release/*.dll . || echo " "
-./UVKShaderCompiler.exe --compile || ./UVKShaderCompiler --compile || exit
 cd ../../
