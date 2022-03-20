@@ -29,6 +29,11 @@ cd "${VSVer}" || echo " " > /dev/null # Go to the Visual Studio Version dir
 VSType=$(find "Community" -maxdepth 0 2> /dev/null) || VSType=$(find "Enterprise" -maxdepth 0 2> /dev/null) || VSType=$(find "Professional" -maxdepth 0 2> /dev/null) || echo " " > /dev/null # Set the VS type to one of the 3 types
 cd "${wdir}" || echo " " > /dev/null # Return to the old directory
 setx PATH "C:/Program Files (x86)/Microsoft Visual Studio/${VSVer}/${VSType}/MSBuild/Current/Bin/amd64/;%PATH%" || echo " " > /dev/null # Set the path
+if [ "$VSVer" == "2022" ]; then VSShortVer="17"
+elif [ "$VSVer" == "2019" ]; then VSShortVer="16"
+elif [ "$VSVer" == "2017" ]; then VSShortVer="15"
+else VSShortVer="1"
+fi
 
 mkdir Projects/
 
