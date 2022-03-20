@@ -35,7 +35,12 @@ mkdir Projects/
 cd UVKBuildTool/ || exit
 mkdir build || exit # Will store our compiled binary
 cd build || exit
-cmake .. -G "Visual Studio ${VSShortVer} ${VSVer}" || cmake .. -G "Unix Makefiles" || exit # Generate the UVKBuildTool project files
+
+if [ "$1" == "ci" ]; then
+  cmake .. || exit
+else
+  cmake .. -G "Visual Studio ${VSShortVer} ${VSVer}" || cmake .. -G "Unix Makefiles" || exit # Generate the UVKBuildTool project files
+fi
 
 # Try to run MSBuild first, if it fails we are either on a non-Windows system or the user doesn't have Visual Studio installed
 MSBuild.exe UVKBuildTool.sln -property:Configuration=Release -property:Platform=x64 -property:maxCpuCount="${cpus}" || make -j "${cpus}" || exit
@@ -53,7 +58,12 @@ cd ThirdParty/shaderc/utils/ || exit
 cd ../../../ || exit
 mkdir build
 cd build || exit
-cmake .. -G "Visual Studio ${VSShortVer} ${VSVer}" || cmake .. -G "Unix Makefiles" || exit
+
+if [ "$1" == "ci" ]; then
+  cmake .. "" exit
+else
+  cmake .. -G "Visual Studio ${VSShortVer} ${VSVer}" || cmake .. -G "Unix Makefiles" || exit
+fi
 
 echo " "
 echo -e "\x1B[32m--------------------------------------------------------------------------------\033[0m"
