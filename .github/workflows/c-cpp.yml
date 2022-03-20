@@ -27,7 +27,7 @@ jobs:
       run: git lfs checkout
     - name: Install the engine
       shell: bash
-      run: ./install.sh
+      run: ./install.sh ci
     - name: Install the project
       shell: bash
       run: ./create-project.sh Game
@@ -46,7 +46,7 @@ jobs:
     - name: Set MSBuild env
       uses: microsoft/setup-msbuild@v1.1
     - name: Install the engine
-      run: bash install.sh
+      run: bash install.sh ci
     - name: Install the project
       run: bash create-project.sh Game
   #Windows:

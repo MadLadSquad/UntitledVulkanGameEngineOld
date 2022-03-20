@@ -1,23 +1,24 @@
 #!/bin/bash
-while true; do
-    echo -e "Before we begin, if you're on Windows, check that your Visual Studio instance is installed under \"C:/Program Files (x86)/Microsoft Visual Studio/\"\nand that you have at least Visual Studio 2017 installed!"
-    read -rp "Start installation? Y(Yes)/N(No): " yn
-    case $yn in
-        [Yy]* ) break;;
-        [Nn]* ) exit;;
-        * ) echo "Please answer with Y(Yes) or N(No)!";;
-    esac
-done
+if [ "$1" == "" ]; then
+	while true; do
+    	echo -e "Before we begin, if you're on Windows, check that your Visual Studio instance is installed under \"C:/Program Files (x86)/Microsoft Visual Studio/\"\nand that you have at least Visual Studio 2017 installed!"
+    	read -rp "Start installation? Y(Yes)/N(No): " yn
+    	case $yn in
+        	[Yy]* ) break;;
+        	[Nn]* ) exit;;
+        	* ) echo "Please answer with Y(Yes) or N(No)!";;
+    	esac
+	done
 
-while true; do
-    read -rp "Do you want to download offline documentation Y(Yes)/N(No): " yn
-    case $yn in
-        [Yy]* ) git clone https://github.com/MadLadSquad/UntitledVulkanGameEngine.wiki.git docs/; break;;
-        [Nn]* ) break;;
-        * ) echo "Please answer with Y(Yes) or N(No)!";;
-    esac
-done
-
+	while true; do
+    	read -rp "Do you want to download offline documentation Y(Yes)/N(No): " yn
+    	case $yn in
+        	[Yy]* ) git clone https://github.com/MadLadSquad/UntitledVulkanGameEngine.wiki.git docs/; break;;
+        	[Nn]* ) break;;
+        	* ) echo "Please answer with Y(Yes) or N(No)!";;
+    	esac
+	done
+fi
 cpus=$(grep -c processor /proc/cpuinfo) ## get the cpu threads for maximum performance when compiling
 echo -e "\x1B[32mCopiling with ${cpus} compute jobs!\033[0m"
 
