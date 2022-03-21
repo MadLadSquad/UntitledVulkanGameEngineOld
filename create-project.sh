@@ -61,10 +61,10 @@ echo -e "\x1B[32mCreating symbolic links and generating files ...\033[0m"
 echo -e "\x1B[32m--------------------------------------------------------------------------------\033[0m"
 echo " "
 
-# We symlink the Engine source folder so that the cmake can work
-ln -rs "../../Engine/" Engine || mklink.exe /D Engine ../../Engine/
-ln -rs "../../UVKBuildTool/" UVKBuildTool || mklink.exe /D UVKBuildTool ../../UVKBuildTool/
-ln -rs "../../UVKShaderCompiler/" UVKShaderCompiler || mklink.exe /D UVKShaderCompiler ../../UVKShaderCompiler/
+# We symlink the Engine source folder so that 
+ln -rs "../../Engine/" Engine || cp ../../Engine/ . -r
+ln -rs "../../UVKBuildTool/" UVKBuildTool || cp ../../UVKBuildTool/ . -r
+ln -rs "../../UVKShaderCompiler/" UVKShaderCompiler || cp ../../UVKShaderCompiler/ . -r
 cp ../../export.sh .
 
 cd ../../UVKBuildTool/build || exit
