@@ -1,5 +1,3 @@
-// WorldSettings.hpp
-// Last update 18/2/2022 by Madman10K
 #pragma once
 #include <Core.hpp>
 #include <Renderer/Textures/Texture.hpp>
@@ -14,6 +12,6 @@
  */
 namespace WorldSettings
 {
-    bool display(UVK::FVector4& colour, UVK::FVector4& ambientLight, std::string& name, bool& bShow);
+    bool display(UVK::FVector4& colour, UVK::FVector4& ambientLight, std::string& name, bool& bShow) noexcept;
 }
 #endif

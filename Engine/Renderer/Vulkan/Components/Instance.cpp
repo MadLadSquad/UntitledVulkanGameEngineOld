@@ -1,5 +1,3 @@
-// Instance.cpp
-// Last update 26/02/2022 by Madman10K
 #include "Instance.hpp"
 #ifdef DEVELOPMENT
     #define VK_DEBUG
@@ -7,7 +5,7 @@
 #include <vulkan/vulkan.h>
 #include <glfw3.h>
 
-void UVK::VKInstance::create()
+void UVK::VKInstance::create() noexcept
 {
     // Metadata for the instance
     constexpr VkApplicationInfo applicationInfo =
@@ -35,7 +33,7 @@ void UVK::VKInstance::create()
     if (!checkInstanceExtensionsSupport(instanceExtensions.data(), instanceExtensions.size()))
     {
         logger.consoleLog("Couldn't load all required extensions!", UVK_LOG_TYPE_ERROR);
-        throw std::runtime_error(" ");
+        std::terminate();
     }
 
     // Creation information for the Vulkan instance
@@ -52,19 +50,19 @@ void UVK::VKInstance::create()
     if (!checkValidationLayerSupport(instanceLayers))
     {
         logger.consoleLog("Couldn't create validation layers!", UVK_LOG_TYPE_ERROR);
-        throw std::runtime_error(" ");
+        std::terminate();
     }
 
     auto result = vkCreateInstance(&instanceInfo, nullptr, &instance);
     if (result != VK_SUCCESS)
     {
         logger.consoleLog("Could not create a Vulkan instance! Error code: ", UVK_LOG_TYPE_ERROR, result);
-        throw std::runtime_error(" ");
+        std::terminate();
     }
     createDebugCallback();
 }
 
-void UVK::VKInstance::destroy()
+void UVK::VKInstance::destroy() noexcept
 {
 #ifdef DEVELOPMENT
     PFN_vkDestroyDebugReportCallbackEXT destroyDebugReportCallback = VK_NULL_HANDLE;
@@ -74,7 +72,7 @@ void UVK::VKInstance::destroy()
     vkDestroyInstance(instance, nullptr);
 }
 
-bool UVK::VKInstance::checkInstanceExtensionsSupport(const char** extensions, uint32_t count)
+bool UVK::VKInstance::checkInstanceExtensionsSupport(const char** extensions, uint32_t count) noexcept
 {
     uint32_t extensionsNum = 0;
     vkEnumerateInstanceExtensionProperties(nullptr, &extensionsNum, nullptr);
@@ -101,17 +99,17 @@ exit_nested_loop:
     return true;
 }
 
-VkInstance& UVK::VKInstance::data()
+VkInstance& UVK::VKInstance::data() noexcept
 {
     return instance;
 }
 
-UVK::VKInstance::~VKInstance()
+UVK::VKInstance::~VKInstance() noexcept
 {
     destroy();
 }
 
-bool UVK::VKInstance::checkValidationLayerSupport(const std::vector<const char*>& validationLayers)
+bool UVK::VKInstance::checkValidationLayerSupport(const std::vector<const char*>& validationLayers) noexcept
 {
     uint32_t layerCount;
     vkEnumerateInstanceLayerProperties(&layerCount, nullptr);
@@ -138,7 +136,7 @@ bool UVK::VKInstance::checkValidationLayerSupport(const std::vector<const char*>
     return true;
 }
 
-void UVK::VKInstance::createDebugCallback()
+void UVK::VKInstance::createDebugCallback() noexcept
 {
 #ifdef DEVELOPMENT
     VkDebugReportCallbackCreateInfoEXT callbackCreateInfo =
@@ -153,7 +151,7 @@ void UVK::VKInstance::createDebugCallback()
     if (result != VK_SUCCESS)
     {
         logger.consoleLog("Failed to create a debug callback! Error code: ", UVK_LOG_TYPE_ERROR, result);
-        throw std::runtime_error(" ");
+        std::terminate();
     }
 #endif
 }

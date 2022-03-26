@@ -1,5 +1,3 @@
-// CoreComponent.hpp
-// Last update 22/9/2021 by Madman10K
 #pragma once
 #include <iostream>
 #include <Core/Types.hpp>
@@ -22,7 +20,7 @@ namespace UVK
         FVector scale = { 1.0f, 1.0f, 1.0f };
 
         UUID uuid;
-        [[nodiscard]] const bool& standart() const
+        [[nodiscard]] const bool& standart() const noexcept
         {
             return bHasUUID;
         }

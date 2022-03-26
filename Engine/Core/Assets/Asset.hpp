@@ -1,5 +1,3 @@
-// Asset.hpp
-// Last update 7/2/2022 by Madman10K
 #pragma once
 #include <Core/Types.hpp>
 #include <Core/Defines.hpp>

@@ -1,5 +1,3 @@
-// Window.cpp
-// Last update 29/11/2021 by Madman10K
 #include <GL/glew.h>
 #include "Window.hpp"
 #include <glfw3.h>
@@ -7,7 +5,7 @@
 #include <Engine/Core/Core/Global.hpp>
 #include <stb/stb_image.h>
 
-double UVK::WindowInternal::getYMousePositionChange()
+double UVK::WindowInternal::getYMousePositionChange() noexcept
 {
     auto a = (float)offsetY;
     offsetY = 0.0f;
@@ -15,7 +13,7 @@ double UVK::WindowInternal::getYMousePositionChange()
     return a;
 }
 
-double UVK::WindowInternal::getXMousePositionChange()
+double UVK::WindowInternal::getXMousePositionChange() noexcept
 {
     auto a = (float)offsetX;
     offsetX = 0.0f;
@@ -23,28 +21,28 @@ double UVK::WindowInternal::getXMousePositionChange()
     return a;
 }
 
-void UVK::WindowInternal::setTitle(UVK::String newTitle)
+void UVK::WindowInternal::setTitle(UVK::String newTitle) noexcept
 {
     glfwSetWindowTitle(windowMain, newTitle);
     resources.name = newTitle;
 }
 
-GLFWwindow* UVK::WindowInternal::getWindow() const
+GLFWwindow* UVK::WindowInternal::getWindow() const noexcept
 {
     return windowMain;
 }
 
-UVK::FVector2 UVK::WindowInternal::getLastMousePosition() const
+UVK::FVector2 UVK::WindowInternal::getLastMousePosition() const noexcept
 {
     return { lastPosX, lastPosY };
 }
 
-UVK::FVector2 UVK::WindowInternal::getCurrentMousePosition() const
+UVK::FVector2 UVK::WindowInternal::getCurrentMousePosition() const noexcept
 {
     return { posX, posY };
 }
 
-void UVK::WindowInternal::configureCallBacks()
+void UVK::WindowInternal::configureCallBacks() noexcept
 {
     glfwSetFramebufferSizeCallback(windowMain, framebufferSizeCallback);
     glfwSetKeyCallback(windowMain, keyboardInputCallback);
@@ -53,7 +51,7 @@ void UVK::WindowInternal::configureCallBacks()
     glfwSetScrollCallback(windowMain, scrollInputCallback);
 }
 
-void UVK::WindowInternal::framebufferSizeCallback(GLFWwindow* window, int width, int height)
+void UVK::WindowInternal::framebufferSizeCallback(GLFWwindow* window, int width, int height) noexcept
 {
     auto* windowInst = static_cast<WindowInternal*>(glfwGetWindowUserPointer(window));
 
@@ -71,7 +69,7 @@ void UVK::WindowInternal::framebufferSizeCallback(GLFWwindow* window, int width,
     }
 }
 
-void UVK::WindowInternal::createWindow()
+void UVK::WindowInternal::createWindow() noexcept
 {
     openConfig();
 
@@ -165,21 +163,21 @@ void UVK::WindowInternal::createWindow()
     glfwSetWindowUserPointer(windowMain, this);
 }
 
-void UVK::WindowInternal::destroyWindow()
+void UVK::WindowInternal::destroyWindow() noexcept
 {
     glfwDestroyWindow(windowMain);
     glfwTerminate();
 
 }
 
-void UVK::WindowInternal::dumpConfig()
+void UVK::WindowInternal::dumpConfig() noexcept
 {
     saveWindowSettings();
     saveEditorKeybinds();
     saveGameKeybinds();
 }
 
-void UVK::WindowInternal::openConfig()
+void UVK::WindowInternal::openConfig() noexcept
 {
     YAML::Node out;
 
@@ -187,7 +185,7 @@ void UVK::WindowInternal::openConfig()
 
     try
     {
-        out = YAML::LoadFile("../Config/Settings/Window.yaml");
+        out = YAML::LoadFile(std::string(UVK_CONFIG_SETTINGS_PATH) + "Window.yaml");
     }
     catch (YAML::BadFile&)
     {
@@ -225,7 +223,7 @@ void UVK::WindowInternal::openConfig()
         bValid = true;
         try
         {
-            keybinds = YAML::LoadFile("../Config/Engine/EditorKeybinds.yaml");
+            keybinds = YAML::LoadFile(std::string(UVK_CONFIG_ENGINE_PATH) + "EditorKeybinds.yaml");
         }
         catch (YAML::BadFile&)
         {
@@ -254,7 +252,7 @@ void UVK::WindowInternal::openConfig()
     bValid = true;
     try
     {
-        keybinds = YAML::LoadFile("../Config/Engine/GameKeybinds.yaml");
+        keybinds = YAML::LoadFile(std::string(UVK_CONFIG_ENGINE_PATH) + "GameKeybinds.yaml");
     }
     catch (YAML::BadFile&)
     {
@@ -278,7 +276,7 @@ void UVK::WindowInternal::openConfig()
     }
 }
 
-void UVK::WindowInternal::keyboardInputCallback(GLFWwindow* window, int key, int scanCode, int action, int mods)
+void UVK::WindowInternal::keyboardInputCallback(GLFWwindow* window, int key, int scanCode, int action, int mods) noexcept
 {
     for (auto& a : global.inputActionList)
     {
@@ -292,7 +290,7 @@ void UVK::WindowInternal::keyboardInputCallback(GLFWwindow* window, int key, int
     wind->keysArr[key] = action;
 }
 
-void UVK::WindowInternal::mouseCursorPositionCallback(GLFWwindow* window, double xpos, double ypos)
+void UVK::WindowInternal::mouseCursorPositionCallback(GLFWwindow* window, double xpos, double ypos) noexcept
 {
     auto* windowInst = static_cast<WindowInternal*>(glfwGetWindowUserPointer(window));
 
@@ -315,7 +313,7 @@ void UVK::WindowInternal::mouseCursorPositionCallback(GLFWwindow* window, double
     windowInst->lastPosY = ypos;
 }
 
-void UVK::WindowInternal::mouseKeyInputCallback(GLFWwindow* window, int button, int action, int mods)
+void UVK::WindowInternal::mouseKeyInputCallback(GLFWwindow* window, int button, int action, int mods) noexcept
 {
     for (auto& a : global.inputActionList)
     {
@@ -329,31 +327,31 @@ void UVK::WindowInternal::mouseKeyInputCallback(GLFWwindow* window, int button, 
     wind->keysArr[button] = action;
 }
 
-void UVK::WindowInternal::scrollInputCallback(GLFWwindow* window, double xoffset, double yoffset)
+void UVK::WindowInternal::scrollInputCallback(GLFWwindow* window, double xoffset, double yoffset) noexcept
 {
     auto* windowInst = static_cast<WindowInternal*>(glfwGetWindowUserPointer(window));
 
     windowInst->scroll = UVK::FVector2(xoffset, yoffset);
 }
 
-const std::array<uint16_t, 350>& UVK::WindowInternal::getKeys()
+const std::array<uint16_t, 350>& UVK::WindowInternal::getKeys() noexcept
 {
     return keysArr;
 }
 
-UVK::FVector2 UVK::WindowInternal::getScroll()
+UVK::FVector2 UVK::WindowInternal::getScroll() noexcept
 {
     FVector2 ret = scroll;
     scroll = FVector2(0.0f, 0.0f);
     return ret;
 }
 
-UVK::WindowInternal::WindowInternal()
+UVK::WindowInternal::WindowInternal() noexcept
 {
     std::fill(keysArr.begin(), keysArr.end(), false);
 }
 
-void UVK::WindowInternal::setCursorVisibility(bool bIsVisible)
+void UVK::WindowInternal::setCursorVisibility(bool bIsVisible) noexcept
 {
     if (bIsVisible)
     {
@@ -365,27 +363,27 @@ void UVK::WindowInternal::setCursorVisibility(bool bIsVisible)
     }
 }
 
-int UVK::WindowInternal::getBufferWidth() const
+int UVK::WindowInternal::getBufferWidth() const noexcept
 {
     return (int)resources.size.x;
 }
 
-UVK::FVector2 UVK::WindowInternal::getMousePositionChange()
+UVK::FVector2 UVK::WindowInternal::getMousePositionChange() noexcept
 {
     return { getXMousePositionChange(), getYMousePositionChange() };
 }
 
-int UVK::WindowInternal::getBufferHeight() const
+int UVK::WindowInternal::getBufferHeight() const noexcept
 {
     return (int)resources.size.y;
 }
 
-UVK::WindowData& UVK::WindowInternal::data()
+UVK::WindowData& UVK::WindowInternal::data() noexcept
 {
     return resources;
 }
 
-void UVK::WindowInternal::saveEditorKeybinds()
+void UVK::WindowInternal::saveEditorKeybinds() noexcept
 {
     YAML::Emitter out;
     out << YAML::BeginMap << YAML::Key << "bindings" << YAML::BeginSeq;
@@ -400,12 +398,12 @@ void UVK::WindowInternal::saveEditorKeybinds()
 
     out << YAML::EndSeq << YAML::EndMap;
 
-    std::ofstream file("../Config/Engine/EditorKeybinds.yaml");
+    std::ofstream file(std::string(UVK_CONFIG_ENGINE_PATH) + "EditorKeybinds.yaml");
     file << out.c_str();
     file.close();
 }
 
-void UVK::WindowInternal::saveGameKeybinds()
+void UVK::WindowInternal::saveGameKeybinds() noexcept
 {
     YAML::Emitter out;
     out << YAML::BeginMap << YAML::Key << "bindings" << YAML::BeginSeq;
@@ -420,12 +418,12 @@ void UVK::WindowInternal::saveGameKeybinds()
 
     out << YAML::EndSeq << YAML::EndMap;
 
-    std::ofstream file("../Config/Engine/GameKeybinds.yaml");
+    std::ofstream file(std::string(UVK_CONFIG_ENGINE_PATH) + "GameKeybinds.yaml");
     file << out.c_str();
     file.close();
 }
 
-void UVK::WindowInternal::saveWindowSettings() const
+void UVK::WindowInternal::saveWindowSettings() const noexcept
 {
     YAML::Emitter out;
     out << YAML::BeginMap << YAML::Key << "image" << YAML::Value << resources.image;
@@ -434,61 +432,57 @@ void UVK::WindowInternal::saveWindowSettings() const
     out << YAML::Key << "fullscreen" << YAML::Value << resources.fullscreen;
     out << YAML::Key << "window-name" << YAML::Value << resources.name;
 
-    std::ofstream fileout("../Config/Settings/Window.yaml");
+    std::ofstream fileout(std::string(UVK_CONFIG_SETTINGS_PATH) + "Window.yaml");
     fileout << out.c_str();
     fileout.close();
 }
 
-UVK::FVector2 UVK::Input::getLastMousePosition()
+UVK::FVector2 UVK::Input::getLastMousePosition() noexcept
 {
     return global.window.getLastMousePosition();
 }
 
-UVK::FVector2 UVK::Input::getCurrentMousePosition()
+UVK::FVector2 UVK::Input::getCurrentMousePosition() noexcept
 {
     return global.window.getCurrentMousePosition();
 }
 
-UVK::FVector2 UVK::Input::getMousePositionChange()
+UVK::FVector2 UVK::Input::getMousePositionChange() noexcept
 {
     return global.window.getMousePositionChange();
 }
 
-UVK::FVector2 UVK::Input::getScroll()
+UVK::FVector2 UVK::Input::getScroll() noexcept
 {
     return global.window.getScroll();
 }
 
-const UVK::InputAction& UVK::Input::getAction(const std::string& name)
+const UVK::InputAction& UVK::Input::getAction(const std::string& name) noexcept
 {
     for (auto& a : global.inputActionList)
-    {
         if (a.name == name)
-        {
             return a;
-        }
-    }
 
     logger.consoleLog("Input action with name: ", UVK_LOG_TYPE_ERROR, name, ", does not exist!");
-    throw std::runtime_error(" ");
+    std::terminate();
 }
 
-uint8_t UVK::Input::getKey(uint16_t key)
+uint8_t UVK::Input::getKey(uint16_t key) noexcept
 {
     return global.window.getKeys()[key];
 }
 
-std::vector<UVK::InputAction>& UVK::Input::getActions()
+std::vector<UVK::InputAction>& UVK::Input::getActions() noexcept
 {
     return global.inputActionList;
 }
 
-bool UVK::InputAction::operator!=(const uint8_t& st) const
+bool UVK::InputAction::operator!=(const uint8_t& st) const noexcept
 {
     return state != st;
 }
 
-bool UVK::InputAction::operator==(const uint8_t& st) const
+bool UVK::InputAction::operator==(const uint8_t& st) const noexcept
 {
     return state == st;
 }

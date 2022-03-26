@@ -1,5 +1,3 @@
-// Interfaces.hpp
-// Last update 1/8/2021 by Madman10K
 #pragma once
 #include "Interfaces/SettingsManager.hpp"
 #include "Interfaces/UInterface.hpp"

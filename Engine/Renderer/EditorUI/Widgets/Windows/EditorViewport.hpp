@@ -1,5 +1,3 @@
-// EditorViewport.hpp
-// Last update 18/2/2022 by Madman10K
 #pragma once
 #include <Generated/BuildDef.hpp>
 #ifndef PRODUCTION
@@ -15,6 +13,6 @@ namespace UVK
  */
 namespace EditorViewport
 {
-    void display(UVK::GLFrameBuffer& fb, int& viewportWidth, int& viewportHeight, bool& bShow, UVK::Camera& camera, UVK::Actor& entity, glm::mat4& projection, bool& bFocused);
+    void display(UVK::GLFrameBuffer& fb, int& viewportWidth, int& viewportHeight, bool& bShow, UVK::Camera& camera, UVK::Actor& entity, glm::mat4& projection, bool& bFocused) noexcept;
 }
 #endif

@@ -1,5 +1,3 @@
-// SceneHierarchy.cpp
-// Last update 18/2/2022 by Madman10K
 #include "SceneHierarchy.hpp"
 #ifndef PRODUCTION
 #include <Core/Actor.hpp>
@@ -9,7 +7,7 @@
 #include <State/StateTracker.hpp>
 #include <cpp/imgui_stdlib.h>
 
-void SceneHierarchy::duplicateFolder(std::vector<UVK::EditorFolder>& folders, UVK::EditorFolder* folder, const bool& bDrawHighlighted, const bool& nopop)
+void SceneHierarchy::duplicateFolder(std::vector<UVK::EditorFolder>& folders, UVK::EditorFolder* folder, const bool& bDrawHighlighted, const bool& nopop) noexcept
 {
     if (folder != nullptr && folder->bValid)
     {
@@ -27,7 +25,7 @@ void SceneHierarchy::duplicateFolder(std::vector<UVK::EditorFolder>& folders, UV
     }
 }
 
-UVK::Actor SceneHierarchy::duplicateEntity(UVK::Actor& currentPopupEntity, const bool& bDrawHighlighted, const bool& nopop, UVK::EditorFolder* folder)
+UVK::Actor SceneHierarchy::duplicateEntity(UVK::Actor& currentPopupEntity, const bool& bDrawHighlighted, const bool& nopop, UVK::EditorFolder* folder) noexcept
 {
     if (!currentPopupEntity.valid() || !currentPopupEntity.has<UVK::CoreComponent>())
         return currentPopupEntity;
@@ -67,7 +65,7 @@ UVK::Actor SceneHierarchy::duplicateEntity(UVK::Actor& currentPopupEntity, const
     return actor;
 }
 
-void SceneHierarchy::destroyEntity(UVK::Actor& selectedEntity)
+void SceneHierarchy::destroyEntity(UVK::Actor& selectedEntity) noexcept
 {
     if (!selectedEntity.has<UVK::CoreComponent>())
         return;
@@ -128,7 +126,7 @@ void SceneHierarchy::destroyEntity(UVK::Actor& selectedEntity)
     }
 }
 
-UVK::Actor SceneHierarchy::addEntity(int& entNum)
+UVK::Actor SceneHierarchy::addEntity(int& entNum) noexcept
 {
     //registry.createActor(static_cast<std::string>("NewEntity" + std::to_string(entNum)).c_str());
     //UVK::Actor actor(static_cast<std::string>("NewEntity" + std::to_string(entNum)), 0, "a");
@@ -161,7 +159,7 @@ UVK::Actor SceneHierarchy::addEntity(int& entNum)
     return UVK::Actor(a);
 }
 
-bool SceneHierarchy::display(UVK::Actor& selectedEntity, int& entNum, bool& bShow, std::vector<UVK::EditorFolder>& folders, const bool& bReset)
+bool SceneHierarchy::display(UVK::Actor& selectedEntity, int& entNum, bool& bShow, std::vector<UVK::EditorFolder>& folders, const bool& bReset) noexcept
 {
     static std::vector<UVK::EditorFolder*> selectedFolders;
     static UVK::EditorFolder* selectedFolder = nullptr;

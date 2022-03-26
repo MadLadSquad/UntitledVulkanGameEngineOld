@@ -1,5 +1,3 @@
-// EditorViewport.cpp
-// Last update 18/2/2022 by Madman10K
 #include "EditorViewport.hpp"
 #ifndef PRODUCTION
 #include <Engine/Core/Core/Global.hpp>
@@ -13,7 +11,7 @@
 #include <GameFramework/Components/Components/CoreComponent.hpp>
 #include <Renderer/EditorUI/Classes/EditorLevel.hpp>
 
-void EditorViewport::display(UVK::GLFrameBuffer& fb, int& viewportWidth, int& viewportHeight, bool& bShow, UVK::Camera& camera, UVK::Actor& entity, glm::mat4& projection, bool& bFocused)
+void EditorViewport::display(UVK::GLFrameBuffer& fb, int& viewportWidth, int& viewportHeight, bool& bShow, UVK::Camera& camera, UVK::Actor& entity, glm::mat4& projection, bool& bFocused) noexcept
 {
     ImGui::Begin("Viewport##1", &bShow);
 

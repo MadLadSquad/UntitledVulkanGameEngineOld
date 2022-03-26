@@ -1,5 +1,3 @@
-// About.hpp
-// Last update 18/2/2022 by Madman10K
 #pragma once
 #include <Generated/BuildDef.hpp>
 #ifndef PRODUCTION
@@ -10,6 +8,6 @@
  */
 namespace About
 {
-    void display(std::string& engineVersion, std::string& projectName, std::string& projectVersion, UVK::Texture& logo, bool& bShow);
+    void display(std::string& engineVersion, std::string& projectName, std::string& projectVersion, UVK::Texture& logo, bool& bShow) noexcept;
 }
 #endif

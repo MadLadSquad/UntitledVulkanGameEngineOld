@@ -1,5 +1,3 @@
-// Camera.cpp
-// Last update 7/2/2022 by Madman10K
 #pragma once
 #include "Projection.hpp"
 #include <Core/Interfaces/WindowInterface.hpp>
@@ -23,7 +21,7 @@ namespace UVK
          * @param rot Rotation offset of the camera from the parent
          * @param up What direction is the up direction
          */
-        Camera(const CoreComponent& coreComponent, FVector translation, FVector rotation, FVector up);
+        Camera(const CoreComponent& coreComponent, FVector translation, FVector rotation, FVector up) noexcept;
 
         /**
          * @brief Constructs and initializes a camera for a Pawn
@@ -32,14 +30,14 @@ namespace UVK
          * @param rot Rotation offset of the camera from the parent
          * @param up What direction is the up direction
          */
-        void init(const CoreComponent& coreComponent, FVector translation, FVector rotation, FVector up);
+        void init(const CoreComponent& coreComponent, FVector translation, FVector rotation, FVector up) noexcept;
 
-        [[nodiscard]] glm::mat4 calculateViewMatrixRH() const;
-        [[nodiscard]] glm::mat4 calculateViewMatrixLH() const;
+        [[nodiscard]] glm::mat4 calculateViewMatrixRH() const noexcept;
+        [[nodiscard]] glm::mat4 calculateViewMatrixLH() const noexcept;
 
-        void recalculate();
+        void recalculate() noexcept;
 
-        Projection& projection();
+        Projection& projection() noexcept;
 
         /**
          * @brief Automatically constructs a camera and it's corresponding view matrix, should be used when initially
@@ -52,7 +50,7 @@ namespace UVK
          * @param fov Describes the horizontal field of view of the perspective projection
          * @param aspectRatio The aspect ratio of the screen/viewport for the perspective projection
          */
-        static Camera makeCamera(const CoreComponent& coreComponent, FVector translation = FVector(0.0f, 0.0f, 0.0f), FVector rotation = FVector(0.0f, 0.0f, 0.0f), FVector up = FVector(0.0f, 0.0f, 0.0f), FVector2 planes = FVector2(0.1f, 100.0f), float fov = 90.0f, float aspectRatio = Window::windowSize().x / Window::windowSize().y);
+        static Camera makeCamera(const CoreComponent& coreComponent, FVector translation = FVector(0.0f, 0.0f, 0.0f), FVector rotation = FVector(0.0f, 0.0f, 0.0f), FVector up = FVector(0.0f, 0.0f, 0.0f), FVector2 planes = FVector2(0.1f, 100.0f), float fov = 90.0f, float aspectRatio = Window::windowSize().x / Window::windowSize().y) noexcept;
 
         FVector front{};
         FVector up{};

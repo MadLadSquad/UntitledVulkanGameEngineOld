@@ -1,5 +1,3 @@
-// GLEntityManager.hpp
-// Last update 7/2/2022 by Madman10K
 #pragma once
 
 namespace UVK
@@ -13,7 +11,7 @@ namespace UVK
     private:
         friend class VulkanRenderer;
 
-        static void tick(Camera* camera);
-        static void clean();
+        static void tick(Camera* camera) noexcept;
+        static void clean() noexcept;
     };
 }

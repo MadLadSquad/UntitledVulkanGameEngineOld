@@ -1,5 +1,3 @@
-// SettingsManager.hpp
-// Last update 7/2/2022 by Madman10K
 #pragma once
 
 namespace UVK
@@ -14,13 +12,13 @@ namespace UVK
         void operator=(SettingsManager const&) = delete;
 
         // Saves all settings
-        static void saveSettings();
-        static void saveRendererSettings();
-        static void saveEditorKeybindSettings();
-        static void saveKeybindSettings();
-        static void saveWindowSettings();
-        [[maybe_unused]] static void saveWindowAndKeybindSettings();
+        static void saveSettings() noexcept;
+        static void saveRendererSettings() noexcept;
+        static void saveEditorKeybindSettings() noexcept;
+        static void saveKeybindSettings() noexcept;
+        static void saveWindowSettings() noexcept;
+        [[maybe_unused]] static void saveWindowAndKeybindSettings() noexcept;
 
-        static RendererSettings& getRendererSettings();
+        static RendererSettings& getRendererSettings() noexcept;
     };
 }

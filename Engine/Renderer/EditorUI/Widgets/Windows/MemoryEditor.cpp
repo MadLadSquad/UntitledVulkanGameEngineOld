@@ -1,11 +1,9 @@
-// MemoryEditor.cpp
-// Last update 18/2/2022 by Madman10K
 #include "MemoryEditor.hpp"
 #ifndef PRODUCTION
 #include <imgui.h>
 #include <imguiex/memory_editor/imgui_memory_editor.h>
 
-bool ImGuiMemoryEditor::display(bool& bShow)
+bool ImGuiMemoryEditor::display(bool& bShow) noexcept
 {
     ImGui::Begin("Memory Editor", &bShow);
     int hello = 50;

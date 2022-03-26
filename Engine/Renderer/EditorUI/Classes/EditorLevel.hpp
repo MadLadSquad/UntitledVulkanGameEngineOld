@@ -1,5 +1,3 @@
-// EditorLevel.hpp
-// Last update 7/2/2022 by Madman10K
 #pragma once
 #include "EditorGameMode.hpp"
 #include <GameFramework/GameplayClasses/Level/Level.hpp>

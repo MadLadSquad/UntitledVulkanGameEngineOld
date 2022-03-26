@@ -1,6 +1,3 @@
-// Engine.hpp
-// Last update 26/10/2021 by Madman10K
-
 // A header file containing every include you would want from the engine
 #pragma once
 #include "Renderer/Renderer.hpp"

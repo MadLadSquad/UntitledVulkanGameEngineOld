@@ -1,5 +1,3 @@
-// WindowInterface.hpp
-// Last update 7/2/2022 by Madman10K
 #pragma once
 #include <Core/Types.hpp>
 
@@ -12,13 +10,13 @@ namespace UVK
         Window(const Window&) = delete;
         void operator=(Window const&) = delete;
 
-        static void setTitle(UVK::String name);
-        static void setCursorVisibility(bool bVisible);
+        static void setTitle(UVK::String name) noexcept;
+        static void setCursorVisibility(bool bVisible) noexcept;
 
-        static FVector2& windowSize();
-        static bool& fullscreen();
+        static FVector2& windowSize() noexcept;
+        static bool& fullscreen() noexcept;
 
-        static std::string& name();
-        static std::string& iconLocation();
+        static std::string& name() noexcept;
+        static std::string& iconLocation() noexcept;
     };
 }

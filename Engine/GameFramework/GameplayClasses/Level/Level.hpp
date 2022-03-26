@@ -1,5 +1,3 @@
-// Level.hpp
-// Last update 7/2/2022 by Madman10K
 #pragma once
 #include <Core.hpp>
 #include "../GameMode.hpp"
@@ -20,7 +18,7 @@ namespace UVK
         virtual void tick(float deltaTime) = 0;
         virtual void beginPlay() = 0;
         virtual void endPlay() = 0;
-        virtual ~Level()
+        virtual ~Level() noexcept
         {
             delete gameMode;
         }
@@ -30,7 +28,7 @@ namespace UVK
          * @param location the ouput location of the file
          * @param name the name of the level IT IS NOT INCLUDED IN LOCATION AND IS ONLY USED FOR SAVING
          */
-        static void save(String location);
+        static void save(String location) noexcept;
 
         /**
          * @brief Opens a level file
@@ -54,7 +52,7 @@ namespace UVK
         }
 
         template<typename T>
-        static T* cast(Level* lvl)
+        static T* cast(Level* lvl) noexcept
         {
             return static_cast<T*>(lvl);
         }
@@ -64,35 +62,35 @@ namespace UVK
         /**
          * @brief Begin event autohandler handles all events from the GameInstance and GameMode
          */
-        void beginAutohandle() const;
+        void beginAutohandle() const noexcept;
 
         /**
          * @brief Tick event autohandler handles all events from the GameInstance and GameMode
          */
-        void tickAutohandle(float deltaTime) const;
+        void tickAutohandle(float deltaTime) const noexcept;
 
         /**
          * @brief End event autohandler handles all events from the GameInstance and GameMode
          */
-        void endAutohandle() const;
+        void endAutohandle() const noexcept;
 
-        static FVector4& getAmbientLighting();
-        static FVector4& getSceneColour();
-        static std::string& getLevelName();
+        static FVector4& getAmbientLighting() noexcept;
+        static FVector4& getSceneColour() noexcept;
+        static std::string& getLevelName() noexcept;
 
-        static PlayerController* getPlayerController(Level* lvl);
-        static Pawn* getPawn(Level* lvl);
-        static GameState* getGameState(Level* lvl);
-        static PlayerState* getPlayerState(Level* lvl);
+        static PlayerController* getPlayerController(Level* lvl) noexcept;
+        static Pawn* getPawn(Level* lvl) noexcept;
+        static GameState* getGameState(Level* lvl) noexcept;
+        static PlayerState* getPlayerState(Level* lvl) noexcept;
     private:
         friend class UVKGlobal;
 
-        static void openInternal(String file, bool first = false);
+        static void openInternal(String file, bool first = false) noexcept;
         /**
          * @brief Utility function to save an entity
          * @param out a YAML::Emitter reference to the emitter
          * @param act actor to be saved
          */
-        static void saveEntity(YAML::Emitter& out, entt::entity act);
+        static void saveEntity(YAML::Emitter& out, entt::entity act) noexcept;
     };
 }

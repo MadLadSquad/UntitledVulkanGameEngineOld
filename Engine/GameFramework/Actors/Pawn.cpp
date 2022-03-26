@@ -1,10 +1,8 @@
-// Pawn.cpp
-// Last update 22/9/2021 by Madman10K
 #include "Pawn.hpp"
 #include <GameFramework/GameplayClasses/Level/Level.hpp>
 #include "FallbackPawn.hpp"
 
-void UVK::Pawn::destroyPawn(Pawn* pw)
+void UVK::Pawn::destroyPawn(Pawn* pw) noexcept
 {
     bool bUsingFallbackPawn = false;
     if (global.currentLevel->gameMode->playerController->pawn == pw)
@@ -22,7 +20,7 @@ void UVK::Pawn::destroyPawn(Pawn* pw)
     }
 }
 
-UVK::Pawn::~Pawn()
+UVK::Pawn::~Pawn() noexcept
 {
     actor.destroy();
 }

@@ -1,11 +1,9 @@
-// Tools.cpp
-// Last update 18/2/2022 by Madman10K
 #include "Tools.hpp"
 #ifndef PRODUCTION
 #include <Renderer/EditorUI/Modules/EditorModule.hpp>
 #include <imgui.h>
 
-bool Tools::display(const UVK::EditorModuleManager& module, bool& bShow)
+bool Tools::display(const UVK::EditorModuleManager& module, bool& bShow) noexcept
 {
     bool bReturn = false;
     static UVK::CurrentToolType currentToolType = UVK::CURRENT_TOOL_TYPE_USEFUL_OBJECTS;

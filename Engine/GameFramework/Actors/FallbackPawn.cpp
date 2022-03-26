@@ -1,5 +1,3 @@
-// FallbackPawn.cpp
-// Last update 22/9/2021 by Madman10K
 #include "FallbackPawn.hpp"
 #include <GameFramework/Components/Components/CoreComponent.hpp>
 

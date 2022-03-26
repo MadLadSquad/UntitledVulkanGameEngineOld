@@ -1,11 +1,9 @@
-// TerminalEmulator.cpp
-// Last update 18/2/2022 by Madman10K
 #include "TerminalEmulator.hpp"
 #ifndef PRODUCTION
 #include <imgui.h>
 #include <cpp/imgui_stdlib.h>
 
-bool TerminalEmulator::display(std::string& terminalCommand, bool& bFinalisedCommand, bool& bShow)
+bool TerminalEmulator::display(std::string& terminalCommand, bool& bFinalisedCommand, bool& bShow) noexcept
 {
     bool bReturn = false;
     ImGui::Begin("Terminal Emulator", &bShow);

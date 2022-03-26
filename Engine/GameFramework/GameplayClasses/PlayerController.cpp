@@ -1,36 +1,34 @@
-// PlayerController.cpp
-// Last update 22/9/2021 by Madman10K
 #include "PlayerController.hpp"
 
-void UVK::PlayerController::possess(UVK::Pawn* pw)
+void UVK::PlayerController::possess(UVK::Pawn* pw) noexcept
 {
     Pawn::destroyPawn(pawn);
     pawn = pw;
     pawn->beginPlay();
 }
 
-UVK::PlayerController::~PlayerController()
+UVK::PlayerController::~PlayerController() noexcept
 {
     delete pawn;
 }
 
-void UVK::PlayerController::destroyPlayerController(PlayerController* pc)
+void UVK::PlayerController::destroyPlayerController(PlayerController* pc) noexcept
 {
     pc->endPlay();
     delete pc;
 }
 
-void UVK::PlayerController::beginAutohandle() const
+void UVK::PlayerController::beginAutohandle() const noexcept
 {
     pawn->beginPlay();
 }
 
-void UVK::PlayerController::tickAutohandle(float deltaTime) const
+void UVK::PlayerController::tickAutohandle(float deltaTime) const noexcept
 {
     pawn->tick(deltaTime);
 }
 
-void UVK::PlayerController::endAutohandle() const
+void UVK::PlayerController::endAutohandle() const noexcept
 {
     pawn->endPlay();
 }

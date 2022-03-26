@@ -1,5 +1,3 @@
-// VulkanRenderer.hpp
-// Last update 7/2/2022 by Madman10K
 #pragma once
 #include "Renderer/EditorUI/Editor.hpp"
 
@@ -17,7 +15,7 @@ namespace UVK
     private:
         friend class Renderer;
 
-        void run();
+        void run() noexcept;
         Editor ed;
         UVK::String colTheme;
 #ifndef __APPLE__

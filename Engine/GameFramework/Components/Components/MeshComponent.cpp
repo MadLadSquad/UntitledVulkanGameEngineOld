@@ -1,11 +1,9 @@
-// MeshComponent.cpp
-// Last update 17/7/2021 by Madman10K
 #include <GL/glew.h>
 #include "MeshComponent.hpp"
 #include <glm/gtx/quaternion.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-void UVK::MeshComponent::createMesh(UVK::String modelLocation, UVK::String vertexShader, UVK::String fragmentShader, ShaderImportType type)
+void UVK::MeshComponent::createMesh(UVK::String modelLocation, UVK::String vertexShader, UVK::String fragmentShader, ShaderImportType type) noexcept
 {
     fShader = fragmentShader;
     vShader = vertexShader;
@@ -31,7 +29,7 @@ void UVK::MeshComponent::createMesh(UVK::String modelLocation, UVK::String verte
     scale = FVector(1.0f, 1.0f, 1.0f);
 }
 
-void UVK::MeshComponent::render(glm::mat4 projection, Camera& camera)
+void UVK::MeshComponent::render(glm::mat4 projection, Camera& camera) noexcept
 {
     mat = glm::mat4(1.0f);
     shader.useShader();
@@ -53,7 +51,7 @@ void UVK::MeshComponent::render(glm::mat4 projection, Camera& camera)
     mesh.render();
 }
 
-void UVK::MeshComponent::clearMesh()
+void UVK::MeshComponent::clearMesh() noexcept
 {
     mesh.clear();
     shader.clearShader();

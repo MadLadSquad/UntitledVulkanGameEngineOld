@@ -1,42 +1,40 @@
-// Projection.hpp
-// Last update 25/7/2021 by Madman10K
 #include "Projection.hpp"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-glm::mat4& UVK::Projection::data()
+glm::mat4& UVK::Projection::data() noexcept
 {
     return projection;
 }
 
-UVK::Projection::Projection(float fov, float ratio, UVK::FVector2 planes)
+UVK::Projection::Projection(float fov, float ratio, UVK::FVector2 planes) noexcept
 {
     FOV = fov;
     aspectRatioI = ratio;
     plane = planes;
 }
 
-float& UVK::Projection::fov()
+float& UVK::Projection::fov() noexcept
 {
     return FOV;
 }
 
-float& UVK::Projection::aspectRatio()
+float& UVK::Projection::aspectRatio() noexcept
 {
     return aspectRatioI;
 }
 
-UVK::FVector2& UVK::Projection::planes()
+UVK::FVector2& UVK::Projection::planes() noexcept
 {
     return plane;
 }
 
-void UVK::Projection::recalculateLH()
+void UVK::Projection::recalculateLH() noexcept
 {
     projection = glm::perspectiveLH(glm::radians(FOV), aspectRatioI, plane.x, plane.y);
 }
 
-void UVK::Projection::recalculateRH()
+void UVK::Projection::recalculateRH() noexcept
 {
     projection = glm::perspectiveRH(glm::radians(FOV), aspectRatioI, plane.x, plane.y);
 }

@@ -1,18 +1,16 @@
-// Global.cpp
-// Last update 7/2/2022 by Madman10K
 #include "Global.hpp"
 #include <GameFramework/GameplayClasses/Level/Level.hpp>
 #ifdef _WIN32
     #include <windows.h>
 #endif
 
-UVK::UVKGlobal::UVKGlobal()
+UVK::UVKGlobal::UVKGlobal() noexcept
 {
     colour = FVector4(1.0f, 1.0f, 1.0f, 1.0f);
     assetManager.load();
 }
 
-UVK::UVKGlobal::~UVKGlobal()
+UVK::UVKGlobal::~UVKGlobal() noexcept
 {
     delete currentLevel;
     delete instance;
@@ -21,24 +19,24 @@ UVK::UVKGlobal::~UVKGlobal()
 #endif
 }
 
-void UVK::UVKGlobal::finalizeOpening()
+void UVK::UVKGlobal::finalizeOpening() noexcept
 {
     openFunction();
 
     openFunction = [=](){};
 }
 
-std::vector<UVK::InputAction>& UVK::UVKGlobal::getActions()
+std::vector<UVK::InputAction>& UVK::UVKGlobal::getActions() noexcept
 {
     return inputActionList;
 }
 
-bool& UVK::UVKGlobal::getEditor()
+bool& UVK::UVKGlobal::getEditor() noexcept
 {
     return bEditor;
 }
 
-void UVK::UVKGlobal::openLevelInternal(UVK::String name, bool bfirst)
+void UVK::UVKGlobal::openLevelInternal(UVK::String name, bool bfirst) noexcept
 {
     UVK::Level::openInternal(name, bfirst);
 }

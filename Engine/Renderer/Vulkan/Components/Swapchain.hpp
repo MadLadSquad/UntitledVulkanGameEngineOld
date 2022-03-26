@@ -1,9 +1,8 @@
-// Swapchain.hpp
-// Last update 26/02/2022 by Madman10K
 #pragma once
 #include "Instance.hpp"
 #include "Utility.hpp"
 #include "Device.hpp"
+#include "VKMesh.hpp"
 
 namespace UVK
 {
@@ -12,42 +11,42 @@ namespace UVK
     {
     public:
         Swapchain() = default;
-        Swapchain(VKInstance& inst, VKDevice& dev);
-        ~Swapchain();
+        Swapchain(VKInstance& inst, VKDevice& dev) noexcept;
+        ~Swapchain() noexcept;
 
-        void createSwapchain();
-        void destroySwapchain();
+        void createSwapchain() noexcept;
+        void destroySwapchain() noexcept;
 
-        void createSurface();
-        void destroySurface();
+        void createSurface() noexcept;
+        void destroySurface() noexcept;
 
-        void createFramebuffers(GraphicsPipeline& graphicsPipeline);
-        void destroyFramebuffers();
+        void createFramebuffers(GraphicsPipeline& graphicsPipeline) noexcept;
+        void destroyFramebuffers() noexcept;
 
-        void createCommandPool();
-        void destroyCommandPool();
+        void createCommandPool() noexcept;
+        void destroyCommandPool() noexcept;
 
-        void createCommandBuffers();
-        void destroyCommandBuffers();
+        void createCommandBuffers() noexcept;
+        void destroyCommandBuffers() noexcept;
 
-        void createSynchronisation();
-        void destroySynchronisation();
+        void createSynchronisation() noexcept;
+        void destroySynchronisation() noexcept;
 
-        void recordCommands();
-        void draw();
+        void recordCommands(std::vector<VKMesh>& meshes) noexcept;
+        void draw() noexcept;
 
-        VkSurfaceKHR& getSurface();
+        VkSurfaceKHR& getSurface() noexcept;
     private:
         friend class VKDevice;
         friend class GraphicsPipeline;
 
-        bool getSwapchainDetails(VkPhysicalDevice& device, const QueueFamilyIndices& indices);
+        bool getSwapchainDetails(VkPhysicalDevice& device, const QueueFamilyIndices& indices) noexcept;
 
-        VkImageView createImageView(const VkImage& image, const VkFormat& format, const VkImageAspectFlags& aspectFlags);
+        VkImageView createImageView(const VkImage& image, const VkFormat& format, const VkImageAspectFlags& aspectFlags) noexcept;
 
-        void determineSurfaceFormats();
-        void determinePresentationMode();
-        void determineExtent();
+        void determineSurfaceFormats() noexcept;
+        void determinePresentationMode() noexcept;
+        void determineExtent() noexcept;
 
         SwapchainDetails details;
         VkSurfaceKHR surface{};
@@ -61,7 +60,7 @@ namespace UVK
         VkPresentModeKHR presentationMode{};
         VkExtent2D extent{};
 
-        VkCommandPool commandPool;
+        VkCommandPool commandPool{};
 
         std::vector<VkSemaphore> imageAvailable;
         std::vector<VkSemaphore> renderFinished;

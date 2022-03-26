@@ -1,17 +1,15 @@
-// Camera.cpp
-// Last update 21/12/2021 by Madman10K
 #include "Camera.hpp"
 #include <Engine/Core/Core/Global.hpp>
 #include <Core/Actor.hpp>
 #include <GameFramework/Components/Components/CoreComponent.hpp>
 #include <glm/glm/gtc/matrix_transform.hpp>
 
-UVK::Camera::Camera(const CoreComponent& coreComponent, FVector position, FVector rot, FVector up)
+UVK::Camera::Camera(const CoreComponent& coreComponent, FVector position, FVector rot, FVector up) noexcept
 {
     init(coreComponent, position, up, rot);
 }
 
-void UVK::Camera::init(const CoreComponent& coreComponent, FVector translation, FVector rotation, FVector upp)
+void UVK::Camera::init(const CoreComponent& coreComponent, FVector translation, FVector rotation, FVector upp) noexcept
 {
     core = &coreComponent;
 
@@ -22,27 +20,21 @@ void UVK::Camera::init(const CoreComponent& coreComponent, FVector translation, 
     recalculate();
 }
 
-glm::mat4 UVK::Camera::calculateViewMatrixRH() const
+glm::mat4 UVK::Camera::calculateViewMatrixRH() const noexcept
 {
     if (global.bUsesVulkan)
-    {
         return glm::lookAtRH(FVector(core->translation.x + translationOffset.x, -(core->translation.y + translationOffset.y), core->translation.z + translationOffset.z), FVector(core->translation.x + translationOffset.x, -(core->translation.y + translationOffset.y), core->translation.z + translationOffset.z) + FVector(front.x, -front.y, front.z), FVector(up.x, -up.y, up.z));
-    }
-
     return glm::lookAtRH(core->translation + translationOffset, core->translation + translationOffset + front, up);
 }
 
-glm::mat4 UVK::Camera::calculateViewMatrixLH() const
+glm::mat4 UVK::Camera::calculateViewMatrixLH() const noexcept
 {
     if (global.bUsesVulkan)
-    {
         return glm::lookAtRH(FVector(core->translation.x + translationOffset.x, -(core->translation.y + translationOffset.y), core->translation.z + translationOffset.z), FVector(core->translation.x + translationOffset.x, -(core->translation.y + translationOffset.y), core->translation.z + translationOffset.z) + FVector(front.x, -front.y, front.z), FVector(up.x, -up.y, up.z));
-    }
-
     return glm::lookAtLH(core->translation + translationOffset, core->translation + translationOffset + front, up);
 }
 
-void UVK::Camera::recalculate()
+void UVK::Camera::recalculate() noexcept
 {
     if (global.bUsesVulkan)
     {
@@ -71,12 +63,12 @@ void UVK::Camera::recalculate()
     }
 }
 
-UVK::Projection& UVK::Camera::projection()
+UVK::Projection& UVK::Camera::projection() noexcept
 {
     return proj;
 }
 
-UVK::Camera UVK::Camera::makeCamera(const CoreComponent& coreComponent, FVector position, FVector rotation, FVector up, FVector2 planes, float fov, float aspectRatio)
+UVK::Camera UVK::Camera::makeCamera(const CoreComponent& coreComponent, FVector position, FVector rotation, FVector up, FVector2 planes, float fov, float aspectRatio) noexcept
 {
     auto camera = Camera(coreComponent, position, up, rotation);
     camera.projection().planes() = planes;

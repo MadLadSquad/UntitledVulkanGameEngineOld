@@ -1,5 +1,3 @@
-// EditorSettings.cpp
-// Last update 18/2/2022 by Madman10K
 #pragma once
 
 namespace UVK
@@ -8,7 +6,7 @@ namespace UVK
     class EditorSettingsWidget
     {
     private:
-        static void displayEditorSettingsWidget(bool& bReturn, bool& bOpen, Editor& editor);
+        static void displayEditorSettingsWidget(bool& bReturn, bool& bOpen, Editor& editor) noexcept;
         friend class SettingsWidgets;
     };
 }

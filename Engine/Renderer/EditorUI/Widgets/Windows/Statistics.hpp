@@ -1,5 +1,3 @@
-// Statistics.hpp
-// Last update 18/2/2022 by Madman10K
 #pragma once
 #include <Core.hpp>
 #ifndef PRODUCTION
@@ -19,10 +17,10 @@ namespace Statistics
     {
         float Span;
         ImVector<ImVec2> Data;
-        RollingBuffer();
-        void AddPoint(float x, float y);
+        RollingBuffer() noexcept;
+        void AddPoint(float x, float y) noexcept;
     };
 
-    void display(double* data, bool& bShow);
+    void display(double* data, bool& bShow) noexcept;
 }
 #endif

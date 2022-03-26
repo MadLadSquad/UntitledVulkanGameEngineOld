@@ -1,5 +1,3 @@
-// Pawn.hpp
-// Last update 7/2/2022 by Madman10K
 #pragma once
 #include <Core.hpp>
 #include <Renderer/Camera/Camera.hpp>
@@ -19,7 +17,7 @@ namespace UVK
         virtual void tick(float deltaTime) = 0;
         virtual void endPlay() = 0;
 
-        virtual ~Pawn();
+        virtual ~Pawn() noexcept;
         Camera camera;
 
         std::string name;
@@ -29,19 +27,19 @@ namespace UVK
         Actor actor{};
 
         template<typename T>
-        static Pawn* makePawn()
+        static Pawn* makePawn() noexcept
         {
             T* pw = new T();
             return pw;
         }
 
         template<typename T>
-        static T* cast(Pawn* pw)
+        static T* cast(Pawn* pw) noexcept
         {
             return static_cast<T*>(pw);
         }
 
-        static void destroyPawn(Pawn* pw);
+        static void destroyPawn(Pawn* pw) noexcept;
     private:
         friend class GLPipeline;
     };

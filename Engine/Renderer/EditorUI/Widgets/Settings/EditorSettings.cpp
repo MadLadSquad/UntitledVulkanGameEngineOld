@@ -1,11 +1,9 @@
-// EditorSettings.cpp
-// Last update 18/2/2022 by Madman10K
 #include "EditorSettings.hpp"
 #include <imgui.h>
 #include <cpp/imgui_stdlib.h>
 #include <Renderer/EditorUI/Editor.hpp>
 
-void UVK::EditorSettingsWidget::displayEditorSettingsWidget(bool& bReturn, bool& bOpen, Editor& editor)
+void UVK::EditorSettingsWidget::displayEditorSettingsWidget(bool& bReturn, bool& bOpen, Editor& editor) noexcept
 {
     ImGui::TextWrapped("Max stored transactions");
     ImGui::SameLine();

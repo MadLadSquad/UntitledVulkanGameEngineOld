@@ -1,5 +1,3 @@
-// Keys.hpp
-// Last update 19/6/2021 by Madman10K
 #pragma once
 
 /**

@@ -1,11 +1,9 @@
-// ThemeSettings.cpp
-// Last update 18/2/2022 by Madman10K
 #include "ThemeSettings.hpp"
 #include "Renderer/EditorUI/Style/Theme.hpp"
 #include <imgui.h>
 #include <cpp/imgui_stdlib.h>
 
-void UVK::ThemeSettingsWidget::displayThemeSettings(bool& bReturn, bool& bOpen)
+void UVK::ThemeSettingsWidget::displayThemeSettings(bool& bReturn, bool& bOpen) noexcept
 {
     auto& colours = ImGui::GetStyle().Colors;
 
@@ -216,6 +214,6 @@ void UVK::ThemeSettingsWidget::displayThemeSettings(bool& bReturn, bool& bOpen)
         bOpen = false;
     ImGui::SameLine();
     if (ImGui::Button("Save"))
-        UVK::EditorTheme::save(static_cast<std::string>("../Config/Settings/" + outName + ".uvktheme").c_str(), static_cast<std::string>("../Content/" + fontLoc).c_str(), fontSize);
+        UVK::EditorTheme::save(static_cast<std::string>(UVK_CONFIG_SETTINGS_PATH + outName + ".uvktheme").c_str(), static_cast<std::string>("../Content/" + fontLoc).c_str(), fontSize);
     ImGui::EndPopup();
 }

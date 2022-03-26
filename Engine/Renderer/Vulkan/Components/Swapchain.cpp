@@ -1,37 +1,35 @@
-// Swapchain.cpp
-// Last update 26/02/2022 by Madman10K
 #include "Swapchain.hpp"
 #include <glfw3.h>
 #include <Core/Core/Global.hpp>
 #include "GraphicsPipeline.hpp"
 
-void UVK::Swapchain::createSurface()
+void UVK::Swapchain::createSurface() noexcept
 {
     auto result = glfwCreateWindowSurface(instance->data(), global.window.getWindow(), nullptr, &surface);
     if (result != VK_SUCCESS)
     {
         logger.consoleLog("Failed to create a window surface! Error code: ", UVK_LOG_TYPE_ERROR, result);
-        throw std::runtime_error(" ");
+        std::terminate();
     }
 }
 
-void UVK::Swapchain::destroySurface()
+void UVK::Swapchain::destroySurface() noexcept
 {
     vkDestroySurfaceKHR(instance->data(), surface, nullptr);
 }
 
-UVK::Swapchain::Swapchain(UVK::VKInstance& inst, VKDevice& dev)
+UVK::Swapchain::Swapchain(UVK::VKInstance& inst, VKDevice& dev) noexcept
 {
     instance = &inst;
     device = &dev;
 }
 
-VkSurfaceKHR& UVK::Swapchain::getSurface()
+VkSurfaceKHR& UVK::Swapchain::getSurface() noexcept
 {
     return surface;
 }
 
-bool UVK::Swapchain::getSwapchainDetails(VkPhysicalDevice& dev, const QueueFamilyIndices& indices)
+bool UVK::Swapchain::getSwapchainDetails(VkPhysicalDevice& dev, const QueueFamilyIndices& indices) noexcept
 {
     VkBool32 bSupportedPresentation;
     vkGetPhysicalDeviceSurfaceSupportKHR(dev, indices.graphicsFamily, surface, &bSupportedPresentation);
@@ -65,7 +63,7 @@ bool UVK::Swapchain::getSwapchainDetails(VkPhysicalDevice& dev, const QueueFamil
     return bReturn;
 }
 
-UVK::Swapchain::~Swapchain()
+UVK::Swapchain::~Swapchain() noexcept
 {
     static bool bFirst = true;
     if (bFirst)
@@ -74,7 +72,7 @@ UVK::Swapchain::~Swapchain()
         destroySurface();
 }
 
-void UVK::Swapchain::createSwapchain()
+void UVK::Swapchain::createSwapchain() noexcept
 {
     // TODO: check this function for resize
     //getSwapchainDetails(device->physicalDevice);
@@ -128,7 +126,7 @@ void UVK::Swapchain::createSwapchain()
     if (result != VK_SUCCESS)
     {
         logger.consoleLog("Failed to create a swapchain! Error code: ", UVK_LOG_TYPE_ERROR, result);
-        throw std::runtime_error(" ");
+        std::terminate();
     }
     uint32_t swapchainImageCount;
     vkGetSwapchainImagesKHR(device->device, swapchain, &swapchainImageCount, nullptr);
@@ -144,14 +142,14 @@ void UVK::Swapchain::createSwapchain()
     }
 }
 
-void UVK::Swapchain::destroySwapchain()
+void UVK::Swapchain::destroySwapchain() noexcept
 {
     for (const auto& a : images)
         vkDestroyImageView(device->device, a.imageView, nullptr);
     vkDestroySwapchainKHR(device->device, swapchain, nullptr);
 }
 
-void UVK::Swapchain::determineSurfaceFormats()
+void UVK::Swapchain::determineSurfaceFormats() noexcept
 {
     if (details.surfaceFormats.size() == 1 && details.surfaceFormats[0].format == VK_FORMAT_UNDEFINED)
     {
@@ -171,7 +169,7 @@ void UVK::Swapchain::determineSurfaceFormats()
     surfaceFormat = details.surfaceFormats[0];
 }
 
-void UVK::Swapchain::determinePresentationMode()
+void UVK::Swapchain::determinePresentationMode() noexcept
 {
     for (auto& a : details.presentationModes)
     {
@@ -184,7 +182,7 @@ void UVK::Swapchain::determinePresentationMode()
     presentationMode = VK_PRESENT_MODE_FIFO_KHR;
 }
 
-void UVK::Swapchain::determineExtent()
+void UVK::Swapchain::determineExtent() noexcept
 {
     if (details.surfaceCapabilities.currentExtent.width != std::numeric_limits<uint32_t>::max())
     {
@@ -206,7 +204,7 @@ void UVK::Swapchain::determineExtent()
     }
 }
 
-VkImageView UVK::Swapchain::createImageView(const VkImage& image, const VkFormat& format, const VkImageAspectFlags& aspectFlags)
+VkImageView UVK::Swapchain::createImageView(const VkImage& image, const VkFormat& format, const VkImageAspectFlags& aspectFlags) noexcept
 {
     const VkImageViewCreateInfo viewCreateInfo =
     {
@@ -236,12 +234,12 @@ VkImageView UVK::Swapchain::createImageView(const VkImage& image, const VkFormat
     if (result != VK_SUCCESS)
     {
         logger.consoleLog("Failed to create an image view! Error code: ", UVK_LOG_TYPE_ERROR, result);
-        throw std::runtime_error(" ");
+        std::terminate();
     }
     return imageView;
 }
 
-void UVK::Swapchain::createFramebuffers(GraphicsPipeline& graphicsPipeline)
+void UVK::Swapchain::createFramebuffers(GraphicsPipeline& graphicsPipeline) noexcept
 {
     pipeline = &graphicsPipeline;
     framebuffers.resize(images.size());
@@ -265,18 +263,18 @@ void UVK::Swapchain::createFramebuffers(GraphicsPipeline& graphicsPipeline)
         if (result != VK_SUCCESS)
         {
             logger.consoleLog("Failed to create a Vulkan framebuffer! Error code: ", UVK_LOG_TYPE_ERROR, result);
-            throw std::runtime_error(" ");
+            std::terminate();
         }
     }
 }
 
-void UVK::Swapchain::destroyFramebuffers()
+void UVK::Swapchain::destroyFramebuffers() noexcept
 {
     for (auto& a : framebuffers)
         vkDestroyFramebuffer(device->device, a, nullptr);
 }
 
-void UVK::Swapchain::createCommandPool()
+void UVK::Swapchain::createCommandPool() noexcept
 {
     const VkCommandPoolCreateInfo poolInfo =
     {
@@ -288,16 +286,16 @@ void UVK::Swapchain::createCommandPool()
     if (result != VK_SUCCESS)
     {
         logger.consoleLog("Couldn't create a Vulkan command pool! Error code: ", UVK_LOG_TYPE_ERROR, result);
-        throw std::runtime_error(" ");
+        std::terminate();
     }
 }
 
-void UVK::Swapchain::destroyCommandPool()
+void UVK::Swapchain::destroyCommandPool() noexcept
 {
     vkDestroyCommandPool(device->device, commandPool, nullptr);
 }
 
-void UVK::Swapchain::createCommandBuffers()
+void UVK::Swapchain::createCommandBuffers() noexcept
 {
     commandBuffers.resize(framebuffers.size());
 
@@ -313,16 +311,16 @@ void UVK::Swapchain::createCommandBuffers()
     if (result != VK_SUCCESS)
     {
         logger.consoleLog("Failed to allocate the Vulkan command buffers! Error code: ", UVK_LOG_TYPE_ERROR, result);
-        throw std::runtime_error(" ");
+        std::terminate();
     }
 }
 
-void UVK::Swapchain::destroyCommandBuffers()
+void UVK::Swapchain::destroyCommandBuffers() noexcept
 {
 
 }
 
-void UVK::Swapchain::recordCommands()
+void UVK::Swapchain::recordCommands(std::vector<VKMesh>& meshes) noexcept
 {
     constexpr VkCommandBufferBeginInfo commandBufferBeginInfo
     {
@@ -359,14 +357,23 @@ void UVK::Swapchain::recordCommands()
         if (result != VK_SUCCESS)
         {
             logger.consoleLog("Failed to start recording the Vulkan command buffer! Error code: ", UVK_LOG_TYPE_ERROR, result);
-            throw std::runtime_error(" ");
+            std::terminate();
         }
 
         vkCmdBeginRenderPass(commandBuffers[i], &renderPassBeginInfo, VK_SUBPASS_CONTENTS_INLINE);
 
         vkCmdBindPipeline(commandBuffers[i], VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline->graphicsPipeline);
-        // TODO: add resources
-        vkCmdDraw(commandBuffers[i], 3, 1, 0, 0);
+
+        for (auto& f : meshes)
+        {
+            VkBuffer vertexBuffers[] = { f.getVertexBuffer() };
+            VkDeviceSize offsets[] = { 0 };
+
+            vkCmdBindVertexBuffers(commandBuffers[i], 0, 1, vertexBuffers, offsets);
+            vkCmdDraw(commandBuffers[i], static_cast<uint32_t>(f.vertexCount()), 1, 0, 0);
+        }
+
+
 
         vkCmdEndRenderPass(commandBuffers[i]);
 
@@ -374,12 +381,12 @@ void UVK::Swapchain::recordCommands()
         if (result != VK_SUCCESS)
         {
             logger.consoleLog("Failed to stop recording the Vulkan command buffer! Error code: ", UVK_LOG_TYPE_ERROR, result);
-            throw std::runtime_error(" ");
+            std::terminate();
         }
     }
 }
 
-void UVK::Swapchain::draw()
+void UVK::Swapchain::draw() noexcept
 {
     static uint32_t currentFrame = 0;
 
@@ -410,7 +417,7 @@ void UVK::Swapchain::draw()
     if (result != VK_SUCCESS)
     {
         logger.consoleLog("Couldn't submit command buffer to the queue! Error code: ", UVK_LOG_TYPE_ERROR, result);
-        throw std::runtime_error(" ");
+        std::terminate();
     }
 
     const VkPresentInfoKHR presentInfo =
@@ -427,12 +434,12 @@ void UVK::Swapchain::draw()
     if (result != VK_SUCCESS)
     {
         logger.consoleLog("Failed to present the image! Error code: ", UVK_LOG_TYPE_ERROR, result);
-        throw std::runtime_error(" ");
+        std::terminate();
     }
     currentFrame = (currentFrame + 1) % VK_MAX_CONCURRENT_IMAGE_DRAW;
 }
 
-void UVK::Swapchain::createSynchronisation()
+void UVK::Swapchain::createSynchronisation() noexcept
 {
     imageAvailable.resize(VK_MAX_CONCURRENT_IMAGE_DRAW);
     renderFinished.resize(VK_MAX_CONCURRENT_IMAGE_DRAW);
@@ -454,26 +461,25 @@ void UVK::Swapchain::createSynchronisation()
         if (result != VK_SUCCESS)
         {
             logger.consoleLog("Failed to create the image available Vulkan semaphore! Error code: ", UVK_LOG_TYPE_ERROR, result);
-            throw std::runtime_error(" ");
+            std::terminate();
         }
         result = vkCreateSemaphore(device->device, &semaphoreCreateInfo, nullptr, &renderFinished[i]);
         if (result != VK_SUCCESS)
         {
             logger.consoleLog("Failed to create the render finished Vulkan semaphore! Error code: ", UVK_LOG_TYPE_ERROR, result);
-            throw std::runtime_error(" ");
+            std::terminate();
         }
         result = vkCreateFence(device->device, &fenceCreateInfo, nullptr, &fences[i]);
         if (result != VK_SUCCESS)
         {
             logger.consoleLog("Failed to create a fence! Error code: ", UVK_LOG_TYPE_ERROR, result);
-            throw std::runtime_error(" ");
+            std::terminate();
         }
     }
 }
 
-void UVK::Swapchain::destroySynchronisation()
+void UVK::Swapchain::destroySynchronisation() noexcept
 {
-    vkDeviceWaitIdle(device->device);
     for (size_t i = 0; i < VK_MAX_CONCURRENT_IMAGE_DRAW; i++)
     {
         vkDestroyFence(device->device, fences[i], nullptr);

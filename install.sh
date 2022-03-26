@@ -23,12 +23,12 @@ cpus=$(grep -c processor /proc/cpuinfo) ## get the cpu threads for maximum perfo
 echo -e "\x1B[32mCopiling with ${cpus} compute jobs!\033[0m"
 
 wdir=$(pwd) # get the working dir since we are going to be returning there
-cd "C:/Program Files (x86)/Microsoft Visual Studio/" || (echo "cannot enter" && exit) # Go to the Visual Studio dir
+cd "C:/Program Files (x86)/Microsoft Visual Studio/" 2> /dev/null || echo " "
 VSVer=$(find "2022" -maxdepth 0 2> /dev/null) || VSVer=$(find "2019" -maxdepth 0 2> /dev/null) || VSVer=$(find "2017" -maxdepth 0 2> /dev/null) || echo " " > /dev/null
-cd "${VSVer}" || echo " " > /dev/null # Go to the Visual Studio Version dir
+cd "${VSVer}" 2> /dev/null || echo " " > /dev/null # Go to the Visual Studio Version dir
 VSType=$(find "Community" -maxdepth 0 2> /dev/null) || VSType=$(find "Enterprise" -maxdepth 0 2> /dev/null) || VSType=$(find "Professional" -maxdepth 0 2> /dev/null) || echo " " > /dev/null # Set the VS type to one of the 3 types
-cd "${wdir}" || echo " " > /dev/null # Return to the old directory
-setx PATH "C:/Program Files (x86)/Microsoft Visual Studio/${VSVer}/${VSType}/MSBuild/Current/Bin/amd64/;%PATH%" || echo " " > /dev/null # Set the path
+cd "${wdir}" 2> /dev/null || echo " " > /dev/null # Return to the old directory
+setx PATH "C:/Program Files (x86)/Microsoft Visual Studio/${VSVer}/${VSType}/MSBuild/Current/Bin/amd64/;%PATH%" 2> /dev/null || echo " " > /dev/null # Set the path
 if [ "$VSVer" == "2022" ]; then VSShortVer="17"
 elif [ "$VSVer" == "2019" ]; then VSShortVer="16"
 elif [ "$VSVer" == "2017" ]; then VSShortVer="15"
@@ -52,9 +52,9 @@ MSBuild.exe UVKBuildTool.sln -property:Configuration=Release -property:Platform=
 
 # If on Windows copy the UVKBuildTool executable from the Release folder, this will absolutely fail on any non-Windows system in which
 # case we will just echo an empty message
-cp Release/UVKBuildTool.exe . || echo " " || exit
-cp Release/UVKBuildToolLib.dll . || cp Release/libUVKBuildToolLib.dll . || echo " "
-cp yaml-cpp/Release/yaml-cpp.dll . || cp yaml-cpp/Release/libyaml-cpp.dll . || echo " "
+cp Release/UVKBuildTool.exe . 2> /dev/null || echo " " || exit
+cp Release/UVKBuildToolLib.dll . 2> /dev/null || cp Release/libUVKBuildToolLib.dll . 2> /dev/null || echo " "
+cp yaml-cpp/Release/yaml-cpp.dll . 2> /dev/null || cp yaml-cpp/Release/libyaml-cpp.dll . 2> /dev/null || echo " "
 cd ../../ || exit
 
 cd UVKShaderCompiler/ || exit
@@ -78,7 +78,7 @@ echo " "
 
 # Compiler the Shader Compiler
 MSBuild.exe UVKShaderCompiler.sln -property:Configuration=Release -property:Platform=x64 -property:maxCpuCount="${cpus}" || make -j "${cpus}" || exit
-cp Release/UVKShaderCompiler.exe . || echo " " || exit
-cp Release/UVKShaderCompilerLib.dll . || cp Release/libUVKShaderCompilerLib.dll . || echo " "
-cp Release/*.dll . || echo " "
+cp Release/UVKShaderCompiler.exe . 2> /dev/null || echo " " || exit
+cp Release/UVKShaderCompilerLib.dll . 2> /dev/null || cp Release/libUVKShaderCompilerLib.dll . || echo " "
+cp Release/*.dll . 2> /dev/null || echo " "
 cd ../../

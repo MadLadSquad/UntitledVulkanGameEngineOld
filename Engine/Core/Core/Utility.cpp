@@ -1,5 +1,3 @@
-// Utility.hpp
-// Last update 6/10/2021 by Madman10K
 #include "Utility.hpp"
 #include <Core/Global.hpp>
 #include <glm/glm/gtx/quaternion.hpp>
@@ -9,7 +7,7 @@
     #include <windows.h>
 #endif
 
-void UVK::Utility::keyToText(std::string& text, const uint16_t& key, bool bLong)
+void UVK::Utility::keyToText(std::string& text, const uint16_t& key, bool bLong) noexcept
 {
     if (bLong)
     {
@@ -805,7 +803,7 @@ void UVK::Utility::keyToText(std::string& text, const uint16_t& key, bool bLong)
     }
 }
 
-void UVK::Utility::sanitiseFilepath(std::string& str, bool bInput)
+void UVK::Utility::sanitiseFilepath(std::string& str, bool bInput) noexcept
 {
     for (auto& a : str)
         if (a == '\\')
@@ -815,19 +813,19 @@ void UVK::Utility::sanitiseFilepath(std::string& str, bool bInput)
     //    str.append("/");
 }
 
-std::string UVK::Utility::keyToText(const uint16_t& key, bool bLong)
+std::string UVK::Utility::keyToText(const uint16_t& key, bool bLong) noexcept
 {
     std::string txt;
     keyToText(txt, key, bLong);
     return txt;
 }
 
-UVK::UVKGlobal& UVK::Utility::getGlobal()
+UVK::UVKGlobal& UVK::Utility::getGlobal() noexcept
 {
     return global;
 }
 
-void UVK::Utility::removeConsole()
+void UVK::Utility::removeConsole() noexcept
 {
 #ifdef _WIN32
     HWND cnsl = GetConsoleWindow();
@@ -836,7 +834,7 @@ void UVK::Utility::removeConsole()
 #endif
 }
 
-void UVK::Math::translate(glm::mat4& mat, UVK::FVector vt)
+void UVK::Math::translate(glm::mat4& mat, UVK::FVector vt) noexcept
 {
     if (global.bUsesVulkan)
         mat = glm::translate(mat, FVector(vt.x, -vt.y, vt.z));
@@ -844,7 +842,7 @@ void UVK::Math::translate(glm::mat4& mat, UVK::FVector vt)
         mat = glm::translate(mat, vt);
 }
 
-void UVK::Math::rotate(glm::mat4& mat, UVK::FVector vt)
+void UVK::Math::rotate(glm::mat4& mat, UVK::FVector vt) noexcept
 {
     if (global.bUsesVulkan)
     {
@@ -858,7 +856,7 @@ void UVK::Math::rotate(glm::mat4& mat, UVK::FVector vt)
     }
 }
 
-void UVK::Math::scale(glm::mat4& mat, UVK::FVector vt)
+void UVK::Math::scale(glm::mat4& mat, UVK::FVector vt) noexcept
 {
     if (global.bUsesVulkan)
         mat = glm::scale(mat, FVector(vt.x, -vt.y, vt.z));

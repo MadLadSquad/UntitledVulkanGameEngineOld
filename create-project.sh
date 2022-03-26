@@ -6,9 +6,9 @@ else
 fi
 
 wdir=$(pwd) # get the working dir since we are going to be returning there
-cd "C:/Program Files (x86)/Microsoft Visual Studio/" || (echo "cannot enter" && exit) # Go to the Visual Studio dir
+cd "C:/Program Files (x86)/Microsoft Visual Studio/" 2> /dev/null || echo " "
 VSVer=$(find "2022" -maxdepth 0 2> /dev/null) || VSVer=$(find "2019" -maxdepth 0 2> /dev/null) || VSVer=$(find "2017" -maxdepth 0 2> /dev/null) || echo " " > /dev/null
-cd "${wdir}" || echo " " > /dev/null # Return to the old directory
+cd "${wdir}" 2> /dev/null || echo " " > /dev/null # Return to the old directory
 if [ "$VSVer" == "2022" ]; then VSShortVer="17"
 elif [ "$VSVer" == "2019" ]; then VSShortVer="16"
 elif [ "$VSVer" == "2017" ]; then VSShortVer="15"
@@ -62,9 +62,9 @@ echo -e "\x1B[32m---------------------------------------------------------------
 echo " "
 
 # We symlink the Engine source folder so that 
-ln -rs "../../Engine/" Engine || cp ../../Engine/ . -r
-ln -rs "../../UVKBuildTool/" UVKBuildTool || cp ../../UVKBuildTool/ . -r
-ln -rs "../../UVKShaderCompiler/" UVKShaderCompiler || cp ../../UVKShaderCompiler/ . -r
+ln -rs "../../Engine/" Engine 2> /dev/null || cp ../../Engine/ . -r
+ln -rs "../../UVKBuildTool/" UVKBuildTool 2> /dev/null || cp ../../UVKBuildTool/ . -r
+ln -rs "../../UVKShaderCompiler/" UVKShaderCompiler 2> /dev/null || cp ../../UVKShaderCompiler/ . -r
 cp ../../export.sh .
 
 cd ../../UVKBuildTool/build || exit
@@ -95,12 +95,12 @@ echo -e "\x1B[32mCopying required libraries ...\033[0m"
 echo -e "\x1B[32m--------------------------------------------------------------------------------\033[0m"
 echo " "
 
-(echo -e "\x1B[32mOpenAL32.dll required for this system!\033[0m" && cp Engine/ThirdParty/openal/Release/OpenAL32.dll . &> /dev/null) || echo -e "\x1B[32mOpenAL32.dll not required for this system!\033[0m"
-(cp OpenAL32.dll Release/ &> /dev/null && echo -e "\x1B[32mSuccessfully installed OpenAL!\033[0m") || echo -e "\x1B[32mNo need to install OpenAL32!\033[0m"
-cd ../Engine/ThirdParty/vulkan/ || exit # Change into the Vulkan directory which for some reason contains the needed libraries for Windows
-(cp sndfile.dll ../../../build/ &> /dev/null && echo -e "\x1B[32msndfile.dll required for this system!\033[0m") || echo -e "\x1B[32msndfile.dll not required for this system!\033[0m" # Copy the sndfile.dll file (responsible for loading and operating with sound files)
-cd ../../../build/ || exit # Go back into the build directory
-(cp sndfile.dll Release/ &> /dev/null && echo -e "\x1B[32mInstalled sndfile.dll!\033[0m") || echo -e "\x1B[32mNo need to install sndfile.dll!\033[0m" || exit # Finally copy the libraries to the Release folder because that is where Visual Studio builds
-(cp Release/"${prjname}".exe . &> /dev/null && cp Release/UntitledVulkanGameEngine.dll . &> /dev/null && cp Release/"${prjname}Modded.dll" . &> /dev/null && cp Release/"${prjname}Lib.dll" . &> /dev/null && cp Release/Modlib.dll . &> /dev/null) || echo -e "\x1B[32mProject Installed!\033[0m"
+cp Engine/ThirdParty/openal/Release/OpenAL32.dll . &> /dev/null || echo " " # Copy the OpenAl dll or do nothing
+cp OpenAL32.dll Release/ &> /dev/null || echo " " # Copy into release
+cd ../Engine/ThirdParty/vulkan/ || exit # Go to the vulkan folder because there are a lot of libraries there
+cp sndfile.dll ../../../build/ &> /dev/null || echo " " # Copy the sndfile dll
+cd ../../../build/ || exit # Go back to the build folder
+cp sndfile.dll Release/ &> /dev/null || echo " " # Copy into release
+cp Release/"${prjname}".exe . &> /dev/null || echo " " # Copy the executable
 
 echo -e "\x1B[32mEngine and project successfully installed! \033[0m" # Print a success message in green

@@ -1,5 +1,3 @@
-// DetailsPanel.cpp
-// Last update 18/2/2022 by Madman10K
 #include "DetailsPanel.hpp"
 #include <Renderer/EditorUI/Widgets/Settings/AssetSlot.hpp>
 
@@ -12,7 +10,7 @@
 #include <Renderer/EditorUI/Modules/EditorModule.hpp>
 #include <GameFramework/Components/Components/CoreComponent.hpp>
 
-bool DetailsPanel::DrawVec3Control(const std::string &label, glm::vec3 &values, float resetValue, float columnWidth, float speed)
+bool DetailsPanel::DrawVec3Control(const std::string &label, glm::vec3 &values, float resetValue, float columnWidth, float speed) noexcept
 {
     const ImGuiIO& io = ImGui::GetIO();
     auto boldFont = io.Fonts->Fonts[0];
@@ -109,7 +107,7 @@ bool DetailsPanel::DrawVec3Control(const std::string &label, glm::vec3 &values, 
     return (x || y || z);
 }
 
-bool DetailsPanel::display(UVK::Actor& ent, UVK::Level* lvl, bool& bShow, const UVK::EditorModuleManager& modules, bool& destroy)
+bool DetailsPanel::display(UVK::Actor& ent, UVK::Level* lvl, bool& bShow, const UVK::EditorModuleManager& modules, bool& destroy) noexcept
 {
     bool bReturn = false;
     ImGui::Begin("Details", &bShow, ImGuiWindowFlags_MenuBar);

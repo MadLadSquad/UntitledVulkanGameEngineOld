@@ -1,5 +1,3 @@
-// Utility.hpp
-// Last update 7/2/2022 by Madman10K
 #pragma once
 #include <Core/Defines.hpp>
 #include <iostream>
@@ -9,6 +7,17 @@
 namespace UVK
 {
     class UVK_PUBLIC_API UVKGlobal;
+
+    enum ResourcePath
+    {
+        UVK_RESOURCE_PATH_DIR = 0,
+        UVK_RESOURCE_PATH_CONTENT = 1,
+        UVK_RESOURCE_PATH_GENERATED = 2,
+        UVK_RESOURCE_PATH_SHADER = 2,
+        UVK_RESOURCE_PATH_CONFIG_ENGINE = 3,
+        UVK_RESOURCE_PATH_CONFIG_SETTINGS = 4
+    };
+
     /**
      * @brief A namespace of useful utility functions
      */
@@ -25,24 +34,24 @@ namespace UVK
          * @param bInput is this text inputed by the user or output
          * @return sanitised string
          */
-        static void sanitiseFilepath(std::string& str, bool bInput);
+        static void sanitiseFilepath(std::string& str, bool bInput) noexcept;
 
         /**
          * @brief Pass in a string and a key code and it will make the string equal to the corresponding key
          * @param text Reference to the string that will contain the key
          * @param key Const reference to the keycode
          */
-        static void keyToText(std::string& text, const uint16_t& key, bool bLong);
-        static std::string keyToText(const uint16_t& key, bool bLong);
-        static UVKGlobal& getGlobal();
-        static void removeConsole();
+        static void keyToText(std::string& text, const uint16_t& key, bool bLong) noexcept;
+        static std::string keyToText(const uint16_t& key, bool bLong) noexcept;
+        static UVKGlobal& getGlobal() noexcept;
+        static void removeConsole() noexcept;
     };
 
     class UVK_PUBLIC_API Math
     {
     public:
-        static void translate(glm::mat4& mat, FVector vt);
-        static void rotate(glm::mat4& mat, FVector vt);
-        static void scale(glm::mat4& mat, FVector vt);
+        static void translate(glm::mat4& mat, FVector vt) noexcept;
+        static void rotate(glm::mat4& mat, FVector vt) noexcept;
+        static void scale(glm::mat4& mat, FVector vt) noexcept;
     };
 }

@@ -1,26 +1,24 @@
-// ActorManager.cpp
-// Last update 22/9/2021 by Madman10K
 #include "ActorManager.hpp"
 #include "Generated/ActorList.hpp"
 
-void UVK::ActorManager::init()
+void UVK::ActorManager::init() noexcept
 {
     a.clear();
     ACTOR_SET_DEPLOY
 }
 
-void UVK::ActorManager::destroy()
+void UVK::ActorManager::destroy() noexcept
 {
     for (auto* b : a)
         delete b;
 }
 
-std::vector<UVK::ScriptableObject*>& UVK::ActorManager::data()
+std::vector<UVK::ScriptableObject*>& UVK::ActorManager::data() noexcept
 {
     return a;
 }
 
-UVK::ActorManager::~ActorManager()
+UVK::ActorManager::~ActorManager() noexcept
 {
     destroy();
     a.clear();

@@ -1,5 +1,3 @@
-// UInterface.hpp
-// Last update 7/2/2022 by Madman10K
 #pragma once
 #include <functional>
 #include <imgui.h>
@@ -13,7 +11,7 @@ namespace UVK
         UI(const UI&) = delete;
         void operator=(UI const&) = delete;
 
-        static void addEvent(const std::function<void(void)>& func);
-        static void addEventImGui(const std::function<void(void)>& func);
+        static void addEvent(const std::function<void(void)>& func) noexcept;
+        static void addEventImGui(const std::function<void(void)>& func) noexcept;
     };
 }

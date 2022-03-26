@@ -1,5 +1,3 @@
-// TopToolbar.hpp
-// Last update 18/2/2022 by Madman10K
 #pragma once
 #include "Engine/Renderer/Textures/Texture.hpp"
 
@@ -19,7 +17,7 @@ namespace uexec
  */
 namespace TopToolbar
 {
-    bool display(UVK::Texture& play, const std::string& projectName, const UVK::EditorModuleManager& modules, bool& bShow, UVK::Texture& restart, UVK::Texture& stop);
-    void startProcess(const std::string& projectName, uexec::ScriptRunner& runner, bool& bShowPlay);
+    bool display(UVK::Texture& play, const std::string& projectName, const UVK::EditorModuleManager& modules, bool& bShow, UVK::Texture& restart, UVK::Texture& stop) noexcept;
+    void startProcess(const std::string& projectName, uexec::ScriptRunner& runner, bool& bShowPlay) noexcept;
 }
 #endif

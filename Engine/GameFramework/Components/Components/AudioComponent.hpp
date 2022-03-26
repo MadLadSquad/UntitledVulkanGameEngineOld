@@ -1,5 +1,3 @@
-// AudioComponent.hpp
-// Last update 7/2/2022 by Madman10K
 #pragma once
 #include <Core.hpp>
 #include <Audio/Audio.hpp>
@@ -15,16 +13,16 @@ namespace UVK
     struct UVK_PUBLIC_API AudioComponent
     {
     public:
-        void create(UVK::Actor* act, const char* file);
-        void create(UVK::Actor* act);
-        void create();
+        void create(UVK::Actor* act, const char* file) noexcept;
+        void create(UVK::Actor* act) noexcept;
+        void create() noexcept;
 
-        void tick();
+        void tick() noexcept;
 
-        bool pause();
-        bool stop();
-        bool resume();
-        void play();
+        bool pause() noexcept;
+        bool stop() noexcept;
+        bool resume() noexcept;
+        void play() noexcept;
 
         AudioSource source;
     private:
@@ -37,16 +35,16 @@ namespace UVK
     struct UVK_PUBLIC_API StreamedAudioComponent
     {
     public:
-        void create(UVK::Actor* act, const char* file);
-        void create(UVK::Actor* act);
-        void create();
+        void create(UVK::Actor* act, const char* file) noexcept;
+        void create(UVK::Actor* act) noexcept;
+        void create() noexcept;
 
-        void tick();
+        void tick() noexcept;
 
-        bool pause();
-        bool stop();
-        bool resume();
-        void play();
+        bool pause() noexcept;
+        bool stop() noexcept;
+        bool resume() noexcept;
+        void play() noexcept;
 
         AudioSourceStreamed source;
     private:

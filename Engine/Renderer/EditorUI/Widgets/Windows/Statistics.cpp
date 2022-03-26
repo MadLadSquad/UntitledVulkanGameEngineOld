@@ -1,15 +1,13 @@
-// Statistics.hpp
-// Last update 18/2/2022 by Madman10K
 #include "Statistics.hpp"
 
 #ifndef PRODUCTION
-Statistics::RollingBuffer::RollingBuffer()
+Statistics::RollingBuffer::RollingBuffer() noexcept
 {
     Span = 1.0f;
     Data.reserve(200);
 }
 
-void Statistics::RollingBuffer::AddPoint(float x, float y)
+void Statistics::RollingBuffer::AddPoint(float x, float y) noexcept
 {
     float xmod = fmodf(x, Span);
     if (!Data.empty() && xmod < Data.back().x)
@@ -17,7 +15,7 @@ void Statistics::RollingBuffer::AddPoint(float x, float y)
     Data.push_back(ImVec2(xmod, y));
 }
 
-void Statistics::display(double* data, bool& bShow)
+void Statistics::display(double* data, bool& bShow) noexcept
 {
     ImGui::Begin("Statistics", &bShow);
 

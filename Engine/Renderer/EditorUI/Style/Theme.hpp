@@ -1,5 +1,3 @@
-// Theme.hpp
-// Last update 18/2/2022 by Madman10K
 #pragma once
 #include <Generated/BuildDef.hpp>
 #ifndef PRODUCTION
@@ -18,20 +16,20 @@ namespace UVK
     public:
         EditorTheme() = default;
 
-        explicit EditorTheme(UVK::String theme)
+        explicit EditorTheme(UVK::String theme) noexcept
         {
             setTheme(theme);
         }
 
-        static void save(UVK::String filename, UVK::String font, int fontSz);
+        static void save(UVK::String filename, UVK::String font, int fontSz) noexcept;
     private:
         friend class EditorUtilSettings;
 
-        void setTheme(UVK::String theme);
-        void useTheme();
+        void setTheme(UVK::String theme) noexcept;
+        void useTheme() noexcept;
 
-        std::pair<std::string, int> getFont();
-        [[nodiscard]] float getWindowRounding() const;
+        std::pair<std::string, int> getFont() noexcept;
+        [[nodiscard]] float getWindowRounding() const noexcept;
 
         ImVec4 textCol = ImVec4(1.0, 1.0, 1.0, 1.0);
 

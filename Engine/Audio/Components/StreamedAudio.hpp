@@ -1,5 +1,3 @@
-// StreamedAudio.hpp
-// Last update 7/2/2022 by Madman10K
 #pragma once
 #include "AudioCore.hpp"
 
@@ -13,20 +11,20 @@ namespace UVK
     {
     public:
         AudioBufferStreamed() = default;
-        explicit AudioBufferStreamed(String loc, uint32_t chunks);
+        explicit AudioBufferStreamed(String loc, uint32_t chunks) noexcept;
 
-        void addSound(String loc);
-        void update();
-        void removeSound();
+        void addSound(String loc) noexcept;
+        void update() noexcept;
+        void removeSound() noexcept;
 
-        std::vector<ALuint>& buffer();
+        std::vector<ALuint>& buffer() noexcept;
     private:
         friend class AudioSourceStreamed;
 
-        SNDFILE* sndfile;
-        SF_INFO sndinfo;
-        short* membuf;
-        ALenum format;
+        SNDFILE* sndfile{};
+        SF_INFO sndinfo{};
+        short* membuf{};
+        ALenum format{};
         static constexpr uint32_t samples = 8194;
 
         std::vector<ALuint> buffers;
@@ -40,13 +38,13 @@ namespace UVK
     {
     public:
         AudioSourceStreamed();
-        void init();
-        void update(const UVK::FVector& position);
-        void play();
+        void init() noexcept;
+        void update(const UVK::FVector& position) noexcept;
+        void play() noexcept;
 
-        AudioSourceData& audioData();
-        AudioBufferStreamed& buffer();
-        AudioState& state();
+        AudioSourceData& audioData() noexcept;
+        AudioBufferStreamed& buffer() noexcept;
+        AudioState& state() noexcept;
     private:
         AudioSourceData audioDt;
         AudioBufferStreamed buf;

@@ -1,11 +1,9 @@
-// CreateFile.cpp
-// Last update 18/2/2022 by Madman10K
 #include "CreateFile.hpp"
 #ifndef PRODUCTION
 #include <cpp/imgui_stdlib.h>
 #include <UVKBuildTool/src/FileGenerator.hpp>
 
-bool CreateFile::display(std::string& fileOutLocation, bool& bShowCreateFile1, const std::string& prjname)
+bool CreateFile::display(std::string& fileOutLocation, bool& bShowCreateFile1, const std::string& prjname) noexcept
 {
     bool bReturn = false;
     if (!ImGui::IsPopupOpen("Create a file"))

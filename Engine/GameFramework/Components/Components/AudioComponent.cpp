@@ -1,10 +1,8 @@
-// AudioComponent.cpp
-// Last update 26/9/2021 by Madman10K
 #include "AudioComponent.hpp"
 #include "CoreComponent.hpp"
 #include <Core/Actor.hpp>
 
-void UVK::AudioComponent::create(UVK::Actor* act, const char* file)
+void UVK::AudioComponent::create(UVK::Actor* act, const char* file) noexcept
 {
     actor = act;
 
@@ -14,7 +12,7 @@ void UVK::AudioComponent::create(UVK::Actor* act, const char* file)
     source.init();
 }
 
-void UVK::AudioComponent::create(UVK::Actor* act)
+void UVK::AudioComponent::create(UVK::Actor* act) noexcept
 {
     actor = act;
     std::string a = source.audioData().location;
@@ -24,7 +22,7 @@ void UVK::AudioComponent::create(UVK::Actor* act)
     source.init();
 }
 
-void UVK::AudioComponent::create()
+void UVK::AudioComponent::create() noexcept
 {
     std::string a = source.audioData().location;
     source = AudioSource();
@@ -32,13 +30,13 @@ void UVK::AudioComponent::create()
     source.init();
 }
 
-void UVK::AudioComponent::tick()
+void UVK::AudioComponent::tick() noexcept
 {
     if (source.state() == UVK_AUDIO_STATE_RUNNING && alGetError() == AL_NO_ERROR)
         source.update(core->translation);
 }
 
-bool UVK::AudioComponent::pause()
+bool UVK::AudioComponent::pause() noexcept
 {
     if (source.state() == UVK_AUDIO_STATE_RUNNING)
     {
@@ -49,7 +47,7 @@ bool UVK::AudioComponent::pause()
     return false;
 }
 
-bool UVK::AudioComponent::stop()
+bool UVK::AudioComponent::stop() noexcept
 {
     if (source.state() == UVK_AUDIO_STATE_RUNNING || source.state() == UVK_AUDIO_STATE_PAUSED)
     {
@@ -63,7 +61,7 @@ bool UVK::AudioComponent::stop()
     return false;
 }
 
-bool UVK::AudioComponent::resume()
+bool UVK::AudioComponent::resume() noexcept
 {
     if (source.state() == UVK_AUDIO_STATE_PAUSED)
     {
@@ -74,12 +72,12 @@ bool UVK::AudioComponent::resume()
     return false;
 }
 
-void UVK::AudioComponent::play()
+void UVK::AudioComponent::play() noexcept
 {
     source.play();
 }
 
-void UVK::StreamedAudioComponent::create(UVK::Actor* act, const char* file)
+void UVK::StreamedAudioComponent::create(UVK::Actor* act, const char* file) noexcept
 {
     actor = act;
 
@@ -89,7 +87,7 @@ void UVK::StreamedAudioComponent::create(UVK::Actor* act, const char* file)
     source.init();
 }
 
-void UVK::StreamedAudioComponent::create(UVK::Actor* act)
+void UVK::StreamedAudioComponent::create(UVK::Actor* act) noexcept
 {
     actor = act;
     std::string a = source.audioData().location;
@@ -99,7 +97,7 @@ void UVK::StreamedAudioComponent::create(UVK::Actor* act)
     source.init();
 }
 
-void UVK::StreamedAudioComponent::create()
+void UVK::StreamedAudioComponent::create() noexcept
 {
     std::string a = source.audioData().location;
     source = AudioSourceStreamed();
@@ -107,27 +105,27 @@ void UVK::StreamedAudioComponent::create()
     source.init();
 }
 
-void UVK::StreamedAudioComponent::tick()
+void UVK::StreamedAudioComponent::tick() noexcept
 {
 
 }
 
-bool UVK::StreamedAudioComponent::pause()
-{
-    return false;
-}
-
-bool UVK::StreamedAudioComponent::stop()
+bool UVK::StreamedAudioComponent::pause() noexcept
 {
     return false;
 }
 
-bool UVK::StreamedAudioComponent::resume()
+bool UVK::StreamedAudioComponent::stop() noexcept
 {
     return false;
 }
 
-void UVK::StreamedAudioComponent::play()
+bool UVK::StreamedAudioComponent::resume() noexcept
+{
+    return false;
+}
+
+void UVK::StreamedAudioComponent::play() noexcept
 {
 
 }

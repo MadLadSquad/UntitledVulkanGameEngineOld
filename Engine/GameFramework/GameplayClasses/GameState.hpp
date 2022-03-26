@@ -1,5 +1,3 @@
-// GameState.hpp
-// Last update 7/2/2022 by Madman10K
 #pragma once
 #include <Core.hpp>
 
@@ -18,18 +16,18 @@ namespace UVK
         virtual ~GameState() = default;
 
         template<typename T>
-        [[maybe_unused]] static GameState* makeGameState()
+        [[maybe_unused]] static GameState* makeGameState() noexcept
         {
             T* gs = new T();
             return gs;
         }
 
         template<typename T>
-        static T* cast(GameState* gs)
+        static T* cast(GameState* gs) noexcept
         {
             return static_cast<T*>(gs);
         }
 
-        [[maybe_unused]] static void destroyGameState(GameState* gs);
+        [[maybe_unused]] static void destroyGameState(GameState* gs) noexcept;
     };
 }

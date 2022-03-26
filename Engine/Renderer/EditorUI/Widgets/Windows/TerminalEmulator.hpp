@@ -1,5 +1,3 @@
-// TerminalEmulator.hpp
-// Last update 18/2/2022 by Madman10K
 #pragma once
 #include <iostream>
 #include <Core.hpp>
@@ -10,6 +8,6 @@
  */
 namespace TerminalEmulator
 {
-    bool display(std::string& terminalCommand, bool& bFinalisedCommand, bool& bShow);
+    bool display(std::string& terminalCommand, bool& bFinalisedCommand, bool& bShow) noexcept;
 }
 #endif

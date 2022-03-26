@@ -1,5 +1,3 @@
-// Theme.cpp
-// Last update 2/9/2021 by Madman10K
 #include <Core.hpp>
 #include "Theme.hpp"
 #ifndef PRODUCTION
@@ -12,7 +10,7 @@ namespace YAML
     template<>
     struct convert<ImVec4>
     {
-        static Node encode(const ImVec4& rhs)
+        static Node encode(const ImVec4& rhs) noexcept
         {
             Node node;
             node.push_back(rhs.x);
@@ -23,7 +21,7 @@ namespace YAML
             return node;
         }
 
-        static bool decode(const Node& node, ImVec4& rhs)
+        static bool decode(const Node& node, ImVec4& rhs) noexcept
         {
             if (!node.IsSequence() || node.size() != 4)
                 return false;
@@ -37,20 +35,20 @@ namespace YAML
     };
 }
 
-YAML::Emitter& operator<<(YAML::Emitter& out, const ImVec4& vect)
+YAML::Emitter& operator<<(YAML::Emitter& out, const ImVec4& vect) noexcept
 {
     out << YAML::Flow;
     out << YAML::BeginSeq << vect.x << vect.y << vect.z << vect.w << YAML::EndSeq;
     return out;
 }
 
-void UVK::EditorTheme::setTheme(UVK::String theme)
+void UVK::EditorTheme::setTheme(UVK::String theme) noexcept
 {
     YAML::Node out;
 
     try
     {
-        out = YAML::LoadFile("../Config/Settings/" + std::string(theme) + ".uvktheme");
+        out = YAML::LoadFile(UVK_CONFIG_SETTINGS_PATH + std::string(theme) + ".uvktheme");
     }
     catch (YAML::BadFile&)
     {
@@ -87,7 +85,7 @@ void UVK::EditorTheme::setTheme(UVK::String theme)
     }
 }
 
-void UVK::EditorTheme::useTheme()
+void UVK::EditorTheme::useTheme() noexcept
 {
     auto& colours = ImGui::GetStyle().Colors;
 
@@ -120,7 +118,7 @@ void UVK::EditorTheme::useTheme()
     colours[ImGuiCol_PopupBg] = popupBG;
 }
 
-void UVK::EditorTheme::save(UVK::String filename, UVK::String font, int fontSz)
+void UVK::EditorTheme::save(UVK::String filename, UVK::String font, int fontSz) noexcept
 {
     const auto& colours = ImGui::GetStyle().Colors;
     const auto& io = ImGui::GetIO();
@@ -165,12 +163,12 @@ void UVK::EditorTheme::save(UVK::String filename, UVK::String font, int fontSz)
     file.close();
 }
 
-std::pair<std::string, int> UVK::EditorTheme::getFont()
+std::pair<std::string, int> UVK::EditorTheme::getFont() noexcept
 {
     return std::make_pair(fontLoc, fontSize);
 }
 
-float UVK::EditorTheme::getWindowRounding() const
+float UVK::EditorTheme::getWindowRounding() const noexcept
 {
     return windowRounding;
 }

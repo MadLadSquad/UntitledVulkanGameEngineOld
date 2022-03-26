@@ -1,5 +1,3 @@
-// Renderer.cpp
-// Last update 18/2/2022 by Madman10K
 #include "Renderer.hpp"
 #include <Engine/Core/Core/Global.hpp>
 #include <GameFramework/GameplayClasses/Level/Level.hpp>
@@ -7,12 +5,12 @@
 #include "Vulkan/VulkanRenderer.hpp"
 #include <yaml.h>
 
-UVK::Renderer::Renderer(UVK::Level* lvl, bool bUsesEditor)
+UVK::Renderer::Renderer(UVK::Level* lvl, bool bUsesEditor) noexcept
 {
     startRenderer(lvl, bUsesEditor);
 }
 
-void UVK::Renderer::switchRenderer()
+void UVK::Renderer::switchRenderer() noexcept
 {
     if (global.bUsesVulkan) global.bUsesVulkan = false;
     else global.bUsesVulkan = true;
@@ -22,7 +20,7 @@ void UVK::Renderer::switchRenderer()
     GameInstance::exit();
 }
 
-void UVK::RendererSettings::saveSettings() const
+void UVK::RendererSettings::saveSettings() const noexcept
 {
     YAML::Emitter out;
     out << YAML::BeginMap;
@@ -38,7 +36,7 @@ void UVK::RendererSettings::saveSettings() const
     fileout << out.c_str();
 }
 
-void UVK::Renderer::startRenderer(UVK::Level* lvl, bool bUsesEditor)
+void UVK::Renderer::startRenderer(UVK::Level* lvl, bool bUsesEditor) noexcept
 {
     loadSettings();
 
@@ -53,7 +51,7 @@ void UVK::Renderer::startRenderer(UVK::Level* lvl, bool bUsesEditor)
     }
 }
 
-void UVK::Renderer::loadSettings()
+void UVK::Renderer::loadSettings() noexcept
 {
     YAML::Node a;
     bool bUsesConf = true;
@@ -91,17 +89,17 @@ void UVK::Renderer::loadSettings()
     }
 }
 
-bool& UVK::Renderer::getVSync()
+bool& UVK::Renderer::getVSync() noexcept
 {
     return global.rendererSettings.bVsync;
 }
 
-void UVK::Renderer::saveSettings()
+void UVK::Renderer::saveSettings() noexcept
 {
     global.rendererSettings.saveSettings();
 }
 
-bool& UVK::Renderer::getImmediateRender()
+bool& UVK::Renderer::getImmediateRender() noexcept
 {
     return global.rendererSettings.bVsyncImmediate;
 }

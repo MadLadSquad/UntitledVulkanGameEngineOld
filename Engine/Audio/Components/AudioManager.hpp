@@ -1,5 +1,3 @@
-// AudioManager.hpp
-// Last update 7/2/2022 by Madman10K
 #pragma once
 #include "AudioCore.hpp"
 
@@ -24,8 +22,8 @@ namespace UVK
         void operator=(AudioManager const&) = delete;
         ~AudioManager();
 
-        void createDevice();
-        void destroyDevice();
+        void createDevice() noexcept;;
+        void destroyDevice() noexcept;;
     private:
         ALCdevice* device = nullptr;
         ALCcontext* context = nullptr;

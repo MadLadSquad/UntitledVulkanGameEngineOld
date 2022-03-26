@@ -1,12 +1,10 @@
-// OpenLevelWidget.cpp
-// Last update 18/2/2022 by Madman10K
 #include "OpenLevelWidget.hpp"
 #ifndef PRODUCTION
 #include <imgui.h>
 #include <cpp/imgui_stdlib.h>
 #include <Renderer/EditorUI/Classes/EditorLevel.hpp>
 
-bool OpenLevelWidget::display(std::string &openLevel, bool &bShowOpenLevelWidget, double& dr, UVK::FVector4& colour)
+bool OpenLevelWidget::display(std::string &openLevel, bool &bShowOpenLevelWidget, double& dr, UVK::FVector4& colour) noexcept
 {
     bool bReturn = false;
     if (!ImGui::IsPopupOpen("Open Level"))
@@ -31,7 +29,7 @@ bool OpenLevelWidget::display(std::string &openLevel, bool &bShowOpenLevelWidget
             Timer tm;
             tm.startRecording();
 
-            auto loc = "../Content/" + openLevel;
+            auto loc = UVK_CONTENT_PATH + openLevel;
             UVK::Level::open<UVK::EditorLevel>(loc);
 
             tm.stopRecording();

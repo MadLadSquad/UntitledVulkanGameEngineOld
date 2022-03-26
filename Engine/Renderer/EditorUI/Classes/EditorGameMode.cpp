@@ -1,5 +1,3 @@
-// EditorGameMode.cpp
-// Last update 27/8/2021 by Madman10K
 #include "EditorGameMode.hpp"
 #include "EditorPlayerController.hpp"
 

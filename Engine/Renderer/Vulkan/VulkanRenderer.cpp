@@ -1,5 +1,3 @@
-// VulkanRenderer.cpp
-// Last update 26/02/2022 by Madman10K
 #ifndef __APPLE__
 #define GLFW_INCLUDE_VULKAN
 #include "VulkanRenderer.hpp"
@@ -13,8 +11,9 @@
 #include <glfw3.h>
 #include <Core/Events/Events.hpp>
 #include <UVKShaderCompiler/Src/Functions.hpp>
+#include "Components/VKMesh.hpp"
 
-void UVK::VulkanRenderer::run()
+void UVK::VulkanRenderer::run() noexcept
 {
     // Set the UVKShaderCompiler path and check for recompilation
     USC::setPrefixDir("../");
@@ -38,7 +37,19 @@ void UVK::VulkanRenderer::run()
     swapchain.createCommandPool();
     swapchain.createCommandBuffers();
 
-    swapchain.recordCommands();
+    std::vector<VKVertex> vertices =
+    {
+        {{-0.5f, -0.5f, 0.0f }, {1.0f, 0.0f, 0.0f, 1.0f}},
+        {{0.5f, 0.5f, 0.0f }, {0.0f, 1.0f, 0.0f, 1.0f}},
+        {{-0.5f, 0.5f, 0.0f }, {0.0f, 0.0f, 1.0f, 1.0f}},
+
+        {{-0.5f, -0.5f, 0.0f }, {1.0f, 0.0f, 0.0f, 1.0f}},
+        {{0.5f, -0.5f, 0.0f }, {0.0f, 0.0f, 1.0f, 1.0f}},
+        {{0.5f, 0.5f, 0.0f }, {0.0f, 1.0f, 0.0f, 1.0f}}
+    };
+    VKMesh mesh(device, vertices);
+    std::vector<VKMesh> meshes = { mesh };
+    swapchain.recordCommands(meshes);
     swapchain.createSynchronisation();
 
     while (!glfwWindowShouldClose(global.window.getWindow()))
@@ -46,6 +57,10 @@ void UVK::VulkanRenderer::run()
         glfwPollEvents();
         swapchain.draw();
     }
+    vkDeviceWaitIdle(device.getDevice());
+    mesh.destroyVertexBuffer();
+
+
     swapchain.destroySynchronisation();
     swapchain.destroyCommandBuffers();
     swapchain.destroyCommandPool();

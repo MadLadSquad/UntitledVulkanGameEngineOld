@@ -1,5 +1,3 @@
-// RegularAudio.hpp
-// Last update 7/2/2022 by Madman10K
 #pragma once
 #include "AudioCore.hpp"
 
@@ -15,12 +13,12 @@ namespace UVK
         AudioBuffer() = default;
         explicit AudioBuffer(String loc);
 
-        void addSound(String loc);
-        void removeSound();
+        void addSound(String loc) noexcept;
+        void removeSound() noexcept;
 
-        static void findFormat(ALenum& format, const SF_INFO& info, SNDFILE* sndfile);
+        static void findFormat(ALenum& format, const SF_INFO& info, SNDFILE* sndfile) noexcept;
 
-        ALuint& buffer();
+        ALuint& buffer() noexcept;
     private:
         ALuint bufferI = 0;
     };
@@ -32,13 +30,13 @@ namespace UVK
     {
     public:
         AudioSource() = default;
-        void init();
-        void update(const UVK::FVector& position) const;
-        void play();
+        void init() noexcept;
+        void update(const UVK::FVector& position) const noexcept;
+        void play() noexcept;
 
-        AudioSourceData& audioData();
-        AudioBuffer& buffer();
-        AudioState& state();
+        AudioSourceData& audioData() noexcept;
+        AudioBuffer& buffer() noexcept;
+        AudioState& state() noexcept;
     private:
         AudioSourceData audioDt;
         AudioBuffer buf;

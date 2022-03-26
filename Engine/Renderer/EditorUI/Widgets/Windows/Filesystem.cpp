@@ -1,5 +1,3 @@
-// Filesystem.cpp
-// Last update 18/2/2022 by Madman10K
 #include <GL/glew.h>
 #include "Filesystem.hpp"
 #ifndef PRODUCTION
@@ -9,7 +7,7 @@
 #include <State/StateTracker.hpp>
 
 #ifndef __MINGW32__
-bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::FilesystemWidgetData& data, bool& bShow)
+bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::FilesystemWidgetData& data, bool& bShow) noexcept
 {
     bool bReturn = false;
 
@@ -545,7 +543,7 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::
     return bReturn;
 }
 
-void Filesystem::createFile(const std_filesystem::path &pt)
+void Filesystem::createFile(const std_filesystem::path &pt) noexcept
 {
     if (std_filesystem::exists(pt/"NewFile.txt"))
     {
@@ -612,7 +610,7 @@ void Filesystem::createFile(const std_filesystem::path &pt)
     }
 }
 
-void Filesystem::createFolder(const std_filesystem::path& pt)
+void Filesystem::createFolder(const std_filesystem::path& pt) noexcept
 {
     if (std_filesystem::exists(pt/"NewFolder"))
     {
@@ -670,7 +668,7 @@ void Filesystem::createFolder(const std_filesystem::path& pt)
     }
 }
 
-void Filesystem::deleteFile(std_filesystem::path& pt, std_filesystem::path& selectedFile)
+void Filesystem::deleteFile(std_filesystem::path& pt, std_filesystem::path& selectedFile) noexcept
 {
     if (is_directory(selectedFile))
     {
@@ -744,7 +742,7 @@ void Filesystem::deleteFile(std_filesystem::path& pt, std_filesystem::path& sele
     selectedFile.clear();
 }
 
-UVK::Texture* Filesystem::selectTextures(UVK::Texture* textures, const std_filesystem::path& path, std::vector<UVK::Texture>& previews, volatile bool& bPreviews, const int& currentIndex, volatile bool& bLoad)
+UVK::Texture* Filesystem::selectTextures(UVK::Texture* textures, const std_filesystem::path& path, std::vector<UVK::Texture>& previews, volatile bool& bPreviews, const int& currentIndex, volatile bool& bLoad) noexcept
 {
     // Constants for the file extensions
     static constexpr const char* audioExtensions[] = { ".wav", ".flac", ".m4a", ".ogg", ".mp3" };

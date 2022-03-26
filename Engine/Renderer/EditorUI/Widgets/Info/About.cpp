@@ -1,10 +1,8 @@
-// About.cpp
-// Last update 18/2/2022 by Madman10K
 #include "About.hpp"
 #ifndef PRODUCTION
 #include <imgui.h>
 
-void About::display(std::string& engineVersion, std::string& projectName, std::string& projectVersion, UVK::Texture& logo, bool& bShow)
+void About::display(std::string& engineVersion, std::string& projectName, std::string& projectVersion, UVK::Texture& logo, bool& bShow) noexcept
 {
     if (!ImGui::IsPopupOpen("About us"))
         ImGui::OpenPopup("About us");

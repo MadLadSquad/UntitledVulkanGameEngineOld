@@ -1,16 +1,14 @@
-// StreamedAudio.hpp
-// Last update 29/10/2021 by Madman10K
 #include "StreamedAudio.hpp"
 #include "RegularAudio.hpp"
 
 #ifndef __MINGW32__
-UVK::AudioBufferStreamed::AudioBufferStreamed(UVK::String loc, uint32_t chunks)
+UVK::AudioBufferStreamed::AudioBufferStreamed(UVK::String loc, uint32_t chunks) noexcept
 {
     buffers.resize(chunks);
     addSound(loc);
 }
 
-void UVK::AudioBufferStreamed::addSound(String loc)
+void UVK::AudioBufferStreamed::addSound(String loc) noexcept
 {
     alGenSources(1, &data->source);
     alGenBuffers(buffers.size(), buffers.data());
@@ -29,12 +27,12 @@ void UVK::AudioBufferStreamed::addSound(String loc)
     membuf = static_cast<short*>(malloc(frameSize));
 }
 
-std::vector<ALuint>& UVK::AudioBufferStreamed::buffer()
+std::vector<ALuint>& UVK::AudioBufferStreamed::buffer() noexcept
 {
     return buffers;
 }
 
-void UVK::AudioBufferStreamed::removeSound()
+void UVK::AudioBufferStreamed::removeSound() noexcept
 {
     alDeleteSources(1, &data->source);
     if (sndfile)
@@ -43,12 +41,12 @@ void UVK::AudioBufferStreamed::removeSound()
     alDeleteBuffers(buffers.size(), buffers.data());
 }
 
-void UVK::AudioBufferStreamed::update()
+void UVK::AudioBufferStreamed::update() noexcept
 {
 
 }
 
-void UVK::AudioSourceStreamed::init()
+void UVK::AudioSourceStreamed::init() noexcept
 {
 
     alGetError(); // Clear out the errors
@@ -81,7 +79,7 @@ void UVK::AudioSourceStreamed::init()
     }
 }
 
-void UVK::AudioSourceStreamed::update(const UVK::FVector& position)
+void UVK::AudioSourceStreamed::update(const UVK::FVector& position) noexcept
 {
     ALint processed, state;
     alGetError(); // Clear all the errors
@@ -130,22 +128,22 @@ void UVK::AudioSourceStreamed::update(const UVK::FVector& position)
     }
 }
 
-void UVK::AudioSourceStreamed::play()
+void UVK::AudioSourceStreamed::play() noexcept
 {
 
 }
 
-UVK::AudioSourceData& UVK::AudioSourceStreamed::audioData()
+UVK::AudioSourceData& UVK::AudioSourceStreamed::audioData() noexcept
 {
     return audioDt;
 }
 
-UVK::AudioBufferStreamed &UVK::AudioSourceStreamed::buffer()
+UVK::AudioBufferStreamed &UVK::AudioSourceStreamed::buffer() noexcept
 {
     return buf;
 }
 
-UVK::AudioState& UVK::AudioSourceStreamed::state()
+UVK::AudioState& UVK::AudioSourceStreamed::state() noexcept
 {
     return stt;
 }

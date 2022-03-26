@@ -1,14 +1,12 @@
-// VKUtility.cpp
-// Last update 26/02/2022 by Madman10K
 #include "Utility.hpp"
 #include <UVKShaderCompiler/Src/Functions.hpp>
 
-bool UVK::QueueFamilyIndices::valid() const
+bool UVK::QueueFamilyIndices::valid() const noexcept
 {
     return graphicsFamily >= 0 && presentationFamily >= 0;
 }
 
-std::vector<char> UVK::VKShader::getShaderBytecode() const
+std::vector<char> UVK::VKShader::getShaderBytecode() const noexcept
 {
     auto hash = USC::getShaderHash(name.c_str());
     bool bFound = false;
@@ -31,7 +29,7 @@ std::vector<char> UVK::VKShader::getShaderBytecode() const
     if (!in.is_open())
     {
         logger.consoleLog("Failed to load file!", UVK_LOG_TYPE_ERROR);
-        throw std::runtime_error(" ");
+        std::terminate();
     }
 
     std::vector<char> returnVal(in.tellg());
@@ -42,12 +40,12 @@ std::vector<char> UVK::VKShader::getShaderBytecode() const
     return returnVal;
 }
 
-UVK::VKShader::VKShader(const char* fname)
+UVK::VKShader::VKShader(const char* fname) noexcept
 {
     init(fname);
 }
 
-void UVK::VKShader::init(const char* fname)
+void UVK::VKShader::init(const char* fname) noexcept
 {
     name = fname;
     if (name.ends_with(".vert"))
@@ -66,7 +64,7 @@ void UVK::VKShader::init(const char* fname)
         type = VKShaderType::VK_SHADER_TYPE_NONE;
 }
 
-void UVK::VKShader::each(const std::function<void(VKShader&)>& func)
+void UVK::VKShader::each(const std::function<void(VKShader&)>& func) noexcept
 {
     for (auto& a : std_filesystem::recursive_directory_iterator("../Content/"))
     {

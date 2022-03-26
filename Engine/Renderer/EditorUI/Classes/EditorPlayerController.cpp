@@ -1,5 +1,3 @@
-// EditorPlayerController.cpp
-// Last update 27/8/2021 by Madman10K
 #include "EditorPlayerController.hpp"
 #ifndef PRODUCTION
 #include "EditorPawn.hpp"

@@ -1,5 +1,3 @@
-// FallbackPawn.hpp
-// Last update 7/2/2022 by Madman10K
 #pragma once
 #include "Pawn.hpp"
 

@@ -1,5 +1,3 @@
-// Settings.cpp
-// Last update 18/2/2022 by Madman10K
 #include "Settings.hpp"
 #include <imgui.h>
 #include "../Style/Theme.hpp"

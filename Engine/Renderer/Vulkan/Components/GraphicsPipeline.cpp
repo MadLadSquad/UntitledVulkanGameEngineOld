@@ -1,18 +1,18 @@
 #include "GraphicsPipeline.hpp"
 #include "Swapchain.hpp"
 
-UVK::GraphicsPipeline::GraphicsPipeline(UVK::VKDevice& dev, Swapchain& swap)
+UVK::GraphicsPipeline::GraphicsPipeline(UVK::VKDevice& dev, Swapchain& swap) noexcept
 {
     device = &dev;
     swapchain = &swap;
 }
 
-UVK::GraphicsPipeline::~GraphicsPipeline()
+UVK::GraphicsPipeline::~GraphicsPipeline() noexcept
 {
     destroyGraphicsPipeline();
 }
 
-void UVK::GraphicsPipeline::createGraphicsPipeline()
+void UVK::GraphicsPipeline::createGraphicsPipeline() noexcept
 {
     std::vector<VKShader> shaders;
     std::vector<VkPipelineShaderStageCreateInfo> stages;
@@ -38,7 +38,7 @@ void UVK::GraphicsPipeline::createGraphicsPipeline()
         if (result != VK_SUCCESS)
         {
             logger.consoleLog("Failed to create a Vulkan shader module! Error code: ", UVK_LOG_TYPE_ERROR, result);
-            throw std::runtime_error(" ");
+            std::terminate();
         }
 
         a.info = VkPipelineShaderStageCreateInfo
@@ -52,13 +52,36 @@ void UVK::GraphicsPipeline::createGraphicsPipeline()
         stages.push_back(a.info);
     }
 
-    constexpr VkPipelineVertexInputStateCreateInfo vertexInputStateCreateInfo =
+    constexpr VkVertexInputBindingDescription bindingDescription =
+    {
+        .binding = 0,
+        .stride = sizeof(VKVertex),
+        .inputRate = VK_VERTEX_INPUT_RATE_VERTEX
+    };
+
+    constexpr VkVertexInputAttributeDescription attributeDescriptions[2] =
+    {
+        {
+            .location = 0,
+            .binding = 0,
+            .format = VK_FORMAT_R32G32B32A32_SFLOAT,
+            .offset = offsetof(VKVertex, pos)
+        },
+        {
+            .location = 1,
+            .binding = 0,
+            .format = VK_FORMAT_R32G32B32A32_SFLOAT,
+            .offset = offsetof(VKVertex, colour)
+        }
+    };
+
+    const VkPipelineVertexInputStateCreateInfo vertexInputStateCreateInfo =
     {
         .sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO,
-        .vertexBindingDescriptionCount = 0,
-        .pVertexBindingDescriptions = nullptr,
-        .vertexAttributeDescriptionCount = 0,
-        .pVertexAttributeDescriptions = nullptr
+        .vertexBindingDescriptionCount = 1,
+        .pVertexBindingDescriptions = &bindingDescription,
+        .vertexAttributeDescriptionCount = 2,
+        .pVertexAttributeDescriptions = attributeDescriptions
     };
 
     constexpr VkPipelineInputAssemblyStateCreateInfo inputAssembly =
@@ -152,7 +175,7 @@ void UVK::GraphicsPipeline::createGraphicsPipeline()
     if (result != VK_SUCCESS)
     {
         logger.consoleLog("Couldn't create a Vulkan graphics pipeline layout! Error code: ", UVK_LOG_TYPE_ERROR, result);
-        throw std::runtime_error(" ");
+        std::terminate();
     }
 
     // TODO: set up depth stencil testing
@@ -183,21 +206,21 @@ void UVK::GraphicsPipeline::createGraphicsPipeline()
     if (result != VK_SUCCESS)
     {
         logger.consoleLog("Failed to create a Vulkan graphics pipeline! Error code: ", UVK_LOG_TYPE_ERROR, result);
-        throw std::runtime_error(" ");
+        std::terminate();
     }
 
     for (const auto& a : shaders)
         vkDestroyShaderModule(device->getDevice(), a.module, nullptr);
 }
 
-void UVK::GraphicsPipeline::destroyGraphicsPipeline()
+void UVK::GraphicsPipeline::destroyGraphicsPipeline() noexcept
 {
     vkDestroyPipeline(device->getDevice(), graphicsPipeline, nullptr);
     vkDestroyPipelineLayout(device->getDevice(), pipelineLayout, nullptr);
     vkDestroyRenderPass(device->getDevice(), renderPass, nullptr);
 }
 
-void UVK::GraphicsPipeline::createRenderPass()
+void UVK::GraphicsPipeline::createRenderPass() noexcept
 {
     const VkAttachmentDescription colourAttachment =
     {
@@ -261,6 +284,6 @@ void UVK::GraphicsPipeline::createRenderPass()
     if (result != VK_SUCCESS)
     {
         logger.consoleLog("Failed to create a Vulkan render pass! Error code: ", UVK_LOG_TYPE_ERROR, result);
-        throw std::runtime_error(" ");
+        std::terminate();
     }
 }

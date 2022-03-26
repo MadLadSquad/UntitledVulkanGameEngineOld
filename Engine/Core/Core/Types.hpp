@@ -1,5 +1,3 @@
-// Types.hpp
-// Last update 18/2/2022 by Madman10K
 #pragma once
 #define GLM_FORCE_DEPTH_ZERO_TO_ONE
 #include <vector>

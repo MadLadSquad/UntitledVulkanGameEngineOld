@@ -1,10 +1,8 @@
-// Instance.hpp
-// Last update 26/02/2022 by Madman10K
 #pragma once
 
 namespace UVK
 {
-    static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugReportFlagsEXT flags, VkDebugReportObjectTypeEXT objType, uint64_t obj, size_t location, int32_t code, const char* layerPrefix, const char* message, void* userData)
+    static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugReportFlagsEXT flags, VkDebugReportObjectTypeEXT objType, uint64_t obj, size_t location, int32_t code, const char* layerPrefix, const char* message, void* userData) noexcept
     {
         if (flags & VK_DEBUG_REPORT_ERROR_BIT_EXT)
         {
@@ -25,18 +23,18 @@ namespace UVK
     {
     public:
         VKInstance() = default;
-        ~VKInstance();
-        void create();
-        void destroy();
-        VkInstance& data();
+        ~VKInstance() noexcept;
+        void create() noexcept;
+        void destroy() noexcept;
+        VkInstance& data() noexcept;
     private:
-        static bool checkInstanceExtensionsSupport(const char** extensions, uint32_t count);
-        static bool checkValidationLayerSupport(const std::vector<const char*>& validationLayers);
+        static bool checkInstanceExtensionsSupport(const char** extensions, uint32_t count) noexcept;
+        static bool checkValidationLayerSupport(const std::vector<const char*>& validationLayers) noexcept;
 
         VkInstance instance;
         VkDebugReportCallbackEXT callback;
 
-        void createDebugCallback();
+        void createDebugCallback() noexcept;
 
     };
 }

@@ -1,9 +1,7 @@
-// Device.cpp
-// Last update 26/02/2022 by Madman10K
 #include "Device.hpp"
 #include "Swapchain.hpp"
 
-void UVK::VKDevice::createDevice(Swapchain& swapchain)
+void UVK::VKDevice::createDevice(Swapchain& swapchain) noexcept
 {
     indices = createPhysicalDevice(swapchain);
 
@@ -49,35 +47,35 @@ void UVK::VKDevice::createDevice(Swapchain& swapchain)
     if (result != VK_SUCCESS)
     {
         logger.consoleLog("Failed to create a logical device! Error code: ", UVK_LOG_TYPE_ERROR, result);
-        throw std::runtime_error(" ");
+        std::terminate();
     }
     vkGetDeviceQueue(device, indices.graphicsFamily, 0, &queue);
     vkGetDeviceQueue(device, indices.presentationFamily, 0, &presentationQueue);
 }
 
-void UVK::VKDevice::destroyDevice()
+void UVK::VKDevice::destroyDevice() noexcept
 {
     vkDestroyDevice(device, nullptr);
 }
 
-VkDevice& UVK::VKDevice::getDevice()
+VkDevice& UVK::VKDevice::getDevice() noexcept
 {
     return device;
 }
 
-UVK::VKDevice::VKDevice(UVK::VKInstance& instance)
+UVK::VKDevice::VKDevice(UVK::VKInstance& instance) noexcept
 {
     this->instance = &instance;
 }
 
-UVK::QueueFamilyIndices UVK::VKDevice::createPhysicalDevice(Swapchain& swapchain)
+UVK::QueueFamilyIndices UVK::VKDevice::createPhysicalDevice(Swapchain& swapchain) noexcept
 {
     uint32_t deviceCount;
     vkEnumeratePhysicalDevices(instance->data(), &deviceCount, nullptr);
     if (deviceCount == 0)
     {
         logger.consoleLog("Could not find any graphics devices on this system!", UVK_LOG_TYPE_ERROR);
-        throw std::runtime_error(" ");
+        std::terminate();
     }
     std::vector<VkPhysicalDevice> devices(deviceCount);
     vkEnumeratePhysicalDevices(instance->data(), &deviceCount, devices.data());
@@ -186,7 +184,7 @@ continue_to_other_device_in_list:;
     return lastSavedIndex;
 }
 
-UVK::VKDevice::~VKDevice()
+UVK::VKDevice::~VKDevice() noexcept
 {
     destroyDevice();
 }

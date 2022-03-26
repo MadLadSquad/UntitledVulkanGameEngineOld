@@ -1,5 +1,3 @@
-// RegularAudio.hpp
-// Last update 29/10/2021 by Madman10K
 #include "RegularAudio.hpp"
 
 #ifndef __MINGW32__
@@ -8,7 +6,7 @@ UVK::AudioBuffer::AudioBuffer(String loc)
     addSound(loc);
 }
 
-void UVK::AudioBuffer::addSound(String loc)
+void UVK::AudioBuffer::addSound(String loc) noexcept
 {
     ALenum error;
     ALenum format;
@@ -69,18 +67,18 @@ void UVK::AudioBuffer::addSound(String loc)
     }
 }
 
-void UVK::AudioBuffer::removeSound()
+void UVK::AudioBuffer::removeSound() noexcept
 {
     if (alIsBuffer(bufferI) && bufferI)
         alDeleteBuffers(1, &bufferI);
 }
 
-ALuint& UVK::AudioBuffer::buffer()
+ALuint& UVK::AudioBuffer::buffer() noexcept
 {
     return bufferI;
 }
 
-void UVK::AudioBuffer::findFormat(ALenum& format, const SF_INFO& info, SNDFILE* sndfile)
+void UVK::AudioBuffer::findFormat(ALenum& format, const SF_INFO& info, SNDFILE* sndfile) noexcept
 {
     switch (info.channels)
     {
@@ -109,7 +107,7 @@ void UVK::AudioBuffer::findFormat(ALenum& format, const SF_INFO& info, SNDFILE* 
     }
 }
 
-void UVK::AudioSource::play()
+void UVK::AudioSource::play() noexcept
 {
     alSourcePlay(buf.buffer());
 
@@ -122,22 +120,22 @@ void UVK::AudioSource::play()
      */
 }
 
-UVK::AudioSourceData& UVK::AudioSource::audioData()
+UVK::AudioSourceData& UVK::AudioSource::audioData() noexcept
 {
     return audioDt;
 }
 
-UVK::AudioBuffer& UVK::AudioSource::buffer()
+UVK::AudioBuffer& UVK::AudioSource::buffer() noexcept
 {
     return buf;
 }
 
-UVK::AudioState& UVK::AudioSource::state()
+UVK::AudioState& UVK::AudioSource::state() noexcept
 {
     return stt;
 }
 
-void UVK::AudioSource::update(const UVK::FVector& position) const
+void UVK::AudioSource::update(const UVK::FVector& position) const noexcept
 {
     alSourcef(audioDt.source, AL_PITCH, audioDt.pitch);
     alSourcef(audioDt.source, AL_GAIN, audioDt.gain);
@@ -146,7 +144,7 @@ void UVK::AudioSource::update(const UVK::FVector& position) const
     alSourcei(audioDt.source, AL_LOOPING, audioDt.bLoop);
 }
 
-void UVK::AudioSource::init()
+void UVK::AudioSource::init() noexcept
 {
     alGenSources(1, &audioDt.source);
     buf = AudioBuffer(audioDt.location.c_str());

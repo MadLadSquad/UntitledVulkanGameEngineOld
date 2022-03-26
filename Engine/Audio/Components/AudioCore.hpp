@@ -1,5 +1,3 @@
-// AudioCore.hpp
-// Last update 21/12/2021 by Madman10K
 #pragma once
 #include <Core.hpp>
 #ifndef __MINGW32__

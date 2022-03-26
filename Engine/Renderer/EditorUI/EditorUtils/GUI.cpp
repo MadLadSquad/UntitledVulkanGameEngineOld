@@ -1,5 +1,3 @@
-// GUI.cpp
-// Last update 18/2/2022 by Madman10K
 #include "GUI.hpp"
 #include <imgui.h>
 #include <GameFramework/GameplayClasses/Level/Level.hpp>

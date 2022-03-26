@@ -1,20 +1,18 @@
-// Actor.cpp
-// Last update 13/10/2021 by Madman10K
 #include "Actor.hpp"
 #include "Engine/GameFramework/Components/Components.hpp"
 #include <GameFramework/Components/Components/CoreComponent.hpp>
 
-UVK::Actor::Actor(const std::string& nameN, uint64_t idN, const std::string& devNameN)
+UVK::Actor::Actor(const std::string& nameN, uint64_t idN, const std::string& devNameN) noexcept
 {
     create(nameN, idN, devNameN);
 }
 
-entt::entity& UVK::Actor::data()
+entt::entity& UVK::Actor::data() noexcept
 {
     return entity;
 }
 
-void UVK::Actor::create(const std::string& nameN, uint64_t idN, const std::string& devNameN)
+void UVK::Actor::create(const std::string& nameN, uint64_t idN, const std::string& devNameN) noexcept
 {
     entity = global.ecs.data().create();
     auto& a = add<CoreComponent>();
@@ -26,43 +24,43 @@ void UVK::Actor::create(const std::string& nameN, uint64_t idN, const std::strin
     a.devName = devNameN;
 }
 
-void UVK::Actor::destroy()
+void UVK::Actor::destroy() noexcept
 {
     clear();
     global.ecs.data().destroy(entity);
 }
 
-UVK::Actor::Actor(entt::entity ent)
+UVK::Actor::Actor(entt::entity ent) noexcept
 {
     entity = ent;
 }
 
-bool UVK::Actor::operator==(entt::entity ent)
+bool UVK::Actor::operator==(entt::entity ent) noexcept
 {
     return this->entity == ent;
 }
 
-bool UVK::Actor::operator==(UVK::Actor actor)
+bool UVK::Actor::operator==(UVK::Actor actor) noexcept
 {
     return this->entity == actor.entity;
 }
 
-bool UVK::Actor::operator==(bool)
+bool UVK::Actor::operator==(bool) noexcept
 {
     return valid();
 }
 
-bool UVK::Actor::valid()
+bool UVK::Actor::valid() noexcept
 {
     return global.ecs.data().valid(entity);
 }
 
-UVK::Actor::operator bool()
+UVK::Actor::operator bool() noexcept
 {
     return valid();
 }
 
-void UVK::Actor::clear()
+void UVK::Actor::clear() noexcept
 {
     if (has<MeshComponentRaw>())
     {
@@ -87,7 +85,7 @@ void UVK::Actor::clear()
         remove<CoreComponent>();
 }
 
-void UVK::Actor::createInternal(const std::string& nameN, uint64_t idN, const std::string& devNameN, bool bUsingUUID)
+void UVK::Actor::createInternal(const std::string& nameN, uint64_t idN, const std::string& devNameN, bool bUsingUUID) noexcept
 {
     entity = global.ecs.data().create();
     auto& a = add<CoreComponent>();

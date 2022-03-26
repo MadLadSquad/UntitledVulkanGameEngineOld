@@ -1,5 +1,3 @@
-// Events.hpp
-// Last update 7/2/2022 by Madman10K
 #pragma once
 
 namespace UVK
@@ -20,10 +18,10 @@ namespace UVK
         friend class VulkanRenderer;
         friend class Actor;
 
-        static void callTick(float deltaTime);
-        static void callBegin();
-        static void callEnd();
+        static void callTick(float deltaTime) noexcept;
+        static void callBegin() noexcept;
+        static void callEnd() noexcept;
 
-        static void clear();
+        static void clear() noexcept;
     };
 }

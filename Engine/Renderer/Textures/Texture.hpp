@@ -1,5 +1,3 @@
-// Texture.hpp
-// Last update 7/2/2022 by Madman10K
 #pragma once
 #include <Core/Types.hpp>
 #include <Core/Defines.hpp>
@@ -15,18 +13,18 @@ namespace UVK
         Texture() = default;
         explicit Texture(std::string loc)
             : location(std::move(loc)) {}
-        void load();
+        void load() noexcept;
 
-        void destroy();
+        void destroy() noexcept;
 
-        [[maybe_unused]] std::string& getLocation() { return location; }
-        int& getWidth() { return width; }
-        int& getHeight() { return height; }
-        uint32_t& getImage() { return image; };
-        void loadImgui();
-        void useTexture() const;
+        [[maybe_unused]] std::string& getLocation() noexcept { return location; }
+        int& getWidth() noexcept { return width; }
+        int& getHeight() noexcept { return height; }
+        uint32_t& getImage() noexcept { return image; };
+        void loadImgui() noexcept;
+        void useTexture() const noexcept;
     private:
-        unsigned char* gen();
+        unsigned char* gen() noexcept;
 
         friend class GLPipeline;
         friend class Editor;

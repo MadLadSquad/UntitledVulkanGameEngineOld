@@ -1,10 +1,8 @@
-// NewLevel.cpp
-// Last update 18/2/2022 by Madman10K
 #include "NewLevel.hpp"
 #ifndef PRODUCTION
 #include "Core/Actor.hpp"
 
-void NewLevel::display(bool &bShow)
+void NewLevel::display(bool &bShow) noexcept
 {
     if (!ImGui::IsPopupOpen("WARNING##new level"))
         ImGui::OpenPopup("WARNING##new level");

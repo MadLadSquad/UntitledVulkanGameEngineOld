@@ -1,5 +1,3 @@
-// Editor.cpp
-// Last update 18/2/2022 by Madman10K
 #include "Editor.hpp"
 #ifndef PRODUCTION
 #include <Renderer/EditorUI/Widgets/Windows/SceneHierarchy.hpp>
@@ -35,7 +33,7 @@
 #include <GameFramework/GameplayClasses/Level/Level.hpp>
 #include <imgui_impl_vulkan.h>
 
-void UVK::Editor::initEditor()
+void UVK::Editor::initEditor() noexcept
 {
     // Set the UVKBuildTool path
     UBT::setPath("../");
@@ -46,7 +44,7 @@ void UVK::Editor::initEditor()
 #ifdef __MINGW32__
     EditorResources::loadResources(*this);
 #else
-    pt = "../Content/";
+    pt = UVK_CONTENT_PATH;
     EditorResources::loadResources(*this, pt);
 #endif
     EditorUtilSettings::loadImGuiSettings(*this, strings.colTheme);
@@ -58,7 +56,7 @@ void UVK::Editor::initEditor()
     logger.consoleLog("Starting the renderer took: ", UVK_LOG_TYPE_NOTE, tm.getDuration(), "ms!");
 }
 
-void UVK::Editor::runEditor(FVector4& colour, GLFrameBuffer& fb, Camera& camera, UVK::Level* lvl, const float& deltaTime)
+void UVK::Editor::runEditor(FVector4& colour, GLFrameBuffer& fb, Camera& camera, UVK::Level* lvl, const float& deltaTime) noexcept
 {
 #ifndef PRODUCTION
     EditorUtilSettings::setImGuiSettings(*this);
@@ -66,7 +64,7 @@ void UVK::Editor::runEditor(FVector4& colour, GLFrameBuffer& fb, Camera& camera,
     EditorUtilSettings::finishImGuiRender(*this);
 }
 
-void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& camera, UVK::Level* lvl, const float& deltaTime)
+void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& camera, UVK::Level* lvl, const float& deltaTime) noexcept
 {
     accumulateUndoRedo += deltaTime;
     EditorGUIUtils::switchKeybinds(*this);
@@ -82,15 +80,15 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
     if (bools.bShowSaveWarning)
         NewLevel::display(bools.bShowSaveWarning);
     if (bools.bShowSaveLevelWidget)
-        bools.bEditorUsingTextbox = SaveLevel::display(bools.bShowSaveLevelWidget, strings.location, colour) ? true : bools.bEditorUsingTextbox;
+        bools.bEditorUsingTextbox = SaveLevel::display(bools.bShowSaveLevelWidget, strings.location, colour) || bools.bEditorUsingTextbox;
     if (bools.bShowOpenLevelWidget)
-        bools.bEditorUsingTextbox = OpenLevelWidget::display(strings.openLevel, bools.bShowOpenLevelWidget, frameTimeData[1], colour) ? true : bools.bEditorUsingTextbox;
+        bools.bEditorUsingTextbox = OpenLevelWidget::display(strings.openLevel, bools.bShowOpenLevelWidget, frameTimeData[1], colour) || bools.bEditorUsingTextbox;
     if (bools.bShowCreateFile1)
-        bools.bEditorUsingTextbox = CreateFile::display(strings.fileOutLocation, bools.bShowCreateFile1, strings.projectName) ? true : bools.bEditorUsingTextbox;
+        bools.bEditorUsingTextbox = CreateFile::display(strings.fileOutLocation, bools.bShowCreateFile1, strings.projectName) || bools.bEditorUsingTextbox;
     if (bools.bShowDetailsPanel)
-        bools.bEditorUsingTextbox = DetailsPanel::display(selectedEntity, lvl, bools.bShowDetailsPanel, moduleManager, bools.bDestroyEntity) ? true : bools.bEditorUsingTextbox;
+        bools.bEditorUsingTextbox = DetailsPanel::display(selectedEntity, lvl, bools.bShowDetailsPanel, moduleManager, bools.bDestroyEntity) || bools.bEditorUsingTextbox;
     if (bools.bShowSceneHierarchy)
-        bools.bEditorUsingTextbox = SceneHierarchy::display(selectedEntity, entNum, bools.bShowSceneHierarchy, currentLevelFolders) ? true : bools.bEditorUsingTextbox;
+        bools.bEditorUsingTextbox = SceneHierarchy::display(selectedEntity, entNum, bools.bShowSceneHierarchy, currentLevelFolders) || bools.bEditorUsingTextbox;
     if (bools.bShowViewport)
     {
         style.WindowPadding = ImVec2(0.0f, 0.0f);
@@ -99,44 +97,44 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
     }
 #ifndef __MINGW32__
     if (bools.bShowFilesystem)
-        bools.bEditorUsingTextbox = Filesystem::display(pt, textures.fileTextures, settings.fsdata, bools.bShowFilesystem) ? true : bools.bEditorUsingTextbox;
+        bools.bEditorUsingTextbox = Filesystem::display(pt, textures.fileTextures, settings.fsdata, bools.bShowFilesystem) || bools.bEditorUsingTextbox;
 #endif
     if (bools.bShowToolbar)
     {
         style.WindowPadding = ImVec2(0.0f, 0.0f);
-        bools.bEditorUsingTextbox = TopToolbar::display(textures.play, strings.projectName, moduleManager, bools.bShowToolbar, textures.restart, textures.stop) ? true : bools.bEditorUsingTextbox;
+        bools.bEditorUsingTextbox = TopToolbar::display(textures.play, strings.projectName, moduleManager, bools.bShowToolbar, textures.restart, textures.stop) || bools.bEditorUsingTextbox;
         style.WindowPadding = ImVec2(8.0f, 8.0f);
     }
     if (bools.bShowTools)
-        bools.bEditorUsingTextbox = Tools::display(moduleManager, bools.bShowTools) ? true : bools.bEditorUsingTextbox;
+        bools.bEditorUsingTextbox = Tools::display(moduleManager, bools.bShowTools) || bools.bEditorUsingTextbox;
     if (bools.bShowTerminalEmulator)
-        bools.bEditorUsingTextbox = TerminalEmulator::display(strings.terminalCommand, bools.bFinalisedCommand, bools.bShowTerminalEmulator) ? true : bools.bEditorUsingTextbox;
+        bools.bEditorUsingTextbox = TerminalEmulator::display(strings.terminalCommand, bools.bFinalisedCommand, bools.bShowTerminalEmulator) || bools.bEditorUsingTextbox;
     if (bools.bShowMemoryEditor)
         ImGuiMemoryEditor::display(bools.bShowMemoryEditor);
     if (bools.bShowStatistics)
         Statistics::display(frameTimeData, bools.bShowStatistics);
     if (bools.bShowWorldSettings)
-        bools.bEditorUsingTextbox = WorldSettings::display(colour, global.ambientLight, global.levelName, bools.bShowWorldSettings) ? true : bools.bEditorUsingTextbox;
+        bools.bEditorUsingTextbox = WorldSettings::display(colour, global.ambientLight, global.levelName, bools.bShowWorldSettings) || bools.bEditorUsingTextbox;
     if (bools.bShowAboutUs)
         About::display(strings.engineVersion, strings.projectName, strings.projectVersion, textures.logoTxt, bools.bShowAboutUs);
     if (bools.bShowHelp)
         Help::display(bools.bShowHelp);
     if (bools.bShowRemoveFile)
-        bools.bEditorUsingTextbox = RemoveFile::display(bools.bShowRemoveFile) ? true : bools.bEditorUsingTextbox;
+        bools.bEditorUsingTextbox = RemoveFile::display(bools.bShowRemoveFile) || bools.bEditorUsingTextbox;
     if (bools.bShowShip)
-        bools.bEditorUsingTextbox = Shipping::display(bools.bShowShip, strings.projectName) ? true : bools.bEditorUsingTextbox;
+        bools.bEditorUsingTextbox = Shipping::display(bools.bShowShip, strings.projectName) || bools.bEditorUsingTextbox;
     if (bools.bShowWindowSettings)
-        bools.bEditorUsingTextbox = UVK::SettingsWidgets::displayWindow(bools.bShowWindowSettings) ? true : bools.bEditorUsingTextbox;
+        bools.bEditorUsingTextbox = UVK::SettingsWidgets::displayWindow(bools.bShowWindowSettings) || bools.bEditorUsingTextbox;
     if (bools.bShowRendererSettings)
-        bools.bEditorUsingTextbox = UVK::SettingsWidgets::displayRenderer(bools.bShowRendererSettings, *this) ? true : bools.bEditorUsingTextbox;
+        bools.bEditorUsingTextbox = UVK::SettingsWidgets::displayRenderer(bools.bShowRendererSettings, *this) || bools.bEditorUsingTextbox;
     if (bools.bShowKeybindSettings)
-        bools.bEditorUsingTextbox = UVK::SettingsWidgets::displayKeybindEditor(bools.bShowKeybindSettings) ? true : bools.bEditorUsingTextbox;
+        bools.bEditorUsingTextbox = UVK::SettingsWidgets::displayKeybindEditor(bools.bShowKeybindSettings) || bools.bEditorUsingTextbox;
     if (bools.bShowGameKeybinds)
-        bools.bEditorUsingTextbox = UVK::SettingsWidgets::displayKeybindGame(bools.bShowGameKeybinds) ? true : bools.bEditorUsingTextbox;
+        bools.bEditorUsingTextbox = UVK::SettingsWidgets::displayKeybindGame(bools.bShowGameKeybinds) || bools.bEditorUsingTextbox;
     if (bools.bShowThemeSettings)
-        bools.bEditorUsingTextbox = UVK::SettingsWidgets::displayThemeEditor(bools.bShowThemeSettings) ? true : bools.bEditorUsingTextbox;
+        bools.bEditorUsingTextbox = UVK::SettingsWidgets::displayThemeEditor(bools.bShowThemeSettings) || bools.bEditorUsingTextbox;
     if (bools.bShowGameSettings)
-        bools.bEditorUsingTextbox = UVK::SettingsWidgets::displayProjectSettings(strings.projectName, strings.projectVersion, strings.engineVersion, strings.startupLevel, bools.bShowGameSettings) ? true : bools.bEditorUsingTextbox;
+        bools.bEditorUsingTextbox = UVK::SettingsWidgets::displayProjectSettings(strings.projectName, strings.projectVersion, strings.engineVersion, strings.startupLevel, bools.bShowGameSettings) || bools.bEditorUsingTextbox;
     if (bools.bShowEditorSettings)
         bools.bEditorUsingTextbox = UVK::SettingsWidgets::displayEditorSettings(bools.bShowEditorSettings, *this);
     if (bools.bShowDeveloperConsole)
@@ -145,7 +143,7 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
 #endif
 }
 
-void UVK::Editor::beginFrame()
+void UVK::Editor::beginFrame() noexcept
 {
     if (global.bUsesVulkan)
         ImGui_ImplVulkan_NewFrame();
@@ -156,7 +154,7 @@ void UVK::Editor::beginFrame()
     ImGuizmo::BeginFrame();
 }
 
-void UVK::Editor::destroyContext()
+void UVK::Editor::destroyContext() noexcept
 {
     ImGui::SaveIniSettingsToDisk((settings.editorLayoutLocation + ".ini").c_str());
     textures.play.destroy();
@@ -177,33 +175,33 @@ void UVK::Editor::destroyContext()
     global.window.destroyWindow();
 }
 
-UVK::EditorPointer::EditorPointer()
+UVK::EditorPointer::EditorPointer() noexcept
 {
     ptr = global.instance->editor;
 }
 
-UVK::Editor* UVK::EditorPointer::data()
+UVK::Editor* UVK::EditorPointer::data() noexcept
 {
     return ptr;
 }
 
-UVK::Texture* UVK::EditorPointer::fsicons()
+UVK::Texture* UVK::EditorPointer::fsicons() noexcept
 {
     return ptr->textures.fileTextures;
 }
 
 #else
-UVK::Editor::Editor()
+UVK::Editor::Editor() noexcept
 {
 //    global.instance->editor = this;
 }
 
-UVK::EditorPointer::EditorPointer()
+UVK::EditorPointer::EditorPointer() noexcept
 {
 
 }
 
-UVK::Editor* UVK::EditorPointer::data()
+UVK::Editor* UVK::EditorPointer::data() noexcept
 {
     return nullptr;
 }

@@ -1,5 +1,3 @@
-// Window.hpp
-// Last update 7/2/2022 by Madman10K
 #pragma once
 #include <iostream>
 #include <Core/Types.hpp>
@@ -15,8 +13,8 @@ namespace UVK
         InputAction() = default;
 
         // Used for doing comparing the state
-        bool operator==(const uint8_t& st) const;
-        bool operator!=(const uint8_t& st) const;
+        bool operator==(const uint8_t& st) const noexcept;
+        bool operator!=(const uint8_t& st) const noexcept;
 
         std::string name{};
         uint16_t keyCode{};
@@ -45,7 +43,7 @@ namespace UVK
     class UVK_PUBLIC_API WindowInternal
     {
     public:
-        WindowInternal();
+        WindowInternal() noexcept;
         WindowInternal(const WindowInternal&) = delete;
         void operator=(WindowInternal const&) = delete;
 
@@ -53,30 +51,30 @@ namespace UVK
          * @brief Getter for the internal GLFWwindow
          * @return A pointer to a standard GLFWwindow
          */
-        [[nodiscard]] GLFWwindow* getWindow() const;
+        [[nodiscard]] GLFWwindow* getWindow() const noexcept;
     private:
         // Returns the frame-buffer width which in most cases is equal to the Window's internal rendering surface
         // width
-        [[nodiscard]] int getBufferWidth() const;
+        [[nodiscard]] int getBufferWidth() const noexcept;
 
         // Returns the frame-buffer height which in most cases is equal to the Window's internal rendering surface
         // height
-        [[nodiscard]] int getBufferHeight() const;
+        [[nodiscard]] int getBufferHeight() const noexcept;
 
-        void setCursorVisibility(bool bIsVisible);
-        void setTitle(UVK::String newTitle);
+        void setCursorVisibility(bool bIsVisible) noexcept;
+        void setTitle(UVK::String newTitle) noexcept;
 
         // Saves all config files including Editor Keybindings, Window settings and Game Keybindings
-        void dumpConfig();
+        void dumpConfig() noexcept;
 
         /**
          * @return The internal WindowData struct
          */
-        WindowData& data();
+        WindowData& data() noexcept;
 
-        static void saveEditorKeybinds();
-        static void saveGameKeybinds();
-        void saveWindowSettings() const;
+        static void saveEditorKeybinds() noexcept;
+        static void saveGameKeybinds() noexcept;
+        void saveWindowSettings() const noexcept;
 
         friend class GLPipeline;
         friend class Renderer;
@@ -91,21 +89,21 @@ namespace UVK
         friend class UIInternal;
         friend class GameInstance;
 
-        [[nodiscard]] FVector2 getLastMousePosition() const;
-        [[nodiscard]] FVector2 getCurrentMousePosition() const;
-        FVector2 getMousePositionChange();
-        FVector2 getScroll();
+        [[nodiscard]] FVector2 getLastMousePosition() const noexcept;
+        [[nodiscard]] FVector2 getCurrentMousePosition() const noexcept;
+        FVector2 getMousePositionChange() noexcept;
+        FVector2 getScroll() noexcept;
 #ifdef DEVELOPMENT
     public:
-        void createWindow();
+        void createWindow() noexcept;
 
-        void destroyWindow();
+        void destroyWindow() noexcept;
 
     private:
 #else
-        void createWindow();
+        void createWindow() noexcept;
 
-        void destroyWindow();
+        void destroyWindow() noexcept;
 #endif
         /**
          * @brief An array that stores key actions for every key. The size of the array corresponds to the max number
@@ -116,29 +114,29 @@ namespace UVK
          * can read it.
          */
         std::array<uint16_t, 350> keysArr{};
-        const std::array<uint16_t, 350>& getKeys();
+        const std::array<uint16_t, 350>& getKeys() noexcept;
 
         // Holds the scroll velocity
         FVector2 scroll{};
 
-        void openConfig();
+        void openConfig() noexcept;
 
         // Configures all window callbacks
-        void configureCallBacks();
+        void configureCallBacks() noexcept;
 
         // Resizes the window's surface
-        static void framebufferSizeCallback(GLFWwindow* window, int width, int height);
+        static void framebufferSizeCallback(GLFWwindow* window, int width, int height) noexcept;
         // Updates the key state
-        static void keyboardInputCallback(GLFWwindow* window, int key, int scanCode, int action, int mods);
+        static void keyboardInputCallback(GLFWwindow* window, int key, int scanCode, int action, int mods) noexcept;
         // Updates the key state
-        static void mouseKeyInputCallback(GLFWwindow* window, int button, int action, int mods);
+        static void mouseKeyInputCallback(GLFWwindow* window, int button, int action, int mods) noexcept;
         // Updates mouse cursor position
-        static void mouseCursorPositionCallback(GLFWwindow* window, double xpos, double ypos);
+        static void mouseCursorPositionCallback(GLFWwindow* window, double xpos, double ypos) noexcept;
         // Updates the scroll wheel velocity
-        static void scrollInputCallback(GLFWwindow* window, double xoffset, double yoffset);
+        static void scrollInputCallback(GLFWwindow* window, double xoffset, double yoffset) noexcept;
 
-        [[nodiscard]] double getXMousePositionChange();
-        [[nodiscard]] double getYMousePositionChange();
+        [[nodiscard]] double getXMousePositionChange() noexcept;
+        [[nodiscard]] double getYMousePositionChange() noexcept;
 
         // Internal Window resources
         WindowData resources;
@@ -170,21 +168,21 @@ namespace UVK
         void operator=(Input const&) = delete;
 
         // Given a valid keyboard key from the Keys namespace it will return weather the key was pressed
-        static uint8_t getKey(uint16_t key);
+        static uint8_t getKey(uint16_t key) noexcept;
 
         // Input actions are a way of handling key input events by assigning a name to a key.
         // This name and key is stored in a config file, which enables you and your users to rebind key actions
-        static const InputAction& getAction(const std::string& name);
+        static const InputAction& getAction(const std::string& name) noexcept;
 
         // Returns a list of all input actions
-        static std::vector<InputAction>& getActions();
+        static std::vector<InputAction>& getActions() noexcept;
 
-        static FVector2 getMousePositionChange();
-        static FVector2 getCurrentMousePosition();
-        static FVector2 getLastMousePosition();
+        static FVector2 getMousePositionChange() noexcept;
+        static FVector2 getCurrentMousePosition() noexcept;
+        static FVector2 getLastMousePosition() noexcept;
 
         // Returns scroll velocity
-        static FVector2 getScroll();
+        static FVector2 getScroll() noexcept;
     private:
     };
 }

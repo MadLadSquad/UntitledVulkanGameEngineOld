@@ -1,5 +1,3 @@
-// StateTracker.hpp
-// Last update 18/2/2022 by Madman10K
 #pragma once
 #include <vector>
 #include <cstdint>
@@ -58,18 +56,18 @@ namespace UVK
         StateTracker(const StateTracker&) = delete;
         void operator=(StateTracker const&) = delete;
 
-        static void push(const Transaction& transaction);
-        void init();
+        static void push(const Transaction& transaction) noexcept;
+        void init() noexcept;
     private:
         friend class EditorGUIUtils;
 
         // Pushing adds a transaction to the transactions list and undo stack while also checking
         // if the transaction is within boundaries. If it isn't it starts overriding old transactions
-        void pushAction(const Transaction& transaction);
+        void pushAction(const Transaction& transaction) noexcept;
 
         // Pops a transaction from the
-        void undo();
-        void redo();
+        void undo() noexcept;
+        void redo() noexcept;
 
         uint32_t transactionSize = 0;
 

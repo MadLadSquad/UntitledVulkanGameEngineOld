@@ -1,5 +1,3 @@
-// ECS.hpp
-// Last update 7/2/2022 by Madman10K
 #pragma once
 #include <Core/Types.hpp>
 
@@ -16,13 +14,13 @@ namespace UVK
         void operator=(ECSManager const&) = delete;
 
         template<typename T>
-        EntityView<T> view()
+        EntityView<T> view() noexcept
         {
             return EntityView<T>(pool);
         }
 
-        UVK::EntityPool& data();
-        void clear();
+        UVK::EntityPool& data() noexcept;
+        void clear() noexcept;
     private:
         UVK::EntityPool pool;
     };

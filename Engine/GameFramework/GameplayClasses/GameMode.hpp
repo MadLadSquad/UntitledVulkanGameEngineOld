@@ -1,5 +1,3 @@
-// GameMode.hpp
-// Last update 7/2/2022 by Madman10K
 #pragma once
 #include <Core.hpp>
 #include "GameState.hpp"
@@ -27,23 +25,23 @@ namespace UVK
 
         virtual ~GameMode();
 
-        void beginAutohandle() const;
-        void tickAutohandle(float deltaTime) const;
-        void endAutohandle() const;
+        void beginAutohandle() const noexcept;
+        void tickAutohandle(float deltaTime) const noexcept;
+        void endAutohandle() const noexcept;
 
-        [[maybe_unused]] static Pawn* getPawn(UVK::GameMode* gm);
+        [[maybe_unused]] static Pawn* getPawn(UVK::GameMode* gm) noexcept;
 
         template<typename T>
-        static GameMode* makeGameMode()
+        static GameMode* makeGameMode() noexcept
         {
             T* gm = new T();
             return gm;
         }
 
-        [[maybe_unused]] static void destroyGameMode(GameMode* gm);
+        [[maybe_unused]] static void destroyGameMode(GameMode* gm) noexcept;
 
         template<typename T>
-        static T* cast(GameMode* gm)
+        static T* cast(GameMode* gm) noexcept
         {
             return static_cast<T*>(gm);
         }

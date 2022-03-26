@@ -1,5 +1,3 @@
-// EditorGameMode.hpp
-// Last update 7/2/2022 by Madman10K
 #pragma once
 #include <GameFramework/GameplayClasses/GameMode.hpp>
 #include "EditorPawn.hpp"

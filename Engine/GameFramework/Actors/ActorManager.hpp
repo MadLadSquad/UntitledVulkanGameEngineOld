@@ -1,5 +1,3 @@
-// ActorManager.hpp
-// Last update 7/2/2022 by Madman10K
 #pragma once
 #include <Core/STL.hpp>
 
@@ -15,17 +13,17 @@ namespace UVK
     {
     public:
         ActorManager() = default;
-        ~ActorManager();
+        ~ActorManager() noexcept;
     private:
         friend class UVKGlobal;
         friend class GameInstance;
         friend class Actor;
         friend class Events;
 
-        std::vector<ScriptableObject*>& data();
+        std::vector<ScriptableObject*>& data() noexcept;
 
-        void init();
-        void destroy();
+        void init() noexcept;
+        void destroy() noexcept;
         std::vector<ScriptableObject*> a;
     };
 }

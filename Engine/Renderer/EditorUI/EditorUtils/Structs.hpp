@@ -1,5 +1,3 @@
-// Structs.hpp
-// Last update 18/2/2022 by Madman10K
 #pragma once
 #include <vector>
 #include <iostream>
@@ -13,7 +11,7 @@ namespace UVK
 
     struct EditorFolder
     {
-        ~EditorFolder()
+        ~EditorFolder() noexcept
         {
             name.clear();
             contents.clear();
@@ -112,10 +110,10 @@ namespace UVK
 
     struct EditorSettings
     {
-        void writeToFile(Editor& editor) const;
+        void writeToFile(Editor& editor) const noexcept;
 
         uint32_t maxSavedTransactions = 100;
-        std::string editorLayoutLocation = "../Engine/FallbackLayout";
+        std::string editorLayoutLocation = "../Config/Engine/FallbackLayout";
         FilesystemWidgetData fsdata;
     };
 #endif

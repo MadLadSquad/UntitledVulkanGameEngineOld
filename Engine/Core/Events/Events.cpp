@@ -1,17 +1,15 @@
-// Events.cpp
-// Last update 13/9/2021 by Madman10K
 #include "Events.hpp"
 #include <GameFramework/Actors/ScriptableObject.hpp>
 #include <Core/Global.hpp>
 #include <GameFramework/GameplayClasses/GameInstance.hpp>
 
-void UVK::Events::clear()
+void UVK::Events::clear() noexcept
 {
     global.instance->actorManager.destroy();
     global.instance->actorManager.init();
 }
 
-void UVK::Events::callTick(float deltaTime)
+void UVK::Events::callTick(float deltaTime) noexcept
 {
     for (auto& a : global.instance->actorManager.data())
     {
@@ -30,7 +28,7 @@ void UVK::Events::callTick(float deltaTime)
     global.modtick(deltaTime);
 }
 
-void UVK::Events::callBegin()
+void UVK::Events::callBegin() noexcept
 {
     for (auto& a : global.instance->actorManager.data())
     {
@@ -49,7 +47,7 @@ void UVK::Events::callBegin()
     global.modbegin();
 }
 
-void UVK::Events::callEnd()
+void UVK::Events::callEnd() noexcept
 {
     for (auto& a : global.instance->actorManager.data())
     {

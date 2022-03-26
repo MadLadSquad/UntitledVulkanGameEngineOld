@@ -1,22 +1,20 @@
-// ECSInterface.cpp
-// Last update 22/9/2021 by Madman10K
 #include "ECSInterface.hpp"
 #include <Core/Global.hpp>
 #include <GameFramework/Components/Components.hpp>
 #include <Core/Actor.hpp>
 #include <GameFramework/Components/Components/CoreComponent.hpp>
 
-void UVK::ECS::clear()
+void UVK::ECS::clear() noexcept
 {
     global.ecs.clear();
 }
 
-UVK::EntityPool& UVK::ECS::data()
+UVK::EntityPool& UVK::ECS::data() noexcept
 {
     return global.ecs.data();
 }
 
-void UVK::ECS::each(const std::function<void(Actor&)>& func)
+void UVK::ECS::each(const std::function<void(Actor&)>& func) noexcept
 {
     auto view = global.ecs.data().view<CoreComponent>();
     for (auto& a : view)
@@ -26,14 +24,14 @@ void UVK::ECS::each(const std::function<void(Actor&)>& func)
     }
 }
 
-void UVK::ECS::call(const std::function<void(Actor&)>& func, entt::entity& ent)
+void UVK::ECS::call(const std::function<void(Actor&)>& func, entt::entity& ent) noexcept
 {
     Actor act(ent);
 
     func(act);
 }
 
-UVK::Actor UVK::ECS::getActorWithIdentifiers(const std::string& name, const uint64_t& id, const std::string& devname)
+UVK::Actor UVK::ECS::getActorWithIdentifiers(const std::string& name, const uint64_t& id, const std::string& devname) noexcept
 {
     auto view = global.ecs.data().view<CoreComponent>();
     for (auto& a : view)

@@ -1,5 +1,3 @@
-// Settings.hpp
-// Last update 18/2/2022 by Madman10K
 #pragma once
 #include <Generated/BuildDef.hpp>
 #ifndef PRODUCTION
@@ -13,13 +11,13 @@ namespace UVK
     private:
         friend class Editor;
 
-        static bool displayEditorSettings(bool& bOpen, Editor& editor);
-        static bool displayWindow(bool& bOpen);
-        static bool displayRenderer(bool& bOpen, Editor& editor);
-        static bool displayKeybindEditor(bool& bOpen);
-        static bool displayKeybindGame(bool& bOpen);
-        static bool displayThemeEditor(bool& bOpen);
-        static bool displayProjectSettings(std::string& name, std::string& ver, std::string& enginever, std::string& startupLevel, bool& bOpen);
+        static bool displayEditorSettings(bool& bOpen, Editor& editor) noexcept;
+        static bool displayWindow(bool& bOpen) noexcept;
+        static bool displayRenderer(bool& bOpen, Editor& editor) noexcept;
+        static bool displayKeybindEditor(bool& bOpen) noexcept;
+        static bool displayKeybindGame(bool& bOpen) noexcept;
+        static bool displayThemeEditor(bool& bOpen) noexcept;
+        static bool displayProjectSettings(std::string& name, std::string& ver, std::string& enginever, std::string& startupLevel, bool& bOpen) noexcept;
     };
 }
 #endif

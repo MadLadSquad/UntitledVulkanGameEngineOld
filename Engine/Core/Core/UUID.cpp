@@ -1,24 +1,22 @@
-// UUID.cpp
-// Last update 26/10/2021 by Madman10K
 #include "UUID.hpp"
 #include "Global.hpp"
 
-void UVK::IDManager::generateID(uint64_t& id)
+void UVK::IDManager::generateID(uint64_t& id) noexcept
 {
     id = uniformDistribution(engine);
 }
 
-void UVK::IDManager::generate(uint64_t& id)
+void UVK::IDManager::generate(uint64_t& id) noexcept
 {
     global.idManager.generateID(id);
 }
 
-void UVK::UUID::generate()
+void UVK::UUID::generate() noexcept
 {
     IDManager::generate(id);
 }
 
-const uint64_t& UVK::UUID::data()
+const uint64_t& UVK::UUID::data() const noexcept
 {
     return id;
 }

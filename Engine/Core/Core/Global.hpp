@@ -1,5 +1,3 @@
-// Global.hpp
-// Last update 18/2/2022 by Madman10K
 #pragma once
 #include <Core/ECS.hpp>
 #include <Renderer/Window/Window.hpp>
@@ -16,7 +14,7 @@ namespace UVK
         bool bVsync = false;
         bool bVsyncImmediate = true;
 
-        void saveSettings() const;
+        void saveSettings() const noexcept;
     };
 
     class Level;
@@ -25,19 +23,19 @@ namespace UVK
     class UVK_PUBLIC_API UVKGlobal
     {
     public:
-        UVKGlobal();
-        ~UVKGlobal();
+        UVKGlobal() noexcept;
+        ~UVKGlobal() noexcept;
         UVKGlobal(const UVKGlobal&) = delete;
         void operator=(UVKGlobal const&) = delete;
 
         GameInstance* instance = nullptr;
         WindowInternal window;
 
-        bool& getEditor();
+        bool& getEditor() noexcept;
         Level* currentLevel = nullptr;
         AssetManager assetManager;
 
-        static void openLevelInternal(UVK::String name, bool bfirst = false);
+        static void openLevelInternal(UVK::String name, bool bfirst = false) noexcept;
 
         std::string levelLocation;
         bool bUsesVulkan{};
@@ -64,8 +62,8 @@ namespace UVK
         /**
          * @note Open the documentation for Levels and opening of levels for more info about this function
          */
-        void finalizeOpening();
-        std::vector<InputAction>& getActions();
+        void finalizeOpening() noexcept;
+        std::vector<InputAction>& getActions() noexcept;
 
         std::function<void(void)> openFunction = [=](){};
 

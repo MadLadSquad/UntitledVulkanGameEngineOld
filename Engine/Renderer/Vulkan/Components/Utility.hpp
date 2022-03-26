@@ -1,5 +1,3 @@
-// VKUtility.hpp
-// Last update 26/02/2022 by Madman10K
 #pragma once
 #include <array>
 
@@ -32,11 +30,11 @@ namespace UVK
     {
     public:
         VKShader() = default;
-        explicit VKShader(const char* fname);
-        void init(const char* fname);
+        explicit VKShader(const char* fname) noexcept;
+        void init(const char* fname) noexcept;
 
-        std::vector<char> getShaderBytecode() const;
-        static void each(const std::function<void(VKShader&)>& func);
+        [[nodiscard]] std::vector<char> getShaderBytecode() const noexcept;
+        static void each(const std::function<void(VKShader&)>& func) noexcept;
 
         std::string name;
         VKShaderType type = VKShaderType::VK_SHADER_TYPE_NONE;
@@ -53,12 +51,18 @@ namespace UVK
         int graphicsFamily = -1;
         int presentationFamily = -1;
 
-        bool valid() const;
+        [[nodiscard]] bool valid() const noexcept;
     };
 
     struct SwapchainImage
     {
         VkImage image;
         VkImageView imageView;
+    };
+
+    struct VKVertex
+    {
+        FVector pos;
+        FVector4 colour;
     };
 }

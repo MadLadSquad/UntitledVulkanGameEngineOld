@@ -1,5 +1,3 @@
-// PlayerState.hpp
-// Last update 7/2/2022 by Madman10K
 #pragma once
 #include <Core.hpp>
 #include "../Actors/Pawn.hpp"
@@ -17,19 +15,19 @@ namespace UVK
         virtual void endPlay() = 0;
 
         template<typename T>
-        [[maybe_unused]] static PlayerState* makePlayerState()
+        [[maybe_unused]] static PlayerState* makePlayerState() noexcept
         {
             T* ps = new T();
             return ps;
         }
 
         template<typename T>
-        static T* cast(PlayerState* ps)
+        static T* cast(PlayerState* ps) noexcept
         {
             return static_cast<T*>(ps);
         }
 
-        static void destroyPlayerState(PlayerState* ps);
+        static void destroyPlayerState(PlayerState* ps) noexcept;
 
         virtual ~PlayerState() = default;
     };

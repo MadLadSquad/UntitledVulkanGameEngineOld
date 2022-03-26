@@ -1,9 +1,7 @@
-// WorldSettings.cpp
-// Last update 18/2/2022 by Madman10K
 #include "WorldSettings.hpp"
 
 #ifndef PRODUCTION
-bool WorldSettings::display(UVK::FVector4& colour, UVK::FVector4& ambientLight, std::string& name, bool& bShow)
+bool WorldSettings::display(UVK::FVector4& colour, UVK::FVector4& ambientLight, std::string& name, bool& bShow) noexcept
 {
     bool bReturn = false;
     ImGui::Begin("World Settings", &bShow);

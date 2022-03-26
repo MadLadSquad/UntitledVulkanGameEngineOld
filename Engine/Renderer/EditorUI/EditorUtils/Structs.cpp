@@ -1,7 +1,7 @@
 #include "Structs.hpp"
 #include <Renderer/EditorUI/Editor.hpp>
 
-void UVK::EditorSettings::writeToFile(Editor& editor) const
+void UVK::EditorSettings::writeToFile(Editor& editor) const noexcept
 {
     YAML::Emitter out;
     out << YAML::BeginMap;
@@ -15,6 +15,6 @@ void UVK::EditorSettings::writeToFile(Editor& editor) const
 
     out << YAML::EndMap;
 
-    std::ofstream fileout("../Config/Settings/Editor.yaml");
+    std::ofstream fileout(std::string(UVK_CONFIG_SETTINGS_PATH) + "Editor.yaml");
     fileout << out.c_str();
 }

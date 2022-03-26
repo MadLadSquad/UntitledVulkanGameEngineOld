@@ -1,5 +1,3 @@
-// AssetManager.cpp
-// Last update 26/10/2021 by Madman10K
 #include "AssetManager.hpp"
 #include <Core/Defines.hpp>
 #include <Core/Global.hpp>
@@ -22,7 +20,7 @@ void UVK::AssetManager::loadRaw()
     std::uniform_int_distribution<uint64_t> uniformDistribution;
     uniformDistribution(engine);
 
-    for (auto& a : std_filesystem::recursive_directory_iterator(std_filesystem::path("../Content/")))
+    for (auto& a : std_filesystem::recursive_directory_iterator(std_filesystem::path(UVK_CONTENT_PATH)))
     {
         if (!a.is_directory())
         {
@@ -39,12 +37,12 @@ void UVK::AssetManager::loadRaw()
 }
 #endif
 
-void UVK::AssetManager::loadArchive()
+void UVK::AssetManager::loadArchive() noexcept
 {
 
 }
 
-UVK::AssetType UVK::AssetManager::getAssetType(const std::filesystem::path& path)
+UVK::AssetType UVK::AssetManager::getAssetType(const std::filesystem::path& path) noexcept
 {
     static constexpr const char* audioExtensions[] = { ".wav", ".flac", ".m4a", ".ogg", ".mp3" };
     static constexpr const char* imageExtensions[] = { ".jpeg", ".jpg", ".tiff", ".gif", ".bmp", ".png", ".tga", ".psd", ".pic" };
@@ -80,7 +78,7 @@ UVK::AssetManager::~AssetManager()
     assets.clear();
 }
 
-std::vector<UVK::Asset> UVK::AssetManager::getAllAssetsWithName(const char* name)
+std::vector<UVK::Asset> UVK::AssetManager::getAllAssetsWithName(const char* name) noexcept
 {
     std::vector<Asset> vect;
     for (auto& a : global.assetManager.assets)
@@ -89,7 +87,7 @@ std::vector<UVK::Asset> UVK::AssetManager::getAllAssetsWithName(const char* name
     return vect;
 }
 
-std::vector<UVK::Asset> UVK::AssetManager::getAllAssetsOfType(UVK::AssetType type)
+std::vector<UVK::Asset> UVK::AssetManager::getAllAssetsOfType(UVK::AssetType type) noexcept
 {
     std::vector<Asset> vect;
     for (auto& a : global.assetManager.assets)

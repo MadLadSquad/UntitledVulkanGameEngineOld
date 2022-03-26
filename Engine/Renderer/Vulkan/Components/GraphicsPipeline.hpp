@@ -7,12 +7,12 @@ namespace UVK
     {
     public:
         GraphicsPipeline() = default;
-        GraphicsPipeline(VKDevice& dev, Swapchain& swap);
-        ~GraphicsPipeline();
+        GraphicsPipeline(VKDevice& dev, Swapchain& swap) noexcept;
+        ~GraphicsPipeline() noexcept;
 
-        void createGraphicsPipeline();
-        void createRenderPass();
-        void destroyGraphicsPipeline();
+        void createGraphicsPipeline() noexcept;
+        void createRenderPass() noexcept;
+        void destroyGraphicsPipeline() noexcept;
     private:
         friend class Swapchain;
 

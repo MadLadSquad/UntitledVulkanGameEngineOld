@@ -1,5 +1,3 @@
-// ScriptableObject.hpp
-// Last update 7/2/2022 by Madman10K
 #pragma once
 #include <Core/Defines.hpp>
 
@@ -33,7 +31,7 @@ namespace UVK
         ScriptableObjectActivityFlags activityFlags = SCRIPTABLE_OBJECT_ACTIVITY_FLAG_ACTIVE;
 
         template<typename T>
-        static T* cast(ScriptableObject* so)
+        static T* cast(ScriptableObject* so) noexcept
         {
             return static_cast<T*>(so);
         }

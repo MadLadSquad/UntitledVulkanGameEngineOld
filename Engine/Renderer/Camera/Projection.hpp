@@ -1,5 +1,3 @@
-// Projection.hpp
-// Last update 7/2/2022 by Madman10K
 #pragma once
 #include <Core/Types.hpp>
 
@@ -9,18 +7,18 @@ namespace UVK
     {
     public:
         Projection() = default;
-        Projection(float fov, float ratio, FVector2 planes);
+        Projection(float fov, float ratio, FVector2 planes) noexcept;
 
-        glm::mat4& data();
+        glm::mat4& data() noexcept;
 
-        float& fov();
-        float& aspectRatio();
+        float& fov() noexcept;
+        float& aspectRatio() noexcept;
 
         // x - near, y - far
-        FVector2& planes();
+        FVector2& planes() noexcept;
 
-        void recalculateLH();
-        void recalculateRH();
+        void recalculateLH() noexcept;
+        void recalculateRH() noexcept;
     private:
         float FOV = 90;
         float aspectRatioI{};

@@ -1,5 +1,3 @@
-// SaveLevel.hpp
-// Last update 18/2/2022 by Madman10K
 #pragma once
 #include <Core.hpp>
 #ifndef PRODUCTION
@@ -17,6 +15,6 @@ namespace UVK
 namespace SaveLevel
 {
     // Displays the SaveLevel widget
-    bool display(bool& bOpen, std::string& location, UVK::FVector4& colour);
+    bool display(bool& bOpen, std::string& location, UVK::FVector4& colour) noexcept;
 }
 #endif

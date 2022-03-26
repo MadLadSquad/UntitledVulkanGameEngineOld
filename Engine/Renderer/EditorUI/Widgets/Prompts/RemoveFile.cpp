@@ -1,5 +1,3 @@
-// RemoveFile.cpp
-// Last update 18/2/2022 by Madman10K
 #include "RemoveFile.hpp"
 #ifndef PRODUCTION
 #include <Core.hpp>
@@ -7,7 +5,7 @@
 #include <cpp/imgui_stdlib.h>
 #include <UVKBuildTool/src/ActorListGenerator.hpp>
 
-bool RemoveFile::display(bool& bShow)
+bool RemoveFile::display(bool& bShow) noexcept
 {
     bool bReturn = false;
     if (!ImGui::IsPopupOpen("Remove File"))
@@ -42,8 +40,8 @@ bool RemoveFile::display(bool& bShow)
                 UBT::removeClass(in);
                 try
                 {
-                    std_filesystem::remove("../Source/" + in + ".hpp");
-                    std_filesystem::remove("../Source/" + in + ".cpp");
+                    std_filesystem::remove(std::string(UVK_CONFIG_PRJ_PATH) + "Source/" + in + ".hpp");
+                    std_filesystem::remove(std::string(UVK_CONFIG_PRJ_PATH) + "Source/" + in + ".cpp");
                 }
                 catch (std_filesystem::filesystem_error&)
                 {
@@ -56,8 +54,8 @@ bool RemoveFile::display(bool& bShow)
 #ifndef __MINGW32__
                 try
                 {
-                    std_filesystem::remove("../Source/" + in + ".hpp");
-                    std_filesystem::remove("../Source/" + in + ".cpp");
+                    std_filesystem::remove(std::string(UVK_CONFIG_PRJ_PATH) + "Source/" + in + ".hpp");
+                    std_filesystem::remove(std::string(UVK_CONFIG_PRJ_PATH) + "Source/" + in + ".cpp");
                 }
                 catch (std_filesystem::filesystem_error&)
                 {

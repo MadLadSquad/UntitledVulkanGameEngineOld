@@ -1,5 +1,3 @@
-// Renderer.hpp
-// Last update 18/2/2022 by Madman10K
 #pragma once
 #include <Core/Defines.hpp>
 
@@ -14,12 +12,12 @@ namespace UVK
     {
     public:
         Renderer() = delete;
-        Renderer(UVK::Level* lvl, bool bUsesEditor);
+        Renderer(UVK::Level* lvl, bool bUsesEditor) noexcept;
         Renderer(const Renderer&) = delete;
         void operator=(Renderer const&) = delete;
 
         // Will switch your renderer API, save the rendering settings and shut down the application
-        static void switchRenderer();
+        static void switchRenderer() noexcept;
 
         // When V-Sync is off, in Vulkan we have 2 presentation modes that are going to be toggled by this boolean.
         // If the boolean is true we will render in 'VK_PRESENT_MODE_IMMEDIATE_KHR', but if it is false we will present
@@ -27,14 +25,14 @@ namespace UVK
         // setting this boolean to true will not always result in the desired effect. You can read about what the
         // presentation modes do here:
         // https://www.khronos.org/registry/vulkan/specs/1.2-extensions/man/html/VkPresentModeKHR.html#_description
-        static bool& getImmediateRender();
-        static bool& getVSync();
-        static void saveSettings();
+        static bool& getImmediateRender() noexcept;
+        static bool& getVSync() noexcept;
+        static void saveSettings() noexcept;
     private:
         friend class Editor;
 
-        void loadSettings();
-        void startRenderer(UVK::Level* lvl, bool bUsesEditor);
+        void loadSettings() noexcept;
+        void startRenderer(UVK::Level* lvl, bool bUsesEditor) noexcept;
 
         RendererSettings* rs{};
     };

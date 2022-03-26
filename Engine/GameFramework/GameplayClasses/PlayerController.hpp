@@ -1,5 +1,3 @@
-// PlayerController.hpp
-// Last update 7/2/2022 by Madman10K
 #pragma once
 #include <Core.hpp>
 #include "../Actors/Pawn.hpp"
@@ -19,30 +17,30 @@ namespace UVK
         virtual void tick(float deltaTime) = 0;
         virtual void endPlay() = 0;
 
-        void possess(Pawn* pw);
+        void possess(Pawn* pw) noexcept;
 
         Pawn* pawn{};
 
-        virtual ~PlayerController();
+        virtual ~PlayerController() noexcept;
 
         template<typename T>
-        static PlayerController* makePlayerController()
+        static PlayerController* makePlayerController() noexcept
         {
             T* pc = new T();
             return pc;
         }
 
         template<typename T>
-        static T* cast(PlayerController* pc)
+        static T* cast(PlayerController* pc) noexcept
         {
             return static_cast<T*>(pc);
         }
 
-        static void destroyPlayerController(PlayerController* pc);
+        static void destroyPlayerController(PlayerController* pc) noexcept;
 
-        void beginAutohandle() const;
-        void tickAutohandle(float deltaTime) const;
-        void endAutohandle() const;
+        void beginAutohandle() const noexcept;
+        void tickAutohandle(float deltaTime) const noexcept;
+        void endAutohandle() const noexcept;
     private:
     };
 }

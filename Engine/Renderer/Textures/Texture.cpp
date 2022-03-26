@@ -1,11 +1,9 @@
-// Texture.cpp
-// Last update 17/7/2021 by Madman10K
 #define STB_IMAGE_IMPLEMENTATION
 #include "GL/glew.h"
 #include "Texture.hpp"
 #include <stb/stb_image.h>
 
-void UVK::Texture::load()
+void UVK::Texture::load() noexcept
 {
     unsigned char* img = gen();
 
@@ -23,7 +21,7 @@ void UVK::Texture::load()
     }
 }
 
-void UVK::Texture::loadImgui()
+void UVK::Texture::loadImgui() noexcept
 {
     auto* img = gen();
 
@@ -41,7 +39,7 @@ void UVK::Texture::loadImgui()
     }
 }
 
-void UVK::Texture::destroy()
+void UVK::Texture::destroy() noexcept
 {
     glDeleteTextures(1, &image);
     
@@ -50,15 +48,15 @@ void UVK::Texture::destroy()
     height = 0;
 }
 
-void UVK::Texture::useTexture() const
+void UVK::Texture::useTexture() const noexcept
 {
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, image);
 }
 
-unsigned char* UVK::Texture::gen() 
+unsigned char* UVK::Texture::gen() noexcept
 {
-    unsigned char* img = stbi_load(static_cast<std::string>("../Content/" + location).c_str() , &width, &height, nullptr, 4);
+    unsigned char* img = stbi_load(static_cast<std::string>(UVK_CONTENT_PATH + location).c_str() , &width, &height, nullptr, 4);
 
     if (img == nullptr)
         return nullptr;

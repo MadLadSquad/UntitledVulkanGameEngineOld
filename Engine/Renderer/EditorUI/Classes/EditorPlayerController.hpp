@@ -1,5 +1,3 @@
-// EditorPlayerController.hpp
-// Last update 7/2/2022 by Madman10K
 #pragma once
 #ifndef PRODUCTION
 #include <GameFramework/GameplayClasses/PlayerController.hpp>

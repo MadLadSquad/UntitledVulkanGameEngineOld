@@ -1,12 +1,10 @@
-// TopToolbar.cpp
-// Last update 18/2/2022 by Madman10K
 #include "TopToolbar.hpp"
 #ifndef PRODUCTION
 #include <imgui.h>
 #include <Renderer/EditorUI/Modules/EditorModule.hpp>
 #include <imguiex/uexec/uexec.h>
 
-bool TopToolbar::display(UVK::Texture& play, const std::string& projectName, const UVK::EditorModuleManager& modules, bool& bShow, UVK::Texture& restart, UVK::Texture& stop)
+bool TopToolbar::display(UVK::Texture& play, const std::string& projectName, const UVK::EditorModuleManager& modules, bool& bShow, UVK::Texture& restart, UVK::Texture& stop) noexcept
 {
     static uexec::ScriptRunner runner;
     static bool bShowPlay = true;
@@ -52,7 +50,7 @@ bool TopToolbar::display(UVK::Texture& play, const std::string& projectName, con
     return bReturn;
 }
 
-void TopToolbar::startProcess(const std::string& projectName, uexec::ScriptRunner& runner, bool& bShowPlay)
+void TopToolbar::startProcess(const std::string& projectName, uexec::ScriptRunner& runner, bool& bShowPlay) noexcept
 {
 #ifdef _WIN32
     auto str = "./" + projectName + ".exe";

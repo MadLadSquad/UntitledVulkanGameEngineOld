@@ -1,9 +1,7 @@
-// AudioManager.cpp
-// Last update 29/10/2021 by Madman10K
 #include "AudioManager.hpp"
 
 #ifndef __MINGW32__
-void UVK::AudioManager::createDevice()
+void UVK::AudioManager::createDevice() noexcept
 {
     device = alcOpenDevice(nullptr);
 
@@ -36,7 +34,7 @@ void UVK::AudioManager::createDevice()
     logger.consoleLog("Loaded sound device \"", UVK_LOG_TYPE_SUCCESS, name, "\"");
 }
 
-void UVK::AudioManager::destroyDevice()
+void UVK::AudioManager::destroyDevice() noexcept
 {
     alcMakeContextCurrent(nullptr);
     alcDestroyContext(context);

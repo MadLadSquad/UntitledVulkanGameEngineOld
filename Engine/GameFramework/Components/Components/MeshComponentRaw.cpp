@@ -1,5 +1,3 @@
-// MeshComponentRaw.cpp
-// Last update 21/12/2021 by Madman10K
 #include <GL/glew.h>
 #include "CoreComponent.hpp"
 #include "MeshComponentRaw.hpp"
@@ -7,7 +5,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "Core/Actor.hpp"
 
-void UVK::MeshComponentRaw::createMesh(UVK::Actor* currentActor, GLfloat* vertices, uint32_t* indices, uint32_t vertexNum, uint32_t indexNum, UVK::String vertexShader, UVK::String fragmentShader, ShaderImportType type)
+void UVK::MeshComponentRaw::createMesh(UVK::Actor* currentActor, GLfloat* vertices, uint32_t* indices, uint32_t vertexNum, uint32_t indexNum, UVK::String vertexShader, UVK::String fragmentShader, ShaderImportType type) noexcept
 {
     fShader = fragmentShader;
     vShader = vertexShader;
@@ -37,7 +35,7 @@ void UVK::MeshComponentRaw::createMesh(UVK::Actor* currentActor, GLfloat* vertic
     core = &actor->get<CoreComponent>();
 }
 
-void UVK::MeshComponentRaw::render(Camera& camera)
+void UVK::MeshComponentRaw::render(Camera& camera) noexcept
 {
     mat = glm::mat4(1.0f);
     shader.useShader();
@@ -58,7 +56,7 @@ void UVK::MeshComponentRaw::render(Camera& camera)
     }
 }
 
-void UVK::MeshComponentRaw::clearMesh()
+void UVK::MeshComponentRaw::clearMesh() noexcept
 {
     mesh.clear();
     shader.clearShader();

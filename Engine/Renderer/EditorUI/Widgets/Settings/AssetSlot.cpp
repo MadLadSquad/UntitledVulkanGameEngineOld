@@ -1,12 +1,10 @@
-// AssetSlot.cpp
-// Last update 18/2/2022 by Madman10K
 #include "AssetSlot.hpp"
 
 #ifndef PRODUCTION
 #include <Renderer/EditorUI/Editor.hpp>
 #include <GameFramework/GameplayClasses/GameInstance.hpp>
 
-void AssetSlot::assetSlotBegin(UVK::Texture& thumbnail, const int32_t& id, const std::function<void(void)>& function)
+void AssetSlot::assetSlotBegin(UVK::Texture& thumbnail, const int32_t& id, const std::function<void(void)>& function) noexcept
 {
     ImGui::BeginGroup();
     ImGui::Columns(2, nullptr, false);
@@ -21,7 +19,7 @@ void AssetSlot::assetSlotBegin(UVK::Texture& thumbnail, const int32_t& id, const
     ImGui::PushID(id);
 }
 
-void AssetSlot::assetSlotEnd()
+void AssetSlot::assetSlotEnd() noexcept
 {
     ImGui::PopID();
     ImGui::NextColumn();
@@ -29,7 +27,7 @@ void AssetSlot::assetSlotEnd()
     ImGui::EndGroup();
 }
 
-void AssetSlot::displayTexture(int32_t id, UVK::Texture* asset, std::string& name)
+void AssetSlot::displayTexture(int32_t id, UVK::Texture* asset, std::string& name) noexcept
 {
     UVK::EditorPointer editorPointer;
 
@@ -59,7 +57,7 @@ void AssetSlot::displayTexture(int32_t id, UVK::Texture* asset, std::string& nam
     assetSlotEnd();
 }
 
-void AssetSlot::displayAudio(int32_t id, UVK::Texture* asset, std::string& name)
+void AssetSlot::displayAudio(int32_t id, UVK::Texture* asset, std::string& name) noexcept
 {
     UVK::EditorPointer editorPointer;
     assetSlotBegin(editorPointer.fsicons()[FS_ICON_AUDIO], id, [&]()
@@ -88,7 +86,7 @@ void AssetSlot::displayAudio(int32_t id, UVK::Texture* asset, std::string& name)
     assetSlotEnd();
 }
 
-void AssetSlot::displayFont(int32_t id, UVK::Texture* asset, std::string& name)
+void AssetSlot::displayFont(int32_t id, UVK::Texture* asset, std::string& name) noexcept
 {
     UVK::EditorPointer editorPointer;
     assetSlotBegin(editorPointer.fsicons()[FS_ICON_FONT], id, [&]()
@@ -116,7 +114,7 @@ void AssetSlot::displayFont(int32_t id, UVK::Texture* asset, std::string& name)
     assetSlotEnd();
 }
 
-void AssetSlot::displayModel(int32_t id, UVK::Texture* asset, std::string& name)
+void AssetSlot::displayModel(int32_t id, UVK::Texture* asset, std::string& name) noexcept
 {
     UVK::EditorPointer editorPointer;
     assetSlotBegin(editorPointer.fsicons()[FS_ICON_MODEL], id, [&]()
@@ -146,7 +144,7 @@ void AssetSlot::displayModel(int32_t id, UVK::Texture* asset, std::string& name)
     assetSlotEnd();
 }
 
-void AssetSlot::displayShaders(int32_t id, UVK::Texture* asset, std::string& name)
+void AssetSlot::displayShaders(int32_t id, UVK::Texture* asset, std::string& name) noexcept
 {
     UVK::EditorPointer editorPointer;
     assetSlotBegin(editorPointer.fsicons()[FS_ICON_CODE], id, [&]()
@@ -176,7 +174,7 @@ void AssetSlot::displayShaders(int32_t id, UVK::Texture* asset, std::string& nam
     assetSlotEnd();
 }
 
-void AssetSlot::displayVideo(int32_t id, UVK::Texture* asset, std::string& name)
+void AssetSlot::displayVideo(int32_t id, UVK::Texture* asset, std::string& name) noexcept
 {
     UVK::EditorPointer editorPointer;
     assetSlotBegin(editorPointer.fsicons()[FS_ICON_VIDEO], id, [&]()

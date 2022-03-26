@@ -1,5 +1,3 @@
-// Level.cpp
-// Last update 18/2/2022 by Madman10K
 #include <GameFramework/Components/Components.hpp>
 #include <GameFramework/Components/Components/CoreComponent.hpp>
 #include <Core/Actor.hpp>
@@ -14,7 +12,7 @@ namespace YAML {
     template<>
     struct convert<UVK::FVector>
     {
-        static Node encode(const UVK::FVector& rhs)
+        static Node encode(const UVK::FVector& rhs) noexcept
         {
             Node node;
             node.push_back(rhs.x);
@@ -24,7 +22,7 @@ namespace YAML {
             return node;
         }
 
-        static bool decode(const Node& node, UVK::FVector& rhs)
+        static bool decode(const Node& node, UVK::FVector& rhs) noexcept
         {
             if (!node.IsSequence() || node.size() != 3)
                 return false;
@@ -39,7 +37,7 @@ namespace YAML {
     template<>
     struct convert<UVK::FVector4>
     {
-        static Node encode(const UVK::FVector4& rhs)
+        static Node encode(const UVK::FVector4& rhs) noexcept
         {
             Node node;
             node.push_back(rhs.x);
@@ -50,7 +48,7 @@ namespace YAML {
             return node;
         }
 
-        static bool decode(const Node& node, UVK::FVector4& rhs)
+        static bool decode(const Node& node, UVK::FVector4& rhs) noexcept
         {
             if (!node.IsSequence() || node.size() != 4)
                 return false;
@@ -65,20 +63,20 @@ namespace YAML {
 
 }
 // Operator overloads for future transform component
-YAML::Emitter& operator<<(YAML::Emitter& out, const UVK::FVector& vect)
+YAML::Emitter& operator<<(YAML::Emitter& out, const UVK::FVector& vect) noexcept
 {
     out << YAML::Flow;
     out << YAML::BeginSeq << vect.x << vect.y << vect.z << YAML::EndSeq;
     return out;
 }
-YAML::Emitter& operator<<(YAML::Emitter& out, const UVK::FVector4& vect)
+YAML::Emitter& operator<<(YAML::Emitter& out, const UVK::FVector4& vect) noexcept
 {
     out << YAML::Flow;
     out << YAML::BeginSeq << vect.x << vect.y << vect.z << vect.w << YAML::EndSeq;
     return out;
 }
 
-void UVK::Level::saveEntity(YAML::Emitter& out, entt::entity act)
+void UVK::Level::saveEntity(YAML::Emitter& out, entt::entity act) noexcept
 {
     out << YAML::BeginMap;
 
@@ -119,7 +117,7 @@ exit_folder_setting:
     out << YAML::EndMap;
 }
 
-void UVK::Level::save(String location)
+void UVK::Level::save(String location) noexcept
 {
     YAML::Emitter out;
     out << YAML::BeginMap;
@@ -141,7 +139,7 @@ void UVK::Level::save(String location)
     fileout << out.c_str();
 }
 
-void UVK::Level::openInternal(UVK::String location, bool first)
+void UVK::Level::openInternal(UVK::String location, bool first) noexcept
 {
     YAML::Node out;
     try
@@ -245,52 +243,52 @@ escape_editor_folders:
         Events::callBegin();
 }
 
-UVK::FVector4& UVK::Level::getAmbientLighting()
+UVK::FVector4& UVK::Level::getAmbientLighting() noexcept
 {
     return global.ambientLight;
 }
 
-UVK::FVector4& UVK::Level::getSceneColour()
+UVK::FVector4& UVK::Level::getSceneColour() noexcept
 {
     return global.colour;
 }
 
-std::string& UVK::Level::getLevelName()
+std::string& UVK::Level::getLevelName() noexcept
 {
     return global.levelName;
 }
 
-void UVK::Level::endAutohandle() const
+void UVK::Level::endAutohandle() const noexcept
 {
     gameMode->endPlay();
 }
 
-void UVK::Level::tickAutohandle(float deltaTime) const
+void UVK::Level::tickAutohandle(float deltaTime) const noexcept
 {
     gameMode->tick(deltaTime);
 }
 
-void UVK::Level::beginAutohandle() const
+void UVK::Level::beginAutohandle() const noexcept
 {
     gameMode->beginPlay();
 }
 
-UVK::PlayerController* UVK::Level::getPlayerController(UVK::Level* lvl)
+UVK::PlayerController* UVK::Level::getPlayerController(UVK::Level* lvl) noexcept
 {
     return lvl->gameMode->playerController;
 }
 
-UVK::Pawn* UVK::Level::getPawn(UVK::Level* lvl)
+UVK::Pawn* UVK::Level::getPawn(UVK::Level* lvl) noexcept
 {
     return lvl->gameMode->playerController->pawn;
 }
 
-UVK::GameState* UVK::Level::getGameState(UVK::Level* lvl)
+UVK::GameState* UVK::Level::getGameState(UVK::Level* lvl) noexcept
 {
     return lvl->gameMode->gameState;
 }
 
-UVK::PlayerState* UVK::Level::getPlayerState(UVK::Level* lvl)
+UVK::PlayerState* UVK::Level::getPlayerState(UVK::Level* lvl) noexcept
 {
     return lvl->gameMode->playerState;
 }

@@ -1,5 +1,3 @@
-// Editor.hpp
-// Last update 18/2/2022 by Madman10K
 #pragma once
 #include <Renderer/Camera/Camera.hpp>
 #include <Renderer/Textures/Texture.hpp>
@@ -38,18 +36,18 @@ namespace UVK
         friend class EditorUtilSettings;
         friend struct RendererSettings;
 
-        double* getFrameTimeData()
+        double* getFrameTimeData() noexcept
         {
             return frameTimeData;
         }
 
-        void initEditor();
-        void runEditor(FVector4& colour, GLFrameBuffer& fb, Camera& camera, UVK::Level* lvl, const float& deltaTime);
-        void displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& camera, UVK::Level* lvl, const float& deltaTime);
-        static void beginFrame();
-        void destroyContext();
+        void initEditor() noexcept;
+        void runEditor(FVector4& colour, GLFrameBuffer& fb, Camera& camera, UVK::Level* lvl, const float& deltaTime) noexcept;
+        void displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& camera, UVK::Level* lvl, const float& deltaTime) noexcept;
+        static void beginFrame() noexcept;
+        void destroyContext() noexcept;
 
-        void setTheme(UVK::String theme)
+        void setTheme(UVK::String theme) noexcept
         {
             strings.colTheme = theme;
         }
@@ -81,9 +79,9 @@ namespace UVK
     struct EditorPointer
     {
     public:
-        EditorPointer();
-        Editor* data();
-        Texture* fsicons();
+        EditorPointer() noexcept;
+        Editor* data() noexcept;
+        Texture* fsicons() noexcept;
     private:
         Editor* ptr = nullptr;
     };
@@ -91,7 +89,7 @@ namespace UVK
     class Editor
     {
     public:
-        Editor();
+        Editor() noexcept;
         FilesystemWidgetData filesystemWidgetData{};
         EditorModuleManager moduleManager;
     };

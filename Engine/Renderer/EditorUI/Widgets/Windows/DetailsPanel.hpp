@@ -1,5 +1,3 @@
-// DetailsPanel.hpp
-// Last update 18/2/2022 by Madman10K
 #pragma once
 #include <Core.hpp>
 #ifndef PRODUCTION
@@ -18,10 +16,10 @@ namespace UVK
 namespace DetailsPanel
 {
     // All of this is copied from the Cherno because his styling looks great
-    bool DrawVec3Control(const std::string& label, glm::vec3& values, float resetValue = 0.0f, float columnWidth = 100.0f, float speed = 1.0f);
+    bool DrawVec3Control(const std::string& label, glm::vec3& values, float resetValue = 0.0f, float columnWidth = 100.0f, float speed = 1.0f) noexcept;
 
     template<typename T>
-    void addComponent(UVK::Actor& ent)
+    void addComponent(UVK::Actor& ent) noexcept
     {
         if (!ent.has<T>())
         {
@@ -50,7 +48,7 @@ namespace DetailsPanel
     }
 
     template<typename T>
-    void removeComponent(UVK::Actor& ent)
+    void removeComponent(UVK::Actor& ent) noexcept
     {
         if (ent.has<T>())
         {
@@ -78,6 +76,6 @@ namespace DetailsPanel
         }
     }
 
-    bool display(UVK::Actor& ent, UVK::Level* lvl, bool& bShow, const UVK::EditorModuleManager& modules, bool& destroy);
+    bool display(UVK::Actor& ent, UVK::Level* lvl, bool& bShow, const UVK::EditorModuleManager& modules, bool& destroy) noexcept;
 }
 #endif

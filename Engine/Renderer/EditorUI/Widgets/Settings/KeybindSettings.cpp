@@ -1,12 +1,10 @@
-// KeybindSettings.cpp
-// Last update 18/2/2022 by Madman10K
 #include "KeybindSettings.hpp"
 #include "Renderer/Window/Window.hpp"
 #include "Core/Interfaces/SettingsManager.hpp"
 #include <imgui.h>
 #include <cpp/imgui_stdlib.h>
 
-void UVK::KeybindSettingsWidget::displayKeybindsEditor(bool& bReturn, bool& bOpen)
+void UVK::KeybindSettingsWidget::displayKeybindsEditor(bool& bReturn, bool& bOpen) noexcept
 {
     int i = 0;
     for (auto& a : UVK::Input::getActions())
@@ -35,7 +33,7 @@ void UVK::KeybindSettingsWidget::displayKeybindsEditor(bool& bReturn, bool& bOpe
     ImGui::EndPopup();
 }
 
-void UVK::KeybindSettingsWidget::displayKeybindsGame(bool& bReturn, bool& bOpen)
+void UVK::KeybindSettingsWidget::displayKeybindsGame(bool& bReturn, bool& bOpen) noexcept
 {
     ImGui::BeginMenuBar();
     bool bDestroy = false;
@@ -94,7 +92,7 @@ void UVK::KeybindSettingsWidget::displayKeybindsGame(bool& bReturn, bool& bOpen)
     ImGui::EndPopup();
 }
 
-void UVK::KeybindSettingsWidget::showKeySelect(const char* name, uint16_t& key)
+void UVK::KeybindSettingsWidget::showKeySelect(const char* name, uint16_t& key) noexcept
 {
     static std::string text;
     UVK::Utility::keyToText(text, key, true);

@@ -1,5 +1,3 @@
-// Defines.hpp
-// Last update 18/2/2022 by Madman10K
 #pragma once
 #include <any>
 #include "Generated/BuildDef.hpp"
@@ -34,6 +32,17 @@
 #else
     #define UVK_START(x) std::ios_base::sync_with_stdio(!(x))
 #endif
+
+
+#ifdef PRODUCTION
+    // TODO: Make it so that it refers to the archive!
+    #define UVK_CONTENT_PATH "../Content/"
+#else
+    #define UVK_CONTENT_PATH "../Content/"
+#endif
+#define UVK_CONFIG_ENGINE_PATH "../Config/Engine/"
+#define UVK_CONFIG_SETTINGS_PATH "../Config/Settings/"
+#define UVK_CONFIG_PRJ_PATH "../"
 
 #define FS_ICON_AUDIO 0
 #define FS_ICON_IMAGE 1

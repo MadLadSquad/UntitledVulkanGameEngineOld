@@ -1,5 +1,3 @@
-// Warnings.cpp
-// Last update 18/2/2022 by Madman10K
 #include <GL/glew.h>
 #include "Warnings.hpp"
 #ifndef PRODUCTION
@@ -11,7 +9,7 @@
 #include <UVKBuildTool/src/SourceGenerator.hpp>
 #include <UVKBuildTool/src/ActorListGenerator.hpp>
 
-void Warnings::displayExitWarning(bool& bOpen)
+void Warnings::displayExitWarning(bool& bOpen) noexcept
 {
     if (!ImGui::IsPopupOpen("WARNING##EXITWARNING"))
         ImGui::OpenPopup("WARNING##EXITWARNING");
@@ -31,7 +29,7 @@ void Warnings::displayExitWarning(bool& bOpen)
     }
 }
 
-void Warnings::displayGenerateWarning(bool& bOpen)
+void Warnings::displayGenerateWarning(bool& bOpen) noexcept
 {
     if (!ImGui::IsPopupOpen("WARNING##GENERATEWARNING"))
         ImGui::OpenPopup("WARNING##GENERATEWARNING");
@@ -50,7 +48,7 @@ void Warnings::displayGenerateWarning(bool& bOpen)
 
             try
             {
-                config = YAML::LoadFile("../../uvproj.yaml");
+                config = YAML::LoadFile(std::string(UVK_CONFIG_PRJ_PATH) + "uvproj.yaml");
             }
             catch (YAML::BadFile&)
             {
@@ -83,7 +81,7 @@ void Warnings::displayGenerateWarning(bool& bOpen)
     }
 }
 
-void Warnings::displaySaveWarning(bool& bOpen)
+void Warnings::displaySaveWarning(bool& bOpen) noexcept
 {
     if (!ImGui::IsPopupOpen("WARNING##SAVEWARNING"))
         ImGui::OpenPopup("WARNING##SAVEWARNING");

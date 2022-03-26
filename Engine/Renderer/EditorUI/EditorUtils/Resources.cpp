@@ -1,11 +1,9 @@
-// Resources.cpp
-// Last update 18/2/2022 by Madman10K
 #include "Resources.hpp"
 #include <Core/Core/Global.hpp>
 #include <GameFramework/GameplayClasses/GameInstance.hpp>
 #include <Renderer/EditorUI/Editor.hpp>
 
-void UVK::EditorResources::loadConfigs(Editor& editor)
+void UVK::EditorResources::loadConfigs(Editor& editor) noexcept
 {
     global.instance->editor = &editor;
 
@@ -26,12 +24,12 @@ void UVK::EditorResources::loadConfigs(Editor& editor)
     YAML::Node file;
     try
     {
-        file = YAML::LoadFile("../uvproj.yaml");
+        file = YAML::LoadFile(std::string(UVK_CONFIG_PRJ_PATH) + "uvproj.yaml");
     }
     catch (YAML::BadFile&)
     {
         logger.consoleLog("Could not find uvproj.yaml file", UVK_LOG_TYPE_ERROR);
-        throw std::runtime_error(" ");
+        std::terminate();
     }
 
     if (file["engine-version"] && file["name"] && file["version"] && file["startup-level"])
@@ -44,7 +42,7 @@ void UVK::EditorResources::loadConfigs(Editor& editor)
 
     try
     {
-        file = YAML::LoadFile("../Config/Settings/Editor.yaml");
+        file = YAML::LoadFile(std::string(UVK_CONFIG_SETTINGS_PATH) + "Editor.yaml");
     }
     catch (YAML::BadFile&)
     {
@@ -65,12 +63,12 @@ void UVK::EditorResources::loadConfigs(Editor& editor)
         editor.settings.maxSavedTransactions = i <= 5 ? 100 : i;
     }
     if (file["editor-layout-location"])
-        editor.settings.editorLayoutLocation = "../Config/Settings/" + file["editor-layout-location"].as<std::string>();
+        editor.settings.editorLayoutLocation = UVK_CONFIG_SETTINGS_PATH + file["editor-layout-location"].as<std::string>();
     global.instance->stateTracker.init();
 }
 
 #ifndef __MINGW32__
-void UVK::EditorResources::loadResources(Editor& editor, std_filesystem::path& pt)
+void UVK::EditorResources::loadResources(Editor& editor, std_filesystem::path& pt) noexcept
 {
     editor.textures.play = Texture(static_cast<std::string>(pt.string() + "Engine/play.png"));
     editor.textures.play.loadImgui();
@@ -112,7 +110,7 @@ void UVK::EditorResources::loadResources(Editor& editor, std_filesystem::path& p
     editor.textures.stop.loadImgui();
 }
 #else
-void UVK::EditorResources::loadResources(Editor& editor)
+void UVK::EditorResources::loadResources(Editor& editor) noexcept
 {
     editor.textures.play = Texture(static_cast<std::string>("../Content/Engine/play.png"));
     editor.textures.play.loadImgui();

@@ -1,11 +1,9 @@
-// GLEntityManager.cpp
-// Last update 21/12/2021 by Madman10K
 #include "VKEntityManager.hpp"
 #include "GameFramework/Components/Components/AudioComponent.hpp"
 #include "GameFramework/Components/Components/MeshComponentRaw.hpp"
 #include <Core/Global.hpp>
 
-void UVK::VKEntityManager::tick(Camera* camera)
+void UVK::VKEntityManager::tick(Camera* camera) noexcept
 {
     for (const auto& a : global.ecs.data().view<AudioComponent>())
     {
@@ -20,7 +18,7 @@ void UVK::VKEntityManager::tick(Camera* camera)
     }
 }
 
-void UVK::VKEntityManager::clean()
+void UVK::VKEntityManager::clean() noexcept
 {
     global.ecs.clear();
 }

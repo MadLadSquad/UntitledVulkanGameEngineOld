@@ -1,5 +1,3 @@
-// Device.hpp
-// Last update 26/02/2022 by Madman10K
 #pragma once
 #include <vulkan/vulkan.h>
 #include "Instance.hpp"
@@ -12,17 +10,18 @@ namespace UVK
     {
     public:
         VKDevice() = default;
-        explicit VKDevice(VKInstance& instance);
-        ~VKDevice();
+        explicit VKDevice(VKInstance& instance) noexcept;
+        ~VKDevice() noexcept;
 
-        void createDevice(Swapchain& surface);
-        void destroyDevice();
+        void createDevice(Swapchain& surface) noexcept;
+        void destroyDevice() noexcept;
 
-        VkDevice& getDevice();
+        VkDevice& getDevice() noexcept;
     private:
         friend class Swapchain;
+        friend class VKMesh;
 
-        QueueFamilyIndices createPhysicalDevice(Swapchain& surface);
+        QueueFamilyIndices createPhysicalDevice(Swapchain& surface) noexcept;
 
         VkQueue queue{};
         VkQueue presentationQueue{};

@@ -1,12 +1,10 @@
-// WindowSettings.cpp
-// Last update 18/2/2022 by Madman10K
 #include "WindowSettings.hpp"
 #include "Core/Interfaces/WindowInterface.hpp"
 #include "Core/Interfaces/SettingsManager.hpp"
 #include <imgui.h>
 #include <cpp/imgui_stdlib.h>
 
-void UVK::WindowSettingsWidget::display(bool& bReturn, bool& bOpen)
+void UVK::WindowSettingsWidget::display(bool& bReturn, bool& bOpen) noexcept
 {
     int arr[] = { (int)UVK::Window::windowSize().x, (int)UVK::Window::windowSize().y };
 

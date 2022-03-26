@@ -1,14 +1,12 @@
-// UInterface.cpp
-// Last update 2/9/2021 by Madman10K
 #include "UInterface.hpp"
 #include "Core/Global.hpp"
 
-void UVK::UI::addEvent(const std::function<void(void)> &func)
+void UVK::UI::addEvent(const std::function<void(void)> &func) noexcept
 {
     global.ui.addEvent(func);
 }
 
-void UVK::UI::addEventImGui(const std::function<void(void)> &func)
+void UVK::UI::addEventImGui(const std::function<void(void)> &func) noexcept
 {
     global.ui.addEventImgui(func);
 }

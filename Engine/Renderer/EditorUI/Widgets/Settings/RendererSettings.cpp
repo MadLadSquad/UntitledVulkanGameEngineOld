@@ -1,12 +1,10 @@
-// RendererSettings.cpp
-// Last update 18/2/2022 by Madman10K
 #include "RendererSettings.hpp"
 #include <imgui.h>
 #include <cpp/imgui_stdlib.h>
 #include <Core/Global.hpp>
 #include <Renderer/EditorUI/Editor.hpp>
 
-void UVK::RendererSettingsWidget::display(bool& bReturn, bool& bOpen, Editor& editor)
+void UVK::RendererSettingsWidget::display(bool& bReturn, bool& bOpen, Editor& editor) noexcept
 {
     ImGui::TextWrapped("DISCLAIMER: The editor needs to be reloaded for changes to appear!");
 

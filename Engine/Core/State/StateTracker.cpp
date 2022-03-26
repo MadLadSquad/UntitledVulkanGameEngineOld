@@ -1,11 +1,9 @@
-// StateTracker.cpp
-// Last update 19/10/2021 by Madman10K
 #include "StateTracker.hpp"
 #include <Core/Actor.hpp>
 #include <Renderer/EditorUI/Editor.hpp>
 #include <GameFramework/GameplayClasses/GameInstance.hpp>
 
-void UVK::StateTracker::pushAction(const UVK::Transaction& transaction)
+void UVK::StateTracker::pushAction(const UVK::Transaction& transaction) noexcept
 {
     if (transactions.size() == transactionSize)
     {
@@ -39,7 +37,7 @@ void UVK::StateTracker::pushAction(const UVK::Transaction& transaction)
     undoStack.push_back(&transactions.back());
 }
 
-void UVK::StateTracker::undo()
+void UVK::StateTracker::undo() noexcept
 {
     if (!undoStack.empty())
     {
@@ -50,7 +48,7 @@ void UVK::StateTracker::undo()
     }
 }
 
-void UVK::StateTracker::redo()
+void UVK::StateTracker::redo() noexcept
 {
     if (!redoStack.empty())
     {
@@ -61,12 +59,12 @@ void UVK::StateTracker::redo()
     }
 }
 
-void UVK::StateTracker::push(const UVK::Transaction& transaction)
+void UVK::StateTracker::push(const UVK::Transaction& transaction) noexcept
 {
     global.instance->stateTracker.pushAction(transaction);
 }
 
-void UVK::StateTracker::init()
+void UVK::StateTracker::init() noexcept
 {
     transactionSize = global.instance->editor->settings.maxSavedTransactions;
 }

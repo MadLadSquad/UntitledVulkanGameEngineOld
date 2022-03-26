@@ -1,5 +1,3 @@
-// CreateFile.hpp
-// Last update 18/2/2022 by Madman10K
 #pragma once
 #include <Generated/BuildDef.hpp>
 #ifndef PRODUCTION
@@ -11,6 +9,6 @@
 namespace CreateFile
 {
     // Creates a file
-    bool display(std::string& fileOutLocation, bool& bShowCreateFile1, const std::string& prjname);
+    bool display(std::string& fileOutLocation, bool& bShowCreateFile1, const std::string& prjname) noexcept;
 }
 #endif

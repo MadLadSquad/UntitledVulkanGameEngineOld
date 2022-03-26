@@ -1,12 +1,10 @@
-// Ship.cpp
-// Last update 18/2/2022 by Madman10K
 #include "Ship.hpp"
 #ifndef PRODUCTION
 #include "imgui.h"
 #include <UVKBuildTool/src/ReleaseBuild.hpp>
 #include <imguiex/uexec/uexec.h>
 
-bool Shipping::display(bool& bShow, const std::string& prjname)
+bool Shipping::display(bool& bShow, const std::string& prjname) noexcept
 {
     static uexec::ScriptRunner runner;
     static bool bShowPlay = true;
@@ -39,7 +37,7 @@ bool Shipping::display(bool& bShow, const std::string& prjname)
             if (ImGui::Button("Compile##compile"))
             {
                 // TODO: Add archiving after we are out of Pre-Alpha
-                std::ofstream out("../Generated/BuildDef.hpp");
+                std::ofstream out(std::string(UVK_CONFIG_PRJ_PATH) + "Generated/BuildDef.hpp");
                 out << "#define PRODUCTION" << std::endl;
                 out.close();
 
@@ -74,7 +72,7 @@ bool Shipping::display(bool& bShow, const std::string& prjname)
             runner.destroy();
             runner.destroyForReuse();
             bShowPlay = true;
-            std::ofstream out("../Generated/BuildDef.hpp");
+            std::ofstream out(std::string(UVK_CONFIG_PRJ_PATH) + "Generated/BuildDef.hpp");
             out << "// Generated file, DO NOT TOUCH!" << std::endl;
             out << "#undef PRODUCTION" << std::endl;
             out.close();

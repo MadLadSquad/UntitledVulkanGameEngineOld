@@ -1,5 +1,3 @@
-// ProjectSettings.cpp
-// Last update 18/2/2022 by Madman10K
 #include "ProjectSettings.hpp"
 #include <imgui.h>
 #include <cpp/imgui_stdlib.h>
@@ -7,7 +5,7 @@
 #include <UVKBuildTool/src/ActorListGenerator.hpp>
 #include <UVKBuildTool/src/SourceGenerator.hpp>
 
-void UVK::ProjectSettingsWidget::displayProjectSettings(bool& bReturn, std::string& name, std::string& ver, std::string& enginever, std::string& startupLevel, bool& bOpen)
+void UVK::ProjectSettingsWidget::displayProjectSettings(bool& bReturn, std::string& name, std::string& ver, std::string& enginever, std::string& startupLevel, bool& bOpen) noexcept
 {
     ImGui::TextWrapped("Project Name");
     ImGui::SameLine();
@@ -58,12 +56,12 @@ void UVK::ProjectSettingsWidget::displayProjectSettings(bool& bReturn, std::stri
         YAML::Node config;
         try
         {
-            config = YAML::LoadFile("../uvproj.yaml");
+            config = YAML::LoadFile(std::string(UVK_CONFIG_PRJ_PATH) + "uvproj.yaml");
         }
         catch (YAML::BadFile&)
         {
             logger.consoleLog("Couldn't open the uvproj.yaml file!", UVK_LOG_TYPE_ERROR);
-            throw std::runtime_error(" ");
+            std::terminate();
         }
 
         if (config["additional-include-directories"])

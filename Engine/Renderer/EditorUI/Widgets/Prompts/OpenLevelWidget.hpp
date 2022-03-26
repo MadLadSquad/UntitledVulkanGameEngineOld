@@ -1,5 +1,3 @@
-// OpenLevelWidget.hpp
-// Last update 18/2/2022 by Madman10K
 #pragma once
 #include <Core.hpp>
 #ifndef PRODUCTION
@@ -9,6 +7,6 @@
 namespace OpenLevelWidget
 {
     // Opens a level
-    bool display(std::string& openLevel, bool& bShowOpenLevelWidget, double& dr, UVK::FVector4& colour);
+    bool display(std::string& openLevel, bool& bShowOpenLevelWidget, double& dr, UVK::FVector4& colour) noexcept;
 }
 #endif
