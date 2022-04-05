@@ -36,7 +36,7 @@ namespace UVK
         friend class EditorUtilSettings;
         friend struct RendererSettings;
 
-        double* getFrameTimeData() noexcept
+        inline double* getFrameTimeData() noexcept
         {
             return frameTimeData;
         }
@@ -47,7 +47,7 @@ namespace UVK
         static void beginFrame() noexcept;
         void destroyContext() noexcept;
 
-        void setTheme(UVK::String theme) noexcept
+        inline void setTheme(UVK::String theme) noexcept
         {
             strings.colTheme = theme;
         }

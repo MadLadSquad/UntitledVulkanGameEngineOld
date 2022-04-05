@@ -16,14 +16,14 @@ namespace UVK
         virtual ~GameState() = default;
 
         template<typename T>
-        [[maybe_unused]] static GameState* makeGameState() noexcept
+        [[maybe_unused]] inline static GameState* makeGameState() noexcept
         {
             T* gs = new T();
             return gs;
         }
 
         template<typename T>
-        static T* cast(GameState* gs) noexcept
+        inline static T* cast(GameState* gs) noexcept
         {
             return static_cast<T*>(gs);
         }

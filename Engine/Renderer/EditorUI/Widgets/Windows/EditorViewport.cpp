@@ -22,7 +22,7 @@ void EditorViewport::display(UVK::GLFrameBuffer& fb, int& viewportWidth, int& vi
         UVK::GLFrameBuffer::unbindFramebuffer();
         fb.destroyFramebuffer();
 
-        glViewport(0, 0, (int)ImGui::GetWindowWidth(), (int)ImGui::GetWindowHeight());
+        //glViewport(0, 0, (int)ImGui::GetWindowWidth(), (int)ImGui::GetWindowHeight());
         fb.init((int)ImGui::GetWindowWidth(), (int)ImGui::GetWindowHeight());
         viewportWidth = (int)ImGui::GetWindowWidth();
         viewportHeight = (int)ImGui::GetWindowHeight();

@@ -22,45 +22,28 @@ void UVK::Camera::init(const CoreComponent& coreComponent, FVector translation, 
 
 glm::mat4 UVK::Camera::calculateViewMatrixRH() const noexcept
 {
-    if (global.bUsesVulkan)
-        return glm::lookAtRH(FVector(core->translation.x + translationOffset.x, -(core->translation.y + translationOffset.y), core->translation.z + translationOffset.z), FVector(core->translation.x + translationOffset.x, -(core->translation.y + translationOffset.y), core->translation.z + translationOffset.z) + FVector(front.x, -front.y, front.z), FVector(up.x, -up.y, up.z));
     return glm::lookAtRH(core->translation + translationOffset, core->translation + translationOffset + front, up);
 }
 
 glm::mat4 UVK::Camera::calculateViewMatrixLH() const noexcept
 {
-    if (global.bUsesVulkan)
-        return glm::lookAtRH(FVector(core->translation.x + translationOffset.x, -(core->translation.y + translationOffset.y), core->translation.z + translationOffset.z), FVector(core->translation.x + translationOffset.x, -(core->translation.y + translationOffset.y), core->translation.z + translationOffset.z) + FVector(front.x, -front.y, front.z), FVector(up.x, -up.y, up.z));
     return glm::lookAtLH(core->translation + translationOffset, core->translation + translationOffset + front, up);
 }
 
 void UVK::Camera::recalculate() noexcept
 {
-    if (global.bUsesVulkan)
-    {
-        front.x = glm::cos(glm::radians(core->rotation.x + rotationOffset.x)) * glm::cos(glm::radians(-(core->rotation.y + rotationOffset.y)));
-        front.y = glm::sin(glm::radians(-(core->rotation.y + rotationOffset.y)));
-        front.z = glm::sin(glm::radians(core->rotation.x + rotationOffset.x)) * glm::cos(glm::radians(-(core->rotation.y + rotationOffset.y)));
+    front.x = glm::cos(glm::radians(core->rotation.x + rotationOffset.x)) * glm::cos(glm::radians(core->rotation.y + rotationOffset.y));
+    front.y = glm::sin(glm::radians(core->rotation.y + rotationOffset.y));
+    front.z = glm::sin(glm::radians(core->rotation.x + rotationOffset.x)) * glm::cos(glm::radians(core->rotation.y + rotationOffset.y));
 
-        front = glm::normalize(FVector(front.x, -front.y, front.z));
-        right = glm::normalize(glm::cross(FVector(front.x, -front.y, front.z), FVector(worldUp.x, -worldUp.y, worldUp.z)));
-        up = glm::normalize(glm::cross(FVector(right.x, -right.y, right.z), FVector(front.x, -front.y, front.z)));
-    }
-    else
-    {
-        front.x = glm::cos(glm::radians(core->rotation.x + rotationOffset.x)) * glm::cos(glm::radians(core->rotation.y + rotationOffset.y));
-        front.y = glm::sin(glm::radians(core->rotation.y + rotationOffset.y));
-        front.z = glm::sin(glm::radians(core->rotation.x + rotationOffset.x)) * glm::cos(glm::radians(core->rotation.y + rotationOffset.y));
+    //glm::mat4 roll = glm::rotate(glm::mat4(1.0f), glm::radians(core->rotation.z + rotationOffset.z), front);
+    front = glm::normalize(front);
+    glm::mat4 roll = glm::rotate(glm::mat4(1.0f), glm::radians(core->rotation.z + rotationOffset.z), front);
+    right = glm::normalize(glm::cross(front, worldUp));
+    up = glm::normalize(glm::cross(right, front));
 
-        //glm::mat4 roll = glm::rotate(glm::mat4(1.0f), glm::radians(core->rotation.z + rotationOffset.z), front);
-        front = glm::normalize(front);
-        glm::mat4 roll = glm::rotate(glm::mat4(1.0f), glm::radians(core->rotation.z + rotationOffset.z), front);
-        right = glm::normalize(glm::cross(front, worldUp));
-        up = glm::normalize(glm::cross(right, front));
-
-        glm::mat3 rl(roll);
-        up = rl * up;
-    }
+    glm::mat3 rl(roll);
+    up = rl * up;
 }
 
 UVK::Projection& UVK::Camera::projection() noexcept

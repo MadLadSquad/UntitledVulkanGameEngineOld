@@ -14,7 +14,7 @@ namespace UVK
         void operator=(ECSManager const&) = delete;
 
         template<typename T>
-        EntityView<T> view() noexcept
+        inline EntityView<T> view() noexcept
         {
             return EntityView<T>(pool);
         }

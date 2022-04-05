@@ -22,8 +22,8 @@ namespace UVK
         void operator=(AudioManager const&) = delete;
         ~AudioManager();
 
-        void createDevice() noexcept;;
-        void destroyDevice() noexcept;;
+        void createDevice() noexcept;
+        void destroyDevice() noexcept;
     private:
         ALCdevice* device = nullptr;
         ALCcontext* context = nullptr;

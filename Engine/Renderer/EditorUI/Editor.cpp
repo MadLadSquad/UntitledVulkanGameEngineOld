@@ -47,7 +47,8 @@ void UVK::Editor::initEditor() noexcept
     pt = UVK_CONTENT_PATH;
     EditorResources::loadResources(*this, pt);
 #endif
-    EditorUtilSettings::loadImGuiSettings(*this, strings.colTheme);
+    // TODO: uncomment and provide variables here
+    //EditorUtilSettings::loadImGuiSettings(*this, strings.colTheme);
 
     tm.stopRecording();
     frameTimeData[0] = tm.getDuration();
@@ -145,10 +146,7 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
 
 void UVK::Editor::beginFrame() noexcept
 {
-    if (global.bUsesVulkan)
-        ImGui_ImplVulkan_NewFrame();
-    else
-        ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplVulkan_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
     ImGuizmo::BeginFrame();
@@ -162,10 +160,7 @@ void UVK::Editor::destroyContext() noexcept
     for (auto& a : textures.fileTextures)
         a.destroy();
 
-    if (global.bUsesVulkan)
-        ImGui_ImplVulkan_Shutdown();
-    else
-        ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplVulkan_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
 #ifndef PRODUCTION

@@ -72,7 +72,6 @@ namespace UVK
         friend class Editor;
         friend class GLPipeline;
         friend class GLEntityManager;
-        friend class VKEntityManager;
         friend class ECS;
         friend class WindowInternal;
         friend class Input;
@@ -92,6 +91,7 @@ namespace UVK
         friend class Events;
         friend class EditorUtilSettings;
         friend class Swapchain;
+        friend class Commands;
         friend struct MeshComponentRaw;
         friend struct RendererSettings;
     };

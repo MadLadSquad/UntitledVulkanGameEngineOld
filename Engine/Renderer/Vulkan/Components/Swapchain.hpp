@@ -3,6 +3,9 @@
 #include "Utility.hpp"
 #include "Device.hpp"
 #include "VKMesh.hpp"
+#include "Descriptors.hpp"
+#include "Resources.hpp"
+#include "Commands.hpp"
 
 namespace UVK
 {
@@ -23,22 +26,36 @@ namespace UVK
         void createFramebuffers(GraphicsPipeline& graphicsPipeline) noexcept;
         void destroyFramebuffers() noexcept;
 
-        void createCommandPool() noexcept;
-        void destroyCommandPool() noexcept;
+        //void createCommandPool() noexcept;
+        //void destroyCommandPool() noexcept;
+//
+        //void createCommandBuffers() noexcept;
+        //void destroyCommandBuffers() noexcept;
 
-        void createCommandBuffers() noexcept;
-        void destroyCommandBuffers() noexcept;
+        //void createSynchronisation() noexcept;
+        //void destroySynchronisation() noexcept;
 
-        void createSynchronisation() noexcept;
-        void destroySynchronisation() noexcept;
+        //void createUniformBuffers() noexcept;
+        //void updateUniformBuffers(VP& mvp, uint32_t imageIndex, std::vector<VKMesh>& meshes) noexcept;
+        //void destroyUniformBuffers() noexcept;
 
-        void recordCommands(std::vector<VKMesh>& meshes) noexcept;
-        void draw() noexcept;
+        //void recordCommands(uint32_t currentImage, std::vector<VKMesh>& meshes) noexcept;
+        //void draw(VP& mvp, std::vector<VKMesh>& meshes) noexcept;
+
+        //void allocateDynamicUniformBufferTransferSpace();
+        //void freeDynamicUniformBufferTransferSpace();
 
         VkSurfaceKHR& getSurface() noexcept;
+        VkSwapchainKHR& getSwapchain() noexcept;
+        //VkCommandPool& getCommandPool() noexcept;
+        [[nodiscard]] const VkExtent2D& getExtent() const noexcept;
+        [[nodiscard]] const std::vector<VkFramebuffer>& getFramebuffers() const noexcept;
+        Commands& getCommands() noexcept;
+        VKResources& getResources() noexcept;
     private:
         friend class VKDevice;
         friend class GraphicsPipeline;
+        friend class VKDescriptors;
 
         bool getSwapchainDetails(VkPhysicalDevice& device, const QueueFamilyIndices& indices) noexcept;
 
@@ -55,19 +72,28 @@ namespace UVK
         VKInstance* instance = nullptr;
         VKDevice* device = nullptr;
         GraphicsPipeline* pipeline = nullptr;
+        VKDescriptors* descriptors = nullptr;
 
         VkSurfaceFormatKHR surfaceFormat{};
         VkPresentModeKHR presentationMode{};
         VkExtent2D extent{};
 
-        VkCommandPool commandPool{};
+        VKResources resources{};
+        Commands commands{};
 
-        std::vector<VkSemaphore> imageAvailable;
-        std::vector<VkSemaphore> renderFinished;
-        std::vector<VkFence> fences;
+        //VkCommandPool commandPool{};
+
+        //Model* modelTransferSpace = nullptr;
+        //VkDeviceSize modelUniformAlignment = 0;
+
+        //std::vector<VkSemaphore> imageAvailable;
+        //std::vector<VkSemaphore> renderFinished;
+        //std::vector<VkFence> fences;
 
         std::vector<SwapchainImage> images;
         std::vector<VkFramebuffer> framebuffers;
-        std::vector<VkCommandBuffer> commandBuffers;
+        //std::vector<VkCommandBuffer> commandBuffers;
+        //std::vector<VKBuffer> uniformBuffers;
+        //std::vector<VKBuffer> dynamicUniformBuffers;
     };
 }

@@ -65,4 +65,15 @@ namespace UVK
         FVector pos;
         FVector4 colour;
     };
+
+    struct VP
+    {
+        glm::mat4 view;
+        glm::mat4 projection;
+    };
+
+    struct Model
+    {
+        glm::mat4 model;
+    };
 }

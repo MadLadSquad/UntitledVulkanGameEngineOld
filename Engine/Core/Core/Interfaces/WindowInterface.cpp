@@ -29,5 +29,5 @@ std::string& UVK::Window::iconLocation() noexcept
 void UVK::Window::setCursorVisibility(bool bVisible) noexcept
 {
     global.window.setCursorVisibility(bVisible);
-    ImGui::GetIO().WantCaptureMouse = bVisible;
+    //ImGui::GetIO().WantCaptureMouse = bVisible;
 }

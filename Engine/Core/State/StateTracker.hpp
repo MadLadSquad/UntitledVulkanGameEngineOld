@@ -38,7 +38,7 @@ namespace UVK
             transactionPayload.coreComponent.name.clear();
             transactionPayload.coreComponent.devName.clear();
             transactionPayload.coreComponent.id = 0;
-            transactionPayload.meshComponentRaw.clearMesh();
+            transactionPayload.meshComponentRaw.destroy();
             transactionPayload.meshComponent.clearMesh();
         }
         std::function<void(TransactionPayload&)> undofunc; // Called on undo

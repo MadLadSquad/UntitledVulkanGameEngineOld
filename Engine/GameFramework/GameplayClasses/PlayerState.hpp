@@ -15,14 +15,14 @@ namespace UVK
         virtual void endPlay() = 0;
 
         template<typename T>
-        [[maybe_unused]] static PlayerState* makePlayerState() noexcept
+        [[maybe_unused]] inline static PlayerState* makePlayerState() noexcept
         {
             T* ps = new T();
             return ps;
         }
 
         template<typename T>
-        static T* cast(PlayerState* ps) noexcept
+        inline static T* cast(PlayerState* ps) noexcept
         {
             return static_cast<T*>(ps);
         }

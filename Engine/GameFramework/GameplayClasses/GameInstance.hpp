@@ -22,7 +22,7 @@ namespace UVK
         static Level* currentLevel() noexcept;
 
         template<typename T>
-        static T* cast(GameInstance* gi) noexcept
+        inline static T* cast(GameInstance* gi) noexcept
         {
             return static_cast<T*>(gi);
         }

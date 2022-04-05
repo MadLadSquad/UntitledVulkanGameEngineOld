@@ -1,10 +1,11 @@
 #include "VKMesh.hpp"
 
-UVK::VKMesh::VKMesh(UVK::VKDevice& dev, std::vector<VKVertex> vertices) noexcept
+UVK::VKMesh::VKMesh(UVK::VKDevice& dev, VkQueue transferQueue, VkCommandPool transferCommandPool, std::vector<VKVertex> vertices, std::vector<uint32_t> indices) noexcept
 {
     device = &dev;
     vertexNum = vertices.size();
-    createVertexBuffer(vertices);
+    indexNum = indices.size();
+    createVertexBuffer(transferQueue, transferCommandPool, vertices, indices);
 }
 
 const size_t& UVK::VKMesh::vertexCount() const noexcept
@@ -12,66 +13,55 @@ const size_t& UVK::VKMesh::vertexCount() const noexcept
     return vertexNum;
 }
 
-VkBuffer& UVK::VKMesh::getVertexBuffer() noexcept
+UVK::VKBuffer& UVK::VKMesh::getVertexBuffer() noexcept
 {
-    return vertexBuffer;
+    return buffer;
 }
 
-void UVK::VKMesh::createVertexBuffer(std::vector<VKVertex>& vertices) noexcept
+void UVK::VKMesh::createVertexBuffer(VkQueue transferQueue, VkCommandPool transferCommandPool, std::vector<VKVertex>& vertices, std::vector<uint32_t>& indices) noexcept
 {
-    const VkBufferCreateInfo bufferInfo =
     {
-        .sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO,
-        .size = sizeof(VKVertex) * vertices.size(),
-        .usage = VK_BUFFER_USAGE_VERTEX_BUFFER_BIT,
-        .sharingMode = VK_SHARING_MODE_EXCLUSIVE
-    };
+        VkDeviceSize bufferSize = sizeof(VKVertex) * vertices.size();
+        VKBuffer stagingBuffer;
+        stagingBuffer.create(*device, bufferSize, VK_BUFFER_USAGE_TRANSFER_SRC_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
 
-    auto result = vkCreateBuffer(device->getDevice(), &bufferInfo, nullptr, &vertexBuffer);
-    if (result != VK_SUCCESS)
-    {
-        logger.consoleLog("Couldn't create a vertex buffer! Error code: ", UVK_LOG_TYPE_ERROR, result);
-        std::terminate();
+        void* data;
+        vkMapMemory(device->device, stagingBuffer.getMemory(), 0, bufferSize, 0, &data);
+        memcpy(data, vertices.data(), bufferSize);
+        vkUnmapMemory(device->device, stagingBuffer.getMemory());
+
+        buffer.create(*device, bufferSize, VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
+        stagingBuffer.copy(transferQueue, transferCommandPool, buffer);
+
+        stagingBuffer.destroy();
     }
-
-    VkMemoryRequirements memoryRequirements;
-    vkGetBufferMemoryRequirements(device->getDevice(), vertexBuffer, &memoryRequirements);
-
-    const VkMemoryAllocateInfo memoryAllocateInfo =
-    {
-        .sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO,
-        .allocationSize = memoryRequirements.size,
-        .memoryTypeIndex = findMemoryTypeIndex(memoryRequirements.memoryTypeBits, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT)
-    };
-
-    result = vkAllocateMemory(device->device, &memoryAllocateInfo, nullptr, &deviceMemory);
-    if (result != VK_SUCCESS)
-    {
-        logger.consoleLog("Couldn't allocate memory for the vertex buffer! Error code: ", UVK_LOG_TYPE_ERROR, result);
-        std::terminate();
-    }
-
-    vkBindBufferMemory(device->device, vertexBuffer, deviceMemory, 0);
+    VkDeviceSize bufferSize = sizeof(uint32_t) * indices.size();
+    VKBuffer stagingBuffer;
+    stagingBuffer.create(*device, bufferSize, VK_BUFFER_USAGE_TRANSFER_SRC_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
 
     void* data;
-    vkMapMemory(device->device, deviceMemory, 0, bufferInfo.size, 0, &data);
-    memcpy(data, vertices.data(), (size_t)bufferInfo.size);
-    vkUnmapMemory(device->device, deviceMemory);
+    vkMapMemory(device->device, stagingBuffer.getMemory(), 0, bufferSize, 0, &data);
+    memcpy(data, indices.data(), (size_t)bufferSize);
+    vkUnmapMemory(device->device, stagingBuffer.getMemory());
+
+    indexBuffer.create(*device, bufferSize, VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_INDEX_BUFFER_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
+    stagingBuffer.copy(transferQueue, transferCommandPool, indexBuffer);
+
+    stagingBuffer.destroy();
 }
 
 void UVK::VKMesh::destroyVertexBuffer() noexcept
 {
-    vkDestroyBuffer(device->getDevice(), vertexBuffer, nullptr);
-    vkFreeMemory(device->device, deviceMemory, nullptr);
+    buffer.destroy();
+    indexBuffer.destroy();
 }
 
-uint32_t UVK::VKMesh::findMemoryTypeIndex(uint32_t allowedTypes, VkMemoryPropertyFlags properties)
+UVK::VKBuffer& UVK::VKMesh::getIndexBuffer() noexcept
 {
-    VkPhysicalDeviceMemoryProperties memoryProperties;
-    vkGetPhysicalDeviceMemoryProperties(device->physicalDevice, &memoryProperties);
+    return indexBuffer;
+}
 
-    // Used for checking if the bit is in allowed types
-    for (uint32_t i = 0; i < memoryProperties.memoryTypeCount; i++)
-        if ((allowedTypes & (1 << i)) && (memoryProperties.memoryTypes[i].propertyFlags & properties) == properties)
-            return i;
+const size_t& UVK::VKMesh::indexCount() const noexcept
+{
+    return indexNum;
 }

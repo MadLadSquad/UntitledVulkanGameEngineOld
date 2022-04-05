@@ -1,5 +1,6 @@
 #pragma once
 #include "Device.hpp"
+#include "Buffer.hpp"
 
 namespace UVK
 {
@@ -7,20 +8,22 @@ namespace UVK
     {
     public:
         VKMesh() = default;
-        VKMesh(VKDevice& dev, std::vector<VKVertex> vertices) noexcept;
+        VKMesh(VKDevice& dev, VkQueue transferQueue, VkCommandPool transferCommandPool, std::vector<VKVertex> vertices, std::vector<uint32_t> indices) noexcept;
         void destroyVertexBuffer() noexcept;
 
         [[nodiscard]] const size_t& vertexCount() const noexcept;
-        VkBuffer& getVertexBuffer() noexcept;
+        VKBuffer& getVertexBuffer() noexcept;
+        VKBuffer& getIndexBuffer() noexcept;
+        [[nodiscard]] const size_t& indexCount() const noexcept;
+
+        Model model = { glm::mat4(1.0f) };
     private:
         VKDevice* device = nullptr;
-        VkBuffer vertexBuffer;
-        VkDeviceMemory deviceMemory;
-        size_t vertexNum;
+        VKBuffer buffer{};
+        size_t vertexNum = 0;
+        VKBuffer indexBuffer{};
+        size_t indexNum = 0;
 
-        void createVertexBuffer(std::vector<VKVertex>& vertices) noexcept;
-
-
-        uint32_t findMemoryTypeIndex(uint32_t allowedTypes, VkMemoryPropertyFlags properties);
+        void createVertexBuffer(VkQueue transferQueue, VkCommandPool transferCommandPool, std::vector<VKVertex>& vertices, std::vector<uint32_t>& indices) noexcept;
     };
 }

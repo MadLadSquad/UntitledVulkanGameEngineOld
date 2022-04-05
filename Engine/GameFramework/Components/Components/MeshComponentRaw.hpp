@@ -1,7 +1,7 @@
 #pragma once
-#include <GL/glew.h>
 #include <glm/gtx/quaternion.hpp>
-#include <../Renderer/OpenGL/Components/GLMesh.hpp>
+#include <Renderer/Vulkan/Components/VKMesh.hpp>
+#include <Renderer/Vulkan/Components/Commands.hpp>
 #include <Renderer/Camera/Camera.hpp>
 
 namespace UVK
@@ -14,27 +14,18 @@ namespace UVK
      */
     struct UVK_PUBLIC_API MeshComponentRaw
     {
-        void createMesh(UVK::Actor* currentActor, GLfloat* vertices, uint32_t* indices, uint32_t vertexNum, uint32_t indexNum, UVK::String vertexShader, UVK::String fragmentShader, ShaderImportType type) noexcept;
-        void render(Camera& camera) noexcept;
-        void clearMesh() noexcept;
+    public:
+        void create(std::vector<VKVertex> vertices, std::vector<uint32_t> indices, VKDevice& dev, Commands& cmd);
+        void update(size_t index, uint32_t currentImage, GraphicsPipeline& pipeline, VKDescriptors& descriptors);
+        void destroy();
 
-        glm::mat4 mat;
-
-        std::vector<uint32_t> index;
-        std::vector<float> vertex;
-        UVK::String fShader;
-        UVK::String vShader;
-
-        ShaderImportType impType;
+        FVector translation = FVector(0.0f, 0.0f, 0.0f);
+        FVector rotation = FVector(0.0f, 0.0f, 0.0f);
+        FVector scale = FVector(0.0f, 0.0f, 0.0f);
     private:
-        UVK::CoreComponent* core = nullptr;
-        Actor* actor = nullptr;
+        VKDevice* device = nullptr;
+        Commands* commands = nullptr;
 
-        GLuint uniformModel = 0;
-        GLuint uniformProjection = 0;
-        GLuint uniformView = 0;
-
-        GLMesh mesh;
-        GLShader shader;
+        VKMesh mesh;
     };
 }

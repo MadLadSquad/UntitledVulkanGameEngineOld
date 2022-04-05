@@ -23,7 +23,7 @@ namespace UVK
         PlayerState* playerState = nullptr;
         PlayerController* playerController = nullptr;
 
-        virtual ~GameMode();
+        virtual ~GameMode() noexcept;
 
         void beginAutohandle() const noexcept;
         void tickAutohandle(float deltaTime) const noexcept;
@@ -32,7 +32,7 @@ namespace UVK
         [[maybe_unused]] static Pawn* getPawn(UVK::GameMode* gm) noexcept;
 
         template<typename T>
-        static GameMode* makeGameMode() noexcept
+        inline static GameMode* makeGameMode() noexcept
         {
             T* gm = new T();
             return gm;
@@ -41,7 +41,7 @@ namespace UVK
         [[maybe_unused]] static void destroyGameMode(GameMode* gm) noexcept;
 
         template<typename T>
-        static T* cast(GameMode* gm) noexcept
+        inline static T* cast(GameMode* gm) noexcept
         {
             return static_cast<T*>(gm);
         }

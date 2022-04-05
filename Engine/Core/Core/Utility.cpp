@@ -836,30 +836,16 @@ void UVK::Utility::removeConsole() noexcept
 
 void UVK::Math::translate(glm::mat4& mat, UVK::FVector vt) noexcept
 {
-    if (global.bUsesVulkan)
-        mat = glm::translate(mat, FVector(vt.x, -vt.y, vt.z));
-    else
-        mat = glm::translate(mat, vt);
+    mat = glm::translate(mat, vt);
 }
 
 void UVK::Math::rotate(glm::mat4& mat, UVK::FVector vt) noexcept
 {
-    if (global.bUsesVulkan)
-    {
-        auto rot = glm::toMat4(glm::quat(FVector(vt.x, -vt.y, vt.z)));
-        mat *= rot;
-    }
-    else
-    {
-        auto rot = glm::toMat4(glm::quat(vt));
-        mat *= rot;
-    }
+    auto rot = glm::toMat4(glm::quat(vt));
+    mat *= rot;
 }
 
 void UVK::Math::scale(glm::mat4& mat, UVK::FVector vt) noexcept
 {
-    if (global.bUsesVulkan)
-        mat = glm::scale(mat, FVector(vt.x, -vt.y, vt.z));
-    else
-        mat = glm::scale(mat, vt);
+    mat = glm::scale(mat, vt);
 }

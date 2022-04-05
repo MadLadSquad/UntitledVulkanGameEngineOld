@@ -24,14 +24,14 @@ namespace UVK
         virtual ~PlayerController() noexcept;
 
         template<typename T>
-        static PlayerController* makePlayerController() noexcept
+        inline static PlayerController* makePlayerController() noexcept
         {
             T* pc = new T();
             return pc;
         }
 
         template<typename T>
-        static T* cast(PlayerController* pc) noexcept
+        inline static T* cast(PlayerController* pc) noexcept
         {
             return static_cast<T*>(pc);
         }

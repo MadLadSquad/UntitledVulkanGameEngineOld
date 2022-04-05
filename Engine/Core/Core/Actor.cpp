@@ -64,7 +64,7 @@ void UVK::Actor::clear() noexcept
 {
     if (has<MeshComponentRaw>())
     {
-        get<MeshComponentRaw>().clearMesh();
+        get<MeshComponentRaw>().destroy();
         remove<MeshComponentRaw>();
     }
 

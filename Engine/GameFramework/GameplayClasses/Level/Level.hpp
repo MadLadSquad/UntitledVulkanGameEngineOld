@@ -18,7 +18,7 @@ namespace UVK
         virtual void tick(float deltaTime) = 0;
         virtual void beginPlay() = 0;
         virtual void endPlay() = 0;
-        virtual ~Level() noexcept
+        inline virtual ~Level() noexcept
         {
             delete gameMode;
         }
@@ -52,7 +52,7 @@ namespace UVK
         }
 
         template<typename T>
-        static T* cast(Level* lvl) noexcept
+        inline static T* cast(Level* lvl) noexcept
         {
             return static_cast<T*>(lvl);
         }

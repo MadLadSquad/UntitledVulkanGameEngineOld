@@ -1,10 +1,11 @@
 #include "GraphicsPipeline.hpp"
 #include "Swapchain.hpp"
 
-UVK::GraphicsPipeline::GraphicsPipeline(UVK::VKDevice& dev, Swapchain& swap) noexcept
+UVK::GraphicsPipeline::GraphicsPipeline(UVK::VKDevice& dev, Swapchain& swap, const VKDescriptors& desc) noexcept
 {
     device = &dev;
     swapchain = &swap;
+    descriptors = &desc;
 }
 
 UVK::GraphicsPipeline::~GraphicsPipeline() noexcept
@@ -129,7 +130,7 @@ void UVK::GraphicsPipeline::createGraphicsPipeline() noexcept
         .rasterizerDiscardEnable = VK_FALSE,
         .polygonMode = VK_POLYGON_MODE_FILL,    // TODO: Check this out for wireframe
         .cullMode = VK_CULL_MODE_BACK_BIT,
-        .frontFace = VK_FRONT_FACE_CLOCKWISE,
+        .frontFace = VK_FRONT_FACE_COUNTER_CLOCKWISE,
         .depthBiasEnable = VK_FALSE,                         // TODO: Might be interesting later
         .lineWidth = 1.0f,
     };
@@ -162,13 +163,13 @@ void UVK::GraphicsPipeline::createGraphicsPipeline() noexcept
         .pAttachments = &colourState,
     };
 
-    constexpr VkPipelineLayoutCreateInfo pipelineLayoutCreateInfo =
+    const VkPipelineLayoutCreateInfo pipelineLayoutCreateInfo =
     {
         .sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO,
-        .setLayoutCount = 0,
-        .pSetLayouts = nullptr,
-        .pushConstantRangeCount = 0,
-        .pPushConstantRanges = nullptr,
+        .setLayoutCount = 1,
+        .pSetLayouts = &descriptors->layout(),
+        .pushConstantRangeCount = 1,
+        .pPushConstantRanges = &descriptors->getPushConstantRange(),
     };
 
     auto result = vkCreatePipelineLayout(device->getDevice(), &pipelineLayoutCreateInfo, nullptr, &pipelineLayout);
@@ -286,4 +287,19 @@ void UVK::GraphicsPipeline::createRenderPass() noexcept
         logger.consoleLog("Failed to create a Vulkan render pass! Error code: ", UVK_LOG_TYPE_ERROR, result);
         std::terminate();
     }
+}
+
+VkPipelineLayout& UVK::GraphicsPipeline::getPipelineLayout() noexcept
+{
+    return pipelineLayout;
+}
+
+VkRenderPass& UVK::GraphicsPipeline::getRenderPass() noexcept
+{
+    return renderPass;
+}
+
+VkPipeline& UVK::GraphicsPipeline::getPipeline() noexcept
+{
+    return graphicsPipeline;
 }

@@ -16,7 +16,7 @@ namespace UVK
     public:
         EditorTheme() = default;
 
-        explicit EditorTheme(UVK::String theme) noexcept
+        inline explicit EditorTheme(UVK::String theme) noexcept
         {
             setTheme(theme);
         }

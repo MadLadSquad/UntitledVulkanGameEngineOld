@@ -17,11 +17,18 @@ namespace UVK
         void destroyDevice() noexcept;
 
         VkDevice& getDevice() noexcept;
+        VkPhysicalDevice& getPhysicalDevice() noexcept;
+        VkQueue& getGraphicsQueue() noexcept;
+        VkQueue& getPresentationQueue() noexcept;
+        QueueFamilyIndices& getIndices() noexcept;
     private:
         friend class Swapchain;
+        friend class VKBuffer;
         friend class VKMesh;
 
         QueueFamilyIndices createPhysicalDevice(Swapchain& surface) noexcept;
+
+        VkPhysicalDeviceProperties deviceProperties{};
 
         VkQueue queue{};
         VkQueue presentationQueue{};

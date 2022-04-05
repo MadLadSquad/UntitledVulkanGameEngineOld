@@ -19,25 +19,25 @@ namespace UVK
         bool valid() noexcept;
 
         template<typename T>
-        auto& get() noexcept
+        inline auto& get() noexcept
         {
             return global.ecs.data().get<T>(entity);
         }
 
         template<typename T>
-        auto& add() noexcept
+        inline auto& add() noexcept
         {
             return global.ecs.data().emplace_or_replace<T>(entity);
         }
 
         template<typename T>
-        void remove() noexcept
+        inline void remove() noexcept
         {
             global.ecs.data().remove<T>(entity);
         }
 
         template<typename T>
-        bool has() noexcept
+        inline bool has() noexcept
         {
             return global.ecs.data().any_of<T>(entity);
         }

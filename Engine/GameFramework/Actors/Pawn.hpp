@@ -27,14 +27,14 @@ namespace UVK
         Actor actor{};
 
         template<typename T>
-        static Pawn* makePawn() noexcept
+        inline static Pawn* makePawn() noexcept
         {
             T* pw = new T();
             return pw;
         }
 
         template<typename T>
-        static T* cast(Pawn* pw) noexcept
+        inline static T* cast(Pawn* pw) noexcept
         {
             return static_cast<T*>(pw);
         }

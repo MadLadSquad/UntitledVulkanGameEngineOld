@@ -13,7 +13,7 @@ void UVK::VKDevice::createDevice(Swapchain& swapchain) noexcept
 
     constexpr float priority = 1.0f;
 
-    VkDeviceQueueCreateInfo createInfos[] =
+    const VkDeviceQueueCreateInfo createInfos[] =
     {
         {
             .sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO,
@@ -177,14 +177,33 @@ continue_to_other_device_in_list:;
     else
         physicalDevice = devices[largestMemorySizeFoundIndex];
 
-    VkPhysicalDeviceProperties physicalDeviceProperties = {};
-    vkGetPhysicalDeviceProperties(physicalDevice, &physicalDeviceProperties);
+    vkGetPhysicalDeviceProperties(physicalDevice, &deviceProperties);
 
-    logger.consoleLog("Loaded Vulkan device ", UVK_LOG_TYPE_SUCCESS, physicalDeviceProperties.deviceName);
+    logger.consoleLog("Loaded Vulkan device ", UVK_LOG_TYPE_SUCCESS, deviceProperties.deviceName);
     return lastSavedIndex;
 }
 
 UVK::VKDevice::~VKDevice() noexcept
 {
     destroyDevice();
+}
+
+VkQueue& UVK::VKDevice::getGraphicsQueue() noexcept
+{
+    return queue;
+}
+
+UVK::QueueFamilyIndices &UVK::VKDevice::getIndices() noexcept
+{
+    return indices;
+}
+
+VkQueue& UVK::VKDevice::getPresentationQueue() noexcept
+{
+    return presentationQueue;
+}
+
+VkPhysicalDevice& UVK::VKDevice::getPhysicalDevice() noexcept
+{
+    return physicalDevice;
 }

@@ -131,19 +131,19 @@ void UVK::WindowInternal::createWindow() noexcept
 
     glfwMakeContextCurrent(windowMain);
 
-#ifndef DEVELOPMENT
-    if ((Renderer::getVSync() || global.bEditor) && !global.bUsesVulkan)
-    {
-        glfwSwapInterval(1);
-    }
-    else
-    {
-        glfwSwapInterval(0);
-    }
-#else
+//#ifndef DEVELOPMENT
+//    if ((Renderer::getVSync() || global.bEditor) && !global.bUsesVulkan)
+//    {
+//        glfwSwapInterval(1);
+//    }
+//    else
+//    {
+//        glfwSwapInterval(0);
+//    }
+//#else
+//    glfwSwapInterval(0);
+//#endif
     glfwSwapInterval(0);
-#endif
-
     configureCallBacks();
 
     if (!global.bUsesVulkan)

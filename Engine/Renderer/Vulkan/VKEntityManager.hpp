@@ -8,10 +8,8 @@ namespace UVK
     {
     public:
         VKEntityManager() = delete;
+
     private:
         friend class VulkanRenderer;
-
-        static void tick(Camera* camera) noexcept;
-        static void clean() noexcept;
     };
 }

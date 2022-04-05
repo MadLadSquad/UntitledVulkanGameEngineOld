@@ -36,7 +36,7 @@ void UVK::GLRenderer::start(UVK::Level* level) const noexcept
     };
 
     auto& a = maikati.add<UVK::MeshComponentRaw>();
-    a.createMesh(&maikati, vertices, indices, 20, 12, "../Content/Engine/defaultvshader.gl", "../Content/Engine/defaultfshader.gl", SHADER_IMPORT_TYPE_FILE);
+    //a.createMesh(&maikati, vertices, indices, 20, 12, "../Content/Engine/defaultvshader.gl", "../Content/Engine/defaultfshader.gl", SHADER_IMPORT_TYPE_FILE);
     //auto& b = registry.addComponent<AudioComponent3D>(ent);
     //b.play("and.wav", true, 1.0f, 1.0f, FVector(15.0f, 0.0f, 0.0f));
 #endif

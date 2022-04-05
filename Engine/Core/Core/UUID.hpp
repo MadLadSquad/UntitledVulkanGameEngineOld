@@ -20,7 +20,7 @@ namespace UVK
     public:
         UUID() = default;
         void generate() noexcept;
-        const uint64_t& data() const noexcept;
+        [[nodiscard]] const uint64_t& data() const noexcept;
     private:
         friend class Actor;
         friend class Level;

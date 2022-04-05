@@ -5,10 +5,18 @@
 #include <Core/Global.hpp>
 #include <imgui_impl_opengl3.h>
 #include <imgui_impl_glfw.h>
+#include <imgui_impl_vulkan.h>
 #include <glfw3.h>
 #include <Renderer/EditorUI/Editor.hpp>
+#include <Renderer/Vulkan/Components/Device.hpp>
+#include <Renderer/Vulkan/Components/Instance.hpp>
+#include <Renderer/Vulkan/Components/Commands.hpp>
+#include <Renderer/Vulkan/Components/Resources.hpp>
+#include <Renderer/Vulkan/Components/Descriptors.hpp>
+#include <Renderer/Vulkan/Components/GraphicsPipeline.hpp>
+#include <Renderer/Vulkan/Components/Swapchain.hpp>
 
-void UVK::EditorUtilSettings::loadImGuiSettings(Editor& editor, const char* colTheme) noexcept
+void UVK::EditorUtilSettings::loadImGuiSettings(Editor& editor, const char* colTheme, VKInstance& instance, VKDevice& device, Commands& commands, VKDescriptors& descriptors, Swapchain& swapchain, GraphicsPipeline& graphicsPipeline) noexcept
 {
     ImGui::CreateContext();
     ImPlot::CreateContext();
@@ -47,17 +55,18 @@ void UVK::EditorUtilSettings::loadImGuiSettings(Editor& editor, const char* colT
 #endif
     }
 
-    if (global.bUsesVulkan)
+    ImGui_ImplVulkan_InitInfo initInfo =
     {
-        ImGui_ImplGlfw_InitForVulkan(global.window.getWindow(), true);
-        // TODO: implement for vulkan
-        //ImGui_ImplVulkan_Init();
-    }
-    else
-    {
-        ImGui_ImplGlfw_InitForOpenGL(global.window.getWindow(), true);
-        ImGui_ImplOpenGL3_Init("#version 450");
-    }
+        .Instance = instance.data(),
+        .PhysicalDevice = device.getPhysicalDevice(),
+        .Device = device.getDevice(),
+        .QueueFamily = static_cast<uint32_t>(device.getIndices().graphicsFamily),
+        .Queue = device.getGraphicsQueue(),
+        .DescriptorPool = descriptors.getPool()
+    };
+
+    ImGui_ImplGlfw_InitForVulkan(global.window.getWindow(), true);
+    ImGui_ImplVulkan_Init(&initInfo, graphicsPipeline.getRenderPass());
 }
 
 void UVK::EditorUtilSettings::setImGuiSettings(Editor& editor) noexcept

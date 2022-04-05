@@ -31,7 +31,7 @@ namespace UVK
         ScriptableObjectActivityFlags activityFlags = SCRIPTABLE_OBJECT_ACTIVITY_FLAG_ACTIVE;
 
         template<typename T>
-        static T* cast(ScriptableObject* so) noexcept
+        inline static T* cast(ScriptableObject* so) noexcept
         {
             return static_cast<T*>(so);
         }

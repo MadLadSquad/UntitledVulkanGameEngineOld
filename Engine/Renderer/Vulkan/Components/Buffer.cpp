@@ -1,1 +1,112 @@
 #include "Buffer.hpp"
+
+void UVK::VKBuffer::create(UVK::VKDevice& dev, VkDeviceSize bufferSize, VkBufferUsageFlags bufferUsageFlags, VkMemoryPropertyFlags propertyFlags) noexcept
+{
+    device = &dev;
+    bufferSz = bufferSize;
+    const VkBufferCreateInfo bufferInfo =
+    {
+        .sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO,
+        .size = bufferSize,
+        .usage = bufferUsageFlags,
+        .sharingMode = VK_SHARING_MODE_EXCLUSIVE
+    };
+
+    auto result = vkCreateBuffer(dev.getDevice(), &bufferInfo, nullptr, &buffer);
+    if (result != VK_SUCCESS)
+    {
+        logger.consoleLog("Couldn't create a vertex buffer! Error code: ", UVK_LOG_TYPE_ERROR, result);
+        std::terminate();
+    }
+
+    VkMemoryRequirements memoryRequirements;
+    vkGetBufferMemoryRequirements(device->getDevice(), buffer, &memoryRequirements);
+
+    const VkMemoryAllocateInfo memoryAllocateInfo =
+    {
+        .sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO,
+        .allocationSize = memoryRequirements.size,
+        .memoryTypeIndex = findMemoryTypeIndex(memoryRequirements.memoryTypeBits, propertyFlags)
+    };
+
+    result = vkAllocateMemory(dev.getDevice(), &memoryAllocateInfo, nullptr, &memory);
+    if (result != VK_SUCCESS)
+    {
+        logger.consoleLog("Couldn't allocate memory for the vertex buffer! Error code: ", UVK_LOG_TYPE_ERROR, result);
+        std::terminate();
+    }
+
+    vkBindBufferMemory(dev.getDevice(), buffer, memory, 0);
+}
+
+void UVK::VKBuffer::destroy() noexcept
+{
+    vkDestroyBuffer(device->getDevice(), buffer, nullptr);
+    vkFreeMemory(device->device, memory, nullptr);
+}
+
+uint32_t UVK::VKBuffer::findMemoryTypeIndex(uint32_t allowedTypes, VkMemoryPropertyFlags properties) noexcept
+{
+    VkPhysicalDeviceMemoryProperties memoryProperties;
+    vkGetPhysicalDeviceMemoryProperties(device->physicalDevice, &memoryProperties);
+
+    // Used for checking if the bit is in allowed types
+    for (uint32_t i = 0; i < memoryProperties.memoryTypeCount; i++)
+        if ((allowedTypes & (1 << i)) && (memoryProperties.memoryTypes[i].propertyFlags & properties) == properties)
+            return i;
+    std::terminate();
+}
+
+VkDeviceMemory& UVK::VKBuffer::getMemory() noexcept
+{
+    return memory;
+}
+
+VkBuffer& UVK::VKBuffer::getBuffer() noexcept
+{
+    return buffer;
+}
+
+void UVK::VKBuffer::copy(VkQueue transferQueue, VkCommandPool transferCommandPool, UVK::VKBuffer& buf) noexcept
+{
+    VkCommandBuffer transferCommandBuffer;
+    const VkCommandBufferAllocateInfo commandBufferAllocateInfo =
+    {
+        .sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO,
+        .commandPool = transferCommandPool,
+        .level = VK_COMMAND_BUFFER_LEVEL_PRIMARY,
+        .commandBufferCount = 1,
+    };
+    vkAllocateCommandBuffers(device->getDevice(), &commandBufferAllocateInfo, &transferCommandBuffer);
+
+    constexpr VkCommandBufferBeginInfo beginInfo =
+    {
+        .sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO,
+        .flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT
+    };
+
+    vkBeginCommandBuffer(transferCommandBuffer, &beginInfo);
+
+    const VkBufferCopy bufferCopy =
+    {
+        .srcOffset = 0,
+        .dstOffset = 0,
+        .size = bufferSz
+    };
+
+    buf.bufferSz = bufferSz;
+    vkCmdCopyBuffer(transferCommandBuffer, buffer, buf.buffer, 1, &bufferCopy);
+    vkEndCommandBuffer(transferCommandBuffer);
+
+    const VkSubmitInfo submitInfo =
+    {
+        .sType = VK_STRUCTURE_TYPE_SUBMIT_INFO,
+        .commandBufferCount = 1,
+        .pCommandBuffers = &transferCommandBuffer
+    };
+
+    vkQueueSubmit(transferQueue, 1, &submitInfo, VK_NULL_HANDLE);
+    vkQueueWaitIdle(transferQueue);
+
+    vkFreeCommandBuffers(device->device, transferCommandPool, 1, &transferCommandBuffer);
+}

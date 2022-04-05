@@ -5,62 +5,36 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "Core/Actor.hpp"
 
-void UVK::MeshComponentRaw::createMesh(UVK::Actor* currentActor, GLfloat* vertices, uint32_t* indices, uint32_t vertexNum, uint32_t indexNum, UVK::String vertexShader, UVK::String fragmentShader, ShaderImportType type) noexcept
+void UVK::MeshComponentRaw::create(std::vector<VKVertex> vertices, std::vector<uint32_t> indices, VKDevice& dev, Commands& cmd)
 {
-    fShader = fragmentShader;
-    vShader = vertexShader;
-    impType = type;
-    actor = currentActor;
+    device = &dev;
+    commands = &cmd;
+    mesh = VKMesh(*device, device->getGraphicsQueue(), commands->getCommandPool(), vertices, indices);
 
-    for (int i = 0; i < indexNum; i++)
-        index.push_back(indices[i]);
-    for (int i = 0; i < vertexNum; i++)
-        vertex.push_back(vertices[i]);
-
-    mesh.createMesh(vertices, indices, vertexNum, indexNum);
-
-    switch (type)
-    {
-    case SHADER_IMPORT_TYPE_FILE:
-        shader.createFromFile(vertexShader, fragmentShader);
-        break;
-    case SHADER_IMPORT_TYPE_STRING:
-        shader.createFromString(vertexShader, fragmentShader);
-        break;
-    case SHADER_IMPORT_TYPE_SPIR:
-        logger.consoleLog("SPIR-V in OpenGL not implemented yet!", UVK_LOG_TYPE_ERROR);
-        break;
-    }
-
-    core = &actor->get<CoreComponent>();
 }
 
-void UVK::MeshComponentRaw::render(Camera& camera) noexcept
+void UVK::MeshComponentRaw::update(size_t index, uint32_t currentImage, GraphicsPipeline& pipeline, VKDescriptors& descriptors)
 {
-    mat = glm::mat4(1.0f);
-    shader.useShader();
+    mesh.model.model = glm::mat4(1.0);
+    Math::translate(mesh.model.model, translation);
+    Math::rotate(mesh.model.model, rotation);
+    Math::scale(mesh.model.model, scale);
 
-    uniformModel = shader.getModelLocation();
-    uniformProjection = shader.getProjectionLocation();
-    uniformView = shader.getViewLocation();
+    VkBuffer vertexBuffers[] = { mesh.getVertexBuffer().getBuffer() };
+    VkDeviceSize offsets[] = { 0 };
 
-    Math::translate(mat, core->translation);
-    Math::rotate(mat, core->rotation);
-    Math::scale(mat, core->scale);
-    if (!global.bUsesVulkan)
-    {
-        glUniformMatrix4fv((int)uniformModel, 1, GL_FALSE, glm::value_ptr(mat));
-        glUniformMatrix4fv((int)uniformProjection, 1, GL_FALSE, glm::value_ptr(camera.projection().data()));
-        glUniformMatrix4fv((int)uniformView, 1, GL_FALSE, glm::value_ptr(camera.calculateViewMatrixRH()));
-        mesh.render();
-    }
+    auto& cmd = commands->getCommandBuffers()[currentImage];
+    vkCmdBindVertexBuffers(cmd, 0, 1, vertexBuffers, offsets);
+    vkCmdBindIndexBuffer(cmd, mesh.getIndexBuffer().getBuffer(), 0, VK_INDEX_TYPE_UINT32);
+
+    //uint32_t dynamicOffset = static_cast<uint32_t>(modelUniformAlignment) * index;
+    vkCmdPushConstants(cmd, pipeline.getPipelineLayout(), VK_SHADER_STAGE_VERTEX_BIT, 0, sizeof(Model), &mesh.model);
+    vkCmdBindDescriptorSets(cmd, VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline.getPipelineLayout(), 0, 1, &descriptors.getDescriptorSets()[currentImage], 0, nullptr);
+
+    vkCmdDrawIndexed(cmd, mesh.indexCount(), 1, 0, 0, 0);
 }
 
-void UVK::MeshComponentRaw::clearMesh() noexcept
+void UVK::MeshComponentRaw::destroy()
 {
-    mesh.clear();
-    shader.clearShader();
-
-    index.clear();
-    vertex.clear();
+    mesh.destroyVertexBuffer();
 }
