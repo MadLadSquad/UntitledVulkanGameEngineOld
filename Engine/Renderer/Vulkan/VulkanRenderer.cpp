@@ -133,6 +133,8 @@ void UVK::VulkanRenderer::run() noexcept
         deltaTime = now - lastTime;
         lastTime = now;
 
+        mcomp.translation = FVector(0.0f, 0.0f, 0.0f);
+
         //mcomp.rotation = FVector(0.0f, 180.0f, 0.0f);
 
         //angle += 1.0f * deltaTime;

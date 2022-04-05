@@ -21,11 +21,11 @@ namespace UVK
 
         FVector translation = FVector(0.0f, 0.0f, 0.0f);
         FVector rotation = FVector(0.0f, 0.0f, 0.0f);
-        FVector scale = FVector(0.0f, 0.0f, 0.0f);
+        FVector scale = FVector(1.0f, 1.0f, 1.0f);
     private:
         VKDevice* device = nullptr;
         Commands* commands = nullptr;
 
-        VKMesh mesh;
+        VKMesh mesh{};
     };
 }
