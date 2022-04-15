@@ -15,7 +15,7 @@ namespace UVK
     public:
         Swapchain() = default;
         Swapchain(VKInstance& inst, VKDevice& dev) noexcept;
-        ~Swapchain() noexcept;
+        ~Swapchain() = default;
 
         void createSwapchain() noexcept;
         void destroySwapchain() noexcept;
@@ -26,6 +26,7 @@ namespace UVK
         void createFramebuffers(GraphicsPipeline& graphicsPipeline) noexcept;
         void destroyFramebuffers() noexcept;
 
+        void setDepthBuffer(VKDepthBuffer& depth) noexcept;
         //void createCommandPool() noexcept;
         //void destroyCommandPool() noexcept;
 //
@@ -45,21 +46,21 @@ namespace UVK
         //void allocateDynamicUniformBufferTransferSpace();
         //void freeDynamicUniformBufferTransferSpace();
 
+
         VkSurfaceKHR& getSurface() noexcept;
         VkSwapchainKHR& getSwapchain() noexcept;
         //VkCommandPool& getCommandPool() noexcept;
         [[nodiscard]] const VkExtent2D& getExtent() const noexcept;
         [[nodiscard]] const std::vector<VkFramebuffer>& getFramebuffers() const noexcept;
-        Commands& getCommands() noexcept;
-        VKResources& getResources() noexcept;
+        //Commands& getCommands() noexcept;
+        //VKResources& getResources() noexcept;
+        static VkImageView createImageView(const VkImage& image, const VkFormat& format, const VkImageAspectFlags& aspectFlags, VKDevice& dev, uint32_t mipLevels = 1) noexcept;
     private:
         friend class VKDevice;
         friend class GraphicsPipeline;
         friend class VKDescriptors;
 
         bool getSwapchainDetails(VkPhysicalDevice& device, const QueueFamilyIndices& indices) noexcept;
-
-        VkImageView createImageView(const VkImage& image, const VkFormat& format, const VkImageAspectFlags& aspectFlags) noexcept;
 
         void determineSurfaceFormats() noexcept;
         void determinePresentationMode() noexcept;
@@ -73,13 +74,14 @@ namespace UVK
         VKDevice* device = nullptr;
         GraphicsPipeline* pipeline = nullptr;
         VKDescriptors* descriptors = nullptr;
+        VKDepthBuffer* depthBuffer = nullptr;
 
         VkSurfaceFormatKHR surfaceFormat{};
         VkPresentModeKHR presentationMode{};
         VkExtent2D extent{};
 
-        VKResources resources{};
-        Commands commands{};
+        //VKResources resources{};
+        //Commands commands{};
 
         //VkCommandPool commandPool{};
 

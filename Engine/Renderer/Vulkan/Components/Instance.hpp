@@ -23,7 +23,7 @@ namespace UVK
     {
     public:
         VKInstance() = default;
-        ~VKInstance() noexcept;
+        ~VKInstance() = default;
         void create() noexcept;
         void destroy() noexcept;
         VkInstance& data() noexcept;

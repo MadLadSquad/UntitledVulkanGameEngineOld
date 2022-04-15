@@ -1,7 +1,15 @@
 #pragma once
-#include <../Renderer/OpenGL/Components/GLMesh.hpp>
 #include <Renderer/Camera/Camera.hpp>
+#include "Renderer/Vulkan/Components/Device.hpp"
+#include "Renderer/Vulkan/Components/Commands.hpp"
+#include <vector>
+#include <Core/Defines.hpp>
+#include <Core/Types.hpp>
+#include <Renderer/Textures/Texture.hpp>
 
+class aiNode;
+class aiScene;
+class aiMesh;
 namespace UVK
 {
     /**
@@ -9,26 +17,26 @@ namespace UVK
      */
     struct UVK_PUBLIC_API MeshComponent
     {
-        void createMesh(UVK::String modelLocation, UVK::String vertexShader, UVK::String fragmentShader, ShaderImportType type) noexcept;
-        void render(glm::mat4 projection, Camera& camera) noexcept;
-        void clearMesh() noexcept;
+        MeshComponent() = default;
+        void create(String location, VKDevice& dev, Commands& cmd, VKDescriptors& desc) noexcept;
+        void update(size_t index, uint32_t currentImage, GraphicsPipeline& pipeline) noexcept;
+        void destroy() noexcept;
 
-        glm::mat4 mat;
-
-        FVector rotation;
-        FVector translation;
-        FVector scale;
-
-        UVK::String fShader;
-        UVK::String vShader;
-
-        ShaderImportType impType;
+        FVector translation = FVector(0.0f, 0.0f, 0.0f);
+        FVector rotation = FVector(0.0f, 0.0f, 0.0f);
+        FVector scale = FVector(1.0f, 1.0f, 1.0f);
     private:
-        uint32_t uniformModel = 0;
-        uint32_t uniformProjection = 0;
-        uint32_t uniformView = 0;
+        void loadNode(aiNode* node, const aiScene* scene) noexcept;
+        void loadMesh(aiMesh* mesh, const aiScene* scene) noexcept;
 
-        GLMesh mesh;
-        GLShader shader;
+        glm::mat4 model = glm::mat4(1.0f);
+
+        VKDevice* device = nullptr;
+        Commands* commands = nullptr;
+        VKDescriptors* descriptors = nullptr;
+
+        std::vector<Texture> textures{};
+        std::vector<VKMesh> meshes{};
+        std::vector<size_t> matids{};
     };
 }

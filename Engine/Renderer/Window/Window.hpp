@@ -52,6 +52,7 @@ namespace UVK
          * @return A pointer to a standard GLFWwindow
          */
         [[nodiscard]] GLFWwindow* getWindow() const noexcept;
+        bool& resized() noexcept;
     private:
         // Returns the frame-buffer width which in most cases is equal to the Window's internal rendering surface
         // width
@@ -145,6 +146,8 @@ namespace UVK
         GLFWwindow* windowMain = nullptr;
 
         bool bFirstMove = true;
+        bool bResized = false;
+        bool bResizedLastFrame = false;
 
         double posX = 0;
         double posY = 0;

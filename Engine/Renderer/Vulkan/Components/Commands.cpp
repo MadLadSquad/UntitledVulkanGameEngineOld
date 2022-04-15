@@ -58,7 +58,7 @@ void UVK::Commands::draw() noexcept
     static uint32_t currentFrame = 0;
     static VP vp
     {
-        .view = glm::lookAt(FVector(0.0f, 0.0f, -1.0f), FVector(0.0f, 0.0f, 0.0f), FVector(0.0f, 1.0f, 0.0f)),
+        .view = glm::lookAt(FVector(0.0f, 0.0f, -5.0f), FVector(0.0f, 0.0f, 0.0f), FVector(0.0f, 1.0f, 0.0f)),
         .projection = glm::perspective(glm::radians(45.0f), (float)swapchain->getExtent().width / (float)swapchain->getExtent().height, 0.1f, 100.0f),
     };
 
@@ -68,6 +68,7 @@ void UVK::Commands::draw() noexcept
     vkResetFences(device->getDevice(), 1, &fences[currentFrame]);
 
     vkAcquireNextImageKHR(device->getDevice(), swapchain->getSwapchain(), std::numeric_limits<uint64_t>::max(), imageAvailable[currentFrame], VK_NULL_HANDLE, &imageIndex);
+
     recordCommands(imageIndex);
 
     //auto* pawn = Level::getPawn(GameInstance::currentLevel());
@@ -129,6 +130,12 @@ void UVK::Commands::recordCommands(uint32_t currentImage) noexcept
     {
         {
             .color = { global.colour.x, global.colour.y, global.colour.z, global.colour.w }
+        },
+        {
+            .depthStencil =
+            {
+                .depth = 1.0f,
+            }
         }
     };
 
@@ -142,7 +149,7 @@ void UVK::Commands::recordCommands(uint32_t currentImage) noexcept
             .offset = { 0, 0 },
             .extent = swapchain->getExtent()
         },
-        .clearValueCount = 1,
+        .clearValueCount = 2,
         .pClearValues = clearValues,
     };
 
@@ -169,7 +176,14 @@ void UVK::Commands::recordCommands(uint32_t currentImage) noexcept
     {
         UVK::Actor actor(fn);
         auto& mesh = actor.get<MeshComponentRaw>();
-        mesh.update(f, currentImage, *pipeline, *descriptors);
+        mesh.update(f, currentImage, *pipeline);
+        f++;
+    }
+    auto fs = ECS::data().view<MeshComponent>();
+    for (auto& fsn : fs)
+    {
+        UVK::Actor actor(fsn);
+        actor.get<MeshComponent>().update(f, currentImage, *pipeline);
         f++;
     }
 

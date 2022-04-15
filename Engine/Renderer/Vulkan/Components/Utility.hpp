@@ -1,11 +1,16 @@
 #pragma once
 #include <array>
+#include <vulkan/vulkan.h>
+#include <vector>
+#include <Core/Types.hpp>
 
 namespace UVK
 {
-    constexpr std::array<const char*, 1> deviceExtensions =
+    class VKDevice;
+    constexpr std::array<const char*, 2> deviceExtensions =
     {
-        VK_KHR_SWAPCHAIN_EXTENSION_NAME
+        VK_KHR_SWAPCHAIN_EXTENSION_NAME,
+        VK_EXT_CUSTOM_BORDER_COLOR_EXTENSION_NAME,
     };
 
     struct SwapchainDetails
@@ -45,7 +50,6 @@ namespace UVK
         VkShaderModule module{};
     };
 
-
     struct QueueFamilyIndices
     {
         int graphicsFamily = -1;
@@ -58,12 +62,15 @@ namespace UVK
     {
         VkImage image;
         VkImageView imageView;
+        void createImage(const FVector2& size, const VkFormat& format, const VkImageTiling& tiling, const VkImageUsageFlags& usageFlags, const VkMemoryPropertyFlags& propertyFlags, VkDeviceMemory& memory, VKDevice& device, uint32_t mipLevels = 1);
+        static VkFormat findBestImageFormat(const std::vector<VkFormat>& formats, const VkImageTiling& tiling, VkFormatFeatureFlags featureFlags, VKDevice& device);
     };
 
     struct VKVertex
     {
         FVector pos;
         FVector4 colour;
+        FVector2 uv;
     };
 
     struct VP

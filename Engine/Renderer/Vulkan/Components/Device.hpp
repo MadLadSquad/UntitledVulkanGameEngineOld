@@ -11,7 +11,7 @@ namespace UVK
     public:
         VKDevice() = default;
         explicit VKDevice(VKInstance& instance) noexcept;
-        ~VKDevice() noexcept;
+        ~VKDevice() = default;
 
         void createDevice(Swapchain& surface) noexcept;
         void destroyDevice() noexcept;

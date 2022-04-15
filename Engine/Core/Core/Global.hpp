@@ -92,6 +92,7 @@ namespace UVK
         friend class EditorUtilSettings;
         friend class Swapchain;
         friend class Commands;
+        friend class InternalRendererComponents;
         friend struct MeshComponentRaw;
         friend struct RendererSettings;
     };

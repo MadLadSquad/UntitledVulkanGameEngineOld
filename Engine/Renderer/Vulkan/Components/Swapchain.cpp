@@ -2,6 +2,7 @@
 #include <glfw3.h>
 #include <Core/Core/Global.hpp>
 #include "GraphicsPipeline.hpp"
+#include "Depth.hpp"
 
 void UVK::Swapchain::createSurface() noexcept
 {
@@ -61,15 +62,6 @@ bool UVK::Swapchain::getSwapchainDetails(VkPhysicalDevice& dev, const QueueFamil
         bReturn = false;
 
     return bReturn;
-}
-
-UVK::Swapchain::~Swapchain() noexcept
-{
-    static bool bFirst = true;
-    if (bFirst)
-        bFirst = false;
-    else
-        destroySurface();
 }
 
 void UVK::Swapchain::createSwapchain() noexcept
@@ -137,7 +129,7 @@ void UVK::Swapchain::createSwapchain() noexcept
     {
         images.push_back({
             image,
-            createImageView(image, surfaceFormat.format, VK_IMAGE_ASPECT_COLOR_BIT)
+            createImageView(image, surfaceFormat.format, VK_IMAGE_ASPECT_COLOR_BIT, *device)
         });
     }
 }
@@ -147,6 +139,7 @@ void UVK::Swapchain::destroySwapchain() noexcept
     for (const auto& a : images)
         vkDestroyImageView(device->device, a.imageView, nullptr);
     vkDestroySwapchainKHR(device->device, swapchain, nullptr);
+    images.clear();
 }
 
 void UVK::Swapchain::determineSurfaceFormats() noexcept
@@ -204,7 +197,7 @@ void UVK::Swapchain::determineExtent() noexcept
     }
 }
 
-VkImageView UVK::Swapchain::createImageView(const VkImage& image, const VkFormat& format, const VkImageAspectFlags& aspectFlags) noexcept
+VkImageView UVK::Swapchain::createImageView(const VkImage& image, const VkFormat& format, const VkImageAspectFlags& aspectFlags, VKDevice& dev, uint32_t mipLevels) noexcept
 {
     const VkImageViewCreateInfo viewCreateInfo =
     {
@@ -223,14 +216,14 @@ VkImageView UVK::Swapchain::createImageView(const VkImage& image, const VkFormat
         {
             .aspectMask = aspectFlags,
             .baseMipLevel = 0,
-            .levelCount = 1,
+            .levelCount = mipLevels,
             .baseArrayLayer = 0,
             .layerCount = 1
         },
     };
 
     VkImageView imageView;
-    auto result = vkCreateImageView(device->device, &viewCreateInfo, nullptr, &imageView);
+    auto result = vkCreateImageView(dev.getDevice(), &viewCreateInfo, nullptr, &imageView);
     if (result != VK_SUCCESS)
     {
         logger.consoleLog("Failed to create an image view! Error code: ", UVK_LOG_TYPE_ERROR, result);
@@ -247,12 +240,12 @@ void UVK::Swapchain::createFramebuffers(GraphicsPipeline& graphicsPipeline) noex
     for (size_t i = 0; i < framebuffers.size(); i++)
     {
         // Should be an array
-        const VkImageView attachments[1] = { images[i].imageView };
+        const VkImageView attachments[] = { images[i].imageView, depthBuffer->getImage().imageView };
         const VkFramebufferCreateInfo framebufferCreateInfo =
         {
             .sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO,
             .renderPass = pipeline->renderPass,
-            .attachmentCount = 1,
+            .attachmentCount = 2,
             .pAttachments = attachments,
             .width = extent.width,
             .height = extent.height,
@@ -266,306 +259,14 @@ void UVK::Swapchain::createFramebuffers(GraphicsPipeline& graphicsPipeline) noex
             std::terminate();
         }
     }
-    resources = VKResources(*device);
-    commands = Commands(*device, *this, *pipeline, *descriptors, resources);
-
-    commands.createCommandPool();
 }
 
 void UVK::Swapchain::destroyFramebuffers() noexcept
 {
-    commands.destroySynchronization();
-    commands.destroyCommandBuffers();
-    commands.destroyCommandPool();
-
     for (auto& a : framebuffers)
         vkDestroyFramebuffer(device->device, a, nullptr);
+    framebuffers.clear();
 }
-
-//void UVK::Swapchain::createCommandPool() noexcept
-//{
-//    const VkCommandPoolCreateInfo poolInfo =
-//    {
-//        .sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO,
-//        .flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT,
-//        .queueFamilyIndex = static_cast<uint32_t>(device->indices.graphicsFamily),
-//    };
-//
-//    const auto result = vkCreateCommandPool(device->device, &poolInfo, nullptr, &commandPool);
-//    if (result != VK_SUCCESS)
-//    {
-//        logger.consoleLog("Couldn't create a Vulkan command pool! Error code: ", UVK_LOG_TYPE_ERROR, result);
-//        std::terminate();
-//    }
-//}
-//
-//void UVK::Swapchain::destroyCommandPool() noexcept
-//{
-//    vkDestroyCommandPool(device->device, commandPool, nullptr);
-//}
-//
-//void UVK::Swapchain::createCommandBuffers() noexcept
-//{
-//    commandBuffers.resize(framebuffers.size());
-//
-//    const VkCommandBufferAllocateInfo commandBufferAllocateInfo =
-//    {
-//        .sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO,
-//        .commandPool = commandPool,
-//        .level = VK_COMMAND_BUFFER_LEVEL_PRIMARY,
-//        .commandBufferCount = static_cast<uint32_t>(commandBuffers.size()),
-//    };
-//
-//    const auto result = vkAllocateCommandBuffers(device->device, &commandBufferAllocateInfo, commandBuffers.data());
-//    if (result != VK_SUCCESS)
-//    {
-//        logger.consoleLog("Failed to allocate the Vulkan command buffers! Error code: ", UVK_LOG_TYPE_ERROR, result);
-//        std::terminate();
-//    }
-//}
-//
-//void UVK::Swapchain::destroyCommandBuffers() noexcept
-//{
-//    vkFreeCommandBuffers(device->device, commandPool, commandBuffers.size(), commandBuffers.data());
-//}
-//
-//void UVK::Swapchain::recordCommands(uint32_t currentImage, std::vector<VKMesh>& meshes) noexcept
-//{
-//    constexpr VkCommandBufferBeginInfo commandBufferBeginInfo
-//    {
-//        .sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO,
-//    };
-//
-//    // TODO: Add depth attachment clear value
-//    const VkClearValue clearValues[] =
-//    {
-//        {
-//            .color = { global.colour.x, global.colour.y, global.colour.z, global.colour.w }
-//        }
-//    };
-//
-//    VkRenderPassBeginInfo renderPassBeginInfo =
-//    {
-//        .sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO,
-//        .renderPass = pipeline->renderPass,
-//        .renderArea =
-//        {
-//            .offset = { 0, 0 },
-//            .extent = extent
-//        },
-//        .clearValueCount = 1,
-//        .pClearValues = clearValues,
-//    };
-//
-//    renderPassBeginInfo.framebuffer = framebuffers[currentImage];
-//
-//    auto& a = commandBuffers[currentImage];
-//    auto result = vkBeginCommandBuffer(a, &commandBufferBeginInfo);
-//    if (result != VK_SUCCESS)
-//    {
-//        logger.consoleLog("Failed to start recording the Vulkan command buffer! Error code: ", UVK_LOG_TYPE_ERROR, result);
-//        std::terminate();
-//    }
-//
-//    vkCmdBeginRenderPass(commandBuffers[currentImage], &renderPassBeginInfo, VK_SUBPASS_CONTENTS_INLINE);
-//
-//    vkCmdBindPipeline(commandBuffers[currentImage], VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline->graphicsPipeline);
-//
-//    for (size_t f = 0; f < meshes.size(); f++)
-//    {
-//        VkBuffer vertexBuffers[] = { meshes[f].getVertexBuffer().getBuffer() };
-//        VkDeviceSize offsets[] = { 0 };
-//
-//        vkCmdBindVertexBuffers(commandBuffers[currentImage], 0, 1, vertexBuffers, offsets);
-//        vkCmdBindIndexBuffer(commandBuffers[currentImage], meshes[f].getIndexBuffer().getBuffer(), 0, VK_INDEX_TYPE_UINT32);
-//
-//        //uint32_t dynamicOffset = static_cast<uint32_t>(modelUniformAlignment) * f;
-//        vkCmdPushConstants(commandBuffers[currentImage], pipeline->pipelineLayout, VK_SHADER_STAGE_VERTEX_BIT, 0, sizeof(Model), &meshes[f].model);
-//        vkCmdBindDescriptorSets(commandBuffers[currentImage], VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline->pipelineLayout, 0, 1, &descriptors->descriptorSets[currentImage], 0, nullptr);
-//
-//        vkCmdDrawIndexed(commandBuffers[currentImage], meshes[f].indexCount(), 1, 0, 0, 0);
-//    }
-//
-//    vkCmdEndRenderPass(commandBuffers[currentImage]);
-//
-//    result = vkEndCommandBuffer(a);
-//    if (result != VK_SUCCESS)
-//    {
-//        logger.consoleLog("Failed to stop recording the Vulkan command buffer! Error code: ", UVK_LOG_TYPE_ERROR, result);
-//        std::terminate();
-//    }
-//}
-//
-//void UVK::Swapchain::draw(VP& mvp, std::vector<VKMesh>& meshes) noexcept
-//{
-//    static uint32_t currentFrame = 0;
-//
-//    vkWaitForFences(device->device, 1, &fences[currentFrame], VK_TRUE, std::numeric_limits<uint64_t>::max());
-//    vkResetFences(device->device, 1, &fences[currentFrame]);
-//
-//    uint32_t imageIndex;
-//    vkAcquireNextImageKHR(device->device, swapchain, std::numeric_limits<uint64_t>::max(), imageAvailable[currentFrame], VK_NULL_HANDLE, &imageIndex);
-//
-//    recordCommands(imageIndex, meshes);
-//    updateUniformBuffers(mvp, imageIndex, meshes);
-//
-//    constexpr VkPipelineStageFlags waitStages[] =
-//    {
-//        VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT
-//    };
-//
-//    const VkSubmitInfo submitInfo =
-//    {
-//        .sType = VK_STRUCTURE_TYPE_SUBMIT_INFO,
-//        .waitSemaphoreCount = 1,
-//        .pWaitSemaphores = &imageAvailable[currentFrame],
-//        .pWaitDstStageMask = waitStages,
-//        .commandBufferCount = 1,
-//        .pCommandBuffers = &commandBuffers[imageIndex],
-//        .signalSemaphoreCount = 1,
-//        .pSignalSemaphores = &renderFinished[currentFrame]
-//    };
-//
-//    auto result = vkQueueSubmit(device->queue, 1, &submitInfo, fences[currentFrame]);
-//    if (result != VK_SUCCESS)
-//    {
-//        logger.consoleLog("Couldn't submit command buffer to the queue! Error code: ", UVK_LOG_TYPE_ERROR, result);
-//        std::terminate();
-//    }
-//
-//    const VkPresentInfoKHR presentInfo =
-//    {
-//        .sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR,
-//        .waitSemaphoreCount = 1,
-//        .pWaitSemaphores = &renderFinished[currentFrame],
-//        .swapchainCount = 1,
-//        .pSwapchains = &swapchain,
-//        .pImageIndices = &imageIndex
-//    };
-//
-//    result = vkQueuePresentKHR(device->presentationQueue, &presentInfo);
-//    if (result != VK_SUCCESS)
-//    {
-//        logger.consoleLog("Failed to present the image! Error code: ", UVK_LOG_TYPE_ERROR, result);
-//        std::terminate();
-//    }
-//    currentFrame = (currentFrame + 1) % VK_MAX_CONCURRENT_IMAGE_DRAW;
-//}
-
-//void UVK::Swapchain::createSynchronisation() noexcept
-//{
-//    imageAvailable.resize(VK_MAX_CONCURRENT_IMAGE_DRAW);
-//    renderFinished.resize(VK_MAX_CONCURRENT_IMAGE_DRAW);
-//    fences.resize(VK_MAX_CONCURRENT_IMAGE_DRAW);
-//    constexpr VkSemaphoreCreateInfo semaphoreCreateInfo
-//    {
-//        .sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO,
-//    };
-//
-//    constexpr VkFenceCreateInfo fenceCreateInfo =
-//    {
-//        .sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO,
-//        .flags = VK_FENCE_CREATE_SIGNALED_BIT
-//    };
-//
-//    for (size_t i = 0; i < VK_MAX_CONCURRENT_IMAGE_DRAW; i++)
-//    {
-//        auto result = vkCreateSemaphore(device->device, &semaphoreCreateInfo, nullptr, &imageAvailable[i]);
-//        if (result != VK_SUCCESS)
-//        {
-//            logger.consoleLog("Failed to create the image available Vulkan semaphore! Error code: ", UVK_LOG_TYPE_ERROR, result);
-//            std::terminate();
-//        }
-//        result = vkCreateSemaphore(device->device, &semaphoreCreateInfo, nullptr, &renderFinished[i]);
-//        if (result != VK_SUCCESS)
-//        {
-//            logger.consoleLog("Failed to create the render finished Vulkan semaphore! Error code: ", UVK_LOG_TYPE_ERROR, result);
-//            std::terminate();
-//        }
-//        result = vkCreateFence(device->device, &fenceCreateInfo, nullptr, &fences[i]);
-//        if (result != VK_SUCCESS)
-//        {
-//            logger.consoleLog("Failed to create a fence! Error code: ", UVK_LOG_TYPE_ERROR, result);
-//            std::terminate();
-//        }
-//    }
-//}
-//
-//void UVK::Swapchain::destroySynchronisation() noexcept
-//{
-//    for (size_t i = 0; i < VK_MAX_CONCURRENT_IMAGE_DRAW; i++)
-//    {
-//        vkDestroyFence(device->device, fences[i], nullptr);
-//        vkDestroySemaphore(device->device, imageAvailable[i], nullptr);
-//        vkDestroySemaphore(device->device, renderFinished[i], nullptr);
-//    }
-//}
-
-//VkCommandPool& UVK::Swapchain::getCommandPool() noexcept
-//{
-//    return commandPool;
-//}
-//
-//void UVK::Swapchain::createUniformBuffers() noexcept
-//{
-//    VkDeviceSize size = sizeof(VP);
-//    //VkDeviceSize modelSize = modelUniformAlignment * VK_MAX_OBJECTS;
-//
-//    uniformBuffers.resize(images.size());
-//    dynamicUniformBuffers.resize(images.size());
-//
-//    for (size_t i = 0; i < images.size(); i++)
-//    {
-//        uniformBuffers[i].create(*device, size, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
-//        //dynamicUniformBuffers[i].create(*device, modelSize, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
-//    }
-//}
-//
-//void UVK::Swapchain::destroyUniformBuffers() noexcept
-//{
-//    for (size_t i = 0; i < images.size(); i++)
-//    {
-//        uniformBuffers[i].destroy();
-//        //dynamicUniformBuffers[i].destroy();
-//    }
-//}
-//
-//const VkExtent2D& UVK::Swapchain::getExtent() const noexcept
-//{
-//    return extent;
-//}
-//
-//void UVK::Swapchain::updateUniformBuffers(VP& mvp, uint32_t imageIndex, std::vector<VKMesh>& meshes) noexcept
-//{
-//    void* data;
-//    vkMapMemory(device->getDevice(), uniformBuffers[imageIndex].getMemory(), 0, sizeof(VP), 0, &data);
-//    memcpy(data, &mvp, sizeof(VP));
-//    vkUnmapMemory(device->getDevice(), uniformBuffers[imageIndex].getMemory());
-//
-//    //for (size_t i = 0; i < meshes.size(); i++)
-//    //{
-//    //    // What the fuck is this retardation
-//    //    auto* model = (Model*)((uint64_t)modelTransferSpace + (i * modelUniformAlignment));
-//    //    *model = meshes[i].model;
-//    //}
-////
-//    //vkMapMemory(device->getDevice(), dynamicUniformBuffers[imageIndex].getMemory(), 0, modelUniformAlignment * meshes.size(), 0, &data);
-//    //memcpy(data, modelTransferSpace, modelUniformAlignment * meshes.size());
-//    //vkUnmapMemory(device->getDevice(), dynamicUniformBuffers[imageIndex].getMemory());
-//}
-//
-//void UVK::Swapchain::allocateDynamicUniformBufferTransferSpace()
-//{
-//    // weird bit magic
-//    //modelUniformAlignment = (sizeof(Model) + device->deviceProperties.limits.minUniformBufferOffsetAlignment - 1) & ~(device->deviceProperties.limits.minUniformBufferOffsetAlignment - 1);
-//    //modelTransferSpace = (Model*)aligned_alloc(modelUniformAlignment, modelUniformAlignment * VK_MAX_OBJECTS);
-//
-//}
-//
-//void UVK::Swapchain::freeDynamicUniformBufferTransferSpace()
-//{
-//    //free(modelTransferSpace);
-//}
 
 const std::vector<VkFramebuffer>& UVK::Swapchain::getFramebuffers() const noexcept
 {
@@ -582,12 +283,7 @@ const VkExtent2D& UVK::Swapchain::getExtent() const noexcept
     return extent;
 }
 
-UVK::Commands& UVK::Swapchain::getCommands() noexcept
+void UVK::Swapchain::setDepthBuffer(UVK::VKDepthBuffer& depth) noexcept
 {
-    return commands;
-}
-
-UVK::VKResources& UVK::Swapchain::getResources() noexcept
-{
-    return resources;
+    depthBuffer = &depth;
 }

@@ -104,11 +104,6 @@ VkInstance& UVK::VKInstance::data() noexcept
     return instance;
 }
 
-UVK::VKInstance::~VKInstance() noexcept
-{
-    destroy();
-}
-
 bool UVK::VKInstance::checkValidationLayerSupport(const std::vector<const char*>& validationLayers) noexcept
 {
     uint32_t layerCount;

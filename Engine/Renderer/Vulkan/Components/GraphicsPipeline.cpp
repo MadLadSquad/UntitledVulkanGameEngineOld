@@ -1,16 +1,13 @@
 #include "GraphicsPipeline.hpp"
 #include "Swapchain.hpp"
+#include "Depth.hpp"
 
-UVK::GraphicsPipeline::GraphicsPipeline(UVK::VKDevice& dev, Swapchain& swap, const VKDescriptors& desc) noexcept
+UVK::GraphicsPipeline::GraphicsPipeline(UVK::VKDevice& dev, Swapchain& swap, const VKDescriptors& desc, VKDepthBuffer& depth) noexcept
 {
     device = &dev;
     swapchain = &swap;
     descriptors = &desc;
-}
-
-UVK::GraphicsPipeline::~GraphicsPipeline() noexcept
-{
-    destroyGraphicsPipeline();
+    depthBuffer = &depth;
 }
 
 void UVK::GraphicsPipeline::createGraphicsPipeline() noexcept
@@ -60,7 +57,7 @@ void UVK::GraphicsPipeline::createGraphicsPipeline() noexcept
         .inputRate = VK_VERTEX_INPUT_RATE_VERTEX
     };
 
-    constexpr VkVertexInputAttributeDescription attributeDescriptions[2] =
+    constexpr VkVertexInputAttributeDescription attributeDescriptions[3] =
     {
         {
             .location = 0,
@@ -73,6 +70,12 @@ void UVK::GraphicsPipeline::createGraphicsPipeline() noexcept
             .binding = 0,
             .format = VK_FORMAT_R32G32B32A32_SFLOAT,
             .offset = offsetof(VKVertex, colour)
+        },
+        {
+            .location = 2,
+            .binding = 0,
+            .format = VK_FORMAT_R32G32_SFLOAT,
+            .offset = offsetof(VKVertex, uv)
         }
     };
 
@@ -81,7 +84,7 @@ void UVK::GraphicsPipeline::createGraphicsPipeline() noexcept
         .sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO,
         .vertexBindingDescriptionCount = 1,
         .pVertexBindingDescriptions = &bindingDescription,
-        .vertexAttributeDescriptionCount = 2,
+        .vertexAttributeDescriptionCount = 3,
         .pVertexAttributeDescriptions = attributeDescriptions
     };
 
@@ -163,11 +166,17 @@ void UVK::GraphicsPipeline::createGraphicsPipeline() noexcept
         .pAttachments = &colourState,
     };
 
+    const VkDescriptorSetLayout descriptorSetLayouts[] =
+    {
+        descriptors->layout(),
+        descriptors->samplerLayout()
+    };
+
     const VkPipelineLayoutCreateInfo pipelineLayoutCreateInfo =
     {
         .sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO,
-        .setLayoutCount = 1,
-        .pSetLayouts = &descriptors->layout(),
+        .setLayoutCount = 2,
+        .pSetLayouts = descriptorSetLayouts,
         .pushConstantRangeCount = 1,
         .pPushConstantRanges = &descriptors->getPushConstantRange(),
     };
@@ -179,8 +188,15 @@ void UVK::GraphicsPipeline::createGraphicsPipeline() noexcept
         std::terminate();
     }
 
-    // TODO: set up depth stencil testing
-
+    const VkPipelineDepthStencilStateCreateInfo depthStencilStateCreateInfo =
+    {
+        .sType = VK_STRUCTURE_TYPE_PIPELINE_DEPTH_STENCIL_STATE_CREATE_INFO,
+        .depthTestEnable = VK_TRUE,
+        .depthWriteEnable = VK_TRUE,
+        .depthCompareOp = VK_COMPARE_OP_LESS,
+        .depthBoundsTestEnable = VK_FALSE,
+        .stencilTestEnable = VK_FALSE,
+    };
 
     const VkGraphicsPipelineCreateInfo pipelineCreateInfo =
     {
@@ -193,7 +209,7 @@ void UVK::GraphicsPipeline::createGraphicsPipeline() noexcept
         .pViewportState = &viewportStateCreateInfo,
         .pRasterizationState = &rasterizationStateCreateInfo,
         .pMultisampleState = &multisampleStateCreateInfo,
-        .pDepthStencilState = nullptr,
+        .pDepthStencilState = &depthStencilStateCreateInfo,
         .pColorBlendState = &colourBlendingCreateInfo,
         .pDynamicState = nullptr,
         .layout = pipelineLayout,
@@ -223,29 +239,48 @@ void UVK::GraphicsPipeline::destroyGraphicsPipeline() noexcept
 
 void UVK::GraphicsPipeline::createRenderPass() noexcept
 {
-    const VkAttachmentDescription colourAttachment =
+    const VkAttachmentDescription descriptions[] =
     {
-        .format = swapchain->surfaceFormat.format,
-        .samples = VK_SAMPLE_COUNT_1_BIT,
-        .loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR,
-        .storeOp = VK_ATTACHMENT_STORE_OP_STORE,
-        .stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE,
-        .stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE,
-        .initialLayout = VK_IMAGE_LAYOUT_UNDEFINED,
-        .finalLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR
+        {
+            .format = swapchain->surfaceFormat.format,
+            .samples = VK_SAMPLE_COUNT_1_BIT,
+            .loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR,
+            .storeOp = VK_ATTACHMENT_STORE_OP_STORE,
+            .stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE,
+            .stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE,
+            .initialLayout = VK_IMAGE_LAYOUT_UNDEFINED,
+            .finalLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR
+        },
+        {
+            .format = depthBuffer->getFormat(),
+            .samples = VK_SAMPLE_COUNT_1_BIT,
+            .loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR,
+            .storeOp = VK_ATTACHMENT_STORE_OP_DONT_CARE,
+            .stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE,
+            .stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE,
+            .initialLayout = VK_IMAGE_LAYOUT_UNDEFINED,
+            .finalLayout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL
+        }
     };
 
-    constexpr VkAttachmentReference colourAttachmentReference =
+    constexpr VkAttachmentReference attachmentReferences[] =
     {
-        .attachment = 0,
-        .layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL
+        {
+            .attachment = 0,
+            .layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL
+        },
+        {
+            .attachment = 1,
+            .layout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL,
+        }
     };
 
     const VkSubpassDescription subpass =
     {
         .pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS,
         .colorAttachmentCount = 1,
-        .pColorAttachments = &colourAttachmentReference,
+        .pColorAttachments = &attachmentReferences[0],
+        .pDepthStencilAttachment = &attachmentReferences[1]
     };
 
     constexpr VkSubpassDependency subpassDependency[2] =
@@ -273,8 +308,8 @@ void UVK::GraphicsPipeline::createRenderPass() noexcept
     const VkRenderPassCreateInfo renderPassCreateInfo =
     {
         .sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO,
-        .attachmentCount = 1,
-        .pAttachments = &colourAttachment,
+        .attachmentCount = 2,
+        .pAttachments = descriptions,
         .subpassCount = 1,
         .pSubpasses = &subpass,
         .dependencyCount = 2,

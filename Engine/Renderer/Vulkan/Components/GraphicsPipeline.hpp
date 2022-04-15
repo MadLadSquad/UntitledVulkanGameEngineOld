@@ -4,12 +4,13 @@
 
 namespace UVK
 {
+    class VKDepthBuffer;
     class GraphicsPipeline
     {
     public:
         GraphicsPipeline() = default;
-        GraphicsPipeline(VKDevice& dev, Swapchain& swap, const VKDescriptors& desc) noexcept;
-        ~GraphicsPipeline() noexcept;
+        GraphicsPipeline(VKDevice& dev, Swapchain& swap, const VKDescriptors& desc, VKDepthBuffer& depth) noexcept;
+        ~GraphicsPipeline() = default;
 
         void createGraphicsPipeline() noexcept;
         void createRenderPass() noexcept;
@@ -25,6 +26,7 @@ namespace UVK
         Swapchain* swapchain = nullptr;
         const VKDescriptors* descriptors = nullptr;
 
+        VKDepthBuffer* depthBuffer = nullptr;
         VkPipelineLayout pipelineLayout{};
         VkRenderPass renderPass{};
         VkPipeline graphicsPipeline{};

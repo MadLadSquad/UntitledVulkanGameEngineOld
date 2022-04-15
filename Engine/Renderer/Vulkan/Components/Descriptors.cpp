@@ -36,12 +36,39 @@ void UVK::VKDescriptors::createDescriptorSetLayout() noexcept
         .pBindings = layoutBindings
     };
 
-    const auto result = vkCreateDescriptorSetLayout(device->getDevice(), &layoutCreateInfo, nullptr, &descriptorSetLayout);
+    auto result = vkCreateDescriptorSetLayout(device->getDevice(), &layoutCreateInfo, nullptr, &descriptorSetLayout);
     if (result != VK_SUCCESS)
     {
         logger.consoleLog("Couldn't create a Vulkan descriptor set layout! Error code: ", UVK_LOG_TYPE_ERROR, result);
         std::terminate();
     }
+
+    constexpr VkDescriptorSetLayoutBinding samplerLayoutBindings
+    {
+        .binding = 0,
+        .descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER,
+        .descriptorCount = 1,
+        .stageFlags = VK_SHADER_STAGE_FRAGMENT_BIT,
+        .pImmutableSamplers = nullptr
+    };
+
+    const VkDescriptorSetLayoutCreateInfo samplerDescriptorSetCreateInfo =
+    {
+        .sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO,
+        .bindingCount = 1,
+        .pBindings = &samplerLayoutBindings
+    };
+    result = vkCreateDescriptorSetLayout(device->getDevice(), &samplerDescriptorSetCreateInfo, nullptr, &samplerSetLayout);
+    if (result != VK_SUCCESS)
+    {
+        logger.consoleLog("Couldn't create the sampler descriptor set layout! Error code: ", UVK_LOG_TYPE_ERROR, result);
+        std::terminate();
+    }
+}
+
+const VkDescriptorSetLayout& UVK::VKDescriptors::samplerLayout() const noexcept
+{
+    return samplerSetLayout;
 }
 
 void UVK::VKDescriptors::destroyDescriptorSetLayout() noexcept
@@ -76,10 +103,31 @@ void UVK::VKDescriptors::createDescriptorPool() noexcept
         .pPoolSizes = poolSizes
     };
 
-    const auto result = vkCreateDescriptorPool(device->getDevice(), &poolCreateInfo, nullptr, &descriptorPool);
+    auto result = vkCreateDescriptorPool(device->getDevice(), &poolCreateInfo, nullptr, &descriptorPool);
     if (result != VK_SUCCESS)
     {
         logger.consoleLog("Couldn't create a Vulkan descriptor pool! Error code: ", UVK_LOG_TYPE_ERROR, result);
+        std::terminate();
+    }
+
+    constexpr VkDescriptorPoolSize poolSize =
+    {
+        .type = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, // TODO: Remove this combined image sampler since it's not a good practice
+        .descriptorCount = VK_MAX_OBJECTS, // TODO: Make it so textures can be changed for an object
+    };
+
+    // TODO: It's not good practice making it like this so yeah
+    const VkDescriptorPoolCreateInfo samplerPoolCreateInfo =
+    {
+        .sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO,
+        .maxSets = VK_MAX_OBJECTS,
+        .poolSizeCount = 1,
+        .pPoolSizes = &poolSize
+    };
+    result = vkCreateDescriptorPool(device->getDevice(), &samplerPoolCreateInfo, nullptr, &samplerDescriptorPool);
+    if (result != VK_SUCCESS)
+    {
+        logger.consoleLog("Couldn't create the texture sampler descriptor pool! Error code: ", UVK_LOG_TYPE_ERROR, result);
         std::terminate();
     }
 }
@@ -180,4 +228,55 @@ const std::vector<VkDescriptorSet> &UVK::VKDescriptors::getDescriptorSets() cons
 VkDescriptorPool& UVK::VKDescriptors::getPool() noexcept
 {
     return descriptorPool;
+}
+
+size_t UVK::VKDescriptors::createTextureDescriptor(VkImageView imageView, VkSampler& textureSampler)
+{
+    VkDescriptorSet descriptorSet = {};
+    const VkDescriptorSetAllocateInfo descriptorSetAllocateInfo =
+    {
+        .sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO,
+        .descriptorPool = samplerDescriptorPool,
+        .descriptorSetCount = 1,
+        .pSetLayouts = &samplerSetLayout,
+    };
+
+    auto result = vkAllocateDescriptorSets(device->getDevice(), &descriptorSetAllocateInfo, &descriptorSet);
+    if (result != VK_SUCCESS)
+    {
+        logger.consoleLog("Failed to allocate the sampler descriptor set! Error code: ", UVK_LOG_TYPE_ERROR, result);
+        std::terminate();
+    }
+
+    const VkDescriptorImageInfo imageInfo =
+    {
+        .sampler = textureSampler,
+        .imageView = imageView,
+        .imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
+    };
+
+    const VkWriteDescriptorSet descriptorSetWrite =
+    {
+        .sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET,
+        .dstSet = descriptorSet,
+        .dstBinding = 0,
+        .dstArrayElement = 0,
+        .descriptorCount = 1,
+        .descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER,
+        .pImageInfo = &imageInfo
+    };
+    vkUpdateDescriptorSets(device->getDevice(), 1, &descriptorSetWrite, 0, nullptr);
+    samplerDescriptorSets.push_back(descriptorSet);
+    return samplerDescriptorSets.size() - 1;
+}
+
+void UVK::VKDescriptors::destroyTextureDescriptor()
+{
+    vkDestroyDescriptorPool(device->getDevice(), samplerDescriptorPool, nullptr);
+    vkDestroyDescriptorSetLayout(device->getDevice(), samplerSetLayout, nullptr);
+}
+
+const std::vector<VkDescriptorSet>& UVK::VKDescriptors::getSamplerDescriptorSets() const noexcept
+{
+    return samplerDescriptorSets;
 }

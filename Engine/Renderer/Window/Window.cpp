@@ -58,15 +58,10 @@ void UVK::WindowInternal::framebufferSizeCallback(GLFWwindow* window, int width,
     windowInst->data().size.x = (float)width;
     windowInst->data().size.y = (float)height;
 
-    if (global.bUsesVulkan)
-    {
-
-        //windowInst->bVulkanResized = true;
-    }
-    else
-    {
-        glViewport(0, 0, width, height);
-    }
+    // We use this for checking if the window was resized
+    windowInst->bResized = true;
+    // We use this for checking if the window was resized last frame for optimization purposes
+    windowInst->bResizedLastFrame = true;
 }
 
 void UVK::WindowInternal::createWindow() noexcept
@@ -435,6 +430,11 @@ void UVK::WindowInternal::saveWindowSettings() const noexcept
     std::ofstream fileout(std::string(UVK_CONFIG_SETTINGS_PATH) + "Window.yaml");
     fileout << out.c_str();
     fileout.close();
+}
+
+bool& UVK::WindowInternal::resized() noexcept
+{
+    return bResized;
 }
 
 UVK::FVector2 UVK::Input::getLastMousePosition() noexcept

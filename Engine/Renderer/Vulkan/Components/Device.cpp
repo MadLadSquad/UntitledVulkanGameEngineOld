@@ -29,13 +29,23 @@ void UVK::VKDevice::createDevice(Swapchain& swapchain) noexcept
         }
     };
 
-    constexpr VkPhysicalDeviceFeatures deviceFeatures = {};
+    constexpr VkPhysicalDeviceFeatures deviceFeatures =
+    {
+        .samplerAnisotropy = VK_TRUE,
+    };
+    constexpr VkPhysicalDeviceCustomBorderColorFeaturesEXT physicalDeviceCustomBorderColorFeaturesExt
+    {
+        .sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_CUSTOM_BORDER_COLOR_FEATURES_EXT,
+        .customBorderColors = VK_TRUE,
+        .customBorderColorWithoutFormat = VK_FALSE,
+    };
 
     const uint32_t queueInfoCount = indices.graphicsFamily == indices.presentationFamily ? 1 : 2;
 
     const VkDeviceCreateInfo deviceCreateInfo =
     {
         .sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO,
+        .pNext = &physicalDeviceCustomBorderColorFeaturesExt,
         .queueCreateInfoCount = queueInfoCount,
         .pQueueCreateInfos = createInfos,
         .enabledExtensionCount = deviceExtensions.size(),
@@ -181,11 +191,6 @@ continue_to_other_device_in_list:;
 
     logger.consoleLog("Loaded Vulkan device ", UVK_LOG_TYPE_SUCCESS, deviceProperties.deviceName);
     return lastSavedIndex;
-}
-
-UVK::VKDevice::~VKDevice() noexcept
-{
-    destroyDevice();
 }
 
 VkQueue& UVK::VKDevice::getGraphicsQueue() noexcept
