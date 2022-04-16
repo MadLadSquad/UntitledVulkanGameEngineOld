@@ -27,7 +27,7 @@ namespace UVK
         void destroyDescriptorSets() noexcept;
         [[nodiscard]] const std::vector<VkDescriptorSet>& getDescriptorSets() const noexcept;
 
-        size_t createTextureDescriptor(VkImageView imageView, VkSampler& textureSampler);
+        size_t createTextureDescriptor(VkImageView imageView, const VkSampler& textureSampler) noexcept;
         void destroyTextureDescriptor();
         [[nodiscard]] const std::vector<VkDescriptorSet>& getSamplerDescriptorSets() const noexcept;
     private:

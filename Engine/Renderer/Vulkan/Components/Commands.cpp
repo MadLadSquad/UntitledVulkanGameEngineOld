@@ -5,6 +5,7 @@
 #include <GameFramework/Components/Components.hpp>
 #include <GameFramework/GameplayClasses/GameInstance.hpp>
 #include <GameFramework/GameplayClasses/Level/Level.hpp>
+#include <Renderer/Vulkan/VulkanRenderer.hpp>
 
 void UVK::Commands::createCommandPool() noexcept
 {
@@ -56,28 +57,34 @@ void UVK::Commands::destroyCommandBuffers() noexcept
 void UVK::Commands::draw() noexcept
 {
     static uint32_t currentFrame = 0;
-    static VP vp
-    {
-        .view = glm::lookAt(FVector(0.0f, 0.0f, -5.0f), FVector(0.0f, 0.0f, 0.0f), FVector(0.0f, 1.0f, 0.0f)),
-        .projection = glm::perspective(glm::radians(45.0f), (float)swapchain->getExtent().width / (float)swapchain->getExtent().height, 0.1f, 100.0f),
-    };
-
     uint32_t imageIndex;
 
     vkWaitForFences(device->getDevice(), 1, &fences[currentFrame], VK_TRUE, std::numeric_limits<uint64_t>::max());
+
+    auto result = vkAcquireNextImageKHR(device->getDevice(), swapchain->getSwapchain(), std::numeric_limits<uint64_t>::max(), imageAvailable[currentFrame], VK_NULL_HANDLE, &imageIndex);
+    if (result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR && result != VK_ERROR_OUT_OF_DATE_KHR)
+    {
+        logger.consoleLog("Couldn't acquire next image from the swapchain! Error code:", UVK_LOG_TYPE_ERROR, result);
+        std::terminate();
+    }
+    else if (result == VK_ERROR_OUT_OF_DATE_KHR)
+    {
+        (*global.window.getRenderer())->recreate();
+        return;
+    }
     vkResetFences(device->getDevice(), 1, &fences[currentFrame]);
-
-    vkAcquireNextImageKHR(device->getDevice(), swapchain->getSwapchain(), std::numeric_limits<uint64_t>::max(), imageAvailable[currentFrame], VK_NULL_HANDLE, &imageIndex);
-
     recordCommands(imageIndex);
 
-    //auto* pawn = Level::getPawn(GameInstance::currentLevel());
-//
-    //VP vp =
-    //{
-    //    .view = pawn->camera.calculateViewMatrixRH(),
-    //    .projection = pawn->camera.projection().data()
-    //};
+    auto& camera = UVK::Level::getPawn(global.currentLevel)->camera;
+    VP vp =
+    {
+        .view = glm::lookAt(FVector(0.0f, 0.0f, -5.0f), FVector(0.0f, 0.0f, 0.0f), FVector(0.0f, 1.0f, 0.0f )),
+        .projection = glm::perspective(glm::radians(90.0f), Window::windowSize().x / Window::windowSize().y, 0.1f, 100.0f)
+        //.view = camera.calculateViewMatrix(),
+        //.projection = camera.projection().data()
+    };
+    vp.projection[1][1] *= -1;
+
     resources->updateUniformBuffers(vp, imageIndex);
     constexpr VkPipelineStageFlags waitStages[] =
     {
@@ -94,7 +101,7 @@ void UVK::Commands::draw() noexcept
         .signalSemaphoreCount = 1,
         .pSignalSemaphores = &renderFinished[currentFrame]
     };
-    auto result = vkQueueSubmit(device->getGraphicsQueue(), 1, &submitInfo, fences[currentFrame]);
+    result = vkQueueSubmit(device->getGraphicsQueue(), 1, &submitInfo, fences[currentFrame]);
     if (result != VK_SUCCESS)
     {
         logger.consoleLog("Couldn't submit command buffer to the queue! Error code: ", UVK_LOG_TYPE_ERROR, result);
@@ -110,11 +117,13 @@ void UVK::Commands::draw() noexcept
         .pImageIndices = &imageIndex
     };
     result = vkQueuePresentKHR(device->getPresentationQueue(), &presentInfo);
-    if (result != VK_SUCCESS)
+    if (result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR && result != VK_ERROR_OUT_OF_DATE_KHR)
     {
         logger.consoleLog("Failed to present the image! Error code: ", UVK_LOG_TYPE_ERROR, result);
         std::terminate();
     }
+    else if (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR || global.window.resized())
+        (*global.window.getRenderer())->recreate();
     currentFrame = (currentFrame + 1) % VK_MAX_CONCURRENT_IMAGE_DRAW;
 }
 
@@ -162,6 +171,24 @@ void UVK::Commands::recordCommands(uint32_t currentImage) noexcept
     }
 
     vkCmdBeginRenderPass(a, &renderPassBeginInfo, VK_SUBPASS_CONTENTS_INLINE);
+
+    const VkViewport viewport =
+    {
+        .x = 0.0f,
+        .y = 0.0f,
+        .width = static_cast<float>(swapchain->getExtent().width),
+        .height = static_cast<float>(swapchain->getExtent().height),
+        .minDepth = 0.0f,
+        .maxDepth = 1.0f,
+    };
+
+    const VkRect2D scissor =
+    {
+        .offset = { 0, 0 },
+        .extent = swapchain->getExtent()
+    };
+    vkCmdSetViewport(commandBuffers[currentImage], 0, 1, &viewport);
+    vkCmdSetScissor(commandBuffers[currentImage], 0, 1, &scissor);
 
     vkCmdBindPipeline(a, VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline->getPipeline());
 

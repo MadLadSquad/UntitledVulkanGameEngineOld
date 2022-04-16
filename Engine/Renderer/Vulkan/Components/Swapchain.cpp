@@ -64,10 +64,10 @@ bool UVK::Swapchain::getSwapchainDetails(VkPhysicalDevice& dev, const QueueFamil
     return bReturn;
 }
 
-void UVK::Swapchain::createSwapchain() noexcept
+void UVK::Swapchain::createSwapchain(VkSwapchainKHR oldswapchain) noexcept
 {
     // TODO: check this function for resize
-    //getSwapchainDetails(device->physicalDevice);
+    getSwapchainDetails(device->physicalDevice, device->getIndices());
     determineSurfaceFormats();
     determinePresentationMode();
     determineExtent();
@@ -111,7 +111,7 @@ void UVK::Swapchain::createSwapchain() noexcept
         .compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR,
         .presentMode = presentationMode,
         .clipped = VK_TRUE,
-        .oldSwapchain = VK_NULL_HANDLE // TODO: Check this for window resizing
+        .oldSwapchain = oldswapchain
     };
 
     const auto result = vkCreateSwapchainKHR(device->device, &swapchainCreateInfo, nullptr, &swapchain);
@@ -134,11 +134,12 @@ void UVK::Swapchain::createSwapchain() noexcept
     }
 }
 
-void UVK::Swapchain::destroySwapchain() noexcept
+void UVK::Swapchain::destroySwapchain(bool bNoDestroy) noexcept
 {
     for (const auto& a : images)
         vkDestroyImageView(device->device, a.imageView, nullptr);
-    vkDestroySwapchainKHR(device->device, swapchain, nullptr);
+    if (!bNoDestroy)
+        vkDestroySwapchainKHR(device->device, swapchain, nullptr);
     images.clear();
 }
 

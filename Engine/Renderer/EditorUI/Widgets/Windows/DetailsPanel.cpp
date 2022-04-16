@@ -373,7 +373,7 @@ bool DetailsPanel::display(UVK::Actor& ent, UVK::Level* lvl, bool& bShow, const 
                     UVK::Level::getPawn(lvl)->camera.projection().fov() = FOV;
                     UVK::Level::getPawn(lvl)->camera.projection().planes() = planes;
                     ar = aspect.x / aspect.y;
-                    UVK::Level::getPawn(lvl)->camera.projection().recalculateRH();
+                    UVK::Level::getPawn(lvl)->camera.projection().recalculate();
                 }
                 UVK::Level::getPawn(lvl)->camera.recalculate();
             }

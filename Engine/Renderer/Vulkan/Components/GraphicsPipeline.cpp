@@ -95,33 +95,33 @@ void UVK::GraphicsPipeline::createGraphicsPipeline() noexcept
         .primitiveRestartEnable = VK_FALSE,
     };
 
-    const VkViewport viewport =
-    {
-        .x = 0.0f,
-        .y = 0.0f,
-        .width = static_cast<float>(swapchain->extent.width),
-        .height = static_cast<float>(swapchain->extent.height),
-        .minDepth = 0.0f,
-        .maxDepth = 1.0f
-    };
-
-    const VkRect2D scissor =
-    {
-        .offset =
-        {
-            0,
-            0
-        },
-        .extent = swapchain->extent
-    };
+    //const VkViewport viewport =
+    //{
+    //    .x = 0.0f,
+    //    .y = 0.0f,
+    //    .width = static_cast<float>(swapchain->extent.width),
+    //    .height = static_cast<float>(swapchain->extent.height),
+    //    .minDepth = 0.0f,
+    //    .maxDepth = 1.0f
+    //};
+//
+    //const VkRect2D scissor =
+    //{
+    //    .offset =
+    //    {
+    //        0,
+    //        0
+    //    },
+    //    .extent = swapchain->extent
+    //};
 
     const VkPipelineViewportStateCreateInfo viewportStateCreateInfo =
     {
         .sType = VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO,
         .viewportCount = 1,
-        .pViewports = &viewport,
+        .pViewports = nullptr,
         .scissorCount = 1,
-        .pScissors = &scissor
+        .pScissors = nullptr
     };
 
     // TODO: Add dynamic state here
@@ -198,6 +198,15 @@ void UVK::GraphicsPipeline::createGraphicsPipeline() noexcept
         .stencilTestEnable = VK_FALSE,
     };
 
+    constexpr VkDynamicState dynamicStateEnables[] = { VK_DYNAMIC_STATE_VIEWPORT, VK_DYNAMIC_STATE_SCISSOR };
+
+    const VkPipelineDynamicStateCreateInfo dynamicStateCreateInfo =
+    {
+        .sType = VK_STRUCTURE_TYPE_PIPELINE_DYNAMIC_STATE_CREATE_INFO,
+        .dynamicStateCount = 2,
+        .pDynamicStates = dynamicStateEnables,
+    };
+
     const VkGraphicsPipelineCreateInfo pipelineCreateInfo =
     {
         .sType = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO,
@@ -211,7 +220,7 @@ void UVK::GraphicsPipeline::createGraphicsPipeline() noexcept
         .pMultisampleState = &multisampleStateCreateInfo,
         .pDepthStencilState = &depthStencilStateCreateInfo,
         .pColorBlendState = &colourBlendingCreateInfo,
-        .pDynamicState = nullptr,
+        .pDynamicState = &dynamicStateCreateInfo,
         .layout = pipelineLayout,
         .renderPass = renderPass,
         .subpass = 0,

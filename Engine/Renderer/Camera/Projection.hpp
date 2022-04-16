@@ -17,8 +17,7 @@ namespace UVK
         // x - near, y - far
         FVector2& planes() noexcept;
 
-        void recalculateLH() noexcept;
-        void recalculateRH() noexcept;
+        void recalculate() noexcept;
     private:
         float FOV = 90;
         float aspectRatioI{};

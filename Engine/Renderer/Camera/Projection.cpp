@@ -29,12 +29,7 @@ UVK::FVector2& UVK::Projection::planes() noexcept
     return plane;
 }
 
-void UVK::Projection::recalculateLH() noexcept
+void UVK::Projection::recalculate() noexcept
 {
-    projection = glm::perspectiveLH(glm::radians(FOV), aspectRatioI, plane.x, plane.y);
-}
-
-void UVK::Projection::recalculateRH() noexcept
-{
-    projection = glm::perspectiveRH(glm::radians(FOV), aspectRatioI, plane.x, plane.y);
+    projection = glm::perspective(glm::radians(FOV), aspectRatioI, plane.x, plane.y);
 }

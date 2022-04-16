@@ -230,7 +230,7 @@ VkDescriptorPool& UVK::VKDescriptors::getPool() noexcept
     return descriptorPool;
 }
 
-size_t UVK::VKDescriptors::createTextureDescriptor(VkImageView imageView, VkSampler& textureSampler)
+size_t UVK::VKDescriptors::createTextureDescriptor(VkImageView imageView, const VkSampler& textureSampler) noexcept
 {
     VkDescriptorSet descriptorSet = {};
     const VkDescriptorSetAllocateInfo descriptorSetAllocateInfo =

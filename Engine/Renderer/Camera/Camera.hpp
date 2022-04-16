@@ -32,8 +32,7 @@ namespace UVK
          */
         void init(const CoreComponent& coreComponent, FVector translation, FVector rotation, FVector up) noexcept;
 
-        [[nodiscard]] glm::mat4 calculateViewMatrixRH() const noexcept;
-        [[nodiscard]] glm::mat4 calculateViewMatrixLH() const noexcept;
+        [[nodiscard]] glm::mat4 calculateViewMatrix() const noexcept;
 
         void recalculate() noexcept;
 
@@ -50,7 +49,7 @@ namespace UVK
          * @param fov Describes the horizontal field of view of the perspective projection
          * @param aspectRatio The aspect ratio of the screen/viewport for the perspective projection
          */
-        static Camera makeCamera(const CoreComponent& coreComponent, FVector translation = FVector(0.0f, 0.0f, 0.0f), FVector rotation = FVector(0.0f, 0.0f, 0.0f), FVector up = FVector(0.0f, 0.0f, 0.0f), FVector2 planes = FVector2(0.1f, 100.0f), float fov = 90.0f, float aspectRatio = Window::windowSize().x / Window::windowSize().y) noexcept;
+        static Camera makeCamera(const CoreComponent& coreComponent, FVector translation = FVector(0.0f, 0.0f, 0.0f), FVector rotation = FVector(0.0f, 0.0f, 0.0f), FVector up = FVector(0.0f, 1.0f, 0.0f), FVector2 planes = FVector2(0.1f, 100.0f), float fov = 90.0f, float aspectRatio = Window::windowSize().x / Window::windowSize().y) noexcept;
 
         FVector front{};
         FVector up{};

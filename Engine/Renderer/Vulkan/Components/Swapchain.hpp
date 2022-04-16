@@ -17,8 +17,8 @@ namespace UVK
         Swapchain(VKInstance& inst, VKDevice& dev) noexcept;
         ~Swapchain() = default;
 
-        void createSwapchain() noexcept;
-        void destroySwapchain() noexcept;
+        void createSwapchain(VkSwapchainKHR oldswapchain = VK_NULL_HANDLE) noexcept;
+        void destroySwapchain(bool bNoDestroy = false) noexcept;
 
         void createSurface() noexcept;
         void destroySurface() noexcept;

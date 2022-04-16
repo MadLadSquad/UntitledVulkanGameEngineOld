@@ -19,33 +19,34 @@ void UVK::VulkanRenderer::run() noexcept
     USC::checkForCompile();
 
     global.window.createWindow();
+    *global.window.getRenderer() = &renderer;
     renderer.create();
 
-    VP mvp =
-    {
-        .view = glm::lookAt(FVector(0.0f, 0.0f, -5.0f), FVector(0.0f, 0.0f, 0.0f), FVector(0.0f, 1.0f, 0.0f)),
-        .projection = glm::perspective(glm::radians(45.0f), (float)renderer.swapchain.getExtent().width / (float)renderer.swapchain.getExtent().height, 0.1f, 100.0f),
-    };
+    //VP mvp =
+    //{
+    //    .view = glm::lookAt(FVector(0.0f, 0.0f, -5.0f), FVector(0.0f, 0.0f, 0.0f), FVector(0.0f, 1.0f, 0.0f)),
+    //    .projection = glm::perspective(glm::radians(45.0f), (float)renderer.swapchain.getExtent().width / (float)renderer.swapchain.getExtent().height, 0.1f, 100.0f),
+    //};
 
-    std::vector<VKVertex> vertices =
-    {
-        {{-1.0f, -1.0f, 0.0f }, {1.0f, 0.0f, 0.0f, 1.0f}, { 1.0f, 1.0f }},
-        {{1.0f, 1.0f, 0.0f }, {0.0f, 1.0f, 0.0f, 1.0f}, { 1.0f, 0.0f }},
-        {{-1.0f, 1.0f, 0.0f }, {1.0f, 1.0f, 0.0f, 1.0f}, { 0.0f, 0.0f }},
-        {{1.0f, -1.0f, 0.0f }, {0.0f, 0.0f, 1.0f, 1.0f}, { 0.0f, 1.0f }},
-    };
-    std::vector<VKVertex> vertices2 =
-    {
-        {{-1.0f, -1.0f, 0.0f }, {1.0f, 0.0f, 0.0f, 1.0f}, { 1.0f, 1.0f }},
-        {{1.0f, 1.0f, 0.0f }, {0.0f, 1.0f, 0.0f, 1.0f}, { 1.0f, 0.0f }},
-        {{-1.0f, 1.0f, 0.0f }, {1.0f, 1.0f, 0.0f, 1.0f}, { 0.0f, 0.0f }},
-        {{1.0f, -1.0f, 0.0f }, {0.0f, 0.0f, 1.0f, 1.0f}, { 0.0f, 1.0f }},
-    };
-    std::vector<uint32_t> indices =
-    {
-        0, 1, 2,
-        0, 3, 1
-    };
+    //std::vector<VKVertex> vertices =
+    //{
+    //    {{-1.0f, -1.0f, 0.0f }, {1.0f, 0.0f, 0.0f, 1.0f}, { 1.0f, 1.0f }},
+    //    {{1.0f, 1.0f, 0.0f }, {0.0f, 1.0f, 0.0f, 1.0f}, { 1.0f, 0.0f }},
+    //    {{-1.0f, 1.0f, 0.0f }, {1.0f, 1.0f, 0.0f, 1.0f}, { 0.0f, 0.0f }},
+    //    {{1.0f, -1.0f, 0.0f }, {0.0f, 0.0f, 1.0f, 1.0f}, { 0.0f, 1.0f }},
+    //};
+    //std::vector<VKVertex> vertices2 =
+    //{
+    //    {{-1.0f, -1.0f, 0.0f }, {1.0f, 0.0f, 0.0f, 1.0f}, { 1.0f, 1.0f }},
+    //    {{1.0f, 1.0f, 0.0f }, {0.0f, 1.0f, 0.0f, 1.0f}, { 1.0f, 0.0f }},
+    //    {{-1.0f, 1.0f, 0.0f }, {1.0f, 1.0f, 0.0f, 1.0f}, { 0.0f, 0.0f }},
+    //    {{1.0f, -1.0f, 0.0f }, {0.0f, 0.0f, 1.0f, 1.0f}, { 0.0f, 1.0f }},
+    //};
+    //std::vector<uint32_t> indices =
+    //{
+    //    0, 1, 2,
+    //    0, 3, 1
+    //};
 
     Actor actor("Maikati", 10, "test");
     //Actor actor2("Maikati2", 11, "test2");
@@ -58,11 +59,11 @@ void UVK::VulkanRenderer::run() noexcept
     //auto& mcomp2 = actor2.add<MeshComponentRaw>();
     //mcomp2.create(vertices2, indices, device, swapchain.getCommands(), descriptors, "../Content/Engine/brick.jpg");
 
+    beginEvents();
+
     double angle = 0.0f;
     double deltaTime;
     double lastTime = 0.0f;
-
-    beginEvents();
 
     while (!glfwWindowShouldClose(global.window.getWindow()))
     {
@@ -73,8 +74,8 @@ void UVK::VulkanRenderer::run() noexcept
         lastTime = now;
 
         angle += ((angle + (1.0f * deltaTime)) >= 360.0f) ? -360.0f : 1.0f * deltaTime;
-        mcomp.translation = FVector(0.0f, 0.75f, 0.0f);
-        mcomp.rotation = FVector(0.0f, 0.0f, glm::radians(-180.0f));
+        mcomp.translation = FVector(0.0f, -0.75f, 0.0f);
+        mcomp.rotation = FVector(0.0f, 0.0f, 0.0f);
         mcomp.scale = FVector(0.025f, 0.025f, 0.025f);
 
         updateEvents(deltaTime);
@@ -137,14 +138,9 @@ void UVK::VulkanRenderer::beginEvents() noexcept
     {
 #ifndef PRODUCTION
         if (global.currentLevel->gameMode == nullptr)
-        {
             global.currentLevel->gameMode = GameMode::makeGameMode<EditorGameMode>();
-        }
-
         if (UVK::Level::getPawn(UVK::global.currentLevel) == nullptr)
-        {
             global.currentLevel->gameMode->playerController->pawn = Pawn::makePawn<EditorPawn>();
-        }
 #endif
         //global.ui.init();
         global.instance->beginPlay();
@@ -230,7 +226,33 @@ void UVK::InternalRendererComponents::destroy() noexcept
 
 void UVK::InternalRendererComponents::recreate() noexcept
 {
+    int width = 0;
+    int height = 0;
+    glfwGetFramebufferSize(global.window.getWindow(), &width, &height);
 
+    while (width == 0 && height == 0)
+    {
+        glfwGetFramebufferSize(global.window.getWindow(), &width, &height);
+        glfwWaitEvents();
+    }
+    global.window.resized() = false;
+    vkDeviceWaitIdle(device.getDevice());
+    commands.destroyCommandBuffers();
+    commands.destroyCommandPool();
+    swapchain.destroyFramebuffers();
+    pipeline.destroyGraphicsPipeline();
+    depthBuffer.destroyDepthBufferImage(device);
+    swapchain.destroySwapchain(true);
+    //swapchain.destroySurface();
+
+    //swapchain.createSurface();
+    swapchain.createSwapchain(swapchain.getSwapchain());
+    depthBuffer.createDepthBufferImage(swapchain, device);
+    pipeline.createRenderPass();
+    pipeline.createGraphicsPipeline();
+    swapchain.createFramebuffers(pipeline);
+    commands.createCommandPool();
+    commands.createCommandBuffers(swapchain.getFramebuffers().size());
 }
 
 

@@ -99,7 +99,7 @@ void EditorViewport::display(UVK::GLFrameBuffer& fb, int& viewportWidth, int& vi
         UVK::Math::rotate(mat, core.rotation);
         UVK::Math::scale(mat, core.scale);
 
-        ImGuizmo::Manipulate(glm::value_ptr(camera.calculateViewMatrixRH()), glm::value_ptr(projection), (ImGuizmo::OPERATION)operationType, ImGuizmo::LOCAL, glm::value_ptr(mat), nullptr, snap ? snapValues : nullptr);
+        ImGuizmo::Manipulate(glm::value_ptr(camera.calculateViewMatrix()), glm::value_ptr(projection), (ImGuizmo::OPERATION)operationType, ImGuizmo::LOCAL, glm::value_ptr(mat), nullptr, snap ? snapValues : nullptr);
 
         static bool bPreviouslyUsing = false;
 

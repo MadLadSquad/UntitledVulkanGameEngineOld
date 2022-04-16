@@ -146,7 +146,7 @@ void UVK::VKBuffer::copyImageBuffer(VkQueue transferQueue, VkCommandPool transfe
     endCommandBuffer(transferQueue, transferCommandPool, transferCommandBuffer, *device);
 }
 
-void UVK::VKBuffer::transitionImageLayout(VkQueue& queue, VkCommandPool& commandPool, VkImage& image, VkImageLayout old, VkImageLayout newl, uint32_t mipLevels) noexcept
+void UVK::VKBuffer::transitionImageLayout(const VkQueue& queue, VkCommandPool& commandPool, const VkImage& image, VkImageLayout old, VkImageLayout newl, uint32_t mipLevels) noexcept
 {
     auto commandBuffer = beginCommandBuffer(commandPool, *device);
 

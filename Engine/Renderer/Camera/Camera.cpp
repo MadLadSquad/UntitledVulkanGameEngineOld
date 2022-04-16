@@ -6,7 +6,7 @@
 
 UVK::Camera::Camera(const CoreComponent& coreComponent, FVector position, FVector rot, FVector up) noexcept
 {
-    init(coreComponent, position, up, rot);
+    init(coreComponent, position, rot, up);
 }
 
 void UVK::Camera::init(const CoreComponent& coreComponent, FVector translation, FVector rotation, FVector upp) noexcept
@@ -16,18 +16,14 @@ void UVK::Camera::init(const CoreComponent& coreComponent, FVector translation, 
     translationOffset = translation;
     worldUp = upp;
     rotationOffset = rotation;
-    front = FVector(0.0f, 0.0f, -1.0f);
-    recalculate();
+    front = FVector(0.0f, 0.0f, 0.0f);
+    //recalculate();
 }
 
-glm::mat4 UVK::Camera::calculateViewMatrixRH() const noexcept
+glm::mat4 UVK::Camera::calculateViewMatrix() const noexcept
 {
-    return glm::lookAtRH(core->translation + translationOffset, core->translation + translationOffset + front, up);
-}
-
-glm::mat4 UVK::Camera::calculateViewMatrixLH() const noexcept
-{
-    return glm::lookAtLH(core->translation + translationOffset, core->translation + translationOffset + front, up);
+    return glm::lookAt(core->translation + translationOffset, FVector(0.0f, 0.0f, 0.0f), FVector(0.0f, 1.0f, 0.0f));
+    //return glm::lookAt(core->translation + translationOffset, core->translation + translationOffset + front, up);
 }
 
 void UVK::Camera::recalculate() noexcept
@@ -53,11 +49,12 @@ UVK::Projection& UVK::Camera::projection() noexcept
 
 UVK::Camera UVK::Camera::makeCamera(const CoreComponent& coreComponent, FVector position, FVector rotation, FVector up, FVector2 planes, float fov, float aspectRatio) noexcept
 {
-    auto camera = Camera(coreComponent, position, up, rotation);
+    auto camera = Camera(coreComponent, position, rotation, up);
     camera.projection().planes() = planes;
     camera.projection().fov() = fov;
-    camera.projection().aspectRatio() = (float)aspectRatio;
-    camera.projection().recalculateRH();
+    camera.projection().aspectRatio() = aspectRatio;
+    camera.projection().recalculate();
+    //camera.recalculate();
 
     return camera;
 }

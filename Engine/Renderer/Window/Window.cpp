@@ -4,6 +4,7 @@
 #include <yaml.h>
 #include <Engine/Core/Core/Global.hpp>
 #include <stb/stb_image.h>
+#include <Renderer/Vulkan/VulkanRenderer.hpp>
 
 double UVK::WindowInternal::getYMousePositionChange() noexcept
 {
@@ -60,8 +61,6 @@ void UVK::WindowInternal::framebufferSizeCallback(GLFWwindow* window, int width,
 
     // We use this for checking if the window was resized
     windowInst->bResized = true;
-    // We use this for checking if the window was resized last frame for optimization purposes
-    windowInst->bResizedLastFrame = true;
 }
 
 void UVK::WindowInternal::createWindow() noexcept
@@ -435,6 +434,11 @@ void UVK::WindowInternal::saveWindowSettings() const noexcept
 bool& UVK::WindowInternal::resized() noexcept
 {
     return bResized;
+}
+
+UVK::InternalRendererComponents** UVK::WindowInternal::getRenderer() noexcept
+{
+    return &renderer;
 }
 
 UVK::FVector2 UVK::Input::getLastMousePosition() noexcept

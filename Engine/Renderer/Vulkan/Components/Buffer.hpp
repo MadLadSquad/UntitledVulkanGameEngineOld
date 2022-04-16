@@ -15,7 +15,7 @@ namespace UVK
        static VkCommandBuffer beginCommandBuffer(VkCommandPool transferCommandPool, VKDevice& device) noexcept;
        static void endCommandBuffer(VkQueue transferQueue, VkCommandPool& transferCommandPool, VkCommandBuffer& transferCommandBuffer, VKDevice& device) noexcept;
 
-        void transitionImageLayout(VkQueue& queue, VkCommandPool& commandPool, VkImage& image, VkImageLayout old, VkImageLayout newl, uint32_t mipLevels = 1) noexcept;
+        void transitionImageLayout(const VkQueue& queue, VkCommandPool& commandPool, const VkImage& image, VkImageLayout old, VkImageLayout newl, uint32_t mipLevels = 1) noexcept;
 
         VkDeviceMemory& getMemory() noexcept;
         VkBuffer& getBuffer() noexcept;

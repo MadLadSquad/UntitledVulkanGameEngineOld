@@ -7,7 +7,7 @@ namespace UVK
     class VKDepthBuffer
     {
     public:
-        void createDepthBufferImage(Swapchain& swapchain, VKDevice& device) noexcept;
+        void createDepthBufferImage(const Swapchain& swapchain, VKDevice& device) noexcept;
         void destroyDepthBufferImage(VKDevice& device) noexcept;
 
         VkFormat& getFormat() noexcept;

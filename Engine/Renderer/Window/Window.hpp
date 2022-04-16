@@ -5,6 +5,7 @@ struct GLFWwindow;
 
 namespace UVK
 {
+    struct InternalRendererComponents;
     /**
      * @brief The input action struct
      */
@@ -53,6 +54,7 @@ namespace UVK
          */
         [[nodiscard]] GLFWwindow* getWindow() const noexcept;
         bool& resized() noexcept;
+        InternalRendererComponents** getRenderer() noexcept;
     private:
         // Returns the frame-buffer width which in most cases is equal to the Window's internal rendering surface
         // width
@@ -145,9 +147,10 @@ namespace UVK
         // Internal GLFW window instance
         GLFWwindow* windowMain = nullptr;
 
+        InternalRendererComponents* renderer = nullptr;
+
         bool bFirstMove = true;
         bool bResized = false;
-        bool bResizedLastFrame = false;
 
         double posX = 0;
         double posY = 0;

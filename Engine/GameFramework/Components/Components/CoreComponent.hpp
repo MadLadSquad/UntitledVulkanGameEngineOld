@@ -12,7 +12,7 @@ namespace UVK
     struct CoreComponent
     {
         std::string name;
-        uint64_t id;
+        uint64_t id = 0;
         std::string devName;
 
         FVector translation = { 0.0f, 0.0f, 0.0f };

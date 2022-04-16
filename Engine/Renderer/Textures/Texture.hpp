@@ -55,7 +55,7 @@ namespace UVK
         Texture() = default;
         // TODO: Remove
         explicit Texture(const std::string& loc);
-        Texture(const std::string& loc, VKDevice& dev, Commands& cmd, VKDescriptors& desc, TextureSettings sett = {});
+        Texture(const std::string& loc, VKDevice& dev, Commands& cmd, VKDescriptors& desc, const TextureSettings& sett = {}) noexcept;
         void load() noexcept;
 
         void destroy() noexcept;
