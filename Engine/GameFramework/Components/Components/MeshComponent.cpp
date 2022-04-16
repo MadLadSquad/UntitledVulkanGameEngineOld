@@ -129,7 +129,7 @@ void UVK::MeshComponent::loadMesh(aiMesh* mesh, const aiScene* scene) noexcept
             vertices[i].uv = { mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y };
         else
             vertices[i].uv = { 0.0f, 0.0f };
-        vertices[i].colour = { 1.0f, 1.0f, 1.0f, 1.0f };
+        vertices[i].colour = hue;
     }
     for (size_t i = 0; i < mesh->mNumFaces; i++)
     {

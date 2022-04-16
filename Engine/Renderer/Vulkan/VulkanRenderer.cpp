@@ -52,7 +52,9 @@ void UVK::VulkanRenderer::run() noexcept
     //Actor actor2("Maikati2", 11, "test2");
 
     auto& mcomp = actor.add<MeshComponent>();
+    mcomp.hue = { 1.0f, 1.0f, 1.0f, 1.0f };
     mcomp.create("../Content/Engine/teapot.obj", renderer.device, renderer.commands, renderer.descriptors);
+
     //auto& mcomp = actor.add<MeshComponentRaw>();
     //mcomp.create(vertices, indices, device, swapchain.getCommands(), descriptors, "../Content/Engine/brick.jpg");
 //
@@ -62,11 +64,11 @@ void UVK::VulkanRenderer::run() noexcept
     beginEvents();
 
     double angle = 0.0f;
-    double deltaTime;
     double lastTime = 0.0f;
 
     while (!glfwWindowShouldClose(global.window.getWindow()))
     {
+        static double deltaTime = 0.0f;
         glfwPollEvents();
 
         double now = glfwGetTime();

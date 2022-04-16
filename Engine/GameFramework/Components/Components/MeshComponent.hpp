@@ -25,6 +25,8 @@ namespace UVK
         FVector translation = FVector(0.0f, 0.0f, 0.0f);
         FVector rotation = FVector(0.0f, 0.0f, 0.0f);
         FVector scale = FVector(1.0f, 1.0f, 1.0f);
+
+        FVector4 hue = FVector4(1.0f, 1.0f, 1.0f, 1.0f);
     private:
         void loadNode(aiNode* node, const aiScene* scene) noexcept;
         void loadMesh(aiMesh* mesh, const aiScene* scene) noexcept;

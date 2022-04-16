@@ -75,7 +75,7 @@ void UVK::Commands::draw() noexcept
     vkResetFences(device->getDevice(), 1, &fences[currentFrame]);
     recordCommands(imageIndex);
 
-    auto& camera = UVK::Level::getPawn(global.currentLevel)->camera;
+    const auto& camera = UVK::Level::getPawn(global.currentLevel)->camera;
     VP vp =
     {
         .view = glm::lookAt(FVector(0.0f, 0.0f, -5.0f), FVector(0.0f, 0.0f, 0.0f), FVector(0.0f, 1.0f, 0.0f )),
