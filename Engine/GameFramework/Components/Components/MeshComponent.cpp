@@ -1,9 +1,6 @@
 #include "MeshComponent.hpp"
 #include <glm/gtx/quaternion.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include <assimp/Importer.hpp>
-#include <assimp/scene.h>
-#include <assimp/postprocess.h>
 #include <Renderer/Textures/Texture.hpp>
 
 void UVK::MeshComponent::create(UVK::String location, VKDevice &dev, Commands& cmd, VKDescriptors& desc) noexcept

@@ -6,10 +6,10 @@
 #include <Core/Defines.hpp>
 #include <Core/Types.hpp>
 #include <Renderer/Textures/Texture.hpp>
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
 
-class aiNode;
-class aiScene;
-class aiMesh;
 namespace UVK
 {
     /**
