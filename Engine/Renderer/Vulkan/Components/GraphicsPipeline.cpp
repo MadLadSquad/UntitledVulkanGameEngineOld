@@ -1,6 +1,7 @@
 #include "GraphicsPipeline.hpp"
 #include "Swapchain.hpp"
 #include "Depth.hpp"
+#include <Renderer/Renderer.hpp>
 
 UVK::GraphicsPipeline::GraphicsPipeline(UVK::VKDevice& dev, Swapchain& swap, const VKDescriptors& desc, VKDepthBuffer& depth) noexcept
 {
@@ -95,26 +96,6 @@ void UVK::GraphicsPipeline::createGraphicsPipeline() noexcept
         .primitiveRestartEnable = VK_FALSE,
     };
 
-    //const VkViewport viewport =
-    //{
-    //    .x = 0.0f,
-    //    .y = 0.0f,
-    //    .width = static_cast<float>(swapchain->extent.width),
-    //    .height = static_cast<float>(swapchain->extent.height),
-    //    .minDepth = 0.0f,
-    //    .maxDepth = 1.0f
-    //};
-//
-    //const VkRect2D scissor =
-    //{
-    //    .offset =
-    //    {
-    //        0,
-    //        0
-    //    },
-    //    .extent = swapchain->extent
-    //};
-
     const VkPipelineViewportStateCreateInfo viewportStateCreateInfo =
     {
         .sType = VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO,
@@ -124,7 +105,6 @@ void UVK::GraphicsPipeline::createGraphicsPipeline() noexcept
         .pScissors = nullptr
     };
 
-    // TODO: Add dynamic state here
     // Starting rasterizer here
     constexpr VkPipelineRasterizationStateCreateInfo rasterizationStateCreateInfo =
     {
@@ -138,12 +118,16 @@ void UVK::GraphicsPipeline::createGraphicsPipeline() noexcept
         .lineWidth = 1.0f,
     };
 
-    // TODO: Visit this later for multisampling
-    constexpr VkPipelineMultisampleStateCreateInfo multisampleStateCreateInfo =
+    VkBool32 sampleRateShading = Renderer::sampleRateShading() ? VK_TRUE : VK_FALSE;
+    Renderer::sampleRateShadingMult() = Renderer::sampleRateShadingMult() > 1.0f ? 1.0f : Renderer::sampleRateShadingMult() < 0.0f ? 0.0f : Renderer::sampleRateShadingMult();
+
+
+    const VkPipelineMultisampleStateCreateInfo multisampleStateCreateInfo =
     {
         .sType = VK_STRUCTURE_TYPE_PIPELINE_MULTISAMPLE_STATE_CREATE_INFO,
-        .rasterizationSamples = VK_SAMPLE_COUNT_1_BIT,
-        .sampleShadingEnable = VK_FALSE,
+        .rasterizationSamples = static_cast<VkSampleCountFlagBits>(UVK::Renderer::msaaSampleCount()),
+        .sampleShadingEnable = sampleRateShading,
+        .minSampleShading = Renderer::sampleRateShadingMult()
     };
 
     constexpr VkPipelineColorBlendAttachmentState colourState =
@@ -248,27 +232,48 @@ void UVK::GraphicsPipeline::destroyGraphicsPipeline() noexcept
 
 void UVK::GraphicsPipeline::createRenderPass() noexcept
 {
+    VkImageLayout finalLayout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+    uint32_t attachmentCount = 3;
+    if (Renderer::msaaSampleCount() >= 0 && Renderer::msaaSampleCount() < 2)
+    {
+        finalLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
+        attachmentCount = 2;
+    }
+
     const VkAttachmentDescription descriptions[] =
     {
+        // Colour attachment
         {
             .format = swapchain->surfaceFormat.format,
-            .samples = VK_SAMPLE_COUNT_1_BIT,
+            .samples = static_cast<VkSampleCountFlagBits>(UVK::Renderer::msaaSampleCount()),
             .loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR,
             .storeOp = VK_ATTACHMENT_STORE_OP_STORE,
             .stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE,
             .stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE,
             .initialLayout = VK_IMAGE_LAYOUT_UNDEFINED,
-            .finalLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR
+            .finalLayout = finalLayout,
         },
+        // Depth buffer attachment
         {
             .format = depthBuffer->getFormat(),
-            .samples = VK_SAMPLE_COUNT_1_BIT,
+            .samples = static_cast<VkSampleCountFlagBits>(UVK::Renderer::msaaSampleCount()),
             .loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR,
             .storeOp = VK_ATTACHMENT_STORE_OP_DONT_CARE,
             .stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE,
             .stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE,
             .initialLayout = VK_IMAGE_LAYOUT_UNDEFINED,
             .finalLayout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL
+        },
+        // Colour resolve attachment
+        {
+            .format = swapchain->surfaceFormat.format,
+            .samples = VK_SAMPLE_COUNT_1_BIT,
+            .loadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE,
+            .storeOp = VK_ATTACHMENT_STORE_OP_STORE,
+            .stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE,
+            .stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE,
+            .initialLayout = VK_IMAGE_LAYOUT_UNDEFINED,
+            .finalLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR,
         }
     };
 
@@ -281,15 +286,24 @@ void UVK::GraphicsPipeline::createRenderPass() noexcept
         {
             .attachment = 1,
             .layout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL,
+        },
+        {
+            .attachment = 2,
+            .layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL
         }
     };
+
+    const VkAttachmentReference* resolveAttachment = &attachmentReferences[2];
+    if (Renderer::msaaSampleCount() >= 0 && Renderer::msaaSampleCount() < 2)
+        resolveAttachment = nullptr;
 
     const VkSubpassDescription subpass =
     {
         .pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS,
         .colorAttachmentCount = 1,
         .pColorAttachments = &attachmentReferences[0],
-        .pDepthStencilAttachment = &attachmentReferences[1]
+        .pResolveAttachments = resolveAttachment,
+        .pDepthStencilAttachment = &attachmentReferences[1],
     };
 
     constexpr VkSubpassDependency subpassDependency[2] =
@@ -317,7 +331,7 @@ void UVK::GraphicsPipeline::createRenderPass() noexcept
     const VkRenderPassCreateInfo renderPassCreateInfo =
     {
         .sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO,
-        .attachmentCount = 2,
+        .attachmentCount = attachmentCount,
         .pAttachments = descriptions,
         .subpassCount = 1,
         .pSubpasses = &subpass,

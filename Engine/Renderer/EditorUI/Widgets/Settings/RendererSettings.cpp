@@ -52,6 +52,20 @@ void UVK::RendererSettingsWidget::display(bool& bReturn, bool& bOpen, Editor& ed
     if (ImGui::InputScalar("##FilesystemMaxElementsWithPreviews", ImGuiDataType_U32, &editor.settings.fsdata.maxFileNum) || ImGui::IsItemActive())
         bReturn = true;
 
+    ImGui::TextWrapped("Max MSAA samples");
+    ImGui::SameLine();
+    if (ImGui::InputScalar("##MSAAMAXSAMPLES", ImGuiDataType_U32, &UVK::Renderer::msaaSampleCount()) || ImGui::IsItemActive())
+        bReturn = true;
+
+    ImGui::TextWrapped("Sample rate shading");
+    ImGui::SameLine();
+    ImGui::Checkbox("##SampleRateShadingCheck", &Renderer::sampleRateShading());
+
+    ImGui::TextWrapped("Sample rate shading mult");
+    ImGui::SameLine();
+    if (ImGui::InputScalar("##MSAAMAXSAMPLES", ImGuiDataType_Float, &UVK::Renderer::sampleRateShadingMult()) || ImGui::IsItemActive())
+        bReturn = true;
+
     if (ImGui::Button("Close"))
     {
         bOpen = false;

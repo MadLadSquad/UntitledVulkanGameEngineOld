@@ -1,5 +1,6 @@
 #include "Device.hpp"
 #include "Swapchain.hpp"
+#include <Renderer/Renderer.hpp>
 
 void UVK::VKDevice::createDevice(Swapchain& swapchain) noexcept
 {
@@ -29,8 +30,11 @@ void UVK::VKDevice::createDevice(Swapchain& swapchain) noexcept
         }
     };
 
-    constexpr VkPhysicalDeviceFeatures deviceFeatures =
+    VkBool32 sampleRateShading = Renderer::sampleRateShading() ? VK_TRUE : VK_FALSE;
+
+    const VkPhysicalDeviceFeatures deviceFeatures =
     {
+        .sampleRateShading = sampleRateShading,
         .samplerAnisotropy = VK_TRUE,
     };
     constexpr VkPhysicalDeviceCustomBorderColorFeaturesEXT physicalDeviceCustomBorderColorFeaturesExt
@@ -188,7 +192,7 @@ continue_to_other_device_in_list:;
         physicalDevice = devices[largestMemorySizeFoundIndex];
 
     vkGetPhysicalDeviceProperties(physicalDevice, &deviceProperties);
-
+    setMSAASamples();
     logger.consoleLog("Loaded Vulkan device ", UVK_LOG_TYPE_SUCCESS, deviceProperties.deviceName);
     return lastSavedIndex;
 }
@@ -211,4 +215,23 @@ VkQueue& UVK::VKDevice::getPresentationQueue() noexcept
 VkPhysicalDevice& UVK::VKDevice::getPhysicalDevice() noexcept
 {
     return physicalDevice;
+}
+
+void UVK::VKDevice::setMSAASamples() const noexcept
+{
+    const VkSampleCountFlags counts = deviceProperties.limits.framebufferColorSampleCounts & deviceProperties.limits.framebufferDepthSampleCounts;
+    if ((counts & VK_SAMPLE_COUNT_64_BIT) && UVK::Renderer::msaaSampleCount() > 32)
+        UVK::Renderer::msaaSampleCount() = VK_SAMPLE_COUNT_64_BIT;
+    else if ((counts & VK_SAMPLE_COUNT_32_BIT) && UVK::Renderer::msaaSampleCount() > 16)
+        UVK::Renderer::msaaSampleCount() = VK_SAMPLE_COUNT_32_BIT;
+    else if ((counts & VK_SAMPLE_COUNT_16_BIT) && UVK::Renderer::msaaSampleCount() > 8)
+        UVK::Renderer::msaaSampleCount() = VK_SAMPLE_COUNT_16_BIT;
+    else if ((counts & VK_SAMPLE_COUNT_8_BIT) && UVK::Renderer::msaaSampleCount() > 4)
+        UVK::Renderer::msaaSampleCount() = VK_SAMPLE_COUNT_8_BIT;
+    else if ((counts & VK_SAMPLE_COUNT_4_BIT) && UVK::Renderer::msaaSampleCount() > 2)
+        UVK::Renderer::msaaSampleCount() = VK_SAMPLE_COUNT_4_BIT;
+    else if ((counts & VK_SAMPLE_COUNT_2_BIT) && UVK::Renderer::msaaSampleCount() > 1)
+        UVK::Renderer::msaaSampleCount() = VK_SAMPLE_COUNT_2_BIT;
+    else if ((counts & VK_SAMPLE_COUNT_1_BIT) && UVK::Renderer::msaaSampleCount() >= 0)
+        UVK::Renderer::msaaSampleCount() = VK_SAMPLE_COUNT_1_BIT;
 }

@@ -184,6 +184,7 @@ void UVK::InternalRendererComponents::create() noexcept
     swapchain.createSurface();
     device.createDevice(swapchain);
     swapchain.createSwapchain();
+    swapchain.createMultisampledImage();
     depthBuffer.createDepthBufferImage(swapchain, device);
     pipeline.createRenderPass();
     descriptors.createDescriptorSetLayout();
@@ -209,6 +210,7 @@ void UVK::InternalRendererComponents::destroy() noexcept
     global.ecs.clear();
     descriptors.destroyTextureDescriptor();
     depthBuffer.destroyDepthBufferImage(device);
+    swapchain.destroyMultisampledImage();
     resources.freeDynamicUniformBufferTransferSpace();
     descriptors.destroyDescriptorPool();
     resources.destroyUniformBuffers();
@@ -244,11 +246,13 @@ void UVK::InternalRendererComponents::recreate() noexcept
     swapchain.destroyFramebuffers();
     pipeline.destroyGraphicsPipeline();
     depthBuffer.destroyDepthBufferImage(device);
+    swapchain.destroyMultisampledImage();
     swapchain.destroySwapchain(true);
     //swapchain.destroySurface();
 
     //swapchain.createSurface();
     swapchain.createSwapchain(swapchain.getSwapchain());
+    swapchain.createMultisampledImage();
     depthBuffer.createDepthBufferImage(swapchain, device);
     pipeline.createRenderPass();
     pipeline.createGraphicsPipeline();

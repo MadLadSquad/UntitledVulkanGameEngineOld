@@ -30,6 +30,8 @@ namespace UVK
 
         VkPhysicalDeviceProperties deviceProperties{};
 
+        void setMSAASamples() const noexcept;
+
         VkQueue queue{};
         VkQueue presentationQueue{};
         VKInstance* instance{};

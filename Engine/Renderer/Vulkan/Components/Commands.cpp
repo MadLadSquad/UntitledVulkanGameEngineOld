@@ -78,7 +78,7 @@ void UVK::Commands::draw() noexcept
     const auto& camera = UVK::Level::getPawn(global.currentLevel)->camera;
     VP vp =
     {
-        .view = glm::lookAt(FVector(0.0f, 0.0f, -5.0f), FVector(0.0f, 0.0f, 0.0f), FVector(0.0f, 1.0f, 0.0f )),
+        .view = glm::lookAt(FVector(0.0f, 0.0f, -2.0f), FVector(0.0f, 0.0f, 0.0f), FVector(0.0f, 1.0f, 0.0f )),
         .projection = glm::perspective(glm::radians(90.0f), Window::windowSize().x / Window::windowSize().y, 0.1f, 100.0f)
         //.view = camera.calculateViewMatrix(),
         //.projection = camera.projection().data()

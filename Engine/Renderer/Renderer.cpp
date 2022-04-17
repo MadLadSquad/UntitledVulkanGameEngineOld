@@ -29,6 +29,9 @@ void UVK::RendererSettings::saveSettings() const noexcept
     out << YAML::Key << "theme" << YAML::Value << themeLoc;
     out << YAML::Key << "v-sync" << YAML::Value << bVsync;
     out << YAML::Key << "v-sync-immediate" << YAML::Value << bVsyncImmediate;
+    out << YAML::Key << "msaa-samples" << YAML::Value << samples;
+    out << YAML::Key << "sample-rate-shading" << YAML::Value << sampleRateShading;
+    out << YAML::Key << "sample-rate-shading-mult" << YAML::Value << sampleRateShadingMult;
 
     out << YAML::EndMap;
 
@@ -82,6 +85,12 @@ void UVK::Renderer::loadSettings() noexcept
 
         if (a["v-sync-immediate"])
             rs->bVsyncImmediate = a["v-sync-immediate"].as<bool>();
+        if (a["msaa-samples"])
+            rs->samples = a["msaa-samples"].as<uint32_t>();
+        if (a["sample-rate-shading"])
+            rs->sampleRateShading = a["sample-rate-shading"].as<bool>();
+        if (a["sample-rate-shading-mult"])
+            rs->sampleRateShadingMult = a["sample-rate-shading-mult"].as<float>();
     }
     else
     {
@@ -102,4 +111,19 @@ void UVK::Renderer::saveSettings() noexcept
 bool& UVK::Renderer::getImmediateRender() noexcept
 {
     return global.rendererSettings.bVsyncImmediate;
+}
+
+uint32_t& UVK::Renderer::msaaSampleCount() noexcept
+{
+    return global.rendererSettings.samples;
+}
+
+bool& UVK::Renderer::sampleRateShading() noexcept
+{
+    return global.rendererSettings.sampleRateShading;
+}
+
+float& UVK::Renderer::sampleRateShadingMult() noexcept
+{
+    return global.rendererSettings.sampleRateShadingMult;
 }

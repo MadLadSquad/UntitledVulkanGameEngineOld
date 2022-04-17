@@ -240,14 +240,23 @@ void UVK::Swapchain::createFramebuffers(GraphicsPipeline& graphicsPipeline) noex
 
     for (size_t i = 0; i < framebuffers.size(); i++)
     {
-        // Should be an array
-        const VkImageView attachments[] = { images[i].imageView, depthBuffer->getImage().imageView };
+        uint32_t attachmentCount = 3;
+        std::array<VkImageView, 3> msaaAttachments = { colourImage.imageView, depthBuffer->getImage().imageView, images[i].imageView };
+        std::array<VkImageView, 2> nomsaaAttachments = { images[i].imageView, depthBuffer->getImage().imageView };
+
+        VkImageView* attachment = msaaAttachments.data();
+        if (UVK::Renderer::msaaSampleCount() >= 0 && UVK::Renderer::msaaSampleCount() < 2)
+        {
+            attachmentCount = 2;
+            attachment = nomsaaAttachments.data();
+        }
+
         const VkFramebufferCreateInfo framebufferCreateInfo =
         {
             .sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO,
             .renderPass = pipeline->renderPass,
-            .attachmentCount = 2,
-            .pAttachments = attachments,
+            .attachmentCount = attachmentCount,
+            .pAttachments = attachment,
             .width = extent.width,
             .height = extent.height,
             .layers = 1
@@ -287,4 +296,17 @@ const VkExtent2D& UVK::Swapchain::getExtent() const noexcept
 void UVK::Swapchain::setDepthBuffer(UVK::VKDepthBuffer& depth) noexcept
 {
     depthBuffer = &depth;
+}
+
+void UVK::Swapchain::createMultisampledImage() noexcept
+{
+    colourImage.createImage({ extent.width, extent.height }, surfaceFormat.format, VK_IMAGE_TILING_OPTIMAL, VK_IMAGE_USAGE_TRANSIENT_ATTACHMENT_BIT | VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, colourImageMemory, *device, 1, static_cast<VkSampleCountFlagBits>(global.rendererSettings.samples));
+    colourImage.imageView = createImageView(colourImage.image, surfaceFormat.format, VK_IMAGE_ASPECT_COLOR_BIT, *device);
+}
+
+void UVK::Swapchain::destroyMultisampledImage() noexcept
+{
+    vkDestroyImageView(device->getDevice(), colourImage.imageView, nullptr);
+    vkDestroyImage(device->getDevice(), colourImage.image, nullptr);
+    vkFreeMemory(device->getDevice(), colourImageMemory, nullptr);
 }

@@ -28,6 +28,9 @@ namespace UVK
         static bool& getImmediateRender() noexcept;
         static bool& getVSync() noexcept;
         static void saveSettings() noexcept;
+        static uint32_t& msaaSampleCount() noexcept;
+        static bool& sampleRateShading() noexcept;
+        static float& sampleRateShadingMult() noexcept;
     private:
         friend class Editor;
 

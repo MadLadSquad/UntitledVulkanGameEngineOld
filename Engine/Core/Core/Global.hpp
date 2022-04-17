@@ -13,6 +13,9 @@ namespace UVK
         std::string themeLoc;
         bool bVsync = false;
         bool bVsyncImmediate = true;
+        uint32_t samples = VK_SAMPLE_COUNT_1_BIT;
+        bool sampleRateShading = VK_TRUE;
+        float sampleRateShadingMult = 0.25f;
 
         void saveSettings() const noexcept;
     };

@@ -79,7 +79,7 @@ void UVK::VKShader::each(const std::function<void(VKShader&)>& func) noexcept
     }
 }
 
-void UVK::SwapchainImage::createImage(const UVK::FVector2& size, const VkFormat& format, const VkImageTiling& tiling, const VkImageUsageFlags& usageFlags, const VkMemoryPropertyFlags& propertyFlags, VkDeviceMemory& memory, VKDevice& device, uint32_t mipLevels)
+void UVK::SwapchainImage::createImage(const UVK::FVector2& size, const VkFormat& format, const VkImageTiling& tiling, const VkImageUsageFlags& usageFlags, const VkMemoryPropertyFlags& propertyFlags, VkDeviceMemory& memory, VKDevice& device, uint32_t mipLevels, VkSampleCountFlagBits sampleCountFlagBits)
 {
     const VkImageCreateInfo imageCreateInfo =
     {
@@ -94,7 +94,7 @@ void UVK::SwapchainImage::createImage(const UVK::FVector2& size, const VkFormat&
         },
         .mipLevels = mipLevels,
         .arrayLayers = 1,
-        .samples = VK_SAMPLE_COUNT_1_BIT,
+        .samples = sampleCountFlagBits,
         .tiling = tiling,
         .usage = usageFlags,
         .sharingMode = VK_SHARING_MODE_EXCLUSIVE,
