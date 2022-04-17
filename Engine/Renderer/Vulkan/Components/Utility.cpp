@@ -181,7 +181,7 @@ void UVK::SwapchainImage::createImageView(const VkFormat& format, const VkImageA
     }
 }
 
-void UVK::SwapchainImage::destroy(VKDevice& device)
+void UVK::SwapchainImage::destroy(VKDevice& device) const
 {
     vkDestroyImageView(device.getDevice(), imageView, nullptr);
     vkDestroyImage(device.getDevice(), image, nullptr);
