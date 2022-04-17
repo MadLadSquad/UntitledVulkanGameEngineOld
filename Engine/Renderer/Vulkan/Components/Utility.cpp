@@ -79,7 +79,20 @@ void UVK::VKShader::each(const std::function<void(VKShader&)>& func) noexcept
     }
 }
 
-void UVK::SwapchainImage::createImage(const UVK::FVector2& size, const VkFormat& format, const VkImageTiling& tiling, const VkImageUsageFlags& usageFlags, const VkMemoryPropertyFlags& propertyFlags, VkDeviceMemory& memory, VKDevice& device, uint32_t mipLevels, VkSampleCountFlagBits sampleCountFlagBits)
+VkFormat UVK::SwapchainImage::findBestImageFormat(const std::vector<VkFormat>& formats, const VkImageTiling& tiling, VkFormatFeatureFlags featureFlags, VKDevice& device)
+{
+    for (auto& a : formats)
+    {
+        VkFormatProperties properties;
+        vkGetPhysicalDeviceFormatProperties(device.getPhysicalDevice(), a, &properties);
+        if ((tiling == VK_IMAGE_TILING_LINEAR && (properties.linearTilingFeatures & featureFlags) == featureFlags) || (tiling == VK_IMAGE_TILING_OPTIMAL && (properties.optimalTilingFeatures & featureFlags) == featureFlags))
+            return a;
+    }
+    logger.consoleLog("Couldn't find optimal image format!", UVK_LOG_TYPE_ERROR);
+    std::terminate();
+}
+
+void UVK::SwapchainImage::createImage(const UVK::FVector2& size, const VkFormat& format, const VkImageTiling& tiling, const VkImageUsageFlags& usageFlags, const VkMemoryPropertyFlags& propertyFlags, UVK::VKDevice& device, uint32_t mipLevels, VkSampleCountFlagBits sampleCountFlagBits)
 {
     const VkImageCreateInfo imageCreateInfo =
     {
@@ -119,7 +132,7 @@ void UVK::SwapchainImage::createImage(const UVK::FVector2& size, const VkFormat&
             goto success;
     logger.consoleLog("Couldn't get required memory property flags from the currently selected device!", UVK_LOG_TYPE_ERROR);
     std::terminate();
-success:
+    success:
     const VkMemoryAllocateInfo memoryAllocateInfo =
     {
         .sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO,
@@ -136,15 +149,41 @@ success:
     vkBindImageMemory(device.getDevice(), image, memory, 0);
 }
 
-VkFormat UVK::SwapchainImage::findBestImageFormat(const std::vector<VkFormat>& formats, const VkImageTiling& tiling, VkFormatFeatureFlags featureFlags, VKDevice& device)
+void UVK::SwapchainImage::createImageView(const VkFormat& format, const VkImageAspectFlags& aspectFlags, UVK::VKDevice& dev, uint32_t mipLevels)
 {
-    for (auto& a : formats)
+    const VkImageViewCreateInfo viewCreateInfo =
     {
-        VkFormatProperties properties;
-        vkGetPhysicalDeviceFormatProperties(device.getPhysicalDevice(), a, &properties);
-        if ((tiling == VK_IMAGE_TILING_LINEAR && (properties.linearTilingFeatures & featureFlags) == featureFlags) || (tiling == VK_IMAGE_TILING_OPTIMAL && (properties.optimalTilingFeatures & featureFlags) == featureFlags))
-            return a;
+        .sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO,
+        .image = image,
+        .viewType = VK_IMAGE_VIEW_TYPE_2D,
+        .format = format,
+        .components =
+        {
+            .r = VK_COMPONENT_SWIZZLE_IDENTITY,
+            .g = VK_COMPONENT_SWIZZLE_IDENTITY,
+            .b = VK_COMPONENT_SWIZZLE_IDENTITY,
+            .a = VK_COMPONENT_SWIZZLE_IDENTITY
+        },
+        .subresourceRange =
+        {
+            .aspectMask = aspectFlags,
+            .baseMipLevel = 0,
+            .levelCount = mipLevels,
+            .baseArrayLayer = 0,
+            .layerCount = 1
+        },
+    };
+    auto result = vkCreateImageView(dev.getDevice(), &viewCreateInfo, nullptr, &imageView);
+    if (result != VK_SUCCESS)
+    {
+        logger.consoleLog("Failed to create an image view! Error code: ", UVK_LOG_TYPE_ERROR, result);
+        std::terminate();
     }
-    logger.consoleLog("Couldn't find optimal image format!", UVK_LOG_TYPE_ERROR);
-    std::terminate();
+}
+
+void UVK::SwapchainImage::destroy(VKDevice& device)
+{
+    vkDestroyImageView(device.getDevice(), imageView, nullptr);
+    vkDestroyImage(device.getDevice(), image, nullptr);
+    vkFreeMemory(device.getDevice(), memory, nullptr);
 }

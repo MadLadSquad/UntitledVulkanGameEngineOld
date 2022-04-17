@@ -129,8 +129,8 @@ void UVK::Swapchain::createSwapchain(VkSwapchainKHR oldswapchain) noexcept
     {
         images.push_back({
             image,
-            createImageView(image, surfaceFormat.format, VK_IMAGE_ASPECT_COLOR_BIT, *device)
         });
+        images.back().createImageView(surfaceFormat.format, VK_IMAGE_ASPECT_COLOR_BIT, *device);
     }
 }
 
@@ -196,41 +196,6 @@ void UVK::Swapchain::determineExtent() noexcept
         extent.width = std::max(details.surfaceCapabilities.minImageExtent.width, std::min(details.surfaceCapabilities.maxImageExtent.width, extent.width));
         extent.height = std::max(details.surfaceCapabilities.minImageExtent.height, std::min(details.surfaceCapabilities.maxImageExtent.height, extent.height));
     }
-}
-
-VkImageView UVK::Swapchain::createImageView(const VkImage& image, const VkFormat& format, const VkImageAspectFlags& aspectFlags, VKDevice& dev, uint32_t mipLevels) noexcept
-{
-    const VkImageViewCreateInfo viewCreateInfo =
-    {
-        .sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO,
-        .image = image,
-        .viewType = VK_IMAGE_VIEW_TYPE_2D,
-        .format = format,
-        .components =
-        {
-            .r = VK_COMPONENT_SWIZZLE_IDENTITY,
-            .g = VK_COMPONENT_SWIZZLE_IDENTITY,
-            .b = VK_COMPONENT_SWIZZLE_IDENTITY,
-            .a = VK_COMPONENT_SWIZZLE_IDENTITY
-        },
-        .subresourceRange =
-        {
-            .aspectMask = aspectFlags,
-            .baseMipLevel = 0,
-            .levelCount = mipLevels,
-            .baseArrayLayer = 0,
-            .layerCount = 1
-        },
-    };
-
-    VkImageView imageView;
-    auto result = vkCreateImageView(dev.getDevice(), &viewCreateInfo, nullptr, &imageView);
-    if (result != VK_SUCCESS)
-    {
-        logger.consoleLog("Failed to create an image view! Error code: ", UVK_LOG_TYPE_ERROR, result);
-        std::terminate();
-    }
-    return imageView;
 }
 
 void UVK::Swapchain::createFramebuffers(GraphicsPipeline& graphicsPipeline) noexcept
@@ -300,13 +265,11 @@ void UVK::Swapchain::setDepthBuffer(UVK::VKDepthBuffer& depth) noexcept
 
 void UVK::Swapchain::createMultisampledImage() noexcept
 {
-    colourImage.createImage({ extent.width, extent.height }, surfaceFormat.format, VK_IMAGE_TILING_OPTIMAL, VK_IMAGE_USAGE_TRANSIENT_ATTACHMENT_BIT | VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, colourImageMemory, *device, 1, static_cast<VkSampleCountFlagBits>(global.rendererSettings.samples));
-    colourImage.imageView = createImageView(colourImage.image, surfaceFormat.format, VK_IMAGE_ASPECT_COLOR_BIT, *device);
+    colourImage.createImage({ extent.width, extent.height }, surfaceFormat.format, VK_IMAGE_TILING_OPTIMAL, VK_IMAGE_USAGE_TRANSIENT_ATTACHMENT_BIT | VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, *device, 1, static_cast<VkSampleCountFlagBits>(global.rendererSettings.samples));
+    colourImage.createImageView(surfaceFormat.format, VK_IMAGE_ASPECT_COLOR_BIT, *device);
 }
 
 void UVK::Swapchain::destroyMultisampledImage() noexcept
 {
-    vkDestroyImageView(device->getDevice(), colourImage.imageView, nullptr);
-    vkDestroyImage(device->getDevice(), colourImage.image, nullptr);
-    vkFreeMemory(device->getDevice(), colourImageMemory, nullptr);
+    colourImage.destroy(*device);
 }

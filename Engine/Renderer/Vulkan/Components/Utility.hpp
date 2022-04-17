@@ -62,8 +62,12 @@ namespace UVK
     {
         VkImage image;
         VkImageView imageView;
-        void createImage(const FVector2& size, const VkFormat& format, const VkImageTiling& tiling, const VkImageUsageFlags& usageFlags, const VkMemoryPropertyFlags& propertyFlags, VkDeviceMemory& memory, VKDevice& device, uint32_t mipLevels = 1, VkSampleCountFlagBits sampleCountFlagBits = VK_SAMPLE_COUNT_1_BIT);
+        VkDeviceMemory memory;
+
+        void createImage(const FVector2& size, const VkFormat& format, const VkImageTiling& tiling, const VkImageUsageFlags& usageFlags, const VkMemoryPropertyFlags& propertyFlags, VKDevice& device, uint32_t mipLevels = 1, VkSampleCountFlagBits sampleCountFlagBits = VK_SAMPLE_COUNT_1_BIT);
         static VkFormat findBestImageFormat(const std::vector<VkFormat>& formats, const VkImageTiling& tiling, VkFormatFeatureFlags featureFlags, VKDevice& device);
+        void createImageView(const VkFormat& format, const VkImageAspectFlags& aspectFlags, VKDevice& dev, uint32_t mipLevels = 1);
+        void destroy(VKDevice& device);
     };
 
     struct VKVertex

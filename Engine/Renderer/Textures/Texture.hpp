@@ -91,7 +91,6 @@ namespace UVK
         size_t size = 0;
 
         SwapchainImage image{};
-        VkDeviceMemory imageMemory{};
         VkSampler textureSampler{};
         TextureSettings settings{};
     };

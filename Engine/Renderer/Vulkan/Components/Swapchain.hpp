@@ -35,7 +35,6 @@ namespace UVK
         VkSwapchainKHR& getSwapchain() noexcept;
         [[nodiscard]] const VkExtent2D& getExtent() const noexcept;
         [[nodiscard]] const std::vector<VkFramebuffer>& getFramebuffers() const noexcept;
-        static VkImageView createImageView(const VkImage& image, const VkFormat& format, const VkImageAspectFlags& aspectFlags, VKDevice& dev, uint32_t mipLevels = 1) noexcept;
     private:
         friend class VKDevice;
         friend class GraphicsPipeline;
@@ -65,6 +64,5 @@ namespace UVK
         std::vector<VkFramebuffer> framebuffers;
 
         SwapchainImage colourImage{};
-        VkDeviceMemory colourImageMemory{};
     };
 }
