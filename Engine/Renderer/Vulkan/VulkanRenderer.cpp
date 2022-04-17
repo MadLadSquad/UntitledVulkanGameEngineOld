@@ -2,14 +2,11 @@
 #define GLFW_INCLUDE_VULKAN
 #include "VulkanRenderer.hpp"
 #include "Renderer/EditorUI/Classes/EditorLevel.hpp"
-#include <Renderer/Textures/Texture.hpp>
 #include <Engine/Core/Core/Global.hpp>
 #include <glfw3.h>
 #include <Core/Events/Events.hpp>
 #include <UVKShaderCompiler/Src/Functions.hpp>
 #include <Renderer/Camera/Projection.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/glm.hpp>
 #include <Renderer/EditorUI/Editor.hpp>
 
 void UVK::VulkanRenderer::run() noexcept
@@ -22,50 +19,16 @@ void UVK::VulkanRenderer::run() noexcept
     *global.window.getRenderer() = &renderer;
     renderer.create();
 
-    //VP mvp =
-    //{
-    //    .view = glm::lookAt(FVector(0.0f, 0.0f, -5.0f), FVector(0.0f, 0.0f, 0.0f), FVector(0.0f, 1.0f, 0.0f)),
-    //    .projection = glm::perspective(glm::radians(45.0f), (float)renderer.swapchain.getExtent().width / (float)renderer.swapchain.getExtent().height, 0.1f, 100.0f),
-    //};
-
-    //std::vector<VKVertex> vertices =
-    //{
-    //    {{-1.0f, -1.0f, 0.0f }, {1.0f, 0.0f, 0.0f, 1.0f}, { 1.0f, 1.0f }},
-    //    {{1.0f, 1.0f, 0.0f }, {0.0f, 1.0f, 0.0f, 1.0f}, { 1.0f, 0.0f }},
-    //    {{-1.0f, 1.0f, 0.0f }, {1.0f, 1.0f, 0.0f, 1.0f}, { 0.0f, 0.0f }},
-    //    {{1.0f, -1.0f, 0.0f }, {0.0f, 0.0f, 1.0f, 1.0f}, { 0.0f, 1.0f }},
-    //};
-    //std::vector<VKVertex> vertices2 =
-    //{
-    //    {{-1.0f, -1.0f, 0.0f }, {1.0f, 0.0f, 0.0f, 1.0f}, { 1.0f, 1.0f }},
-    //    {{1.0f, 1.0f, 0.0f }, {0.0f, 1.0f, 0.0f, 1.0f}, { 1.0f, 0.0f }},
-    //    {{-1.0f, 1.0f, 0.0f }, {1.0f, 1.0f, 0.0f, 1.0f}, { 0.0f, 0.0f }},
-    //    {{1.0f, -1.0f, 0.0f }, {0.0f, 0.0f, 1.0f, 1.0f}, { 0.0f, 1.0f }},
-    //};
-    //std::vector<uint32_t> indices =
-    //{
-    //    0, 1, 2,
-    //    0, 3, 1
-    //};
-
     Actor actor("Maikati", 10, "test");
-    //Actor actor2("Maikati2", 11, "test2");
 
     auto& mcomp = actor.add<MeshComponent>();
     mcomp.hue = { 1.0f, 1.0f, 1.0f, 1.0f };
     mcomp.create("../Content/Engine/teapot.obj", renderer.device, renderer.commands, renderer.descriptors);
 
-    //auto& mcomp = actor.add<MeshComponentRaw>();
-    //mcomp.create(vertices, indices, device, swapchain.getCommands(), descriptors, "../Content/Engine/brick.jpg");
-//
-    //auto& mcomp2 = actor2.add<MeshComponentRaw>();
-    //mcomp2.create(vertices2, indices, device, swapchain.getCommands(), descriptors, "../Content/Engine/brick.jpg");
-
     beginEvents();
 
     double angle = 0.0f;
     double lastTime = 0.0f;
-
     while (!glfwWindowShouldClose(global.window.getWindow()))
     {
         static double deltaTime = 0.0f;
@@ -76,7 +39,7 @@ void UVK::VulkanRenderer::run() noexcept
         lastTime = now;
 
         angle += ((angle + (1.0f * deltaTime)) >= 360.0f) ? -360.0f : 1.0f * deltaTime;
-        mcomp.translation = FVector(0.0f, -0.75f, 0.0f);
+        mcomp.translation = FVector(0.0f, -1.0f, 0.0f);
         mcomp.rotation = FVector(0.0f, 0.0f, 0.0f);
         mcomp.scale = FVector(0.025f, 0.025f, 0.025f);
 
@@ -98,7 +61,6 @@ void UVK::VulkanRenderer::updateEvents(double deltaTime) noexcept
     else
     {
         //UVK::UIInternal::beginFrame();
-
         global.currentLevel->tick(static_cast<float>(deltaTime));
         Events::callTick(static_cast<float>(deltaTime));
         global.ui.update();
@@ -167,7 +129,6 @@ void UVK::VulkanRenderer::destroyEvents() noexcept
         //UVK::UIInternal::clean();
         global.window.destroyWindow();
     }
-    //UVK::GLEntityManager::clean();
 }
 
 void UVK::InternalRendererComponents::create() noexcept
@@ -248,9 +209,7 @@ void UVK::InternalRendererComponents::recreate() noexcept
     depthBuffer.destroyDepthBufferImage(device);
     swapchain.destroyMultisampledImage();
     swapchain.destroySwapchain(true);
-    //swapchain.destroySurface();
 
-    //swapchain.createSurface();
     swapchain.createSwapchain(swapchain.getSwapchain());
     swapchain.createMultisampledImage();
     depthBuffer.createDepthBufferImage(swapchain, device);
@@ -260,6 +219,4 @@ void UVK::InternalRendererComponents::recreate() noexcept
     commands.createCommandPool();
     commands.createCommandBuffers(swapchain.getFramebuffers().size());
 }
-
-
 #endif
