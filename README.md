@@ -43,6 +43,7 @@ Follow [the trello board](https://trello.com/b/0upjsxT0/untitledvukangameengine2
 ## Showcase
 ![image](https://user-images.githubusercontent.com/40400590/163722961-65cefdc8-d303-46cb-b993-64411fdc22a0.png)
 
+[Youtube channel](https://www.youtube.com/channel/UCWKEvueStyfeMGnkvVJuGxQ)
 
 ## Open-source libraries and SDKs we use
 -   GLFW - <https://github.com/glfw/glfw>
