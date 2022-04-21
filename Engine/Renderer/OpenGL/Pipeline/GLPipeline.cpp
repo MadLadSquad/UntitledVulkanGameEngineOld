@@ -108,7 +108,7 @@ void UVK::GLPipeline::tick()
         glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         
-        ed.runEditor(global.colour, fb, UVK::Level::getPawn(UVK::global.currentLevel)->camera, global.currentLevel, deltaTime);
+        //ed.runEditor(global.colour, fb, UVK::Level::getPawn(UVK::global.currentLevel)->camera, global.currentLevel, deltaTime);
     }
 #endif
     global.finalizeOpening();

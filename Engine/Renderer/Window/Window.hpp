@@ -54,7 +54,6 @@ namespace UVK
          */
         [[nodiscard]] GLFWwindow* getWindow() const noexcept;
         bool& resized() noexcept;
-        InternalRendererComponents** getRenderer() noexcept;
     private:
         // Returns the frame-buffer width which in most cases is equal to the Window's internal rendering surface
         // width

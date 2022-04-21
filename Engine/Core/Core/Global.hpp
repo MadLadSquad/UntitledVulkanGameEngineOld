@@ -4,6 +4,7 @@
 #include <Renderer/UI/UI.hpp>
 #include <Assets/AssetManager.hpp>
 #include "UUID.hpp"
+#include <Core/Locale/Locale.hpp>
 
 namespace UVK
 {
@@ -22,6 +23,8 @@ namespace UVK
 
     class Level;
     class GameInstance;
+    class InternalRendererComponents;
+    class LocaleManager;
 
     class UVK_PUBLIC_API UVKGlobal
     {
@@ -46,6 +49,8 @@ namespace UVK
         std::function<void(void)> modbegin = [](){};
         std::function<void(float)> modtick = [](float){};
         std::function<void(void)> modend = [](){};
+
+        InternalRendererComponents* renderer = nullptr;
     private:
         IDManager idManager;
 
@@ -61,6 +66,7 @@ namespace UVK
 
         std::vector<InputAction> inputActionList;
         UIInternal ui;
+        LocaleManager localeManager;
 
         /**
          * @note Open the documentation for Levels and opening of levels for more info about this function
@@ -96,6 +102,7 @@ namespace UVK
         friend class Swapchain;
         friend class Commands;
         friend class InternalRendererComponents;
+        friend class Locale;
         friend struct MeshComponentRaw;
         friend struct RendererSettings;
     };

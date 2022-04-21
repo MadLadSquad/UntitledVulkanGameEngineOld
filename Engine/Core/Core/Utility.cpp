@@ -834,6 +834,30 @@ void UVK::Utility::removeConsole() noexcept
 #endif
 }
 
+std::string UVK::Utility::toLower(const char* str) noexcept
+{
+    std::string ret = str;
+    std::transform(ret.begin(), ret.end(), ret.begin(), tolower);
+    return ret;
+}
+
+void UVK::Utility::toLower(std::string& str) noexcept
+{
+    std::transform(str.begin(), str.end(), str.begin(), tolower);
+}
+
+std::string UVK::Utility::toUpper(const char* str) noexcept
+{
+    std::string ret = str;
+    std::transform(ret.begin(), ret.end(), ret.begin(), toupper);
+    return ret;
+}
+
+void UVK::Utility::toUpper(std::string& str) noexcept
+{
+    std::transform(str.begin(), str.end(), str.begin(), toupper);
+}
+
 void UVK::Math::translate(glm::mat4& mat, UVK::FVector vt) noexcept
 {
     mat = glm::translate(mat, vt);

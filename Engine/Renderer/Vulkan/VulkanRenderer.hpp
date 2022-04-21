@@ -35,7 +35,7 @@ namespace UVK
         VulkanRenderer(const VulkanRenderer&) = delete;
         void operator=(VulkanRenderer const&) = delete;
     private:
-        static void updateEvents(double deltaTime) noexcept;
+        void updateEvents(double deltaTime) noexcept;
         void beginEvents() noexcept;
         static void destroyEvents() noexcept;
 

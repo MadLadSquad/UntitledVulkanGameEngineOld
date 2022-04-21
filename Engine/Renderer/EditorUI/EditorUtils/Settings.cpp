@@ -8,16 +8,42 @@
 #include <imgui_impl_vulkan.h>
 #include <glfw3.h>
 #include <Renderer/EditorUI/Editor.hpp>
-#include <Renderer/Vulkan/Components/Device.hpp>
-#include <Renderer/Vulkan/Components/Instance.hpp>
-#include <Renderer/Vulkan/Components/Commands.hpp>
-#include <Renderer/Vulkan/Components/Resources.hpp>
-#include <Renderer/Vulkan/Components/Descriptors.hpp>
-#include <Renderer/Vulkan/Components/GraphicsPipeline.hpp>
-#include <Renderer/Vulkan/Components/Swapchain.hpp>
+#include <Renderer/Vulkan/VulkanRenderer.hpp>
 
-void UVK::EditorUtilSettings::loadImGuiSettings(Editor& editor, const char* colTheme, VKInstance& instance, VKDevice& device, Commands& commands, VKDescriptors& descriptors, Swapchain& swapchain, GraphicsPipeline& graphicsPipeline) noexcept
+void UVK::EditorUtilSettings::loadImGuiSettings(Editor& editor, const char* colTheme, InternalRendererComponents& renderer) noexcept
 {
+    constexpr VkDescriptorPoolSize poolSizes[] =
+    {
+         { VK_DESCRIPTOR_TYPE_SAMPLER, 1000 },
+         { VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 1000 },
+         { VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE, 1000 },
+         { VK_DESCRIPTOR_TYPE_STORAGE_IMAGE, 1000 },
+         { VK_DESCRIPTOR_TYPE_UNIFORM_TEXEL_BUFFER, 1000 },
+         { VK_DESCRIPTOR_TYPE_STORAGE_TEXEL_BUFFER, 1000 },
+         { VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1000 },
+         { VK_DESCRIPTOR_TYPE_STORAGE_BUFFER, 1000 },
+         { VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC, 1000 },
+         { VK_DESCRIPTOR_TYPE_STORAGE_BUFFER_DYNAMIC, 1000 },
+        { VK_DESCRIPTOR_TYPE_INPUT_ATTACHMENT, 1000 }
+    };
+
+    const VkDescriptorPoolCreateInfo poolCreateInfo =
+    {
+        .sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO,
+        .flags = VK_DESCRIPTOR_POOL_CREATE_FREE_DESCRIPTOR_SET_BIT,
+        .maxSets = 1000,
+        .poolSizeCount = 11,
+        .pPoolSizes = poolSizes
+    };
+
+    VkDescriptorPool imguiPool;
+    auto result = vkCreateDescriptorPool(renderer.device.getDevice(), &poolCreateInfo, nullptr, &imguiPool);
+    if (result != VK_SUCCESS)
+    {
+        logger.consoleLog("Couldn't create the descriptor pool for Dear imgui! Error code: ", UVK_LOG_TYPE_ERROR, result);
+        std::terminate();
+    }
+
     ImGui::CreateContext();
     ImPlot::CreateContext();
     //ImTTY::Terminal.CreateContext();
@@ -57,16 +83,23 @@ void UVK::EditorUtilSettings::loadImGuiSettings(Editor& editor, const char* colT
 
     ImGui_ImplVulkan_InitInfo initInfo =
     {
-        .Instance = instance.data(),
-        .PhysicalDevice = device.getPhysicalDevice(),
-        .Device = device.getDevice(),
-        .QueueFamily = static_cast<uint32_t>(device.getIndices().graphicsFamily),
-        .Queue = device.getGraphicsQueue(),
-        .DescriptorPool = descriptors.getPool()
+        .Instance = renderer.instance.data(),
+        .PhysicalDevice = renderer.device.getPhysicalDevice(),
+        .Device = renderer.device.getDevice(),
+        .QueueFamily = static_cast<uint32_t>(renderer.device.getIndices().graphicsFamily),
+        .Queue = renderer.device.getGraphicsQueue(),
+        .DescriptorPool = imguiPool,
+        .MinImageCount = 3,
+        .ImageCount = 3,
+        .MSAASamples = static_cast<VkSampleCountFlagBits>(global.rendererSettings.samples)
     };
 
+    //ImGui_ImplVulkan_CreateFontsTexture(cmd);
+    ImGui_ImplVulkan_DestroyFontUploadObjects();
+
+
     ImGui_ImplGlfw_InitForVulkan(global.window.getWindow(), true);
-    ImGui_ImplVulkan_Init(&initInfo, graphicsPipeline.getRenderPass());
+    ImGui_ImplVulkan_Init(&initInfo, renderer.pipeline.getRenderPass());
 }
 
 void UVK::EditorUtilSettings::setImGuiSettings(Editor& editor) noexcept
@@ -115,14 +148,14 @@ void UVK::EditorUtilSettings::setImGuiSettings(Editor& editor) noexcept
     }
 }
 
-void UVK::EditorUtilSettings::finishImGuiRender(UVK::Editor& editor) noexcept
+void UVK::EditorUtilSettings::finishImGuiRender(UVK::Editor& editor, uint32_t currentImage) noexcept
 {
     ImGui::Render();
 
     if (global.bUsesVulkan)
     {
         // To be implemented
-        //ImGui_ImplVulkan_RenderDrawData(ImGui::GetDrawData(), );
+        ImGui_ImplVulkan_RenderDrawData(ImGui::GetDrawData(), global.renderer->commands.getCommandBuffers()[currentImage], global.renderer->pipeline.getPipeline());
     }
     else
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

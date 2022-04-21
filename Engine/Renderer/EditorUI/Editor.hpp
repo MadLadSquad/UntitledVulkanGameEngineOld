@@ -42,8 +42,8 @@ namespace UVK
         }
 
         void initEditor() noexcept;
-        void runEditor(FVector4& colour, GLFrameBuffer& fb, Camera& camera, UVK::Level* lvl, const float& deltaTime) noexcept;
-        void displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& camera, UVK::Level* lvl, const float& deltaTime) noexcept;
+        void runEditor(FVector4& colour, Camera& camera, UVK::Level* lvl, const float& deltaTime) noexcept;
+        void displayEditor(FVector4& colour, Camera& camera, UVK::Level* lvl, const float& deltaTime) noexcept;
         static void beginFrame() noexcept;
         void destroyContext() noexcept;
 

@@ -8,6 +8,7 @@ UVK::UVKGlobal::UVKGlobal() noexcept
 {
     colour = FVector4(1.0f, 1.0f, 1.0f, 1.0f);
     assetManager.load();
+    localeManager.openLocaleConfig();
 }
 
 UVK::UVKGlobal::~UVKGlobal() noexcept

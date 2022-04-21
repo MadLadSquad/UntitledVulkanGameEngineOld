@@ -45,6 +45,12 @@ namespace UVK
         static std::string keyToText(const uint16_t& key, bool bLong) noexcept;
         static UVKGlobal& getGlobal() noexcept;
         static void removeConsole() noexcept;
+
+        static std::string toLower(const char* str) noexcept;
+        static void toLower(std::string& str) noexcept;
+
+        static std::string toUpper(const char* str) noexcept;
+        static void toUpper(std::string& str) noexcept;
     };
 
     class UVK_PUBLIC_API Math

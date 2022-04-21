@@ -33,6 +33,8 @@
 #include <GameFramework/GameplayClasses/Level/Level.hpp>
 #include <imgui_impl_vulkan.h>
 
+#include <Renderer/Vulkan/VulkanRenderer.hpp>
+
 void UVK::Editor::initEditor() noexcept
 {
     // Set the UVKBuildTool path
@@ -47,8 +49,7 @@ void UVK::Editor::initEditor() noexcept
     pt = UVK_CONTENT_PATH;
     EditorResources::loadResources(*this, pt);
 #endif
-    // TODO: uncomment and provide variables here
-    //EditorUtilSettings::loadImGuiSettings(*this, strings.colTheme);
+    EditorUtilSettings::loadImGuiSettings(*this, strings.colTheme, *global.renderer);
 
     tm.stopRecording();
     frameTimeData[0] = tm.getDuration();
@@ -57,15 +58,15 @@ void UVK::Editor::initEditor() noexcept
     logger.consoleLog("Starting the renderer took: ", UVK_LOG_TYPE_NOTE, tm.getDuration(), "ms!");
 }
 
-void UVK::Editor::runEditor(FVector4& colour, GLFrameBuffer& fb, Camera& camera, UVK::Level* lvl, const float& deltaTime) noexcept
+void UVK::Editor::runEditor(FVector4& colour, Camera& camera, UVK::Level* lvl, const float& deltaTime) noexcept
 {
-#ifndef PRODUCTION
+
     EditorUtilSettings::setImGuiSettings(*this);
-    displayEditor(colour, fb, camera, lvl, deltaTime);
-    EditorUtilSettings::finishImGuiRender(*this);
+    displayEditor(colour, camera, lvl, deltaTime);
+    //EditorUtilSettings::finishImGuiRender(*this);
 }
 
-void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& camera, UVK::Level* lvl, const float& deltaTime) noexcept
+void UVK::Editor::displayEditor(FVector4& colour, Camera& camera, UVK::Level* lvl, const float& deltaTime) noexcept
 {
     accumulateUndoRedo += deltaTime;
     EditorGUIUtils::switchKeybinds(*this);
@@ -90,12 +91,13 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
         bools.bEditorUsingTextbox = DetailsPanel::display(selectedEntity, lvl, bools.bShowDetailsPanel, moduleManager, bools.bDestroyEntity) || bools.bEditorUsingTextbox;
     if (bools.bShowSceneHierarchy)
         bools.bEditorUsingTextbox = SceneHierarchy::display(selectedEntity, entNum, bools.bShowSceneHierarchy, currentLevelFolders) || bools.bEditorUsingTextbox;
-    if (bools.bShowViewport)
-    {
-        style.WindowPadding = ImVec2(0.0f, 0.0f);
-        EditorViewport::display(fb, viewportWidth, viewportHeight, bools.bShowViewport, camera, selectedEntity, UVK::Level::getPawn(lvl)->camera.projection().data(), bools.bEditorViewportFocused);
-        style.WindowPadding = ImVec2(8.0f, 8.0f);
-    }
+    // TOOD: Uncomment this
+    //if (bools.bShowViewport)
+    //{
+    //    style.WindowPadding = ImVec2(0.0f, 0.0f);
+    //    EditorViewport::display(viewportWidth, viewportHeight, bools.bShowViewport, camera, selectedEntity, UVK::Level::getPawn(lvl)->camera.projection().data(), bools.bEditorViewportFocused);
+    //    style.WindowPadding = ImVec2(8.0f, 8.0f);
+    //}
 #ifndef __MINGW32__
     if (bools.bShowFilesystem)
         bools.bEditorUsingTextbox = Filesystem::display(pt, textures.fileTextures, settings.fsdata, bools.bShowFilesystem) || bools.bEditorUsingTextbox;
@@ -141,7 +143,6 @@ void UVK::Editor::displayEditor(FVector4& colour, GLFrameBuffer& fb, Camera& cam
     if (bools.bShowDeveloperConsole)
         loggerwidget.displayFull(bools.bShowDeveloperConsole, bools.bEditorUsingTextbox);
     moduleManager.renderIndependentModule(bools.bEditorUsingTextbox);
-#endif
 }
 
 void UVK::Editor::beginFrame() noexcept

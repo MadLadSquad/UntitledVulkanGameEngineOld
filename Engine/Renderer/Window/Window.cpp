@@ -436,11 +436,6 @@ bool& UVK::WindowInternal::resized() noexcept
     return bResized;
 }
 
-UVK::InternalRendererComponents** UVK::WindowInternal::getRenderer() noexcept
-{
-    return &renderer;
-}
-
 UVK::FVector2 UVK::Input::getLastMousePosition() noexcept
 {
     return global.window.getLastMousePosition();

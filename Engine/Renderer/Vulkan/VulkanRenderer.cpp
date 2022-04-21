@@ -8,6 +8,7 @@
 #include <UVKShaderCompiler/Src/Functions.hpp>
 #include <Renderer/Camera/Projection.hpp>
 #include <Renderer/EditorUI/Editor.hpp>
+#include <codecvt>
 
 void UVK::VulkanRenderer::run() noexcept
 {
@@ -15,8 +16,10 @@ void UVK::VulkanRenderer::run() noexcept
     USC::setPrefixDir("../");
     USC::checkForCompile();
 
+    std::cout << Locale::getLocaleString("The quick brown fox jumps over the lazy dog", LocaleTypes::jp_JP) << std::endl;
+
     global.window.createWindow();
-    *global.window.getRenderer() = &renderer;
+    global.renderer = &renderer;
     renderer.create();
 
     Actor actor("Maikati", 10, "test");
@@ -39,8 +42,8 @@ void UVK::VulkanRenderer::run() noexcept
         lastTime = now;
 
         angle += ((angle + (1.0f * deltaTime)) >= 360.0f) ? -360.0f : 1.0f * deltaTime;
-        mcomp.translation = FVector(0.0f, -1.0f, 0.0f);
-        mcomp.rotation = FVector(0.0f, 0.0f, 0.0f);
+        mcomp.translation = FVector(0.0f, sin(angle) - 0.75f, 0.0f);
+        mcomp.rotation = FVector(0.0f, angle, 0.0f);
         mcomp.scale = FVector(0.025f, 0.025f, 0.025f);
 
         updateEvents(deltaTime);
@@ -63,20 +66,20 @@ void UVK::VulkanRenderer::updateEvents(double deltaTime) noexcept
         //UVK::UIInternal::beginFrame();
         global.currentLevel->tick(static_cast<float>(deltaTime));
         Events::callTick(static_cast<float>(deltaTime));
-        global.ui.update();
+        //global.ui.update();
     }
 #else
     //UVK::UIInternal::beginFrame();
 
-        global.currentLevel->tick(deltaTime);
-        Events::callTick(deltaTime);
-        //global.ui.update();
+    global.currentLevel->tick(deltaTime);
+    Events::callTick(deltaTime);
+    //global.ui.update();
 #endif
 
 #ifndef PRODUCTION
     if (global.bEditor)
     {
-        //ed.runEditor(global.colour, fb, UVK::Level::getPawn(UVK::global.currentLevel)->camera, global.currentLevel, deltaTime);
+        //ed.runEditor(global.colour, UVK::Level::getPawn(UVK::global.currentLevel)->camera, global.currentLevel, deltaTime);
     }
 #endif
     global.finalizeOpening();
