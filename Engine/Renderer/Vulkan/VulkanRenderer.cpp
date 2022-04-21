@@ -16,8 +16,6 @@ void UVK::VulkanRenderer::run() noexcept
     USC::setPrefixDir("../");
     USC::checkForCompile();
 
-    std::cout << Locale::getLocaleString("The quick brown fox jumps over the lazy dog", LocaleTypes::jp_JP) << std::endl;
-
     global.window.createWindow();
     global.renderer = &renderer;
     renderer.create();
