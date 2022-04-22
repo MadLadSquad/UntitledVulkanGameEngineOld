@@ -61,7 +61,7 @@ void UVK::RendererSettingsWidget::display(bool& bReturn, bool& bOpen, Editor& ed
     ImGui::SameLine();
     ImGui::Checkbox("##SampleRateShadingCheck", &Renderer::sampleRateShading());
 
-    ImGui::TextWrapped("Sample rate shading mult");
+    ImGui::TextWrapped("Sample rate shading multiplier");
     ImGui::SameLine();
     if (ImGui::InputScalar("##MSAAMAXSAMPLES", ImGuiDataType_Float, &UVK::Renderer::sampleRateShadingMult()) || ImGui::IsItemActive())
         bReturn = true;
