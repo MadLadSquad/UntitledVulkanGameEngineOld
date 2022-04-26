@@ -1,0 +1,40 @@
+name: Update Dependencies
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  schedule: 0 20 * * *
+jobs:
+  Update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checking out code
+        uses: actions/checkout@v3
+        with:
+          ref: master
+          token: ${{ secrets.GITHUB_TOKEN }}
+          lfs: true
+          submodules: true
+          clean: false
+          fetch-depth: 0
+      - name: Extract commit data
+        uses: rlespinasse/git-commit-data-action@v1.x
+      - name: Update submodules
+        id: mod
+        run: |
+          echo "::set-output name=out::$(git submodule update --remote --merge)?"
+      - name: Create PR
+        if: steps.mod.outputs.out != "?"
+        uses: peter-evans/create-pull-request@v3
+        with:
+          branch: "auto-pr-branch"
+          base: master
+          title: "Automatic PR to update submodules"
+          committer: ${{ env.GIT_COMMIT_AUTHOR_NAME }} <${{ env.GIT_COMMIT_AUTHOR_EMAIL }}">
+          author: ${{ env.GIT_COMMIT_AUTHOR_NAME }} <${{ env.GIT_COMMIT_AUTHOR_EMAIL }}">
+          body:
+            This was made to automatically update submodules
+          token: ${{ secrets.GITHUB_TOKEN }}
+          delete-branch: true
+          assignees: Madman10K
