@@ -27,7 +27,7 @@ jobs:
           git config --global user.name "github-actions"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git fetch --all
-          git checkout -b auto
+          git checkout auto || git checkout -b auto
           echo "::set-output name=out::$(git submodule update --remote --merge)true"
       - name: Commit
         if: steps.mod.outputs.out != true
@@ -35,15 +35,10 @@ jobs:
           git add . && git commit -m "auto" && git push origin auto
       - name: Create PR
         if: steps.mod.outputs.out != true
-        uses: peter-evans/create-pull-request@v3
+        uses: JasonEtco/create-an-issue@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          branch: "auto"
-          base: master
-          title: "Automatic PR to update submodules"
-          committer: ${{ env.GIT_COMMIT_AUTHOR_NAME }} <${{ env.GIT_COMMIT_AUTHOR_EMAIL }}">
-          author: ${{ env.GIT_COMMIT_AUTHOR_NAME }} <${{ env.GIT_COMMIT_AUTHOR_EMAIL }}">
-          body:
-            This was made to automatically update submodules
-          token: ${{ secrets.GITHUB_TOKEN }}
-          delete-branch: true
-          assignees: Madman10K
+          filename: .github/auto-issue-template.md
+          update_existing: true
+          search_existing: all
