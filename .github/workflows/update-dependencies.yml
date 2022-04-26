@@ -24,9 +24,9 @@ jobs:
       - name: Update submodules
         id: mod
         run: |
-          echo "::set-output name=out::$(git submodule update --remote --merge)?"
+          echo "::set-output name=out::$(git submodule update --remote --merge)t"
       - name: Create PR
-        if: steps.mod.outputs.out != "?"
+        if: steps.mod.outputs.out != "t"
         uses: peter-evans/create-pull-request@v3
         with:
           branch: "auto-pr-branch"
