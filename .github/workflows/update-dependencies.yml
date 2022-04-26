@@ -24,6 +24,9 @@ jobs:
       - name: Update submodules
         id: mod
         run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch --all
           echo "::set-output name=out::$(git submodule update --remote --merge)true"
       - name: Create PR
         if: steps.mod.outputs.out != true
