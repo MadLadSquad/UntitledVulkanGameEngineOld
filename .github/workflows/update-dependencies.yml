@@ -28,11 +28,15 @@ jobs:
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git fetch --all
           echo "::set-output name=out::$(git submodule update --remote --merge)true"
+      - name: Commit
+        if: steps.mod.outputs.out != true
+        run: |
+          git add . && git commit -m "auto"
       - name: Create PR
         if: steps.mod.outputs.out != true
         uses: peter-evans/create-pull-request@v3
         with:
-          branch: "auto-pr-branch"
+          branch: "auto"
           base: master
           title: "Automatic PR to update submodules"
           committer: ${{ env.GIT_COMMIT_AUTHOR_NAME }} <${{ env.GIT_COMMIT_AUTHOR_EMAIL }}">
