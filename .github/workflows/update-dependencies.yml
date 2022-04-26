@@ -27,11 +27,12 @@ jobs:
           git config --global user.name "github-actions"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git fetch --all
+          git checkout -b auto
           echo "::set-output name=out::$(git submodule update --remote --merge)true"
       - name: Commit
         if: steps.mod.outputs.out != true
         run: |
-          git add . && git commit -m "auto"
+          git add . && git commit -m "auto" && git push origin auto
       - name: Create PR
         if: steps.mod.outputs.out != true
         uses: peter-evans/create-pull-request@v3
