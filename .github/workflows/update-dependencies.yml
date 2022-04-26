@@ -4,7 +4,8 @@ on:
     branches: [ master ]
   pull_request:
     branches: [ master ]
-  schedule: 0 20 * * *
+  schedule:
+    - cron:  "0 20 * * *"
 jobs:
   Update:
     runs-on: ubuntu-latest
