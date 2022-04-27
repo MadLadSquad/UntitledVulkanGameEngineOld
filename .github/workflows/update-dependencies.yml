@@ -32,6 +32,8 @@ jobs:
         id: commit
         run: |
           (git add . && git commit -m "auto" && git push origin auto) || echo "::set-output name=com::true"
+      - name: test
+        run: "echo '${{ steps.mod.outputs.out }} ${{ steps.commit.outputs.com }}'"
       - name: Create PR
         if: steps.mod.outputs.out != true && steps.commit.outputs.com != true
         uses: JasonEtco/create-an-issue@v2 
