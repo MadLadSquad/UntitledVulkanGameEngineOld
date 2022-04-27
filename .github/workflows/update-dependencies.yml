@@ -33,7 +33,7 @@ jobs:
         run: |
           (git add . && git commit -m "auto" && git push origin auto && echo '::set-output name=com::+') || echo "::set-output name=com::?"
       - name: Test
-        run: "echo '${{ steps.mod.outputs.out }} ${steps.commits.outputs.com}!'"
+        run: "echo '${{ steps.mod.outputs.out }} ${{ steps.commits.outputs.com }}!'"
       - name: Create PR
         if: "steps.mod.outputs.out != '?' && steps.commit.outputs.com != '?'"
         uses: JasonEtco/create-an-issue@v2 
