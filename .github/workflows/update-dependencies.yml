@@ -1,0 +1,48 @@
+name: Update Dependencies
+on:
+  push:
+    branches: [ master ]
+  schedule:
+    - cron: "0 1 * * *"
+    - cron: "0 7 * * *"
+    - cron: "0 13 * * *"
+    - cron: "0 19 * * *"
+jobs:
+  Update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checking out code
+        uses: actions/checkout@v3
+        with:
+          ref: master
+          token: ${{ secrets.GITHUB_TOKEN }}
+          lfs: true
+          submodules: true
+          clean: false
+          fetch-depth: 0
+      - name: Extract commit data
+        uses: rlespinasse/git-commit-data-action@v1.x
+      - name: Update submodules
+        id: mod
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch --all
+          git checkout auto || git checkout -b auto
+          echo "::set-output name=out::$(git submodule update --remote --merge)?"
+      - name: Commit
+        if: "steps.mod.outputs.out != '?'"
+        id: commit
+        run: |
+          (git add . && git commit -m "auto" && git push origin auto && echo '::set-output name=com::+') || echo "::set-output name=com::?"
+      - name: Test
+        run: "echo '${{ steps.mod.outputs.out }} ${{ steps.commits.outputs.com }}!'"
+      - name: Create PR
+        if: "steps.mod.outputs.out != '?' && steps.commit.outputs.com != '?'"
+        uses: JasonEtco/create-an-issue@v2 
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          filename: .github/auto-issue-template.md
+          update_existing: true
+          search_existing: all
