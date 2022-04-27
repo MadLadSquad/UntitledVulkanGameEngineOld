@@ -26,14 +26,14 @@ jobs:
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git fetch --all
           git checkout auto || git checkout -b auto
-          echo "::set-output name=out::$(git submodule update --remote --merge)0"
+          echo "::set-output name=out::$(git submodule update --remote --merge)?"
       - name: Commit
-        if: steps.mod.outputs.out != 0
+        if: "steps.mod.outputs.out != '?'"
         id: commit
         run: |
-          (git add . && git commit -m "auto" && git push origin auto) || echo "::set-output name=com::0"
+          (git add . && git commit -m "auto" && git push origin auto && echo '::set-output name=com::+') || echo "::set-output name=com::?"
       - name: Create PR
-        if: steps.mod.outputs.out != 0 && steps.commit.outputs.com != 0
+        if: "steps.mod.outputs.out != '?' && steps.commit.outputs.com != '?'"
         uses: JasonEtco/create-an-issue@v2 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
