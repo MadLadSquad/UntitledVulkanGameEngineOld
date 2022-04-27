@@ -2,12 +2,7 @@ name: CI
 
 env:
   BUILD_CONFIGURATION: Release
-on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
-
+on: [push, pull_request]
 jobs:
   Linux:
     runs-on: ubuntu-latest
