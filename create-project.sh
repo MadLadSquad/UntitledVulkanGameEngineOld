@@ -20,21 +20,21 @@ cpus=$(grep -c processor /proc/cpuinfo) ## get the cpu threads for maximum perfo
 echo -e "\x1B[32mCopiling with ${cpus} compute jobs!\033[0m"
 
 cd Projects/ || exit
-mkdir "${prjname}" || exit
+mkdir "${prjname}" || echo "Project already exists!"
 cd "${prjname}" || exit
 
 # Create folders and files to be used as configs
-mkdir Source || exit
-mkdir Generated || exit
-mkdir WrapperSource || exit
-mkdir build || exit
-mkdir Exported || exit
+mkdir Source || echo "Project already exists!"
+mkdir Generated || echo "Project already exists!"
+mkdir WrapperSource || echo "Project already exists!"
+mkdir build || echo "Project already exists!"
+mkdir Exported || echo "Project already exists!"
 
 # Copy the config template we want
 cp ../../Config/ . -r
 cp ../../Content/ . -r
 
-cd Config/ || exit
+cd Config/ || echo "Project already exists!"
 touch Engine/GameKeybinds.yaml
 echo "\
 bindings:
