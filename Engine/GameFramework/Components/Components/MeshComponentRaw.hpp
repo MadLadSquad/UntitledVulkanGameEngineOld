@@ -16,7 +16,7 @@ namespace UVK
     struct UVK_PUBLIC_API MeshComponentRaw
     {
     public:
-        void create(std::vector<VKVertex> vertices, std::vector<uint32_t> indices, VKDevice& dev, Commands& cmd, VKDescriptors& desc, const std::string& textureLoc) noexcept;
+        void create(std::vector<VKVertex> vertices, std::vector<uint32_t> indices, VKDevice& dev, Commands& cmd, VKDescriptors& desc, const UVK::FString& textureLoc) noexcept;
         void update(size_t index, uint32_t currentImage, GraphicsPipeline& pipeline) noexcept;
         void destroy() noexcept;
 

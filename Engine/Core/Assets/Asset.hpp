@@ -18,11 +18,11 @@ namespace UVK
 
     struct UVK_PUBLIC_API Asset
     {
-        std::string name;
+        FString name;
         uint64_t id;
         AssetType assetType;
 #ifndef PRODUCTION
-        std::string path;
+        FString path;
 #endif
     };
 }

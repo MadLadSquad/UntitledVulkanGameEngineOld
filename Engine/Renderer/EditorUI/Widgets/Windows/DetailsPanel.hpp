@@ -16,7 +16,7 @@ namespace UVK
 namespace DetailsPanel
 {
     // All of this is copied from the Cherno because his styling looks great
-    bool DrawVec3Control(const std::string& label, glm::vec3& values, float resetValue = 0.0f, float columnWidth = 100.0f, float speed = 1.0f) noexcept;
+    bool DrawVec3Control(const UVK::FString& label, glm::vec3& values, float resetValue = 0.0f, float columnWidth = 100.0f, float speed = 1.0f) noexcept;
 
     template<typename T>
     void addComponent(UVK::Actor& ent) noexcept

@@ -23,6 +23,7 @@ namespace UVK
         QueueFamilyIndices& getIndices() noexcept;
     private:
         friend class Swapchain;
+        friend class VKResources;
         friend class VKBuffer;
         friend class VKMesh;
 

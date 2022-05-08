@@ -4,7 +4,7 @@
 #include <Renderer/EditorUI/Modules/EditorModule.hpp>
 #include <imguiex/uexec/uexec.h>
 
-bool TopToolbar::display(UVK::Texture& play, const std::string& projectName, const UVK::EditorModuleManager& modules, bool& bShow, UVK::Texture& restart, UVK::Texture& stop) noexcept
+bool TopToolbar::display(UVK::Texture& play, const UVK::FString& projectName, const UVK::EditorModuleManager& modules, bool& bShow, UVK::Texture& restart, UVK::Texture& stop) noexcept
 {
     static uexec::ScriptRunner runner;
     static bool bShowPlay = true;
@@ -50,7 +50,7 @@ bool TopToolbar::display(UVK::Texture& play, const std::string& projectName, con
     return bReturn;
 }
 
-void TopToolbar::startProcess(const std::string& projectName, uexec::ScriptRunner& runner, bool& bShowPlay) noexcept
+void TopToolbar::startProcess(const UVK::FString& projectName, uexec::ScriptRunner& runner, bool& bShowPlay) noexcept
 {
 #ifdef _WIN32
     auto str = "./" + projectName + ".exe";

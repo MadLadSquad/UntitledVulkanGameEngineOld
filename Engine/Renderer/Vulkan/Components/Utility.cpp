@@ -49,17 +49,17 @@ UVK::VKShader::VKShader(const char* fname) noexcept
 void UVK::VKShader::init(const char* fname) noexcept
 {
     name = fname;
-    if (name.ends_with(".vert"))
+    if (name.rfind(".vert") != UVK::FString::npos)
         type = VKShaderType::VK_SHADER_TYPE_VERTEX;
-    else if (name.ends_with(".frag"))
+    else if (name.rfind(".frag") != UVK::FString::npos)
         type = VKShaderType::VK_SHADER_TYPE_FRAGMENT;
-    else if (name.ends_with(".geom"))
+    else if (name.rfind(".geom") != UVK::FString::npos)
         type = VKShaderType::VK_SHADER_TYPE_GEOMETRY;
-    else if (name.ends_with(".comp"))
+    else if (name.rfind(".comp") != UVK::FString::npos)
         type = VKShaderType::VK_SHADER_TYPE_COMPUTE;
-    else if (name.ends_with(".tesc"))
+    else if (name.rfind(".tesc") != UVK::FString::npos)
         type = VKShaderType::VK_SHADER_TYPE_TESSELLATION_CONTROL;
-    else if (name.ends_with(".tese"))
+    else if (name.rfind(".tese") != UVK::FString::npos)
         type = VKShaderType::VK_SHADER_TYPE_TESSELLATION_EVALUATION;
     else
         type = VKShaderType::VK_SHADER_TYPE_NONE;

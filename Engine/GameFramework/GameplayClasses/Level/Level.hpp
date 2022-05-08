@@ -37,7 +37,7 @@ namespace UVK
          * function below. This function* is called and then reset to an empty function every frame(GLPipeline L95)
          */
         template<typename T>
-        static void open(const std::string& location) noexcept
+        static void open(const UVK::FString& location) noexcept
         {
             // Capturing by value, otherwise the function crashes
             global.openFunction = [location]()
@@ -76,7 +76,7 @@ namespace UVK
 
         static FVector4& getAmbientLighting() noexcept;
         static FVector4& getSceneColour() noexcept;
-        static std::string& getLevelName() noexcept;
+        static UVK::FString& getLevelName() noexcept;
 
         static PlayerController* getPlayerController(Level* lvl) noexcept;
         static Pawn* getPawn(Level* lvl) noexcept;

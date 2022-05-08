@@ -105,7 +105,7 @@ unsigned char* UVK::Texture::gen() noexcept
     return img;
 }
 
-UVK::Texture::Texture(const std::string& loc, VKDevice& dev, Commands& cmd, VKDescriptors& desc, const TextureSettings& sett) noexcept
+UVK::Texture::Texture(const UVK::FString& loc, VKDevice& dev, Commands& cmd, VKDescriptors& desc, const TextureSettings& sett) noexcept
 {
     location = loc;
     device = &dev;
@@ -114,7 +114,7 @@ UVK::Texture::Texture(const std::string& loc, VKDevice& dev, Commands& cmd, VKDe
     settings = sett;
 }
 
-UVK::Texture::Texture(const std::string &loc)
+UVK::Texture::Texture(const UVK::FString &loc)
 {
 
 }

@@ -13,7 +13,7 @@ void UVK::GLShader::createFromFile(UVK::String vLocation, UVK::String fLocation)
 	compileShader(readFile(vLocation).c_str(), readFile(fLocation).c_str());
 }
 
-std::string UVK::GLShader::readFile(UVK::String location)
+UVK::FString UVK::GLShader::readFile(UVK::String location)
 {
 	std::string content;
 	std::ifstream fileStream(location, std::ios::in);
@@ -105,7 +105,7 @@ void UVK::GLShader::compileShader(UVK::String vertex, UVK::String fragment)
 	uniformView = glGetUniformLocation(shaderID, "view");
 }
 
-void UVK::GLShader::addShader(GLuint program, const std::string& shader, GLenum shaderType)
+void UVK::GLShader::addShader(GLuint program, const UVK::FString& shader, GLenum shaderType)
 {
 	GLuint theShader = glCreateShader(shaderType);
 	

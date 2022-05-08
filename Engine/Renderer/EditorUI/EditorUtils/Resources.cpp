@@ -24,7 +24,7 @@ void UVK::EditorResources::loadConfigs(Editor& editor) noexcept
     YAML::Node file;
     try
     {
-        file = YAML::LoadFile(std::string(UVK_CONFIG_PRJ_PATH) + "uvproj.yaml");
+        file = YAML::LoadFile((UVK::FString(UVK_CONFIG_PRJ_PATH) + "uvproj.yaml").c_str());
     }
     catch (YAML::BadFile&)
     {
@@ -42,7 +42,7 @@ void UVK::EditorResources::loadConfigs(Editor& editor) noexcept
 
     try
     {
-        file = YAML::LoadFile(std::string(UVK_CONFIG_SETTINGS_PATH) + "Editor.yaml");
+        file = YAML::LoadFile((UVK::FString(UVK_CONFIG_SETTINGS_PATH) + "Editor.yaml").c_str());
     }
     catch (YAML::BadFile&)
     {
@@ -70,76 +70,76 @@ void UVK::EditorResources::loadConfigs(Editor& editor) noexcept
 #ifndef __MINGW32__
 void UVK::EditorResources::loadResources(Editor& editor, std_filesystem::path& pt) noexcept
 {
-    editor.textures.play = Texture(static_cast<std::string>(pt.string() + "Engine/play.png"));
+    editor.textures.play = Texture(static_cast<UVK::FString>(pt.string() + "Engine/play.png"));
     editor.textures.play.loadImgui();
 
-    editor.textures.logoTxt = Texture(static_cast<std::string>(pt.string() + "Engine/logo.png"));
+    editor.textures.logoTxt = Texture(static_cast<UVK::FString>(pt.string() + "Engine/logo.png"));
     editor.textures.logoTxt.loadImgui();
 
-    editor.textures.fileTextures[FS_ICON_AUDIO] = Texture(static_cast<std::string>(pt.string() + "Engine/audio.png"));
+    editor.textures.fileTextures[FS_ICON_AUDIO] = Texture(static_cast<UVK::FString>(pt.string() + "Engine/audio.png"));
     editor.textures.fileTextures[FS_ICON_AUDIO].loadImgui();
 
-    editor.textures.fileTextures[FS_ICON_IMAGE] = Texture(static_cast<std::string>(pt.string() + "Engine/image.png"));
+    editor.textures.fileTextures[FS_ICON_IMAGE] = Texture(static_cast<UVK::FString>(pt.string() + "Engine/image.png"));
     editor.textures.fileTextures[FS_ICON_IMAGE].loadImgui();
 
-    editor.textures.fileTextures[FS_ICON_VIDEO] = Texture(static_cast<std::string>(pt.string() + "Engine/video.png"));
+    editor.textures.fileTextures[FS_ICON_VIDEO] = Texture(static_cast<UVK::FString>(pt.string() + "Engine/video.png"));
     editor.textures.fileTextures[FS_ICON_VIDEO].loadImgui();
 
-    editor.textures.fileTextures[FS_ICON_FOLDER] = Texture(static_cast<std::string>(pt.string() + "Engine/folder.png"));
+    editor.textures.fileTextures[FS_ICON_FOLDER] = Texture(static_cast<UVK::FString>(pt.string() + "Engine/folder.png"));
     editor.textures.fileTextures[FS_ICON_FOLDER].loadImgui();
 
-    editor.textures.fileTextures[FS_ICON_FONT] = Texture(static_cast<std::string>(pt.string() + "Engine/font.png"));
+    editor.textures.fileTextures[FS_ICON_FONT] = Texture(static_cast<UVK::FString>(pt.string() + "Engine/font.png"));
     editor.textures.fileTextures[FS_ICON_FONT].loadImgui();
 
-    editor.textures.fileTextures[FS_ICON_MODEL] = Texture(static_cast<std::string>(pt.string() + "Engine/obj.png"));
+    editor.textures.fileTextures[FS_ICON_MODEL] = Texture(static_cast<UVK::FString>(pt.string() + "Engine/obj.png"));
     editor.textures.fileTextures[FS_ICON_MODEL].loadImgui();
 
-    editor.textures.fileTextures[FS_ICON_UNKNOWN] = Texture(static_cast<std::string>(pt.string() + "Engine/unknown.png"));
+    editor.textures.fileTextures[FS_ICON_UNKNOWN] = Texture(static_cast<UVK::FString>(pt.string() + "Engine/unknown.png"));
     editor.textures.fileTextures[FS_ICON_UNKNOWN].loadImgui();
 
-    editor.textures.fileTextures[FS_ICON_CODE] = Texture(static_cast<std::string>(pt.string() + "Engine/code.png"));
+    editor.textures.fileTextures[FS_ICON_CODE] = Texture(static_cast<UVK::FString>(pt.string() + "Engine/code.png"));
     editor.textures.fileTextures[FS_ICON_CODE].loadImgui();
 
-    editor.textures.fileTextures[FS_ICON_CLOSE] = Texture(static_cast<std::string>(pt.string() + "Engine/close.png"));
+    editor.textures.fileTextures[FS_ICON_CLOSE] = Texture(static_cast<UVK::FString>(pt.string() + "Engine/close.png"));
     editor.textures.fileTextures[FS_ICON_CLOSE].loadImgui();
 
-    editor.textures.restart = Texture(static_cast<std::string>(pt.string() + "Engine/refresh.png"));
+    editor.textures.restart = Texture(static_cast<UVK::FString>(pt.string() + "Engine/refresh.png"));
     editor.textures.restart.loadImgui();
 
-    editor.textures.stop = Texture(static_cast<std::string>(pt.string() + "Engine/stop.png"));
+    editor.textures.stop = Texture(static_cast<UVK::FString>(pt.string() + "Engine/stop.png"));
     editor.textures.stop.loadImgui();
 }
 #else
 void UVK::EditorResources::loadResources(Editor& editor) noexcept
 {
-    editor.textures.play = Texture(static_cast<std::string>("../Content/Engine/play.png"));
+    editor.textures.play = Texture(static_cast<UVK::FString>("../Content/Engine/play.png"));
     editor.textures.play.loadImgui();
 
-    editor.textures.logoTxt = Texture(static_cast<std::string>("../Content/Engine/logo.png"));
+    editor.textures.logoTxt = Texture(static_cast<UVK::FString>("../Content/Engine/logo.png"));
     editor.textures.logoTxt.loadImgui();
 
-    editor.textures.fileTextures[0] = Texture(static_cast<std::string>("../Content/Engine/audio.png"));
+    editor.textures.fileTextures[0] = Texture(static_cast<UVK::FString>("../Content/Engine/audio.png"));
     editor.textures.fileTextures[0].loadImgui();
 
-    editor.textures.fileTextures[1] = Texture(static_cast<std::string>("../Content/Engine/image.png"));
+    editor.textures.fileTextures[1] = Texture(static_cast<UVK::FString>("../Content/Engine/image.png"));
     editor.textures.fileTextures[1].loadImgui();
 
-    editor.textures.fileTextures[2] = Texture(static_cast<std::string>("../Content/Engine/video.png"));
+    editor.textures.fileTextures[2] = Texture(static_cast<UVK::FString>("../Content/Engine/video.png"));
     editor.textures.fileTextures[2].loadImgui();
 
-    editor.textures.fileTextures[3] = Texture(static_cast<std::string>("../Content/Engine/folder.png"));
+    editor.textures.fileTextures[3] = Texture(static_cast<UVK::FString>("../Content/Engine/folder.png"));
     editor.textures.fileTextures[3].loadImgui();
 
-    editor.textures.fileTextures[4] = Texture(static_cast<std::string>("../Content/Engine/font.png"));
+    editor.textures.fileTextures[4] = Texture(static_cast<UVK::FString>("../Content/Engine/font.png"));
     editor.textures.fileTextures[4].loadImgui();
 
-    editor.textures.fileTextures[5] = Texture(static_cast<std::string>("../Content/Engine/obj.png"));
+    editor.textures.fileTextures[5] = Texture(static_cast<UVK::FString>("../Content/Engine/obj.png"));
     editor.textures.fileTextures[5].loadImgui();
 
-    editor.textures.fileTextures[6] = Texture(static_cast<std::string>("../Content/Engine/unknown.png"));
+    editor.textures.fileTextures[6] = Texture(static_cast<UVK::FString>("../Content/Engine/unknown.png"));
     editor.textures.fileTextures[6].loadImgui();
 
-    editor.textures.fileTextures[7] = Texture(static_cast<std::string>("../Content/Engine/code.png"));
+    editor.textures.fileTextures[7] = Texture(static_cast<UVK::FString>("../Content/Engine/code.png"));
     editor.textures.fileTextures[7].loadImgui();
 
     editor.textures.fileTextures[FS_ICON_CLOSE] = Texture("../Content/Engine/close.png");

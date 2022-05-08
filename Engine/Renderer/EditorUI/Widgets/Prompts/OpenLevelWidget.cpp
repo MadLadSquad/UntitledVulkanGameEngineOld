@@ -4,7 +4,7 @@
 #include <cpp/imgui_stdlib.h>
 #include <Renderer/EditorUI/Classes/EditorLevel.hpp>
 
-bool OpenLevelWidget::display(std::string &openLevel, bool &bShowOpenLevelWidget, double& dr, UVK::FVector4& colour) noexcept
+bool OpenLevelWidget::display(UVK::FString &openLevel, bool &bShowOpenLevelWidget, double& dr, UVK::FVector4& colour) noexcept
 {
     bool bReturn = false;
     if (!ImGui::IsPopupOpen("Open Level"))

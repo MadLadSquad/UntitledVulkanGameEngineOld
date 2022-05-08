@@ -15,7 +15,7 @@ void UVK::AudioComponent::create(UVK::Actor* act, const char* file) noexcept
 void UVK::AudioComponent::create(UVK::Actor* act) noexcept
 {
     actor = act;
-    std::string a = source.audioData().location;
+    UVK::FString a = source.audioData().location;
     core = &actor->get<CoreComponent>();
     source = AudioSource();
     source.audioData().location = a;
@@ -24,7 +24,7 @@ void UVK::AudioComponent::create(UVK::Actor* act) noexcept
 
 void UVK::AudioComponent::create() noexcept
 {
-    std::string a = source.audioData().location;
+    UVK::FString a = source.audioData().location;
     source = AudioSource();
     source.audioData().location = a;
     source.init();
@@ -90,7 +90,7 @@ void UVK::StreamedAudioComponent::create(UVK::Actor* act, const char* file) noex
 void UVK::StreamedAudioComponent::create(UVK::Actor* act) noexcept
 {
     actor = act;
-    std::string a = source.audioData().location;
+    UVK::FString a = source.audioData().location;
     core = &actor->get<CoreComponent>();
     source = AudioSourceStreamed();
     source.audioData().location = a;
@@ -99,7 +99,7 @@ void UVK::StreamedAudioComponent::create(UVK::Actor* act) noexcept
 
 void UVK::StreamedAudioComponent::create() noexcept
 {
-    std::string a = source.audioData().location;
+    UVK::FString a = source.audioData().location;
     source = AudioSourceStreamed();
     source.audioData().location = a;
     source.init();

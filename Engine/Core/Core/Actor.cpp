@@ -2,7 +2,7 @@
 #include "Engine/GameFramework/Components/Components.hpp"
 #include <GameFramework/Components/Components/CoreComponent.hpp>
 
-UVK::Actor::Actor(const std::string& nameN, uint64_t idN, const std::string& devNameN) noexcept
+UVK::Actor::Actor(const FString& nameN, uint64_t idN, const FString& devNameN) noexcept
 {
     create(nameN, idN, devNameN);
 }
@@ -12,7 +12,7 @@ entt::entity& UVK::Actor::data() noexcept
     return entity;
 }
 
-void UVK::Actor::create(const std::string& nameN, uint64_t idN, const std::string& devNameN) noexcept
+void UVK::Actor::create(const FString& nameN, uint64_t idN, const FString& devNameN) noexcept
 {
     entity = global.ecs.data().create();
     auto& a = add<CoreComponent>();
@@ -85,7 +85,7 @@ void UVK::Actor::clear() noexcept
         remove<CoreComponent>();
 }
 
-void UVK::Actor::createInternal(const std::string& nameN, uint64_t idN, const std::string& devNameN, bool bUsingUUID) noexcept
+void UVK::Actor::createInternal(const FString& nameN, uint64_t idN, const FString& devNameN, bool bUsingUUID) noexcept
 {
     entity = global.ecs.data().create();
     auto& a = add<CoreComponent>();

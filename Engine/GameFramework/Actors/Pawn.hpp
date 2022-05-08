@@ -20,9 +20,9 @@ namespace UVK
         virtual ~Pawn() noexcept;
         Camera camera;
 
-        std::string name;
+        FString name;
         int64_t id{};
-        std::string devName;
+        FString devName;
 
         Actor actor{};
 

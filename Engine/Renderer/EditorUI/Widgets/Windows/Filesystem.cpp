@@ -31,7 +31,7 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::
 
     // Variables for renaming
     static bool bRenaming = false;
-    static std::string renameText;
+    static UVK::FString renameText;
 
     // Warning for when deleting a folder specifically
     static bool bDeleteWarning = false;
@@ -147,9 +147,9 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::
 
     ImGui::Columns(columns, nullptr, false);
 
-    auto p = pt.string();
+    auto p = UVK::FString(pt.string());
     UVK::Utility::sanitiseFilepath(p, true);
-    pt = std_filesystem::path(p);
+    pt = std_filesystem::path(p.c_str());
 
     ImGui::PushStyleColor(ImGuiCol_Button, { 0.0f, 0.0f, 0.0f, 0.0f });
     if (!(p == "../Content/" || p == "../Content"))
@@ -193,12 +193,12 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::
             {
                 .undofunc = [](UVK::TransactionPayload& payload)
                 {
-                    *payload.path = std_filesystem::path(payload.coreComponent.name);
+                    *payload.path = std_filesystem::path(payload.coreComponent.name.c_str());
                     *payload.vbChanged = true;
                 },
                 .redofunc = [](UVK::TransactionPayload& payload)
                 {
-                    *payload.path = std_filesystem::path(payload.coreComponent.devName);
+                    *payload.path = std_filesystem::path(payload.coreComponent.devName.c_str());
                     *payload.vbChanged = true;
                 },
                 .transactionPayload =
@@ -282,12 +282,12 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::
                     {
                         .undofunc = [](UVK::TransactionPayload& payload)
                         {
-                            *payload.path = std_filesystem::path(payload.coreComponent.name);
+                            *payload.path = std_filesystem::path(payload.coreComponent.name.c_str());
                             *payload.vbChanged = true;
                         },
                         .redofunc = [](UVK::TransactionPayload& payload)
                         {
-                            *payload.path = std_filesystem::path(payload.coreComponent.devName);
+                            *payload.path = std_filesystem::path(payload.coreComponent.devName.c_str());
                             *payload.vbChanged = true;
                         },
                         .transactionPayload =
@@ -460,7 +460,7 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::
                 // I don't think it's useful to set it as any other key really
                 if (UVK::Input::getKey(Keys::Enter) == Keys::KeyPressed)
                 {
-                    std_filesystem::rename(path.parent_path()/path.filename(), path.parent_path()/renameText);
+                    std_filesystem::rename(path.parent_path()/path.filename(), path.parent_path()/renameText.c_str());
 
                     bRenaming = false;
                     bNewFolder = true;
@@ -559,12 +559,12 @@ void Filesystem::createFile(const std_filesystem::path &pt) noexcept
         {
             .undofunc = [](UVK::TransactionPayload& payload)
             {
-                if (std_filesystem::exists(payload.coreComponent.name))
-                    remove(std_filesystem::path(payload.coreComponent.name));
+                if (std_filesystem::exists(payload.coreComponent.name.c_str()))
+                    remove(std_filesystem::path(payload.coreComponent.name.c_str()));
             },
             .redofunc = [](UVK::TransactionPayload& payload)
             {
-                std::ofstream out(payload.coreComponent.name);
+                std::ofstream out(payload.coreComponent.name.c_str());
                 out << std::endl;
                 out.close();
             },
@@ -588,12 +588,12 @@ void Filesystem::createFile(const std_filesystem::path &pt) noexcept
         {
             .undofunc = [](UVK::TransactionPayload& payload)
             {
-                if (std_filesystem::exists(payload.coreComponent.name))
-                    remove(std_filesystem::path(payload.coreComponent.name));
+                if (std_filesystem::exists(payload.coreComponent.name.c_str()))
+                    remove(std_filesystem::path(payload.coreComponent.name.c_str()));
             },
             .redofunc = [](UVK::TransactionPayload& payload)
             {
-                std::ofstream out(payload.coreComponent.name);
+                std::ofstream out(payload.coreComponent.name.c_str());
                 out << std::endl;
                 out.close();
             },
@@ -624,12 +624,12 @@ void Filesystem::createFolder(const std_filesystem::path& pt) noexcept
         {
             .undofunc = [](UVK::TransactionPayload& payload)
             {
-                remove_all(std_filesystem::path(payload.coreComponent.name));
+                remove_all(std_filesystem::path(payload.coreComponent.name.c_str()));
             },
             .redofunc = [](UVK::TransactionPayload& payload)
             {
-                if (!std_filesystem::exists(payload.coreComponent.name))
-                    std_filesystem::create_directory(std_filesystem::path(payload.coreComponent.name));
+                if (!std_filesystem::exists(payload.coreComponent.name.c_str()))
+                    std_filesystem::create_directory(std_filesystem::path(payload.coreComponent.name.c_str()));
             },
             .transactionPayload
             {
@@ -649,12 +649,12 @@ void Filesystem::createFolder(const std_filesystem::path& pt) noexcept
         {
             .undofunc = [](UVK::TransactionPayload& payload)
             {
-                remove_all(std_filesystem::path(payload.coreComponent.name));
+                remove_all(std_filesystem::path(payload.coreComponent.name.c_str()));
             },
             .redofunc = [](UVK::TransactionPayload& payload)
             {
-                if (!std_filesystem::exists(payload.coreComponent.name))
-                    std_filesystem::create_directory(std_filesystem::path(payload.coreComponent.name));
+                if (!std_filesystem::exists(payload.coreComponent.name.c_str()))
+                    std_filesystem::create_directory(std_filesystem::path(payload.coreComponent.name.c_str()));
             },
             .transactionPayload =
             {
@@ -682,11 +682,11 @@ void Filesystem::deleteFile(std_filesystem::path& pt, std_filesystem::path& sele
             {
                 //if (!act.valid())
                 // TODO: Recreate the whole directory structure
-                std_filesystem::create_directory(std_filesystem::path(payload.coreComponent.name));
+                std_filesystem::create_directory(std_filesystem::path(payload.coreComponent.name.c_str()));
             },
             .redofunc = [](UVK::TransactionPayload& payload)
             {
-                std_filesystem::remove_all(std_filesystem::path(payload.coreComponent.name));
+                std_filesystem::remove_all(std_filesystem::path(payload.coreComponent.name.c_str()));
             },
             .transactionPayload =
             {
@@ -719,13 +719,13 @@ void Filesystem::deleteFile(std_filesystem::path& pt, std_filesystem::path& sele
         {
             .undofunc = [](UVK::TransactionPayload& payload)
             {
-                std::ofstream out(std_filesystem::path(payload.coreComponent.name));
+                std::ofstream out(std_filesystem::path(payload.coreComponent.name.c_str()));
                 out << payload.coreComponent.devName << std::flush;
                 out.close();
             },
             .redofunc = [](UVK::TransactionPayload& payload)
             {
-                std_filesystem::remove(std_filesystem::path(payload.coreComponent.name));
+                std_filesystem::remove(std_filesystem::path(payload.coreComponent.name.c_str()));
             },
             .transactionPayload =
             {

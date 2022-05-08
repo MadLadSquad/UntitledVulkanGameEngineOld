@@ -189,8 +189,8 @@ void UVK::ThemeSettingsWidget::displayThemeSettings(bool& bReturn, bool& bOpen) 
 
     ImGui::Separator();
 
-    static std::string fontLoc;
-    static std::string outName;
+    static UVK::FString fontLoc;
+    static UVK::FString outName;
     static int fontSize = 12;
 
     ImGui::TextWrapped("Font Location: Content/");
@@ -214,6 +214,6 @@ void UVK::ThemeSettingsWidget::displayThemeSettings(bool& bReturn, bool& bOpen) 
         bOpen = false;
     ImGui::SameLine();
     if (ImGui::Button("Save"))
-        UVK::EditorTheme::save(static_cast<std::string>(UVK_CONFIG_SETTINGS_PATH + outName + ".uvktheme").c_str(), static_cast<std::string>("../Content/" + fontLoc).c_str(), fontSize);
+        UVK::EditorTheme::save(static_cast<UVK::FString>(UVK_CONFIG_SETTINGS_PATH + outName + ".uvktheme").c_str(), static_cast<UVK::FString>("../Content/" + fontLoc).c_str(), fontSize);
     ImGui::EndPopup();
 }

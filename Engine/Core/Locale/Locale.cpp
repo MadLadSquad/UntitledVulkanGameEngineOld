@@ -5,7 +5,14 @@
 UVK::LocaleManager::~LocaleManager() noexcept
 {
     for (auto& a : translations)
+    {
+        for (auto& f : a)
+        {
+            f.first.clear();
+            f.second.clear();
+        }
         a.clear();
+    }
 }
 
 void UVK::LocaleManager::openLocaleConfig()
@@ -29,7 +36,7 @@ void UVK::LocaleManager::openLocaleConfig()
     const auto& strings = node["strings"];
     if (strings)
         for (auto& a : strings)
-            translations[static_cast<int>(currentLayout)].push_back(std::make_pair(a.as<std::string>(), a.as<std::string>()));
+            translations[static_cast<int>(currentLayout)].push_back(std::make_pair(FString(a.as<std::string>()), FString(a.as<std::string>())));
     if (exists(std_filesystem::path("../Config/Translations/")))
     {
         YAML::Node node2;
@@ -57,7 +64,7 @@ void UVK::LocaleManager::openLocaleConfig()
     }
 }
 
-const std::string& UVK::LocaleManager::getLocaleString(const char* original, UVK::LocaleTypes locale) noexcept
+const UVK::FString& UVK::LocaleManager::getLocaleString(String original, UVK::LocaleTypes locale) noexcept
 {
     auto& arr = translations[static_cast<int>(locale)];
     for (auto& a : arr)
@@ -74,7 +81,7 @@ constexpr const char* UVK::Locale::getLocaleName(UVK::LocaleTypes types, bool bS
     return UVK::LocaleManager::localeStringFull[static_cast<int>(types)];
 }
 
-std::string& UVK::Locale::getLocaleString(const char* original, UVK::LocaleTypes locale) noexcept
+UVK::FString& UVK::Locale::getLocaleString(String original, UVK::LocaleTypes locale) noexcept
 {
     for (auto& a : global.localeManager.translations[static_cast<int>(locale)])
         if (a.first == original)
@@ -96,7 +103,7 @@ UVK::LocaleTypes& UVK::Locale::getFallbackLayout() noexcept
     return global.localeManager.defaultLayout;
 }
 
-UVK::LocaleTypes UVK::Locale::getLocaleID(const std::string &str) noexcept
+UVK::LocaleTypes UVK::Locale::getLocaleID(const FString& str) noexcept
 {
     for (size_t ret = 0; ret < 229; ret++)
         if (UVK::LocaleManager::localeString[ret] == str)

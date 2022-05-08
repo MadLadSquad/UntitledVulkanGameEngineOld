@@ -17,7 +17,7 @@ namespace UVK
         static bool displayKeybindEditor(bool& bOpen) noexcept;
         static bool displayKeybindGame(bool& bOpen) noexcept;
         static bool displayThemeEditor(bool& bOpen) noexcept;
-        static bool displayProjectSettings(std::string& name, std::string& ver, std::string& enginever, std::string& startupLevel, bool& bOpen) noexcept;
+        static bool displayProjectSettings(UVK::FString& name, UVK::FString& ver, UVK::FString& enginever, UVK::FString& startupLevel, bool& bOpen) noexcept;
     };
 }
 #endif

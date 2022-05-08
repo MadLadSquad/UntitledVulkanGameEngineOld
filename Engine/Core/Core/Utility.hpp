@@ -3,7 +3,6 @@
 #include <iostream>
 #include "Types.hpp"
 
-
 namespace UVK
 {
     class UVK_PUBLIC_API UVKGlobal;
@@ -34,23 +33,23 @@ namespace UVK
          * @param bInput is this text inputed by the user or output
          * @return sanitised string
          */
-        static void sanitiseFilepath(std::string& str, bool bInput) noexcept;
+        static void sanitiseFilepath(FString& str, bool bInput) noexcept;
 
         /**
          * @brief Pass in a string and a key code and it will make the string equal to the corresponding key
          * @param text Reference to the string that will contain the key
          * @param key Const reference to the keycode
          */
-        static void keyToText(std::string& text, const uint16_t& key, bool bLong) noexcept;
-        static std::string keyToText(const uint16_t& key, bool bLong) noexcept;
+        static void keyToText(FString& text, const uint16_t& key, bool bLong) noexcept;
+        static FString keyToText(const uint16_t& key, bool bLong) noexcept;
         static UVKGlobal& getGlobal() noexcept;
         static void removeConsole() noexcept;
 
-        static std::string toLower(const char* str) noexcept;
-        static void toLower(std::string& str) noexcept;
+        static UVK::FString toLower(String str) noexcept;
+        static void toLower(FString& str) noexcept;
 
-        static std::string toUpper(const char* str) noexcept;
-        static void toUpper(std::string& str) noexcept;
+        static UVK::FString toUpper(String str) noexcept;
+        static void toUpper(FString& str) noexcept;
     };
 
     class UVK_PUBLIC_API Math

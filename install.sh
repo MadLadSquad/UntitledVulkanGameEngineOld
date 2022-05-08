@@ -54,12 +54,13 @@ MSBuild.exe UVKBuildTool.sln -property:Configuration=Release -property:Platform=
 # case we will just echo an empty message
 cp Release/UVKBuildTool.exe . 2> /dev/null || echo " " || exit
 cp Release/UVKBuildToolLib.dll . 2> /dev/null || cp Release/libUVKBuildToolLib.dll . 2> /dev/null || echo " "
+cp Release/UVKBuildToolLib.lib . 2> /dev/null || cp Release/libUVKBuildToolLib.lib . 2> /dev/null || echo " "
 cp yaml-cpp/Release/yaml-cpp.dll . 2> /dev/null || cp yaml-cpp/Release/libyaml-cpp.dll . 2> /dev/null || echo " "
 cd ../../ || exit
 
 cd UVKShaderCompiler/ || exit
 cd ThirdParty/shaderc/utils/ || exit
-./git-sync-deps
+./git-sync-deps || python3 git-sync-deps || py git-sync-deps || (echo -e "\x1b[31mCouldn't sync dependencies!\x1b[0m" && exit)
 cd ../../../ || exit
 mkdir build
 cd build || exit
@@ -79,6 +80,7 @@ echo " "
 # Compiler the Shader Compiler
 MSBuild.exe UVKShaderCompiler.sln -property:Configuration=Release -property:Platform=x64 -property:maxCpuCount="${cpus}" || make -j "${cpus}" || exit
 cp Release/UVKShaderCompiler.exe . 2> /dev/null || echo " " || exit
-cp Release/UVKShaderCompilerLib.dll . 2> /dev/null || cp Release/libUVKShaderCompilerLib.dll . || echo " "
+cp Release/UVKShaderCompilerLib.dll . 2> /dev/null || cp Release/libUVKShaderCompilerLib.dll . 2> /dev/null || echo " "
+cp Release/UVKShaderCompilerLib.lib . 2> /dev/null || cp Release/libUVKShaderCompilerLib.lib . 2> /dev/null || echo " "
 cp Release/*.dll . 2> /dev/null || echo " "
 cd ../../

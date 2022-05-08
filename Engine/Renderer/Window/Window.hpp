@@ -17,7 +17,7 @@ namespace UVK
         bool operator==(const uint8_t& st) const noexcept;
         bool operator!=(const uint8_t& st) const noexcept;
 
-        std::string name{};
+        UVK::FString name{};
         uint16_t keyCode{};
         uint8_t state{};
     };
@@ -31,8 +31,8 @@ namespace UVK
 
         bool fullscreen = false;
         // path to the window's icon
-        std::string image = "../Content/Engine/icon.png";
-        std::string name = "Untitled Vulkan Game Engine Editor";
+        UVK::FString image = "../Content/Engine/icon.png";
+        UVK::FString name = "Untitled Vulkan Game Engine Editor";
         FVector2 size = FVector2(800, 600);
     };
 
@@ -177,7 +177,7 @@ namespace UVK
 
         // Input actions are a way of handling key input events by assigning a name to a key.
         // This name and key is stored in a config file, which enables you and your users to rebind key actions
-        static const InputAction& getAction(const std::string& name) noexcept;
+        static const InputAction& getAction(const UVK::FString& name) noexcept;
 
         // Returns a list of all input actions
         static std::vector<InputAction>& getActions() noexcept;

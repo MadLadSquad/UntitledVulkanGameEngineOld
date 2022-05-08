@@ -48,10 +48,10 @@ namespace UVK
 	private:
         uint32_t shaderID, uniformProjection, uniformModel, uniformView;
 
-		static std::string readFile(UVK::String location);
+		static UVK::FString readFile(UVK::String location);
 		
 		void compileShader(UVK::String vertex, UVK::String fragment);
-		static void addShader(uint32_t program, const std::string& shader, uint32_t shaderType);
+		static void addShader(uint32_t program, const UVK::FString& shader, uint32_t shaderType);
     };
 
     /**

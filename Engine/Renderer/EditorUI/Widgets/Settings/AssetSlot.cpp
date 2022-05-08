@@ -27,7 +27,7 @@ void AssetSlot::assetSlotEnd() noexcept
     ImGui::EndGroup();
 }
 
-void AssetSlot::displayTexture(int32_t id, UVK::Texture* asset, std::string& name) noexcept
+void AssetSlot::displayTexture(int32_t id, UVK::Texture* asset, UVK::FString& name) noexcept
 {
     UVK::EditorPointer editorPointer;
 
@@ -36,11 +36,11 @@ void AssetSlot::displayTexture(int32_t id, UVK::Texture* asset, std::string& nam
         {
             if (const auto* payload = ImGui::AcceptDragDropPayload("ENGINE_FS_WIDGET_ALL"))
             {
-                std::string str = (const char*)payload->Data;
+                UVK::FString str = (const char*)payload->Data;
                 str.erase(payload->DataSize);
                 static constexpr const char* imageExtensions[] = { ".jpeg", ".jpg", ".tiff", ".gif", ".bmp", ".png", ".tga", ".psd", ".pic" };
                 for (auto imageExtension : imageExtensions)
-                    if (str.ends_with(imageExtension))
+                    if (str.find(imageExtension) != UVK::FString::npos)
                         name = str;
             }
             ImGui::EndDragDropTarget();
@@ -57,7 +57,7 @@ void AssetSlot::displayTexture(int32_t id, UVK::Texture* asset, std::string& nam
     assetSlotEnd();
 }
 
-void AssetSlot::displayAudio(int32_t id, UVK::Texture* asset, std::string& name) noexcept
+void AssetSlot::displayAudio(int32_t id, UVK::Texture* asset, UVK::FString& name) noexcept
 {
     UVK::EditorPointer editorPointer;
     assetSlotBegin(editorPointer.fsicons()[FS_ICON_AUDIO], id, [&]()
@@ -66,11 +66,11 @@ void AssetSlot::displayAudio(int32_t id, UVK::Texture* asset, std::string& name)
         {
             if (const auto* payload = ImGui::AcceptDragDropPayload("ENGINE_FS_WIDGET_ALL"))
             {
-                std::string str = (const char*)payload->Data;
+                UVK::FString str = (const char*)payload->Data;
                 str.erase(payload->DataSize);
                 static constexpr const char* audioExtensions[] = { ".wav", ".flac", ".m4a", ".ogg", ".mp3" };
                 for (auto imageExtension : audioExtensions)
-                    if (str.ends_with(imageExtension))
+                    if (str.find(imageExtension) != UVK::FString::npos)
                         name = str;
             }
             ImGui::EndDragDropTarget();
@@ -86,7 +86,7 @@ void AssetSlot::displayAudio(int32_t id, UVK::Texture* asset, std::string& name)
     assetSlotEnd();
 }
 
-void AssetSlot::displayFont(int32_t id, UVK::Texture* asset, std::string& name) noexcept
+void AssetSlot::displayFont(int32_t id, UVK::Texture* asset, UVK::FString& name) noexcept
 {
     UVK::EditorPointer editorPointer;
     assetSlotBegin(editorPointer.fsicons()[FS_ICON_FONT], id, [&]()
@@ -95,9 +95,9 @@ void AssetSlot::displayFont(int32_t id, UVK::Texture* asset, std::string& name) 
         {
             if (const auto* payload = ImGui::AcceptDragDropPayload("ENGINE_FS_WIDGET_ALL"))
             {
-                std::string str = (const char*)payload->Data;
+                UVK::FString str = (const char*)payload->Data;
                 str.erase(payload->DataSize);
-                if (str.ends_with(".ttf"))
+                if (str.find(".ttf") != UVK::FString::npos)
                     name = str;
             }
             ImGui::EndDragDropTarget();
@@ -114,7 +114,7 @@ void AssetSlot::displayFont(int32_t id, UVK::Texture* asset, std::string& name) 
     assetSlotEnd();
 }
 
-void AssetSlot::displayModel(int32_t id, UVK::Texture* asset, std::string& name) noexcept
+void AssetSlot::displayModel(int32_t id, UVK::Texture* asset, UVK::FString& name) noexcept
 {
     UVK::EditorPointer editorPointer;
     assetSlotBegin(editorPointer.fsicons()[FS_ICON_MODEL], id, [&]()
@@ -123,11 +123,11 @@ void AssetSlot::displayModel(int32_t id, UVK::Texture* asset, std::string& name)
         {
             if (const auto* payload = ImGui::AcceptDragDropPayload("ENGINE_FS_WIDGET_ALL"))
             {
-                std::string str = (const char*)payload->Data;
+                UVK::FString str = (const char*)payload->Data;
                 str.erase(payload->DataSize);
                 static constexpr const char* objExtensions[] = { ".obj", ".fbx", ".glb", ".gltf" };
                 for (auto imageExtension : objExtensions)
-                    if (str.ends_with(imageExtension))
+                    if (str.find(imageExtension) != UVK::FString::npos)
                         name = str;
             }
             ImGui::EndDragDropTarget();
@@ -144,7 +144,7 @@ void AssetSlot::displayModel(int32_t id, UVK::Texture* asset, std::string& name)
     assetSlotEnd();
 }
 
-void AssetSlot::displayShaders(int32_t id, UVK::Texture* asset, std::string& name) noexcept
+void AssetSlot::displayShaders(int32_t id, UVK::Texture* asset, UVK::FString& name) noexcept
 {
     UVK::EditorPointer editorPointer;
     assetSlotBegin(editorPointer.fsicons()[FS_ICON_CODE], id, [&]()
@@ -153,11 +153,11 @@ void AssetSlot::displayShaders(int32_t id, UVK::Texture* asset, std::string& nam
         {
             if (const auto* payload = ImGui::AcceptDragDropPayload("ENGINE_FS_WIDGET_ALL"))
             {
-                std::string str = (const char*)payload->Data;
+                UVK::FString str = (const char*)payload->Data;
                 str.erase(payload->DataSize);
                 static constexpr const char* shaderExtensions[] = { ".glsl", ".vshader.glsl", ".fshader.glsl", ".vshader", ".fshader" };
                 for (auto imageExtension : shaderExtensions)
-                    if (str.ends_with(imageExtension))
+                    if (str.find(imageExtension) != UVK::FString::npos)
                         name = str;
             }
             ImGui::EndDragDropTarget();
@@ -174,7 +174,7 @@ void AssetSlot::displayShaders(int32_t id, UVK::Texture* asset, std::string& nam
     assetSlotEnd();
 }
 
-void AssetSlot::displayVideo(int32_t id, UVK::Texture* asset, std::string& name) noexcept
+void AssetSlot::displayVideo(int32_t id, UVK::Texture* asset, UVK::FString& name) noexcept
 {
     UVK::EditorPointer editorPointer;
     assetSlotBegin(editorPointer.fsicons()[FS_ICON_VIDEO], id, [&]()
@@ -183,11 +183,11 @@ void AssetSlot::displayVideo(int32_t id, UVK::Texture* asset, std::string& name)
         {
             if (const auto* payload = ImGui::AcceptDragDropPayload("ENGINE_FS_WIDGET_ALL"))
             {
-                std::string str = (const char*)payload->Data;
+                UVK::FString str = (const char*)payload->Data;
                 str.erase(payload->DataSize);
                 static constexpr const char* videoExtensions[] = { ".mov", ".m4v", ".mp4", ".mpeg", ".mkv", ".mpg", ".wmv", ".webm" };
                 for (auto imageExtension : videoExtensions)
-                    if (str.ends_with(imageExtension))
+                    if (str.find(imageExtension) != UVK::FString::npos)
                         name = str;
             }
             ImGui::EndDragDropTarget();

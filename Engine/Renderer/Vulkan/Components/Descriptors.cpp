@@ -1,5 +1,6 @@
 #include "Descriptors.hpp"
 #include "Swapchain.hpp"
+#include <Core/Global.hpp>
 
 UVK::VKDescriptors::VKDescriptors(UVK::VKDevice& dev, Swapchain& swap, VKResources& res)
 {
@@ -20,19 +21,21 @@ void UVK::VKDescriptors::createDescriptorSetLayout() noexcept
             .stageFlags = VK_SHADER_STAGE_VERTEX_BIT,
             .pImmutableSamplers = nullptr,
         },
-        //{
-        //    .binding = 1,
-        //    .descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC,
-        //    .descriptorCount = 1,
-        //    .stageFlags = VK_SHADER_STAGE_VERTEX_BIT,
-        //    .pImmutableSamplers = nullptr
-        //}
+        {
+            .binding = 1,
+            .descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC,
+            .descriptorCount = 1,
+            .stageFlags = VK_SHADER_STAGE_VERTEX_BIT,
+            .pImmutableSamplers = nullptr
+        }
     };
-
+    uint8_t size = 1;
+    if (global.initInfo->shaderMutableStruct.data != nullptr && global.initInfo->shaderMutableStruct.size > 0)
+        size = 2;
     const VkDescriptorSetLayoutCreateInfo layoutCreateInfo =
     {
         .sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO,
-        .bindingCount = 1,
+        .bindingCount = size,
         .pBindings = layoutBindings
     };
 
@@ -89,17 +92,21 @@ void UVK::VKDescriptors::createDescriptorPool() noexcept
             .type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER,
             .descriptorCount = static_cast<uint32_t>(resources->getUniformBuffers().size())
         },
-        //{
-        //    .type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC,
-        //    .descriptorCount = static_cast<uint32_t>(swapchain->dynamicUniformBuffers.size())
-        //}
+        {
+            .type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC,
+            .descriptorCount = static_cast<uint32_t>(resources->getDynamicUniformBuffers().size())
+        }
     };
+
+    uint8_t size = 1;
+    if (global.initInfo->shaderMutableStruct.data != nullptr && global.initInfo->shaderMutableStruct.size > 0)
+        size = 2;
 
     const VkDescriptorPoolCreateInfo poolCreateInfo =
     {
         .sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO,
         .maxSets = static_cast<uint32_t>(resources->getUniformBuffers().size()),
-        .poolSizeCount = 1,
+        .poolSizeCount = size,
         .pPoolSizes = poolSizes
     };
 
@@ -157,22 +164,28 @@ void UVK::VKDescriptors::createDescriptorSets() noexcept
         logger.consoleLog("Couldn't allocate vulkan descriptor sets! Error code: ", UVK_LOG_TYPE_ERROR, result);
         std::terminate();
     }
-
+    uint8_t size = 1;
+    if (global.initInfo->shaderMutableStruct.data != nullptr && global.initInfo->shaderMutableStruct.size > 0)
+        size = 2;
     for (size_t i = 0; i < resources->getUniformBuffers().size(); i++)
     {
-        const VkDescriptorBufferInfo descriptorBufferInfos[] =
+        VkDescriptorBufferInfo descriptorBufferInfos[2] =
         {
             {
                 .buffer = resources->getUniformBuffers()[i].getBuffer(),
                 .offset = 0,
                 .range = sizeof(VP)
             },
-            //{
-            //    .buffer = swapchain->dynamicUniformBuffers[i].getBuffer(),
-            //    .offset = 0,
-            //    .range = swapchain->modelUniformAlignment
-            //}
         };
+        if (global.initInfo->shaderMutableStruct.data!= nullptr && global.initInfo->shaderMutableStruct.size > 0)
+        {
+            descriptorBufferInfos[1] =
+            {
+                .buffer = resources->getDynamicUniformBuffers()[i].getBuffer(),
+                .offset = 0,
+                .range = resources->getModelUniformAlignment()
+            };
+        }
 
         const VkWriteDescriptorSet descriptorWrites[] =
         {
@@ -185,18 +198,18 @@ void UVK::VKDescriptors::createDescriptorSets() noexcept
                 .descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER,
                 .pBufferInfo = &descriptorBufferInfos[0]
             },
-            //{
-            //    .sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET,
-            //    .dstSet = descriptorSets[i],
-            //    .dstBinding = 1,
-            //    .dstArrayElement = 0,
-            //    .descriptorCount = 1,
-            //    .descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC,
-            //    .pBufferInfo = &descriptorBufferInfos[1]
-            //}
+            {
+                .sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET,
+                .dstSet = descriptorSets[i],
+                .dstBinding = 1,
+                .dstArrayElement = 0,
+                .descriptorCount = 1,
+                .descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC,
+                .pBufferInfo = &descriptorBufferInfos[1]
+            }
         };
 
-        vkUpdateDescriptorSets(device->getDevice(), 1, descriptorWrites, 0, nullptr);
+        vkUpdateDescriptorSets(device->getDevice(), size, descriptorWrites, 0, nullptr);
     }
 }
 

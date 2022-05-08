@@ -9,6 +9,6 @@
 namespace CreateFile
 {
     // Creates a file
-    bool display(std::string& fileOutLocation, bool& bShowCreateFile1, const std::string& prjname) noexcept;
+    bool display(UVK::FString& fileOutLocation, bool& bShowCreateFile1, const UVK::FString& prjname) noexcept;
 }
 #endif

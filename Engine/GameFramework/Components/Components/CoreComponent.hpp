@@ -11,9 +11,9 @@ namespace UVK
      */
     struct CoreComponent
     {
-        std::string name;
+        UVK::FString name;
         uint64_t id = 0;
-        std::string devName;
+        UVK::FString devName;
 
         FVector translation = { 0.0f, 0.0f, 0.0f };
         FVector rotation = { 0.0f, 0.0f, 0.0f };

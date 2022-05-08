@@ -5,6 +5,36 @@
 #include "Vulkan/VulkanRenderer.hpp"
 #include <yaml.h>
 
+namespace YAML
+{
+    template<>
+    struct convert<UVK::FVector4>
+    {
+        static Node encode(const UVK::FVector4& rhs) noexcept
+        {
+            Node node;
+            node.push_back(rhs.x);
+            node.push_back(rhs.y);
+            node.push_back(rhs.z);
+            node.push_back(rhs.w);
+            node.SetStyle(EmitterStyle::Flow);
+            return node;
+        }
+    
+        static bool decode(const Node& node, UVK::FVector4& rhs) noexcept
+        {
+            if (!node.IsSequence() || node.size() != 4)
+                return false;
+    
+            rhs.x = node[0].as<float>();
+            rhs.y = node[1].as<float>();
+            rhs.z = node[2].as<float>();
+            rhs.w = node[3].as<float>();
+            return true;
+        }
+    };
+}
+
 UVK::Renderer::Renderer(UVK::Level* lvl, bool bUsesEditor) noexcept
 {
     startRenderer(lvl, bUsesEditor);
@@ -26,7 +56,7 @@ void UVK::RendererSettings::saveSettings() const noexcept
     out << YAML::BeginMap;
 
     out << YAML::Key << "vulkan" << YAML::Value << global.bUsesVulkan;
-    out << YAML::Key << "theme" << YAML::Value << themeLoc;
+    out << YAML::Key << "theme" << YAML::Value << themeLoc.c_str();
     out << YAML::Key << "v-sync" << YAML::Value << bVsync;
     out << YAML::Key << "v-sync-immediate" << YAML::Value << bVsyncImmediate;
     out << YAML::Key << "msaa-samples" << YAML::Value << samples;

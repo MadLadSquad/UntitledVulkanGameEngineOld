@@ -13,7 +13,7 @@ bool RemoveFile::display(bool& bShow) noexcept
 
     if (ImGui::BeginPopupModal("Remove File", &bShow))
     {
-        static std::string in;
+        static UVK::FString in;
         static bool bSO = false;
 
         ImGui::TextWrapped("Scriptable Object?");
@@ -40,8 +40,8 @@ bool RemoveFile::display(bool& bShow) noexcept
                 UBT::removeClass(in);
                 try
                 {
-                    std_filesystem::remove(std::string(UVK_CONFIG_PRJ_PATH) + "Source/" + in + ".hpp");
-                    std_filesystem::remove(std::string(UVK_CONFIG_PRJ_PATH) + "Source/" + in + ".cpp");
+                    std_filesystem::remove((UVK::FString(UVK_CONFIG_PRJ_PATH) + "Source/" + in + ".hpp").c_str());
+                    std_filesystem::remove((UVK::FString(UVK_CONFIG_PRJ_PATH) + "Source/" + in + ".cpp").c_str());
                 }
                 catch (std_filesystem::filesystem_error&)
                 {
@@ -54,8 +54,8 @@ bool RemoveFile::display(bool& bShow) noexcept
 #ifndef __MINGW32__
                 try
                 {
-                    std_filesystem::remove(std::string(UVK_CONFIG_PRJ_PATH) + "Source/" + in + ".hpp");
-                    std_filesystem::remove(std::string(UVK_CONFIG_PRJ_PATH) + "Source/" + in + ".cpp");
+                    std_filesystem::remove((UVK::FString(UVK_CONFIG_PRJ_PATH) + "Source/" + in + ".hpp").c_str());
+                    std_filesystem::remove((UVK::FString(UVK_CONFIG_PRJ_PATH) + "Source/" + in + ".cpp").c_str());
                 }
                 catch (std_filesystem::filesystem_error&)
                 {

@@ -25,7 +25,7 @@ namespace UVK
     struct UVK_PUBLIC_API AudioSourceData
     {
         AudioSourceData() = default;
-        std::string location;
+        FString location;
         uint32_t source = 0;
         float pitch = 1.0f;
         float gain = 1.0f;

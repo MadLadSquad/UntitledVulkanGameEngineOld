@@ -13,6 +13,10 @@ namespace UVK
     public:
         GameInstance() noexcept;
 
+        // Use this to initialize things such as your init info struct
+        virtual void init() = 0; 
+        virtual void destroy() = 0;
+
         virtual void beginPlay() = 0;
         virtual void endPlay() = 0;
         virtual void onEventInitEditorModules() = 0; // Add any editor module declaration here
@@ -28,6 +32,7 @@ namespace UVK
         }
 
         virtual ~GameInstance() = default;
+        InitInfo initInfo{};
     private:
         friend class Actor;
         friend class Level;

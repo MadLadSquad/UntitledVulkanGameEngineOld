@@ -51,19 +51,19 @@ UVK::AssetType UVK::AssetManager::getAssetType(const std::filesystem::path& path
     static constexpr const char* codeExtensions[] = { ".yaml", ".uvklevel", ".yml" };
 
     for (auto& a : audioExtensions)
-        if (path.filename().string() == std::string(a))
+        if (path.filename().string() == FString(a))
             return UVK::ASSET_TYPE_AUDIO;
     for (auto& a : imageExtensions)
-        if (path.filename().string() == std::string(a))
+        if (path.filename().string() == FString(a))
             return UVK::ASSET_TYPE_TEXTURE;
     for (auto& a : videoExtensions)
-        if (path.filename().string() == std::string(a))
+        if (path.filename().string() == FString(a))
             return UVK::ASSET_TYPE_VIDEO;
     for (auto& a : objExtensions)
-        if (path.filename().string() == std::string(a))
+        if (path.filename().string() == FString(a))
             return UVK::ASSET_TYPE_MODEL;
     for (auto& a : codeExtensions)
-        if (path.filename().string() == std::string(a))
+        if (path.filename().string() == FString(a))
             return UVK::ASSET_TYPE_CODE;
     if (path.filename().string() == ".ttf")
         return UVK::ASSET_TYPE_FONT;
@@ -82,7 +82,7 @@ std::vector<UVK::Asset> UVK::AssetManager::getAllAssetsWithName(const char* name
 {
     std::vector<Asset> vect;
     for (auto& a : global.assetManager.assets)
-        if (a.name == std::string(name))
+        if (a.name == FString(name))
             vect.emplace_back(a);
     return vect;
 }

@@ -10,7 +10,7 @@
 #include <Renderer/EditorUI/Modules/EditorModule.hpp>
 #include <GameFramework/Components/Components/CoreComponent.hpp>
 
-bool DetailsPanel::DrawVec3Control(const std::string &label, glm::vec3 &values, float resetValue, float columnWidth, float speed) noexcept
+bool DetailsPanel::DrawVec3Control(const UVK::FString &label, glm::vec3 &values, float resetValue, float columnWidth, float speed) noexcept
 {
     const ImGuiIO& io = ImGui::GetIO();
     auto boldFont = io.Fonts->Fonts[0];
@@ -185,7 +185,7 @@ bool DetailsPanel::display(UVK::Actor& ent, UVK::Level* lvl, bool& bShow, const 
             ImGui::SameLine();
             if (ImGui::InputScalar("##ID##inputactoridentifier", ImGuiDataType_U64, &a.id) || ImGui::IsItemActive())
                 bReturn = true;
-            if (a.id == 330 && a.name.find("Editor") == std::string::npos)
+            if (a.id == 330 && a.name.find("Editor") == UVK::FString::npos)
                 a.id += 1;
 
             ImGui::TextWrapped("UUID: %lu", a.uuid.data());

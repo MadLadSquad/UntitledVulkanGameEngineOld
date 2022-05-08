@@ -17,7 +17,7 @@ namespace uexec
  */
 namespace TopToolbar
 {
-    bool display(UVK::Texture& play, const std::string& projectName, const UVK::EditorModuleManager& modules, bool& bShow, UVK::Texture& restart, UVK::Texture& stop) noexcept;
-    void startProcess(const std::string& projectName, uexec::ScriptRunner& runner, bool& bShowPlay) noexcept;
+    bool display(UVK::Texture& play, const UVK::FString& projectName, const UVK::EditorModuleManager& modules, bool& bShow, UVK::Texture& restart, UVK::Texture& stop) noexcept;
+    void startProcess(const UVK::FString& projectName, uexec::ScriptRunner& runner, bool& bShowPlay) noexcept;
 }
 #endif

@@ -16,7 +16,7 @@ void UVK::MeshComponent::create(UVK::String location, VKDevice &dev, Commands& c
         logger.consoleLog("Couldn't load model at location: ", UVK_LOG_TYPE_ERROR, location);
         std::terminate();
     }
-    std::vector<std::string> textureNames(scene->mNumMaterials);
+    std::vector<UVK::FString> textureNames(scene->mNumMaterials);
     for (size_t i = 0; i < scene->mNumMaterials; i++)
     {
         aiMaterial* material = scene->mMaterials[i];
@@ -42,7 +42,7 @@ void UVK::MeshComponent::create(UVK::String location, VKDevice &dev, Commands& c
     matids.resize(textureNames.size());
     for (size_t i = 0; i < textureNames.size(); i++)
     {
-        if (textureNames[i].empty() || !std_filesystem::exists(std_filesystem::path(textureNames[i])))
+        if (textureNames[i].empty() || !std_filesystem::exists(std_filesystem::path(textureNames[i].c_str())))
             matids[i] = 0;
         else
         {

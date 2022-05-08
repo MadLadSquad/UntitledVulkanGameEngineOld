@@ -12,6 +12,6 @@
  */
 namespace WorldSettings
 {
-    bool display(UVK::FVector4& colour, UVK::FVector4& ambientLight, std::string& name, bool& bShow) noexcept;
+    bool display(UVK::FVector4& colour, UVK::FVector4& ambientLight, UVK::FString& name, bool& bShow) noexcept;
 }
 #endif

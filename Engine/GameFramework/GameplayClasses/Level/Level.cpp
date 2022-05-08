@@ -60,8 +60,14 @@ namespace YAML {
             return true;
         }
     };
-
 }
+
+YAML::Emitter& operator<<(YAML::Emitter& out, const UVK::FString& val) noexcept
+{
+    out << val.c_str();
+    return out;
+}
+
 // Operator overloads for future transform component
 YAML::Emitter& operator<<(YAML::Emitter& out, const UVK::FVector& vect) noexcept
 {
@@ -83,9 +89,9 @@ void UVK::Level::saveEntity(YAML::Emitter& out, entt::entity act) noexcept
     if (global.ecs.data().any_of<CoreComponent>(act))
     {
         auto& a = global.ecs.data().get<CoreComponent>(act);
-        out << YAML::Key << "actor" << YAML::Value << a.name;
+        out << YAML::Key << "actor" << YAML::Value << a.name.c_str();
         out << YAML::Key << "id" << YAML::Value << a.id;
-        out << YAML::Key << "dev-name" << YAML::Value << a.devName;
+        out << YAML::Key << "dev-name" << YAML::Value << a.devName.c_str();
         out << YAML::Key << "uuid" << YAML::Value << a.uuid.data();
         out << YAML::Key << "standart" << YAML::Value << a.standart();
         out << YAML::Key << "translation" << YAML::Value << a.translation;
@@ -99,7 +105,7 @@ void UVK::Level::saveEntity(YAML::Emitter& out, entt::entity act) noexcept
         {
             if (b == act)
             {
-                out << YAML::Key << "sh-folder-name" << YAML::Value << a.name;
+                out << YAML::Key << "sh-folder-name" << YAML::Value << a.name.c_str();
                 goto exit_folder_setting;
             }
         }
@@ -112,7 +118,7 @@ exit_folder_setting:
         out << YAML::Key << "audio-gain" << YAML::Value << a.source.audioData().gain;
         out << YAML::Key << "audio-loop" << YAML::Value << a.source.audioData().bLoop;
         out << YAML::Key << "audio-velocity" << YAML::Value << a.source.audioData().velocity;
-        out << YAML::Key << "audio-file" << YAML::Value << a.source.audioData().location;
+        out << YAML::Key << "audio-file" << YAML::Value << a.source.audioData().location.c_str();
     }
     out << YAML::EndMap;
 }
@@ -122,7 +128,7 @@ void UVK::Level::save(String location) noexcept
     YAML::Emitter out;
     out << YAML::BeginMap;
 
-    out << YAML::Key << "name" << YAML::Value << global.levelName;
+    out << YAML::Key << "name" << YAML::Value << global.levelName.c_str();
     out << YAML::Key << "background-colour" << YAML::Value << global.colour;
     out << YAML::Key << "ambient-light" << YAML::Value << global.ambientLight;
     out << YAML::Key << "actors" << YAML::Value << YAML::BeginSeq;
@@ -135,7 +141,7 @@ void UVK::Level::save(String location) noexcept
     out << YAML::EndSeq;
     out << YAML::EndMap;
 
-    std::ofstream fileout(location + std::string(".uvklevel"));
+    std::ofstream fileout((location + UVK::FString(".uvklevel")).c_str());
     fileout << out.c_str();
 }
 
@@ -144,7 +150,7 @@ void UVK::Level::openInternal(UVK::String location, bool first) noexcept
     YAML::Node out;
     try
     {
-        out = YAML::LoadFile(location + std::string(".uvklevel"));
+        out = YAML::LoadFile((location + UVK::FString(".uvklevel")).c_str());
     }
     catch (YAML::BadFile&)
     {
@@ -253,7 +259,7 @@ UVK::FVector4& UVK::Level::getSceneColour() noexcept
     return global.colour;
 }
 
-std::string& UVK::Level::getLevelName() noexcept
+UVK::FString& UVK::Level::getLevelName() noexcept
 {
     return global.levelName;
 }

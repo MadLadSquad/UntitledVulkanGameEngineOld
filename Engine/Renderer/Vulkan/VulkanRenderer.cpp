@@ -15,7 +15,6 @@ void UVK::VulkanRenderer::run() noexcept
     // Set the UVKShaderCompiler path and check for recompilation
     USC::setPrefixDir("../");
     USC::checkForCompile();
-
     global.window.createWindow();
     global.renderer = &renderer;
     renderer.create();
@@ -85,6 +84,7 @@ void UVK::VulkanRenderer::updateEvents(double deltaTime) noexcept
 
 void UVK::VulkanRenderer::beginEvents() noexcept
 {
+    global.initInfo = &global.instance->initInfo;
     if (global.bEditor)
     {
 #ifndef PRODUCTION

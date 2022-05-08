@@ -26,7 +26,7 @@ namespace UVK
 
         AudioSource source;
     private:
-        std::string currentFile;
+        UVK::FString currentFile;
 
         UVK::CoreComponent* core = nullptr;
         UVK::Actor* actor = nullptr;
@@ -48,7 +48,7 @@ namespace UVK
 
         AudioSourceStreamed source;
     private:
-        std::string currentFile;
+        UVK::FString currentFile;
 
         UVK::CoreComponent* core = nullptr;
         UVK::Actor* actor = nullptr;

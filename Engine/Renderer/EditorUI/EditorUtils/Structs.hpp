@@ -17,7 +17,7 @@ namespace UVK
             contents.clear();
             bValid = false;
         }
-        std::string name = "NewFolder";
+        UVK::FString name = "NewFolder";
         bool bValid = true; // Saving if a folder is valid for later
         std::vector<UVK::Actor> contents;
     };
@@ -28,13 +28,13 @@ namespace UVK
      */
     struct EditorKeys
     {
-        std::string editor_level_save;
-        std::string editor_level_new;
-        std::string editor_level_saveas;
-        std::string editor_level_open;
-        std::string editor_new_file;
-        std::string editor_undo;
-        std::string editor_redo;
+        UVK::FString editor_level_save;
+        UVK::FString editor_level_new;
+        UVK::FString editor_level_saveas;
+        UVK::FString editor_level_open;
+        UVK::FString editor_new_file;
+        UVK::FString editor_undo;
+        UVK::FString editor_redo;
     };
 
     /**
@@ -42,16 +42,16 @@ namespace UVK
      */
     struct EditorStrings
     {
-        std::string openLevel;
-        std::string location;
-        std::string name;
-        std::string fileOutLocation;
-        std::string terminalCommand;
+        UVK::FString openLevel;
+        UVK::FString location;
+        UVK::FString name;
+        UVK::FString fileOutLocation;
+        UVK::FString terminalCommand;
         UVK::String colTheme{};
-        std::string engineVersion;
-        std::string projectVersion;
-        std::string projectName;
-        std::string startupLevel;
+        UVK::FString engineVersion;
+        UVK::FString projectVersion;
+        UVK::FString projectName;
+        UVK::FString startupLevel;
     };
 
     /**
@@ -113,7 +113,7 @@ namespace UVK
         void writeToFile(Editor& editor) const noexcept;
 
         uint32_t maxSavedTransactions = 100;
-        std::string editorLayoutLocation = "../Config/Engine/FallbackLayout";
+        UVK::FString editorLayoutLocation = "../Config/Engine/FallbackLayout";
         FilesystemWidgetData fsdata;
     };
 #endif

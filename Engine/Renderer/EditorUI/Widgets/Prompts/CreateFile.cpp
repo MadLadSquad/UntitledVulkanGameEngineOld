@@ -3,7 +3,7 @@
 #include <cpp/imgui_stdlib.h>
 #include <UVKBuildTool/src/FileGenerator.hpp>
 
-bool CreateFile::display(std::string& fileOutLocation, bool& bShowCreateFile1, const std::string& prjname) noexcept
+bool CreateFile::display(UVK::FString& fileOutLocation, bool& bShowCreateFile1, const UVK::FString& prjname) noexcept
 {
     bool bReturn = false;
     if (!ImGui::IsPopupOpen("Create a file"))
@@ -11,8 +11,8 @@ bool CreateFile::display(std::string& fileOutLocation, bool& bShowCreateFile1, c
 
     if (ImGui::BeginPopupModal("Create a file", &bShowCreateFile1))
     {
-        static std::string str;
-        static std::string sf;
+        static UVK::FString str;
+        static UVK::FString sf;
         ImGui::Columns(2, nullptr, false);
 
         ImGui::TextWrapped("File type");
@@ -82,7 +82,7 @@ bool CreateFile::display(std::string& fileOutLocation, bool& bShowCreateFile1, c
 
         if (ImGui::Button("Create"))
         {
-            UBT::makeTemplate(fileOutLocation, sf, prjname.c_str());
+            UBT::makeTemplate(fileOutLocation.c_str(), sf.c_str(), prjname.c_str());
 
             bShowCreateFile1 = false;
             fileOutLocation = "";

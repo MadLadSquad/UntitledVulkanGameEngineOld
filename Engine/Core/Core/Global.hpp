@@ -11,7 +11,7 @@ namespace UVK
     struct UVK_PUBLIC_API RendererSettings
     {
         RendererSettings() = default;
-        std::string themeLoc;
+        FString themeLoc;
         bool bVsync = false;
         bool bVsyncImmediate = true;
         uint32_t samples = VK_SAMPLE_COUNT_1_BIT;
@@ -19,6 +19,52 @@ namespace UVK
         float sampleRateShadingMult = 0.25f;
 
         void saveSettings() const noexcept;
+    };
+
+    struct UVK_PUBLIC_API ShaderConstantBase
+    {
+        glm::mat4 view;
+        glm::mat4 projection;
+    };
+
+    struct UVK_PUBLIC_API ShaderPushConstantBase
+    {
+        glm::mat4 model;
+    };
+
+    // A struct of values that will be constant for all shaders, they can still be changed from frame to frame but will not be different for every shader that uses them
+    struct UVK_PUBLIC_API ShaderConstantStruct
+    {
+        ShaderConstantBase* data = nullptr;
+        size_t size = 0;
+    };
+
+    // A struct of mutable values of bigger size than 128bits
+    struct UVK_PUBLIC_API ShaderMutableStruct
+    {
+        void* data = nullptr;
+        size_t size = 0;
+
+        std::function<void(void*)> updateDynamicUniformBufferCallback = [](void*) {};
+    };
+
+    // A struct of mutable values of max size of 128 bits, 64bits occupied by the model struct
+    struct UVK_PUBLIC_API ShaderPushConstant
+    {
+        ShaderPushConstantBase* data = nullptr;
+        uint8_t size = 0;
+    };
+
+    // The init info struct defines multiple types that can be used to set up certain one time settings
+    struct UVK_PUBLIC_API InitInfo
+    {
+    public:
+        ShaderConstantStruct shaderConstantStruct = { &fallbackShaderConstant, sizeof(ShaderConstantBase) };
+        ShaderMutableStruct shaderMutableStruct{};
+        ShaderPushConstant shaderPushConstant = { &fallbackShaderPushConstant, sizeof(ShaderPushConstantBase) };
+    private:
+        ShaderConstantBase fallbackShaderConstant{};
+        ShaderPushConstantBase fallbackShaderPushConstant{};
     };
 
     class Level;
@@ -43,20 +89,21 @@ namespace UVK
 
         static void openLevelInternal(UVK::String name, bool bfirst = false) noexcept;
 
-        std::string levelLocation;
+        FString levelLocation;
         bool bUsesVulkan{};
 
-        std::function<void(void)> modbegin = [](){};
-        std::function<void(float)> modtick = [](float){};
-        std::function<void(void)> modend = [](){};
+        std::function<void(void)> modbegin = [=](){};
+        std::function<void(float)> modtick = [=](float){};
+        std::function<void(void)> modend = [=](){};
 
         InternalRendererComponents* renderer = nullptr;
     private:
+        InitInfo* initInfo;
         IDManager idManager;
 
         RendererSettings rendererSettings;
 
-        std::string levelName;
+        FString levelName;
 
         FVector4 colour{};
         FVector4 ambientLight{};
@@ -64,9 +111,9 @@ namespace UVK
         bool bEditor{};
         ECSManager ecs;
 
-        std::vector<InputAction> inputActionList;
-        UIInternal ui;
-        LocaleManager localeManager;
+        std::vector<InputAction> inputActionList{};
+        UIInternal ui{};
+        LocaleManager localeManager{};
 
         /**
          * @note Open the documentation for Levels and opening of levels for more info about this function
@@ -103,8 +150,11 @@ namespace UVK
         friend class Commands;
         friend class InternalRendererComponents;
         friend class Locale;
+        friend class VKResources;
+        friend class VKDescriptors;
         friend struct MeshComponentRaw;
         friend struct RendererSettings;
+        friend struct InitInfo;
     };
 
     inline UVKGlobal global;

@@ -5,7 +5,7 @@
 #include <UVKBuildTool/src/ActorListGenerator.hpp>
 #include <UVKBuildTool/src/SourceGenerator.hpp>
 
-void UVK::ProjectSettingsWidget::displayProjectSettings(bool& bReturn, std::string& name, std::string& ver, std::string& enginever, std::string& startupLevel, bool& bOpen) noexcept
+void UVK::ProjectSettingsWidget::displayProjectSettings(bool& bReturn, UVK::FString& name, UVK::FString& ver, UVK::FString& enginever, UVK::FString& startupLevel, bool& bOpen) noexcept
 {
     ImGui::TextWrapped("Project Name");
     ImGui::SameLine();
@@ -48,15 +48,15 @@ void UVK::ProjectSettingsWidget::displayProjectSettings(bool& bReturn, std::stri
     {
         // TODO: output this with the custom libraries and files so that the configuration doesn't get overridden
         YAML::Emitter o;
-        o << YAML::BeginMap << YAML::Key << "name" << YAML::Value << name;
-        o << YAML::Key << "startup-level" << YAML::Value << startupLevel;
-        o << YAML::Key << "version" << YAML::Value << ver;
-        o << YAML::Key << "engine-version" << YAML::Value << enginever;
+        o << YAML::BeginMap << YAML::Key << "name" << YAML::Value << name.c_str();
+        o << YAML::Key << "startup-level" << YAML::Value << startupLevel.c_str();
+        o << YAML::Key << "version" << YAML::Value << ver.c_str();
+        o << YAML::Key << "engine-version" << YAML::Value << enginever.c_str();
 
         YAML::Node config;
         try
         {
-            config = YAML::LoadFile(std::string(UVK_CONFIG_PRJ_PATH) + "uvproj.yaml");
+            config = YAML::LoadFile((UVK::FString(UVK_CONFIG_PRJ_PATH) + "uvproj.yaml").c_str());
         }
         catch (YAML::BadFile&)
         {
@@ -83,7 +83,7 @@ void UVK::ProjectSettingsWidget::displayProjectSettings(bool& bReturn, std::stri
         // The following lines are sourced from the main.cpp file in the UVKBuildTool CLI
         bool bSetReadable;
 
-        std::string startupLevelName;
+        UVK::FString startupLevelName;
 
         std::ifstream i(UBT::getPath() + "Generated/ActorList.hpp");
         bSetReadable = i.is_open();

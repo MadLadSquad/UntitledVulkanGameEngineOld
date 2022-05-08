@@ -2,7 +2,7 @@
 #ifndef PRODUCTION
 #include "../../GameFramework/GameplayClasses/Level/Level.hpp"
 
-bool SaveLevel::display(bool &bOpen, std::string& location, UVK::FVector4& colour) noexcept
+bool SaveLevel::display(bool &bOpen, UVK::FString& location, UVK::FVector4& colour) noexcept
 {
     bool bReturn = false;
     if (!ImGui::IsPopupOpen("Save level"))
@@ -24,7 +24,7 @@ bool SaveLevel::display(bool &bOpen, std::string& location, UVK::FVector4& colou
 
         if (ImGui::Button("Submit##submitbuttononsave"))
         {
-            std::string temp = UVK_CONTENT_PATH + location;
+            UVK::FString temp = UVK_CONTENT_PATH + location;
             UVK::Level::save(temp.c_str());
             bOpen = false;
         }

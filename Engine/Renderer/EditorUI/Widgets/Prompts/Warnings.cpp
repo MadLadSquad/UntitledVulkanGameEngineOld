@@ -41,14 +41,14 @@ void Warnings::displayGenerateWarning(bool& bOpen) noexcept
         ImGui::SameLine();
         if (ImGui::Button("Regenerate##ed"))
         {
-            std::string startupLevelName;
+            UVK::FString startupLevelName;
             YAML::Node config;
-            std::string name;
+            UVK::FString name;
             UBT::CMakeInfoData data;
 
             try
             {
-                config = YAML::LoadFile(std::string(UVK_CONFIG_PRJ_PATH) + "uvproj.yaml");
+                config = YAML::LoadFile((UVK::FString(UVK_CONFIG_PRJ_PATH) + "uvproj.yaml").c_str());
             }
             catch (YAML::BadFile&)
             {

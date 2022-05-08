@@ -3,7 +3,7 @@
 #include <imgui.h>
 #include <cpp/imgui_stdlib.h>
 
-bool TerminalEmulator::display(std::string& terminalCommand, bool& bFinalisedCommand, bool& bShow) noexcept
+bool TerminalEmulator::display(UVK::FString& terminalCommand, bool& bFinalisedCommand, bool& bShow) noexcept
 {
     bool bReturn = false;
     ImGui::Begin("Terminal Emulator", &bShow);

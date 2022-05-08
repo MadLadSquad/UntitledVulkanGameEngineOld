@@ -49,7 +49,7 @@ bool UVK::SettingsWidgets::displayThemeEditor(bool& bOpen) noexcept
     return bReturn;
 }
 
-bool UVK::SettingsWidgets::displayProjectSettings(std::string& name, std::string& ver, std::string& enginever, std::string& startupLevel, bool& bOpen) noexcept
+bool UVK::SettingsWidgets::displayProjectSettings(UVK::FString& name, UVK::FString& ver, UVK::FString& enginever, UVK::FString& startupLevel, bool& bOpen) noexcept
 {
     UVK_SETTINGS_WIDGET_BEGIN("Project Settings", ImGuiWindowFlags_None)
         UVK::ProjectSettingsWidget::displayProjectSettings(bReturn, name, ver, enginever, startupLevel, bOpen);

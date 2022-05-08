@@ -31,7 +31,7 @@ void UVK::ECS::call(const std::function<void(Actor&)>& func, entt::entity& ent) 
     func(act);
 }
 
-UVK::Actor UVK::ECS::getActorWithIdentifiers(const std::string& name, const uint64_t& id, const std::string& devname) noexcept
+UVK::Actor UVK::ECS::getActorWithIdentifiers(const FString& name, const uint64_t& id, const FString& devname) noexcept
 {
     auto view = global.ecs.data().view<CoreComponent>();
     for (auto& a : view)

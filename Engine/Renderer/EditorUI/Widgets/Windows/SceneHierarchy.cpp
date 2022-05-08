@@ -15,7 +15,7 @@ void SceneHierarchy::duplicateFolder(std::vector<UVK::EditorFolder>& folders, UV
 
         auto size = folder->contents.size();
         folders.push_back({
-            .name = "New" + folder->name + std::to_string(i),
+            .name = "New" + folder->name + UVK::FString(std::to_string(i)),
             .bValid = true,
         });
 
@@ -128,8 +128,8 @@ void SceneHierarchy::destroyEntity(UVK::Actor& selectedEntity) noexcept
 
 UVK::Actor SceneHierarchy::addEntity(int& entNum) noexcept
 {
-    //registry.createActor(static_cast<std::string>("NewEntity" + std::to_string(entNum)).c_str());
-    //UVK::Actor actor(static_cast<std::string>("NewEntity" + std::to_string(entNum)), 0, "a");
+    //registry.createActor(static_cast<UVK::FString>("NewEntity" + std::to_string(entNum)).c_str());
+    //UVK::Actor actor(static_cast<UVK::FString>("NewEntity" + std::to_string(entNum)), 0, "a");
     const auto a = UVK::ECS::data().create();
     auto& b = UVK::ECS::data().emplace<UVK::CoreComponent>(a);
     b.name = "NewEntity" + std::to_string(entNum);
@@ -168,7 +168,7 @@ bool SceneHierarchy::display(UVK::Actor& selectedEntity, int& entNum, bool& bSho
     static bool bCalledFromPopup = false;
     static UVK::Actor currentPopupEntity;
     static UVK::EditorFolder* currentPopupFolder = nullptr;
-    static std::string* folderName = nullptr;
+    static UVK::FString* folderName = nullptr;
     bool bReturn = false;
 
     if (bReset)
@@ -268,7 +268,7 @@ bool SceneHierarchy::display(UVK::Actor& selectedEntity, int& entNum, bool& bSho
             else
                 ImGui::PushStyleColor(ImGuiCol_Button, { 0.0f, 0.0f, 0.0f, 0.0f, });
 
-            if (ImGui::Button(static_cast<std::string>(b.name + ", " + std::to_string(b.id) + "##" + std::to_string(i)).c_str(), { ImGui::GetContentRegionAvail().x, 17.0f }))
+            if (ImGui::Button((b.name + ", " + UVK::FString(std::to_string(b.id)) + "##" + UVK::FString(std::to_string(i))).c_str(), { ImGui::GetContentRegionAvail().x, 17.0f }))
             {
                 if (UVK::Input::getAction("editor-bind-modifier") == Keys::KeyPressed)
                 {
@@ -450,7 +450,7 @@ skip:; // Semicolon needed to remove compiler error
                     bSelected = true;
                 }
 
-                bool header = ImGui::CollapsingHeader((a.name + "##" + std::to_string(a.contents.size()) + std::to_string(i)).c_str());
+                bool header = ImGui::CollapsingHeader((a.name + "##" + UVK::FString(std::to_string(a.contents.size())) + UVK::FString(std::to_string(i))).c_str());
                 if (ImGui::BeginDragDropTarget())
                 {
                     if (const auto* payload = ImGui::AcceptDragDropPayload("ENGINE_SH_WIDGET_ENTITY1"))
@@ -536,7 +536,7 @@ skip:; // Semicolon needed to remove compiler error
                         if (b.has<UVK::CoreComponent>())
                         {
                             const auto& c = b.get<UVK::CoreComponent>();
-                            if (ImGui::Button((c.name + ", " + std::to_string(c.id) + "##" + std::to_string(j)).c_str()))
+                            if (ImGui::Button((c.name + ", " + UVK::FString(std::to_string(c.id)) + "##" + UVK::FString(std::to_string(j))).c_str()))
                             {
                                 if (UVK::Input::getAction("editor-bind-modifier") == Keys::KeyPressed)
                                 {

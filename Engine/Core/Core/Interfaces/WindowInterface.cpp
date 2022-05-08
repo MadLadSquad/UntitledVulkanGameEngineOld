@@ -16,12 +16,12 @@ bool& UVK::Window::fullscreen() noexcept
     return global.window.data().fullscreen;
 }
 
-std::string& UVK::Window::name() noexcept
+UVK::FString& UVK::Window::name() noexcept
 {
     return global.window.data().name;
 }
 
-std::string& UVK::Window::iconLocation() noexcept
+UVK::FString& UVK::Window::iconLocation() noexcept
 {
     return global.window.data().image;
 }

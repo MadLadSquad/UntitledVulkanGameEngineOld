@@ -9,17 +9,17 @@ void UVK::KeybindSettingsWidget::displayKeybindsEditor(bool& bReturn, bool& bOpe
     int i = 0;
     for (auto& a : UVK::Input::getActions())
     {
-        if (a.name.find("editor-") != std::string::npos)
+        if (a.name.find("editor-") != UVK::FString::npos)
         {
             ImGui::TextWrapped("%s", a.name.c_str());
 
             ImGui::TextWrapped("Name");
             ImGui::SameLine();
-            if (ImGui::InputText(static_cast<std::string>("##Name##" + a.name + std::to_string(a.keyCode)).c_str(), &a.name) || ImGui::IsItemActive())
+            if (ImGui::InputText(("##Name##" + a.name + FString(std::to_string(a.keyCode))).c_str(), &a.name) || ImGui::IsItemActive())
                 bReturn = true;
             ImGui::TextWrapped("Keycode");
             ImGui::SameLine();
-            showKeySelect(static_cast<std::string>("##Name##" + a.name + std::to_string(a.keyCode) + std::to_string(i)).c_str(), a.keyCode);
+            showKeySelect(static_cast<UVK::FString>("##Name##" + a.name + UVK::FString(std::to_string(a.keyCode) + std::to_string(i))).c_str(), a.keyCode);
             ImGui::Separator();
             i++;
         }
@@ -55,7 +55,7 @@ void UVK::KeybindSettingsWidget::displayKeybindsGame(bool& bReturn, bool& bOpen)
     int j = 0;
     for (int i = 0; i < UVK::Input::getActions().size(); i++)
     {
-        if (UVK::Input::getActions()[i].name.find("editor-") == std::string::npos)
+        if (UVK::Input::getActions()[i].name.find("editor-") == UVK::FString::npos)
         {
             if (bDestroy)
             {
@@ -68,12 +68,12 @@ void UVK::KeybindSettingsWidget::displayKeybindsGame(bool& bReturn, bool& bOpen)
 
                 ImGui::TextWrapped("Name");
                 ImGui::SameLine();
-                if (ImGui::InputText(static_cast<std::string>("##Name##" + UVK::Input::getActions()[i].name + std::to_string(UVK::Input::getActions()[i].keyCode)).c_str(), &UVK::Input::getActions()[i].name) || ImGui::IsItemActive())
+                if (ImGui::InputText(static_cast<UVK::FString>("##Name##" + UVK::FString(UVK::Input::getActions()[i].name + std::to_string(UVK::Input::getActions()[i].keyCode))).c_str(), &UVK::Input::getActions()[i].name) || ImGui::IsItemActive())
                     bReturn = true;
 
                 ImGui::TextWrapped("Keycode");
                 ImGui::SameLine();
-                showKeySelect(static_cast<std::string>("##Keycode##" + UVK::Input::getActions()[i].name + std::to_string(UVK::Input::getActions()[i].keyCode) + std::to_string(j)).c_str(), UVK::Input::getActions()[i].keyCode);
+                showKeySelect(("##Keycode##" + UVK::Input::getActions()[i].name + UVK::FString(std::to_string(UVK::Input::getActions()[i].keyCode) + std::to_string(j))).c_str(), UVK::Input::getActions()[i].keyCode);
                 ImGui::Separator();
                 j++;
             }
@@ -94,7 +94,7 @@ void UVK::KeybindSettingsWidget::displayKeybindsGame(bool& bReturn, bool& bOpen)
 
 void UVK::KeybindSettingsWidget::showKeySelect(const char* name, uint16_t& key) noexcept
 {
-    static std::string text;
+    static UVK::FString text;
     UVK::Utility::keyToText(text, key, true);
 
     if (ImGui::BeginCombo(name, text.c_str()))

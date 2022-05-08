@@ -4,7 +4,7 @@
 #include <UVKBuildTool/src/ReleaseBuild.hpp>
 #include <imguiex/uexec/uexec.h>
 
-bool Shipping::display(bool& bShow, const std::string& prjname) noexcept
+bool Shipping::display(bool& bShow, const UVK::FString& prjname) noexcept
 {
     static uexec::ScriptRunner runner;
     static bool bShowPlay = true;
@@ -37,15 +37,15 @@ bool Shipping::display(bool& bShow, const std::string& prjname) noexcept
             if (ImGui::Button("Compile##compile"))
             {
                 // TODO: Add archiving after we are out of Pre-Alpha
-                std::ofstream out(std::string(UVK_CONFIG_PRJ_PATH) + "Generated/BuildDef.hpp");
+                std::ofstream out((UVK::FString(UVK_CONFIG_PRJ_PATH) + "Generated/BuildDef.hpp").c_str());
                 out << "#define PRODUCTION" << std::endl;
                 out.close();
 
 #ifdef _WIN32
-                std::string str = "bash ../export.sh " + prjname;
+                UVK::FString str = "bash ../export.sh " + prjname;
                 char* const args[] = { str.data(), nullptr };
 #else
-                std::string str = "cd ../ && ./export.sh " + prjname;
+                UVK::FString str = "cd ../ && ./export.sh " + prjname;
                 char* const args[] = { (char*)"bash", (char*)"-c", str.data(), nullptr };
 #endif
 
@@ -72,7 +72,7 @@ bool Shipping::display(bool& bShow, const std::string& prjname) noexcept
             runner.destroy();
             runner.destroyForReuse();
             bShowPlay = true;
-            std::ofstream out(std::string(UVK_CONFIG_PRJ_PATH) + "Generated/BuildDef.hpp");
+            std::ofstream out((UVK::FString(UVK_CONFIG_PRJ_PATH) + "Generated/BuildDef.hpp").c_str());
             out << "// Generated file, DO NOT TOUCH!" << std::endl;
             out << "#undef PRODUCTION" << std::endl;
             out.close();

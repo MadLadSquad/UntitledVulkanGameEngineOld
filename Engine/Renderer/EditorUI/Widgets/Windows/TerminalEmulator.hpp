@@ -8,6 +8,6 @@
  */
 namespace TerminalEmulator
 {
-    bool display(std::string& terminalCommand, bool& bFinalisedCommand, bool& bShow) noexcept;
+    bool display(UVK::FString& terminalCommand, bool& bFinalisedCommand, bool& bShow) noexcept;
 }
 #endif

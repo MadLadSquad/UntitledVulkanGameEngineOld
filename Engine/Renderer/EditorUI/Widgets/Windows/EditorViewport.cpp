@@ -34,7 +34,7 @@ void EditorViewport::display(UVK::GLFrameBuffer& fb, int& viewportWidth, int& vi
     {
         if (const auto* payload = ImGui::AcceptDragDropPayload("ENGINE_FS_WIDGET_LVL"))
         {
-            std::string str = (const char*)payload->Data;
+            UVK::FString str = (const char*)payload->Data;
             str.erase(payload->DataSize); // Erase everything after payload->DataSize so that if the \0 is placed or doesn't exist we can fix it
             UVK::Level::open<UVK::EditorLevel>(str);
         }

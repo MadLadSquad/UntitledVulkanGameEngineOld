@@ -69,7 +69,7 @@ void UVK::EditorUtilSettings::loadImGuiSettings(Editor& editor, const char* colT
         theme.useTheme();
         style.WindowRounding = theme.getWindowRounding();
 #ifndef __MINGW32__
-        if (std_filesystem::exists(theme.getFont().first))
+        if (std_filesystem::exists(theme.getFont().first.c_str()))
         {
             ImFontConfig config;
             io.Fonts->AddFontFromFileTTF(theme.getFont().first.c_str(), (float)theme.getFont().second, &config, io.Fonts->GetGlyphRangesCyrillic());

@@ -2,5 +2,5 @@
 
 namespace UVK::ProjectSettingsWidget
 {
-    void displayProjectSettings(bool& bReturn, std::string& name, std::string& ver, std::string& enginever, std::string& startupLevel, bool& bOpen) noexcept;
+    void displayProjectSettings(bool& bReturn, UVK::FString& name, UVK::FString& ver, UVK::FString& enginever, UVK::FString& startupLevel, bool& bOpen) noexcept;
 }

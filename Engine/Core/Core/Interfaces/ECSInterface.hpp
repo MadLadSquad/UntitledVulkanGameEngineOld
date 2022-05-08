@@ -16,7 +16,7 @@ namespace UVK
         static void clear() noexcept;
         static EntityPool& data() noexcept;
 
-        static Actor getActorWithIdentifiers(const std::string& name, const uint64_t& id, const std::string& devname) noexcept;
+        static Actor getActorWithIdentifiers(const FString& name, const uint64_t& id, const FString& devname) noexcept;
 
         template<typename T>
         static void forEveryComponent(const std::function<void(Actor&)>& func) noexcept

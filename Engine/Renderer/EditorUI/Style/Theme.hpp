@@ -28,7 +28,7 @@ namespace UVK
         void setTheme(UVK::String theme) noexcept;
         void useTheme() noexcept;
 
-        std::pair<std::string, int> getFont() noexcept;
+        std::pair<UVK::FString, int> getFont() noexcept;
         [[nodiscard]] float getWindowRounding() const noexcept;
 
         ImVec4 textCol = ImVec4(1.0, 1.0, 1.0, 1.0);
@@ -60,7 +60,7 @@ namespace UVK
         ImVec4 menubarBG = ImVec4(0.01, 0.01, 0.01, 1.0);
         ImVec4 popupBG = ImVec4(0.1, 0.1, 0.1, 1.0);
 
-        std::string fontLoc;
+        UVK::FString fontLoc;
         int fontSize = 12;
         float windowRounding = 1.0f;
     };

@@ -3,6 +3,7 @@
 #include <vector>
 #include <glm/glm.hpp>
 #include "Engine/ThirdParty/entt/src/entt/entt.hpp"
+#include <yaml-cpp/yaml.h>
 
 namespace UVK
 {
@@ -16,6 +17,8 @@ namespace UVK
 	typedef entt::registry EntityPool;
 	// String
 	using String = const char*;
+
+	using FString = std::string;
 
 	template<typename T>
 	using EntityView = entt::view<T>;

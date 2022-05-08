@@ -8,6 +8,6 @@
  */
 namespace About
 {
-    void display(std::string& engineVersion, std::string& projectName, std::string& projectVersion, UVK::Texture& logo, bool& bShow) noexcept;
+    void display(UVK::FString& engineVersion, UVK::FString& projectName, UVK::FString& projectVersion, UVK::Texture& logo, bool& bShow) noexcept;
 }
 #endif

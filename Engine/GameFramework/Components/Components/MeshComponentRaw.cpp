@@ -6,7 +6,7 @@
 #include <utility>
 #include "Core/Actor.hpp"
 
-void UVK::MeshComponentRaw::create(std::vector<VKVertex> vertices, std::vector<uint32_t> indices, VKDevice& dev, Commands& cmd, VKDescriptors& desc, const std::string& textureLoc) noexcept
+void UVK::MeshComponentRaw::create(std::vector<VKVertex> vertices, std::vector<uint32_t> indices, VKDevice& dev, Commands& cmd, VKDescriptors& desc, const UVK::FString& textureLoc) noexcept
 {
     device = &dev;
     commands = &cmd;

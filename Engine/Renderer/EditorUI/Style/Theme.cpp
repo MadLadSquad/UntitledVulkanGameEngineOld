@@ -48,7 +48,7 @@ void UVK::EditorTheme::setTheme(UVK::String theme) noexcept
 
     try
     {
-        out = YAML::LoadFile(UVK_CONFIG_SETTINGS_PATH + std::string(theme) + ".uvktheme");
+        out = YAML::LoadFile((UVK_CONFIG_SETTINGS_PATH + UVK::FString(theme) + ".uvktheme").c_str());
     }
     catch (YAML::BadFile&)
     {
@@ -80,7 +80,7 @@ void UVK::EditorTheme::setTheme(UVK::String theme) noexcept
         menubarBG = out["menubarBg"].as<ImVec4>();
         popupBG = out["popupBg"].as<ImVec4>();
         windowRounding = out["window-rounding"].as<float>();
-        fontLoc = "../Content/" + out["font"].as<std::string>();
+        fontLoc = "../Content/" + UVK::FString(out["font"].as<std::string>());
         fontSize = out["font-size"].as<int>();
     }
 }
@@ -163,7 +163,7 @@ void UVK::EditorTheme::save(UVK::String filename, UVK::String font, int fontSz) 
     file.close();
 }
 
-std::pair<std::string, int> UVK::EditorTheme::getFont() noexcept
+std::pair<UVK::FString, int> UVK::EditorTheme::getFont() noexcept
 {
     return std::make_pair(fontLoc, fontSize);
 }

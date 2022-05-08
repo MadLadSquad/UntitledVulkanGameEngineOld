@@ -41,7 +41,7 @@ namespace UVK
         [[nodiscard]] std::vector<char> getShaderBytecode() const noexcept;
         static void each(const std::function<void(VKShader&)>& func) noexcept;
 
-        std::string name;
+        UVK::FString name;
         VKShaderType type = VKShaderType::VK_SHADER_TYPE_NONE;
     private:
         friend class GraphicsPipeline;

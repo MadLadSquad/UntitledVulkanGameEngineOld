@@ -17,8 +17,13 @@ namespace UVK
 
         void allocateDynamicUniformBufferTransferSpace() noexcept;
         void freeDynamicUniformBufferTransferSpace() noexcept;
+        std::vector<VKBuffer>& getDynamicUniformBuffers() noexcept;
+        size_t& getModelUniformAlignment() noexcept;
     private:
         VKDevice* device = nullptr;
+
+        void* modelTransferSpace;
+        size_t modelUniformAlignment;
 
         std::vector<VKBuffer> uniformBuffers;
         std::vector<VKBuffer> dynamicUniformBuffers;

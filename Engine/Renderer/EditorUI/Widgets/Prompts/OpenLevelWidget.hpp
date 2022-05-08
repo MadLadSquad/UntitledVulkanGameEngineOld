@@ -7,6 +7,6 @@
 namespace OpenLevelWidget
 {
     // Opens a level
-    bool display(std::string& openLevel, bool& bShowOpenLevelWidget, double& dr, UVK::FVector4& colour) noexcept;
+    bool display(UVK::FString& openLevel, bool& bShowOpenLevelWidget, double& dr, UVK::FVector4& colour) noexcept;
 }
 #endif

@@ -179,7 +179,7 @@ void UVK::WindowInternal::openConfig() noexcept
 
     try
     {
-        out = YAML::LoadFile(std::string(UVK_CONFIG_SETTINGS_PATH) + "Window.yaml");
+        out = YAML::LoadFile((UVK::FString(UVK_CONFIG_SETTINGS_PATH) + "Window.yaml").c_str());
     }
     catch (YAML::BadFile&)
     {
@@ -217,7 +217,7 @@ void UVK::WindowInternal::openConfig() noexcept
         bValid = true;
         try
         {
-            keybinds = YAML::LoadFile(std::string(UVK_CONFIG_ENGINE_PATH) + "EditorKeybinds.yaml");
+            keybinds = YAML::LoadFile((UVK::FString(UVK_CONFIG_ENGINE_PATH) + "EditorKeybinds.yaml").c_str());
         }
         catch (YAML::BadFile&)
         {
@@ -246,7 +246,7 @@ void UVK::WindowInternal::openConfig() noexcept
     bValid = true;
     try
     {
-        keybinds = YAML::LoadFile(std::string(UVK_CONFIG_ENGINE_PATH) + "GameKeybinds.yaml");
+        keybinds = YAML::LoadFile((UVK::FString(UVK_CONFIG_ENGINE_PATH) + "GameKeybinds.yaml").c_str());
     }
     catch (YAML::BadFile&)
     {
@@ -383,16 +383,16 @@ void UVK::WindowInternal::saveEditorKeybinds() noexcept
     out << YAML::BeginMap << YAML::Key << "bindings" << YAML::BeginSeq;
     for (auto& a : global.inputActionList)
     {
-        if (a.name.find("editor-") != std::string::npos)
+        if (a.name.find("editor-") != UVK::FString::npos)
         {
-            out << YAML::BeginMap << YAML::Key << "key" << YAML::Value << a.name;
+            out << YAML::BeginMap << YAML::Key << "key" << YAML::Value << a.name.c_str();
             out << YAML::Key << "val" << YAML::Value << a.keyCode << YAML::EndMap;
         }
     }
 
     out << YAML::EndSeq << YAML::EndMap;
 
-    std::ofstream file(std::string(UVK_CONFIG_ENGINE_PATH) + "EditorKeybinds.yaml");
+    std::ofstream file((UVK::FString(UVK_CONFIG_ENGINE_PATH) + "EditorKeybinds.yaml").c_str());
     file << out.c_str();
     file.close();
 }
@@ -403,16 +403,16 @@ void UVK::WindowInternal::saveGameKeybinds() noexcept
     out << YAML::BeginMap << YAML::Key << "bindings" << YAML::BeginSeq;
     for (auto& a : global.inputActionList)
     {
-        if (a.name.find("editor-") == std::string::npos)
+        if (a.name.find("editor-") == UVK::FString::npos)
         {
-            out << YAML::BeginMap << YAML::Key << "key" << YAML::Value << a.name;
+            out << YAML::BeginMap << YAML::Key << "key" << YAML::Value << a.name.c_str();
             out << YAML::Key << "val" << YAML::Value << a.keyCode << YAML::EndMap;
         }
     }
 
     out << YAML::EndSeq << YAML::EndMap;
 
-    std::ofstream file(std::string(UVK_CONFIG_ENGINE_PATH) + "GameKeybinds.yaml");
+    std::ofstream file((UVK::FString(UVK_CONFIG_ENGINE_PATH) + "GameKeybinds.yaml").c_str());
     file << out.c_str();
     file.close();
 }
@@ -420,13 +420,13 @@ void UVK::WindowInternal::saveGameKeybinds() noexcept
 void UVK::WindowInternal::saveWindowSettings() const noexcept
 {
     YAML::Emitter out;
-    out << YAML::BeginMap << YAML::Key << "image" << YAML::Value << resources.image;
+    out << YAML::BeginMap << YAML::Key << "image" << YAML::Value << resources.image.c_str();
     out << YAML::Key << "width" << YAML::Value << resources.size.x;
     out << YAML::Key << "height" << YAML::Value << resources.size.y;
     out << YAML::Key << "fullscreen" << YAML::Value << resources.fullscreen;
-    out << YAML::Key << "window-name" << YAML::Value << resources.name;
+    out << YAML::Key << "window-name" << YAML::Value << resources.name.c_str();
 
-    std::ofstream fileout(std::string(UVK_CONFIG_SETTINGS_PATH) + "Window.yaml");
+    std::ofstream fileout((UVK::FString(UVK_CONFIG_SETTINGS_PATH) + "Window.yaml").c_str());
     fileout << out.c_str();
     fileout.close();
 }
@@ -456,7 +456,7 @@ UVK::FVector2 UVK::Input::getScroll() noexcept
     return global.window.getScroll();
 }
 
-const UVK::InputAction& UVK::Input::getAction(const std::string& name) noexcept
+const UVK::InputAction& UVK::Input::getAction(const UVK::FString& name) noexcept
 {
     for (auto& a : global.inputActionList)
         if (a.name == name)

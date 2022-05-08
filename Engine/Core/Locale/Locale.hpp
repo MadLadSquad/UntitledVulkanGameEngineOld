@@ -11,7 +11,7 @@ namespace UVK
         void openLocaleConfig();
     private:
         friend class Locale;
-        static constexpr const char* localeString[] =
+        static constexpr String localeString[] =
         {
             "af_za", "am_et", "ar_ae", "ar_bh", "ar_dz", "ar_eg","ar_iq",
             "ar_jo","ar_kw","ar_lb","ar_ly","ar_ma","arn_cl",
@@ -55,7 +55,7 @@ namespace UVK
             "pirate",
         };
 
-        static constexpr const char* localeStringFull[] =
+        static constexpr String localeStringFull[] =
         {
             "Afrikaans (South Africa)","Amharic","Arabic (U.A.E.)","Arabic (Bahrain)",
             "Arabic (Algeria)","Arabic (Egypt)","Arabic (Iraq)","Arabic (Jordan)","Arabic (Kuwait)",
@@ -97,21 +97,21 @@ namespace UVK
             "Chinese (Hong Kong)","Chinese (Macau)","Chinese (Singapore)","Chinese (Taiwan/Republic of China/Chinese Taipei)","Zulu","Pirate",
         };
 
-        const std::string& getLocaleString(const char* original, LocaleTypes locale) noexcept;
-        std::array<std::vector<std::pair<std::string, std::string>>, static_cast<int>(LocaleTypes::pirate) + 1> translations;
+        const FString& getLocaleString(String original, LocaleTypes locale) noexcept;
+        std::array<std::vector<std::pair<FString, FString>>, static_cast<int>(LocaleTypes::pirate) + 1> translations;
 
         LocaleTypes defaultLayout = LocaleTypes::en_US;
         LocaleTypes currentLayout = LocaleTypes::en_US;
-        std::string emptyString;
+        FString emptyString;
     };
 
-    class Locale
+    class UVK_PUBLIC_API Locale
     {
     public:
         static constexpr const char* getLocaleName(LocaleTypes types, bool bShort) noexcept;
-        static LocaleTypes getLocaleID(const std::string& str) noexcept;
+        static LocaleTypes getLocaleID(const FString& str) noexcept;
 
-        [[maybe_unused]] static std::string& getLocaleString(const char* original, LocaleTypes locale) noexcept;
+        [[maybe_unused]] static FString& getLocaleString(String original, LocaleTypes locale) noexcept;
         [[maybe_unused]] static LocaleTypes& getCurrentLayout() noexcept;
         [[maybe_unused]] static LocaleTypes& getFallbackLayout() noexcept;
     };

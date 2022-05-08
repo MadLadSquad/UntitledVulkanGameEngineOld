@@ -4,6 +4,6 @@
 #ifndef PRODUCTION
 namespace Shipping
 {
-    bool display(bool& bShow, const std::string& prjname) noexcept;
+    bool display(bool& bShow, const UVK::FString& prjname) noexcept;
 }
 #endif

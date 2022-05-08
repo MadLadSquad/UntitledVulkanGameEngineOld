@@ -7,7 +7,7 @@
     #include <windows.h>
 #endif
 
-void UVK::Utility::keyToText(std::string& text, const uint16_t& key, bool bLong) noexcept
+void UVK::Utility::keyToText(FString& text, const uint16_t& key, bool bLong) noexcept
 {
     if (bLong)
     {
@@ -803,7 +803,7 @@ void UVK::Utility::keyToText(std::string& text, const uint16_t& key, bool bLong)
     }
 }
 
-void UVK::Utility::sanitiseFilepath(std::string& str, bool bInput) noexcept
+void UVK::Utility::sanitiseFilepath(FString& str, bool bInput) noexcept
 {
     for (auto& a : str)
         if (a == '\\')
@@ -813,9 +813,9 @@ void UVK::Utility::sanitiseFilepath(std::string& str, bool bInput) noexcept
     //    str.append("/");
 }
 
-std::string UVK::Utility::keyToText(const uint16_t& key, bool bLong) noexcept
+UVK::FString UVK::Utility::keyToText(const uint16_t& key, bool bLong) noexcept
 {
-    std::string txt;
+    FString txt;
     keyToText(txt, key, bLong);
     return txt;
 }
@@ -834,26 +834,26 @@ void UVK::Utility::removeConsole() noexcept
 #endif
 }
 
-std::string UVK::Utility::toLower(const char* str) noexcept
+UVK::FString UVK::Utility::toLower(String str) noexcept
 {
-    std::string ret = str;
+    FString ret = str;
     std::transform(ret.begin(), ret.end(), ret.begin(), tolower);
     return ret;
 }
 
-void UVK::Utility::toLower(std::string& str) noexcept
+void UVK::Utility::toLower(FString& str) noexcept
 {
     std::transform(str.begin(), str.end(), str.begin(), tolower);
 }
 
-std::string UVK::Utility::toUpper(const char* str) noexcept
+UVK::FString UVK::Utility::toUpper(String str) noexcept
 {
-    std::string ret = str;
+    FString ret = str;
     std::transform(ret.begin(), ret.end(), ret.begin(), toupper);
     return ret;
 }
 
-void UVK::Utility::toUpper(std::string& str) noexcept
+void UVK::Utility::toUpper(FString& str) noexcept
 {
     std::transform(str.begin(), str.end(), str.begin(), toupper);
 }

@@ -16,7 +16,7 @@ namespace UVK
         static FVector2& windowSize() noexcept;
         static bool& fullscreen() noexcept;
 
-        static std::string& name() noexcept;
-        static std::string& iconLocation() noexcept;
+        static FString& name() noexcept;
+        static FString& iconLocation() noexcept;
     };
 }

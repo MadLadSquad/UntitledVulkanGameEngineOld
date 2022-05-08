@@ -54,14 +54,14 @@ namespace UVK
     public:
         Texture() = default;
         // TODO: Remove
-        explicit Texture(const std::string& loc);
-        Texture(const std::string& loc, VKDevice& dev, Commands& cmd, VKDescriptors& desc, const TextureSettings& sett = {}) noexcept;
+        explicit Texture(const UVK::FString& loc);
+        Texture(const UVK::FString& loc, VKDevice& dev, Commands& cmd, VKDescriptors& desc, const TextureSettings& sett = {}) noexcept;
         void load() noexcept;
 
         void destroy() noexcept;
 
 
-        [[maybe_unused]] std::string& getLocation() noexcept { return location; }
+        [[maybe_unused]] UVK::FString& getLocation() noexcept { return location; }
         int& getWidth() noexcept { return width; }
         int& getHeight() noexcept { return height; }
         size_t& getImage() noexcept { return descriptorLocation; };
@@ -78,7 +78,7 @@ namespace UVK
         friend class GLPipeline;
         friend class Editor;
 
-        std::string location;
+        UVK::FString location;
         int width = 0;
         int height = 0;
         int channels = 0;

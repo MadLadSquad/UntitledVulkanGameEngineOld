@@ -9,13 +9,13 @@ namespace UVK
     public:
         Actor() = default;
         explicit Actor(entt::entity ent) noexcept;
-        Actor(const std::string& nameN, uint64_t idN, const std::string& devNameN) noexcept;
+        Actor(const FString& nameN, uint64_t idN, const FString& devNameN) noexcept;
         bool operator==(entt::entity ent) noexcept;
         bool operator==(Actor actor) noexcept;
         bool operator==(bool) noexcept;
         explicit operator bool() noexcept;
 
-        void create(const std::string& nameN, uint64_t idN, const std::string& devNameN) noexcept;
+        void create(const FString& nameN, uint64_t idN, const FString& devNameN) noexcept;
         bool valid() noexcept;
 
         template<typename T>
@@ -50,7 +50,7 @@ namespace UVK
         friend class GLRenderer;
         friend class EditorPawn;
 
-        void createInternal(const std::string& nameN, uint64_t idN, const std::string& devNameN, bool bUsingUUID) noexcept;
+        void createInternal(const FString& nameN, uint64_t idN, const FString& devNameN, bool bUsingUUID) noexcept;
         entt::entity entity = entt::null;
     };
 }
