@@ -153,6 +153,7 @@ namespace UVK
         friend class VKResources;
         friend class VKDescriptors;
         friend struct MeshComponentRaw;
+        friend struct MeshComponent;
         friend struct RendererSettings;
         friend struct InitInfo;
     };

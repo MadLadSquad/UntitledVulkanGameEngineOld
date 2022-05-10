@@ -2,6 +2,7 @@
 #include <glm/gtx/quaternion.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <Renderer/Textures/Texture.hpp>
+#include <Core/Global.hpp>
 
 void UVK::MeshComponent::create(UVK::String location, VKDevice &dev, Commands& cmd, VKDescriptors& desc) noexcept
 {
@@ -79,7 +80,7 @@ void UVK::MeshComponent::update(size_t index, uint32_t currentImage, GraphicsPip
     Math::scale(model, scale);
 
     auto& cmd = commands->getCommandBuffers()[currentImage];
-    vkCmdPushConstants(cmd, pipeline.getPipelineLayout(), VK_SHADER_STAGE_VERTEX_BIT, 0, sizeof(Model), &model);
+    vkCmdPushConstants(cmd, pipeline.getPipelineLayout(), VK_SHADER_STAGE_VERTEX_BIT, 0, global.initInfo->shaderPushConstant.size, global.initInfo->shaderPushConstant.data);
     for (size_t i = 0; i < meshes.size(); i++)
     {
         VkBuffer vertexBuffers[] = { meshes[i].getVertexBuffer().getBuffer() };
