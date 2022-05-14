@@ -1,5 +1,9 @@
 #pragma once
 #include "LocaleConstants.hpp"
+#include <iostream>
+#include <vector>
+#include <Core/Types.hpp>
+#include <Core/Defines.hpp>
 
 namespace UVK
 {
@@ -97,8 +101,9 @@ namespace UVK
             "Chinese (Hong Kong)","Chinese (Macau)","Chinese (Singapore)","Chinese (Taiwan/Republic of China/Chinese Taipei)","Zulu","Pirate",
         };
 
+        using Container = std::vector<std::pair<std::string, std::string>>;
         const FString& getLocaleString(String original, LocaleTypes locale) noexcept;
-        std::array<std::vector<std::pair<FString, FString>>, static_cast<int>(LocaleTypes::pirate) + 1> translations;
+        std::array<Container, static_cast<int>(LocaleTypes::pirate) + 1> translations{};
 
         LocaleTypes defaultLayout = LocaleTypes::en_US;
         LocaleTypes currentLayout = LocaleTypes::en_US;

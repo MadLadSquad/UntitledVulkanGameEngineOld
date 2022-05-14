@@ -23,8 +23,8 @@ namespace UVK
         void clear() noexcept;
         static void beginFrame() noexcept;
 
-        std::vector<std::function<void(void)>> eventArr;
-        std::vector<std::function<void(void)>> eventArrImGui;
+        std::vector<std::function<void(void)>> eventArr{ [](){} };
+        std::vector<std::function<void(void)>> eventArrImGui{ [](){} };
         void renderUI() noexcept;
     };
 }

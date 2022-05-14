@@ -5,6 +5,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <utility>
 #include "Core/Actor.hpp"
+#include <GameFramework/GameplayClasses/GameInstance.hpp>
 
 void UVK::MeshComponentRaw::create(std::vector<VKVertex> vertices, std::vector<uint32_t> indices, VKDevice& dev, Commands& cmd, VKDescriptors& desc, const UVK::FString& textureLoc) noexcept
 {
@@ -32,7 +33,7 @@ void UVK::MeshComponentRaw::update(size_t index, uint32_t currentImage, Graphics
     vkCmdBindIndexBuffer(cmd, mesh.getIndexBuffer().getBuffer(), 0, VK_INDEX_TYPE_UINT32);
 
     //uint32_t dynamicOffset = static_cast<uint32_t>(modelUniformAlignment) * index;
-    vkCmdPushConstants(cmd, pipeline.getPipelineLayout(), VK_SHADER_STAGE_VERTEX_BIT, 0, global.initInfo->shaderPushConstant.size, global.initInfo->shaderPushConstant.data);
+    vkCmdPushConstants(cmd, pipeline.getPipelineLayout(), VK_SHADER_STAGE_VERTEX_BIT, 0, global.instance->initInfo.shaderPushConstant.size, global.instance->initInfo.shaderPushConstant.data);
     vkCmdBindDescriptorSets(cmd, VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline.getPipelineLayout(), 0, 2, descriptorSets, 0, nullptr);
 
     vkCmdDrawIndexed(cmd, mesh.indexCount(), 1, 0, 0, 0);

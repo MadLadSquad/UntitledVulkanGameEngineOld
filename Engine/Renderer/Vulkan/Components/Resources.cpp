@@ -5,6 +5,7 @@
 #include <GameFramework/Components/Components/MeshComponentRaw.hpp>
 #include <Core/Actor.hpp>
 #include <cstdlib>
+#include <GameFramework/GameplayClasses/GameInstance.hpp>
 
 void UVK::VKResources::createUniformBuffers(size_t dependencySizeLink) noexcept
 {
@@ -12,24 +13,28 @@ void UVK::VKResources::createUniformBuffers(size_t dependencySizeLink) noexcept
     VkDeviceSize modelSize = modelUniformAlignment * VK_MAX_OBJECTS;
 
     uniformBuffers.resize(dependencySizeLink);
-    if (global.initInfo->shaderMutableStruct.data != nullptr && global.initInfo->shaderMutableStruct.size > 0)
+    if (global.instance->initInfo.shaderMutableStruct.data != nullptr && global.instance->initInfo.shaderMutableStruct.size > 0)
         dynamicUniformBuffers.resize(dependencySizeLink);
 
     for (size_t i = 0; i < dependencySizeLink; i++)
     {
         uniformBuffers[i].create(*device, size, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
-        if (global.initInfo->shaderMutableStruct.data != nullptr && global.initInfo->shaderMutableStruct.size > 0)
+        if (global.instance->initInfo.shaderMutableStruct.data != nullptr && global.instance->initInfo.shaderMutableStruct.size > 0)
             dynamicUniformBuffers[i].create(*device, modelSize, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
     }
 }
 
 void UVK::VKResources::updateUniformBuffers(UVK::VP& mvp, uint32_t imageIndex) noexcept
 {
+    global.instance->initInfo.shaderConstantStruct.data->projection = mvp.projection;
+    global.instance->initInfo.shaderConstantStruct.data->view = mvp.view;
+
     void* data;
-    vkMapMemory(device->getDevice(), uniformBuffers[imageIndex].getMemory(), 0, global.initInfo->shaderConstantStruct.size, 0, &data);
-    memcpy(data, &global.initInfo->shaderConstantStruct.data, global.initInfo->shaderConstantStruct.size);
+    vkMapMemory(device->getDevice(), uniformBuffers[imageIndex].getMemory(), 0, global.instance->initInfo.shaderConstantStruct.size, 0, &data);
+    //memcpy(data, &global.instance->initInfo.shaderConstantStruct.data, global.instance->initInfo.shaderConstantStruct.size);
+    memcpy(data, &mvp, global.instance->initInfo.shaderConstantStruct.size);
     vkUnmapMemory(device->getDevice(), uniformBuffers[imageIndex].getMemory());
-    if (global.initInfo->shaderMutableStruct.data != nullptr && global.initInfo->shaderMutableStruct.size > 0)
+    if (global.instance->initInfo.shaderMutableStruct.data != nullptr && global.instance->initInfo.shaderMutableStruct.size > 0)
     {
         const auto& meshes = ECS::data().view<MeshComponent>();
         size_t i = 0;
@@ -38,7 +43,7 @@ void UVK::VKResources::updateUniformBuffers(UVK::VP& mvp, uint32_t imageIndex) n
             Actor act(a);
             auto& mesh = act.get<MeshComponent>();
             void* model = (void*)((uint64_t)modelTransferSpace + (i * modelUniformAlignment));
-            global.initInfo->shaderMutableStruct.updateDynamicUniformBufferCallback(model);
+            global.instance->initInfo.shaderMutableStruct.updateDynamicUniformBufferCallback(model);
             i++;
         }
         const auto& raw = ECS::data().view<MeshComponentRaw>();
@@ -47,7 +52,7 @@ void UVK::VKResources::updateUniformBuffers(UVK::VP& mvp, uint32_t imageIndex) n
             Actor act(a);
             auto& mesh = act.get<MeshComponentRaw>();
             void* model = (void*)((uint64_t)modelTransferSpace + (i * modelUniformAlignment));
-            global.initInfo->shaderMutableStruct.updateDynamicUniformBufferCallback(model);
+            global.instance->initInfo.shaderMutableStruct.updateDynamicUniformBufferCallback(model);
             i++;
         }
         vkMapMemory(device->getDevice(), dynamicUniformBuffers[imageIndex].getMemory(), 0, modelUniformAlignment * meshes.size(), 0, &data);
@@ -61,17 +66,17 @@ void UVK::VKResources::destroyUniformBuffers() noexcept
     for (size_t i = 0; i < uniformBuffers.size(); i++)
     {
         uniformBuffers[i].destroy();
-        if (global.initInfo->shaderMutableStruct.data != nullptr && global.initInfo->shaderMutableStruct.size > 0)
+        if (global.instance->initInfo.shaderMutableStruct.data != nullptr && global.instance->initInfo.shaderMutableStruct.size > 0)
             dynamicUniformBuffers[i].destroy();
     }
 }
 
 void UVK::VKResources::allocateDynamicUniformBufferTransferSpace() noexcept
 {
-    if (global.initInfo->shaderMutableStruct.data != nullptr && global.initInfo->shaderMutableStruct.size > 0)
+    if (global.instance->initInfo.shaderMutableStruct.data != nullptr && global.instance->initInfo.shaderMutableStruct.size > 0)
     {
         // weird bit magic
-        modelUniformAlignment = (global.initInfo->shaderMutableStruct.size + device->deviceProperties.limits.minUniformBufferOffsetAlignment - 1) & ~(device->deviceProperties.limits.minUniformBufferOffsetAlignment - 1);
+        modelUniformAlignment = (global.instance->initInfo.shaderMutableStruct.size + device->deviceProperties.limits.minUniformBufferOffsetAlignment - 1) & ~(device->deviceProperties.limits.minUniformBufferOffsetAlignment - 1);
 #ifdef _WIN32
         modelTransferSpace = _aligned_malloc(modelUniformAlignment * VK_MAX_OBJECTS, modelUniformAlignment);
 #else
@@ -82,7 +87,7 @@ void UVK::VKResources::allocateDynamicUniformBufferTransferSpace() noexcept
 
 void UVK::VKResources::freeDynamicUniformBufferTransferSpace() noexcept
 {
-    if (global.initInfo->shaderMutableStruct.data != nullptr && global.initInfo->shaderMutableStruct.size > 0)
+    if (global.instance->initInfo.shaderMutableStruct.data != nullptr && global.instance->initInfo.shaderMutableStruct.size > 0)
     {
 #ifdef _WIN32
     _aligned_free(modelTransferSpace);

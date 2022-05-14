@@ -30,13 +30,25 @@ void UVK::LocaleManager::openLocaleConfig()
 
     if (node["origin-locale"])
     {
-        defaultLayout = UVK::Locale::getLocaleID(Utility::toLower(node["origin-locale"].as<std::string>().c_str()));
+        auto str = Utility::toLower(node["origin-locale"].as<std::string>().c_str());
+        auto it = str.find('-');
+        if (it != std::string::npos)
+            str[it] = '_';
+
+        defaultLayout = UVK::Locale::getLocaleID(str);
+        if (defaultLayout == static_cast<UVK::LocaleTypes>(-1))
+        {
+            logger.consoleLog("A non-valid default layout string was submitted! String: ", UVK_LOG_TYPE_ERROR, str);
+            return;
+        }
         currentLayout = defaultLayout;
     }
+
     const auto& strings = node["strings"];
     if (strings)
-        for (auto& a : strings)
-            translations[static_cast<int>(currentLayout)].push_back(std::make_pair(FString(a.as<std::string>()), FString(a.as<std::string>())));
+        for (const auto& a : strings)
+            translations[static_cast<int>(currentLayout)].push_back({ a.as<std::string>(), a.as<std::string>() });
+
     if (exists(std_filesystem::path("../Config/Translations/")))
     {
         YAML::Node node2;
@@ -58,7 +70,7 @@ void UVK::LocaleManager::openLocaleConfig()
                 if (node2["strings"])
                     for (const auto& f : node2["strings"])
                         if (f["string"] && f["translation"])
-                            translations[static_cast<int>(id)].push_back(std::make_pair(f["string"].as<std::string>(), f["translation"].as<std::string>()));
+                            translations[static_cast<int>(id)].push_back({ f["string"].as<std::string>(), f["translation"].as<std::string>() });
             }
         }
     }
@@ -89,7 +101,7 @@ UVK::FString& UVK::Locale::getLocaleString(String original, UVK::LocaleTypes loc
     logger.consoleLog("Couldn't find string in locale ", UVK_LOG_TYPE_WARNING, Locale::getLocaleName(locale, true), "! Reverting to original layout!");
     for (auto& a : global.localeManager.translations[static_cast<int>(locale)])
         if (a.first == original)
-            return a.first;
+            return a.second;
     return global.localeManager.emptyString;
 }
 

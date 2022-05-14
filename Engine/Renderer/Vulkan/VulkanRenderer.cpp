@@ -84,7 +84,6 @@ void UVK::VulkanRenderer::updateEvents(double deltaTime) noexcept
 
 void UVK::VulkanRenderer::beginEvents() noexcept
 {
-    global.initInfo = &global.instance->initInfo;
     if (global.bEditor)
     {
 #ifndef PRODUCTION

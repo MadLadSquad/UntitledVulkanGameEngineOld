@@ -1,6 +1,7 @@
 #include "Descriptors.hpp"
 #include "Swapchain.hpp"
 #include <Core/Global.hpp>
+#include <GameFramework/GameplayClasses/GameInstance.hpp>
 
 UVK::VKDescriptors::VKDescriptors(UVK::VKDevice& dev, Swapchain& swap, VKResources& res)
 {
@@ -30,7 +31,7 @@ void UVK::VKDescriptors::createDescriptorSetLayout() noexcept
         }
     };
     uint8_t size = 1;
-    if (global.initInfo->shaderMutableStruct.data != nullptr && global.initInfo->shaderMutableStruct.size > 0)
+    if (global.instance->initInfo.shaderMutableStruct.data != nullptr && global.instance->initInfo.shaderMutableStruct.size > 0)
         size = 2;
     const VkDescriptorSetLayoutCreateInfo layoutCreateInfo =
     {
@@ -99,7 +100,7 @@ void UVK::VKDescriptors::createDescriptorPool() noexcept
     };
 
     uint8_t size = 1;
-    if (global.initInfo->shaderMutableStruct.data != nullptr && global.initInfo->shaderMutableStruct.size > 0)
+    if (global.instance->initInfo.shaderMutableStruct.data != nullptr && global.instance->initInfo.shaderMutableStruct.size > 0)
         size = 2;
 
     const VkDescriptorPoolCreateInfo poolCreateInfo =
@@ -165,7 +166,7 @@ void UVK::VKDescriptors::createDescriptorSets() noexcept
         std::terminate();
     }
     uint8_t size = 1;
-    if (global.initInfo->shaderMutableStruct.data != nullptr && global.initInfo->shaderMutableStruct.size > 0)
+    if (global.instance->initInfo.shaderMutableStruct.data != nullptr && global.instance->initInfo.shaderMutableStruct.size > 0)
         size = 2;
     for (size_t i = 0; i < resources->getUniformBuffers().size(); i++)
     {
@@ -177,7 +178,7 @@ void UVK::VKDescriptors::createDescriptorSets() noexcept
                 .range = sizeof(VP)
             },
         };
-        if (global.initInfo->shaderMutableStruct.data!= nullptr && global.initInfo->shaderMutableStruct.size > 0)
+        if (global.instance->initInfo.shaderMutableStruct.data != nullptr && global.instance->initInfo.shaderMutableStruct.size > 0)
         {
             descriptorBufferInfos[1] =
             {

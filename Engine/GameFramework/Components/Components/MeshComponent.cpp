@@ -3,6 +3,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <Renderer/Textures/Texture.hpp>
 #include <Core/Global.hpp>
+#include <GameFramework/GameplayClasses/GameInstance.hpp>
 
 void UVK::MeshComponent::create(UVK::String location, VKDevice &dev, Commands& cmd, VKDescriptors& desc) noexcept
 {
@@ -78,9 +79,10 @@ void UVK::MeshComponent::update(size_t index, uint32_t currentImage, GraphicsPip
     Math::translate(model, translation);
     Math::rotate(model, rotation);
     Math::scale(model, scale);
+    global.instance->initInfo.shaderPushConstant.data->model = model;
 
     auto& cmd = commands->getCommandBuffers()[currentImage];
-    vkCmdPushConstants(cmd, pipeline.getPipelineLayout(), VK_SHADER_STAGE_VERTEX_BIT, 0, global.initInfo->shaderPushConstant.size, global.initInfo->shaderPushConstant.data);
+    vkCmdPushConstants(cmd, pipeline.getPipelineLayout(), VK_SHADER_STAGE_VERTEX_BIT, 0, global.instance->initInfo.shaderPushConstant.size, global.instance->initInfo.shaderPushConstant.data);
     for (size_t i = 0; i < meshes.size(); i++)
     {
         VkBuffer vertexBuffers[] = { meshes[i].getVertexBuffer().getBuffer() };

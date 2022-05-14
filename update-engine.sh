@@ -28,7 +28,7 @@ cp *.dll ../ 2> /dev/null || echo " "
 cd ../../../UVKBuildTool/ || exit
 git pull
 git submodule update --remote --merge
-cd build/
+cd build/ || exit
 MSBuild.exe UVKBuildTool.sln -property:Configuration=Release -property:Platform=x64 -property:maxCpuCount="${cpus}" || make -j "${cpus}" || exit
 cp Release/UVKBuildTool.exe . 2> /dev/null || echo " " || exit
 cp Release/UVKBuildToolLib.dll . 2> /dev/null || cp Release/libUVKBuildToolLib.dll . 2> /dev/null || echo " "

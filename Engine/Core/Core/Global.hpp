@@ -98,7 +98,6 @@ namespace UVK
 
         InternalRendererComponents* renderer = nullptr;
     private:
-        InitInfo* initInfo;
         IDManager idManager;
 
         RendererSettings rendererSettings;
