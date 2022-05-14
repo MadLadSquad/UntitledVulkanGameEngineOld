@@ -12,6 +12,7 @@ bool TopToolbar::display(UVK::Texture& play, const UVK::FString& projectName, co
 
     ImGui::Begin("Toolbar", &bShow);
 
+    // If true will show only the play button otherwise will show the close and restart buttons
     if (bShowPlay)
     {
         if (ImGui::ImageButton((void*)(intptr_t)play.getImage(), ImVec2(50.0f, 50.0f), ImVec2(0.0f, 0.0f), ImVec2(1.0f, 1.0f), 0) && runner.startable())
@@ -37,6 +38,7 @@ bool TopToolbar::display(UVK::Texture& play, const UVK::FString& projectName, co
         }
     }
 
+    // Cleanup after running
     if (runner.finished())
     {
         runner.destroy();
@@ -44,6 +46,7 @@ bool TopToolbar::display(UVK::Texture& play, const UVK::FString& projectName, co
         bShowPlay = true;
     }
 
+    // Render the editor modules
     modules.renderTopBar(bReturn);
 
     ImGui::End();

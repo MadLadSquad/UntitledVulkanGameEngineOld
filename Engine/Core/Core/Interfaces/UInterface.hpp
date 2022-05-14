@@ -4,6 +4,7 @@
 
 namespace UVK
 {
+    // A class to provide easy handling of UI events
     class UVK_PUBLIC_API UI
     {
     public:

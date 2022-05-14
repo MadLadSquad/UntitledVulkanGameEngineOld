@@ -4,6 +4,7 @@
 
 namespace UVK
 {
+    // The player controller used by the editor
     class UVK_PUBLIC_API EditorPlayerController : public PlayerController
     {
     public:

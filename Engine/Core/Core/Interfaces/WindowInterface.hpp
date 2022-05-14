@@ -1,8 +1,10 @@
 #pragma once
 #include <Core/Types.hpp>
+#include <Core/Defines.hpp>
 
 namespace UVK
 {
+    // A class to provide easy integration with the windowing system
     class UVK_PUBLIC_API Window
     {
     public:

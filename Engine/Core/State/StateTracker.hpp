@@ -12,8 +12,28 @@ namespace UVK
 {
     class Actor;
 
+
+    /**
+     * @brief The transaction payload struct provides a bunch of data types that can be used with the Undo/Redo system
+     * @var affectedEntity - The entity that is going to be affected by the transaction
+     * @var coreComponent - The original core component struct for the entity
+     * @var deltaCoreComponent - An intermediate core component for the entity
+     * @var meshComponent - A mesh component for the entity
+     * @var meshComponentRaw - A raw mesh component for the entity
+     * @var audioComponent - An audio component for the entity
+     * @var bHasComponents - An array of booleans where each index corresponds to a different component, specified in the ComponentTypes enum
+     * @var bChanged - A pointer to a bChanged boolean
+     * @var vbChanged - A volatile pointer to a bChanged boolean
+     * @var path - An std::filesystem::path pointer
+     */
     struct UVK_PUBLIC_API TransactionPayload
     {
+        enum ComponentTypes
+        {
+            COMPONENT_MESH_RAW = 0,
+            COMPONENT_MESH = 0,
+            COMPONENT_AUDIO = 2
+        };
         Actor affectedEntity; // The entity that is going to be affected, can be empty
         CoreComponent coreComponent;
         CoreComponent deltaCoreComponent;
@@ -26,6 +46,12 @@ namespace UVK
         std_filesystem::path* path = nullptr;
     };
 
+    /**
+     * @brief The transaction struct contains all information related to an Undo/Redo transaction
+     * @var undofunc - A callback function to be called on undo, requires a TransactionPayload& as an argument
+     * @var redofunc - A callback function to be called on redo, requires a TransactionPayload& as an argument
+     * @var transactionPayload - The actual transaction payload to be passed into those functions
+     */
     struct UVK_PUBLIC_API Transaction
     {
         ~Transaction()
@@ -56,7 +82,9 @@ namespace UVK
         StateTracker(const StateTracker&) = delete;
         void operator=(StateTracker const&) = delete;
 
+        // Pushes a transaction to the transactions list
         static void push(const Transaction& transaction) noexcept;
+        // Initializes the struct
         void init() noexcept;
     private:
         friend class EditorGUIUtils;
@@ -71,8 +99,11 @@ namespace UVK
 
         uint32_t transactionSize = 0;
 
+        // A deque of Transaction* for undo, references all transactions that can be undone
         std::deque<Transaction*> undoStack;
+        // A deque of Transaction* for redo, references all transactions that can be redone
         std::deque<Transaction*> redoStack;
+        // A deque of Transactions that contains the full list of them
         std::deque<Transaction> transactions;
 
         uint8_t transactionIndex = 0;

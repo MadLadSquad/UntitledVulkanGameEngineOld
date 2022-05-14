@@ -15,16 +15,22 @@ UVK::LocaleManager::~LocaleManager() noexcept
     }
 }
 
-void UVK::LocaleManager::openLocaleConfig()
+void UVK::LocaleManager::openLocaleConfig(bool bEditor)
 {
     YAML::Node node;
     try
     {
-        node = YAML::LoadFile("../Config/Translations/translation-base.yaml");
+        if (!bEditor)
+            node = YAML::LoadFile("../Config/Translations/translation-base.yaml");
+        else
+            node = YAML::LoadFile("../Config/EditorTranslations/translation-base.yaml");
     }
     catch (YAML::BadFile&)
     {
-        logger.consoleLog("Couldn't open the translation base file!", UVK_LOG_TYPE_WARNING);
+        if (!bEditor)
+            logger.consoleLog("Couldn't open the translation base file!", UVK_LOG_TYPE_WARNING);
+        else
+            logger.consoleLog("Couldn't open the Editor translations base file!", UVK_LOG_TYPE_WARNING);
         return;
     }
 
@@ -38,7 +44,7 @@ void UVK::LocaleManager::openLocaleConfig()
         defaultLayout = UVK::Locale::getLocaleID(str);
         if (defaultLayout == static_cast<UVK::LocaleTypes>(-1))
         {
-            logger.consoleLog("A non-valid default layout string was submitted! String: ", UVK_LOG_TYPE_ERROR, str);
+            logger.consoleLog("A non-valid default layout string was submitted! The layout will not be used until the error is fixed! String: ", UVK_LOG_TYPE_WARNING, str);
             return;
         }
         currentLayout = defaultLayout;
@@ -49,10 +55,16 @@ void UVK::LocaleManager::openLocaleConfig()
         for (const auto& a : strings)
             translations[static_cast<int>(currentLayout)].push_back({ a.as<std::string>(), a.as<std::string>() });
 
-    if (exists(std_filesystem::path("../Config/Translations/")))
+    std::string path;
+    if (bEditor)
+        path = "../Config/EditorTranslations/";
+    else
+        path = "../Config/Translations/";
+
+    if (exists(std_filesystem::path(path)))
     {
         YAML::Node node2;
-        for (auto& a : std_filesystem::directory_iterator(std_filesystem::path("../Config/Translations/")))
+        for (auto& a : std_filesystem::directory_iterator(std_filesystem::path(path)))
         {
             if (a.path().filename() != "translation-base.yaml" && (a.path().extension().string() == ".yaml" || a.path().extension().string() == ".yml"))
             {

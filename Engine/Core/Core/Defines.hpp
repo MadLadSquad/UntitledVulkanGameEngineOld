@@ -44,16 +44,6 @@
 #define UVK_CONFIG_SETTINGS_PATH "../Config/Settings/"
 #define UVK_CONFIG_PRJ_PATH "../"
 
-#define FS_ICON_AUDIO 0
-#define FS_ICON_IMAGE 1
-#define FS_ICON_VIDEO 2
-#define FS_ICON_FOLDER 3
-#define FS_ICON_FONT 4
-#define FS_ICON_MODEL 5
-#define FS_ICON_UNKNOWN 6
-#define FS_ICON_CODE 7
-#define FS_ICON_CLOSE 8
-
 #define FC_GAME_MODE 1
 #define FC_GAME_STATE 2
 #define FC_PLAYER_STATE 3
@@ -73,8 +63,4 @@
 #define GLM_FORCE_DEPTH_ZERO_TO_ONE
 
 #define VK_MAX_OBJECTS 100000
-
-#define COMPONENT_MESH_RAW 0
-#define COMPONENT_MESH 1
-#define COMPONENT_AUDIO 2
 //#define GLEW_STATIC

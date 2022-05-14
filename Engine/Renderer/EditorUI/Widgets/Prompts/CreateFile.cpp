@@ -17,6 +17,7 @@ bool CreateFile::display(UVK::FString& fileOutLocation, bool& bShowCreateFile1, 
 
         ImGui::TextWrapped("File type");
         ImGui::SameLine();
+        // A combo box of all different class types
         if (ImGui::BeginCombo("##FileType", str.c_str()))
         {
             if (ImGui::MenuItem("Game mode"))

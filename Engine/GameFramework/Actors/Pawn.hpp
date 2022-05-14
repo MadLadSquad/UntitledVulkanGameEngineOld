@@ -7,6 +7,11 @@ namespace UVK
 {
     /**
      * @brief an actor that the player can control
+     * @var camera - A class for the camera
+     * @var name - The name of the actor to attach to
+     * @var id - The id of the actor to attach to
+     * @var devName - The development name of the actor to attach to
+     * @var actor - The actual actor ID to attach to
      */
     class UVK_PUBLIC_API Pawn
     {

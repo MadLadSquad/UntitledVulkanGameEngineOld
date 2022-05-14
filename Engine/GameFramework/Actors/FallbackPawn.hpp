@@ -3,6 +3,7 @@
 
 namespace UVK
 {
+    // Just a pawn to act as a fallback
     class UVK_PUBLIC_API FallbackPawn : public UVK::Pawn
     {
     public:

@@ -5,6 +5,7 @@
 #ifndef PRODUCTION
 namespace UVK
 {
+    // The game mode used by the editor
     class UVK_PUBLIC_API EditorGameMode : public GameMode
     {
     public:

@@ -7,6 +7,7 @@
 #include <State/StateTracker.hpp>
 #include <cpp/imgui_stdlib.h>
 
+// WARNING: NEVER AND I MEAN NEVER CHANGE ANY CODE HERE, YOU'RE GOING TO BREAK SOMETHING BECAUSE WE EXCLUSIVELY RELY ON UB
 void SceneHierarchy::duplicateFolder(std::vector<UVK::EditorFolder>& folders, UVK::EditorFolder* folder, const bool& bDrawHighlighted, const bool& nopop) noexcept
 {
     if (folder != nullptr && folder->bValid)
@@ -15,7 +16,7 @@ void SceneHierarchy::duplicateFolder(std::vector<UVK::EditorFolder>& folders, UV
 
         auto size = folder->contents.size();
         folders.push_back({
-            .name = "New" + folder->name + UVK::FString(std::to_string(i)),
+            .name = "New" + folder->name + std::to_string(i),
             .bValid = true,
         });
 
@@ -78,17 +79,17 @@ void SceneHierarchy::destroyEntity(UVK::Actor& selectedEntity) noexcept
             .undofunc = [](UVK::TransactionPayload& payload)
             {
                 payload.affectedEntity.add<UVK::CoreComponent>() = payload.coreComponent;
-                if (payload.bHasComponents[COMPONENT_MESH])
+                if (payload.bHasComponents[UVK::TransactionPayload::COMPONENT_MESH])
                 {
                     payload.affectedEntity.add<UVK::MeshComponent>() = payload.meshComponent;
                 }
 
-                if (payload.bHasComponents[COMPONENT_MESH_RAW])
+                if (payload.bHasComponents[UVK::TransactionPayload::COMPONENT_MESH_RAW])
                 {
                     payload.affectedEntity.add<UVK::MeshComponentRaw>() = payload.meshComponentRaw;
                 }
 
-                if (payload.bHasComponents[COMPONENT_AUDIO])
+                if (payload.bHasComponents[UVK::TransactionPayload::COMPONENT_AUDIO])
                 {
                     payload.affectedEntity.add<UVK::AudioComponent>() = payload.audioComponent;
                 }
@@ -106,19 +107,19 @@ void SceneHierarchy::destroyEntity(UVK::Actor& selectedEntity) noexcept
         if (selectedEntity.has<UVK::MeshComponent>())
         {
             transaction.transactionPayload.meshComponent = selectedEntity.get<UVK::MeshComponent>();
-            transaction.transactionPayload.bHasComponents[COMPONENT_MESH] = true;
+            transaction.transactionPayload.bHasComponents[UVK::TransactionPayload::COMPONENT_MESH] = true;
         }
 
         if (selectedEntity.has<UVK::MeshComponentRaw>())
         {
             transaction.transactionPayload.meshComponentRaw = selectedEntity.get<UVK::MeshComponentRaw>();
-            transaction.transactionPayload.bHasComponents[COMPONENT_MESH_RAW] = true;
+            transaction.transactionPayload.bHasComponents[UVK::TransactionPayload::COMPONENT_MESH_RAW] = true;
         }
 
         if (selectedEntity.has<UVK::AudioComponent>())
         {
             transaction.transactionPayload.audioComponent = selectedEntity.get<UVK::AudioComponent>();
-            transaction.transactionPayload.bHasComponents[COMPONENT_AUDIO] = true;
+            transaction.transactionPayload.bHasComponents[UVK::TransactionPayload::COMPONENT_AUDIO] = true;
         }
         UVK::StateTracker::push(transaction);
 
@@ -171,6 +172,7 @@ bool SceneHierarchy::display(UVK::Actor& selectedEntity, int& entNum, bool& bSho
     static UVK::FString* folderName = nullptr;
     bool bReturn = false;
 
+    // Be reset clears out all the data of the function and is called when a new level is opened
     if (bReset)
     {
         selectedEntities.clear();
@@ -187,6 +189,9 @@ bool SceneHierarchy::display(UVK::Actor& selectedEntity, int& entNum, bool& bSho
     }
     else
     {
+// ---------------------------------------------------------------------------------------------------------------------
+// ------------------------------------------- Begin Menu bar section --------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
         ImGui::Begin("Scene Hierarchy", &bShow, ImGuiWindowFlags_MenuBar);
         ImGui::BeginMenuBar();
 
@@ -245,7 +250,10 @@ bool SceneHierarchy::display(UVK::Actor& selectedEntity, int& entNum, bool& bSho
             return bReturn;
         }
         ImGui::EndMenuBar();
-
+// ---------------------------------------------------------------------------------------------------------------------
+// ------------------------------------------- End Menu bar section ----------------------------------------------------
+// ------------------------------------ Begin Unfoldered entities iteration --------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
         size_t i = 0;
         for (auto& a : UVK::ECS::data().view<UVK::CoreComponent>())
         {
@@ -435,7 +443,10 @@ bool SceneHierarchy::display(UVK::Actor& selectedEntity, int& entNum, bool& bSho
             }
 skip:; // Semicolon needed to remove compiler error
         }
-
+// ---------------------------------------------------------------------------------------------------------------------
+// -------------------------------------- End Unfoldered entities iteration --------------------------------------------
+// -------------------------------------- Begin Foldered entities iteration --------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
         i = 0;
         for (auto& a : folders)
         {
@@ -687,7 +698,10 @@ skip:; // Semicolon needed to remove compiler error
                 i++;
             }
         }
-
+// ---------------------------------------------------------------------------------------------------------------------
+// -------------------------------------- End Foldered entities iteration ----------------------------------------------
+// ------------------------------------------------ Begin Popups -------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
         if (bDeleteWarning)
         {
             if (!ImGui::IsPopupOpen("Warning##EntityDeletionWarning"))

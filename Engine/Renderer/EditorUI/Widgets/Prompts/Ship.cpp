@@ -27,6 +27,7 @@ bool Shipping::display(bool& bShow, const UVK::FString& prjname) noexcept
         ImGui::Separator();
         ImGui::TextWrapped("After the process is done, you can run your app, located in the 'Exported' folder");
 
+        // If this is true we can begin compilation, otherwise we're already compiling and can only stop it
         if (bShowPlay)
         {
             if (ImGui::Button("Close##compile"))
@@ -67,6 +68,7 @@ bool Shipping::display(bool& bShow, const UVK::FString& prjname) noexcept
             }
         }
 
+        // Post action steps when the runner finishes its compilation work
         if (runner.finished())
         {
             runner.destroy();

@@ -6,7 +6,7 @@
 namespace UVK
 {
     //class Level;
-
+    // The level class used by the editor
     class UVK_PUBLIC_API EditorLevel : public Level
     {
     public:

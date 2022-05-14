@@ -13,7 +13,7 @@
 namespace UVK
 {
     /**
-     * @brief A simple mesh component
+     * @brief A simple mesh component that is fed data trough a file
      */
     struct UVK_PUBLIC_API MeshComponent
     {

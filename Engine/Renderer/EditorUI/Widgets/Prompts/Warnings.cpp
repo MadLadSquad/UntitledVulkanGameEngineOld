@@ -48,7 +48,7 @@ void Warnings::displayGenerateWarning(bool& bOpen) noexcept
 
             try
             {
-                config = YAML::LoadFile((UVK::FString(UVK_CONFIG_PRJ_PATH) + "uvproj.yaml").c_str());
+                config = YAML::LoadFile(UVK::FString(UVK_CONFIG_PRJ_PATH) + "uvproj.yaml");
             }
             catch (YAML::BadFile&)
             {

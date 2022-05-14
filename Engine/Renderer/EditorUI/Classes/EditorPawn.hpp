@@ -8,7 +8,7 @@
 namespace UVK
 {
     class CoreComponent;
-
+    // The pawn used by the editor
     class UVK_PUBLIC_API EditorPawn : public Pawn
     {
     public:

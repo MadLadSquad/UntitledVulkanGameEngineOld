@@ -43,6 +43,6 @@ UVK::Actor UVK::ECS::getActorWithIdentifiers(const FString& name, const uint64_t
             return act;
     }
 
-    entt::entity a;
+    entt::entity a = entt::null;
     return Actor(a);
 }

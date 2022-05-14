@@ -1,4 +1,4 @@
-origin-locale: "en-US"
+origin-locale: "en_US"
 strings:
   - "About us"
   - "Untitled Vulkan Game Engine, version"

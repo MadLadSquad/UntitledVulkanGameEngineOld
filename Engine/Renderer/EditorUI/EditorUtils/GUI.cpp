@@ -104,24 +104,31 @@ void UVK::EditorGUIUtils::renderMenubar(Editor& editor) noexcept
 
 void UVK::EditorGUIUtils::switchKeybinds(UVK::Editor& editor) noexcept
 {
+    // "Save Level As" button on under the file ribbon
     if ((Input::getAction("editor-bind-modifier") == Keys::KeyPressed || Input::getAction("editor-bind-modifier") == Keys::KeyRepeat) && (Input::getAction("editor-shift") == Keys::KeyPressed || Input::getAction("editor-shift") == Keys::KeyRepeat) && (Input::getAction("editor-level-saveas") == Keys::KeyPressed || Input::getAction("editor-level-saveas") == Keys::KeyRepeat))
         editor.bools.bShowSaveLevelWidget = true;
+    // "Save Level" button on under the file ribbon
     else if ((Input::getAction("editor-bind-modifier") == Keys::KeyPressed || Input::getAction("editor-bind-modifier") == Keys::KeyRepeat) && (Input::getAction("editor-level-save") == Keys::KeyPressed || Input::getAction("editor-level-save") == Keys::KeyRepeat))
     {
         // TODO: Change this for file indexing :D
         UVK::Level::save(global.levelLocation.c_str());
     }
+    // "Create file" button under the file ribbon
     else if ((Input::getAction("editor-bind-modifier") == Keys::KeyPressed || Input::getAction("editor-bind-modifier") == Keys::KeyRepeat) && (Input::getAction("editor-shift") == Keys::KeyPressed || Input::getAction("editor-shift") == Keys::KeyRepeat) && (Input::getAction("editor-new-file") == Keys::KeyPressed || Input::getAction("editor-new-file") == Keys::KeyRepeat))
         editor.bools.bShowCreateFile1 = true;
+    // "New Level" button under the file ribbon
     else if ((Input::getAction("editor-bind-modifier") == Keys::KeyPressed || Input::getAction("editor-bind-modifier") == Keys::KeyRepeat) && (Input::getAction("editor-level-new") == Keys::KeyPressed || Input::getAction("editor-level-new") == Keys::KeyRepeat))
         editor.bools.bShowSaveWarning = true;
+    // "Open Level" button under the file ribbon
     else if ((Input::getAction("editor-bind-modifier") == Keys::KeyPressed || Input::getAction("editor-bind-modifier") == Keys::KeyRepeat) && (Input::getAction("editor-level-open") == Keys::KeyPressed || Input::getAction("editor-level-open") == Keys::KeyRepeat))
         editor.bools.bShowOpenLevelWidget = true;
+    // "Undo" button under the edit ribbon
     else if (((Input::getAction("editor-bind-modifier") == Keys::KeyPressed || Input::getAction("editor-bind-modifier") == Keys::KeyRepeat) && Input::getAction("editor-undo") == Keys::KeyPressed) && editor.accumulateUndoRedo >= 0.3 && !editor.bools.bEditorUsingTextbox)
     {
         global.instance->stateTracker.undo();
         editor.accumulateUndoRedo = 0.0f;
     }
+    // "Redo" button under the edit ribbon
     else if (((Input::getAction("editor-bind-modifier") == Keys::KeyPressed || Input::getAction("editor-bind-modifier") == Keys::KeyRepeat) && Input::getAction("editor-redo") == Keys::KeyPressed) && !editor.bools.bEditorUsingTextbox && editor.accumulateUndoRedo >= 1.0)
     {
         global.instance->stateTracker.redo();

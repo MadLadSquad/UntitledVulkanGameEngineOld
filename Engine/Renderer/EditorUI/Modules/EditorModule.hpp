@@ -20,7 +20,9 @@ namespace UVK
         std::function<void(const char*, bool&, bool&)> func;
         const char* name;
     };
-
+    /**
+     * @brief Handles editor modules
+     */
     class UVK_PUBLIC_API EditorModuleManager
     {
     public:

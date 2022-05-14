@@ -6,6 +6,7 @@ namespace UVK
     class Actor;
     struct IndependentModuleData;
 
+    // A class to handle easy interfacing with the editor modules system
     class UVK_PUBLIC_API EditorModules
     {
     public:

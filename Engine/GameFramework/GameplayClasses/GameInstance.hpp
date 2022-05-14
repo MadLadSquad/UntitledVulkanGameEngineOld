@@ -4,6 +4,17 @@
 
 namespace UVK
 {
+    // The init info struct defines multiple types that can be used to set up certain one time settings
+    struct UVK_PUBLIC_API InitInfo
+    {
+    public:
+        ShaderConstantStruct shaderConstantStruct = { &fallbackShaderConstant, sizeof(ShaderConstantBase) };
+        ShaderMutableStruct shaderMutableStruct{};
+        ShaderPushConstant shaderPushConstant = { &fallbackShaderPushConstant, sizeof(ShaderPushConstantBase) };
+    private:
+        ShaderConstantBase fallbackShaderConstant{};
+        ShaderPushConstantBase fallbackShaderPushConstant{};
+    };
     class Editor;
     /**
      * @brief The instance of the application

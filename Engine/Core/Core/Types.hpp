@@ -15,9 +15,9 @@ namespace UVK
 	typedef glm::vec2 FVector2;
 	// Entity Pool owns and manages all the entities
 	typedef entt::registry EntityPool;
-	// String
+	// A static string
 	using String = const char*;
-
+    // A dynamic string
 	using FString = std::string;
 
 	template<typename T>
@@ -25,12 +25,4 @@ namespace UVK
 
     class Math;
     class Level;
-
-    struct FilesystemWidgetData
-    {
-        float padding = 20.0f;
-        float imageSize = 50.0f;
-        uint32_t maxFileNum = 64;
-        bool bUsePreviews = false;
-    };
 }

@@ -31,7 +31,7 @@ void AssetSlot::displayTexture(int32_t id, UVK::Texture* asset, UVK::FString& na
 {
     UVK::EditorPointer editorPointer;
 
-    assetSlotBegin(editorPointer.fsicons()[FS_ICON_IMAGE], id, [&](){
+    assetSlotBegin(editorPointer.fsicons()[UVK::EditorTextures::FS_ICON_IMAGE], id, [&](){
         if (ImGui::BeginDragDropTarget())
         {
             if (const auto* payload = ImGui::AcceptDragDropPayload("ENGINE_FS_WIDGET_ALL"))
@@ -49,7 +49,7 @@ void AssetSlot::displayTexture(int32_t id, UVK::Texture* asset, UVK::FString& na
 
     ImGui::TextWrapped("%s", name.c_str());
 
-    if (ImGui::ImageButton((void*)(intptr_t)editorPointer.fsicons()[FS_ICON_CLOSE].getImage(), { 16.0f, 16.0f }))
+    if (ImGui::ImageButton((void*)(intptr_t)editorPointer.fsicons()[UVK::EditorTextures::FS_ICON_CLOSE].getImage(), { 16.0f, 16.0f }))
     {
         asset = nullptr;
         name = "None";
@@ -60,7 +60,7 @@ void AssetSlot::displayTexture(int32_t id, UVK::Texture* asset, UVK::FString& na
 void AssetSlot::displayAudio(int32_t id, UVK::Texture* asset, UVK::FString& name) noexcept
 {
     UVK::EditorPointer editorPointer;
-    assetSlotBegin(editorPointer.fsicons()[FS_ICON_AUDIO], id, [&]()
+    assetSlotBegin(editorPointer.fsicons()[UVK::EditorTextures::FS_ICON_AUDIO], id, [&]()
     {
         if (ImGui::BeginDragDropTarget())
         {
@@ -78,7 +78,7 @@ void AssetSlot::displayAudio(int32_t id, UVK::Texture* asset, UVK::FString& name
     });
     ImGui::TextWrapped("%s", name.c_str());
 
-    if (ImGui::ImageButton((void*)(intptr_t)editorPointer.fsicons()[FS_ICON_CLOSE].getImage(), { 16.0f, 16.0f }))
+    if (ImGui::ImageButton((void*)(intptr_t)editorPointer.fsicons()[UVK::EditorTextures::FS_ICON_CLOSE].getImage(), { 16.0f, 16.0f }))
     {
         asset = nullptr;
         name = "None";
@@ -89,7 +89,7 @@ void AssetSlot::displayAudio(int32_t id, UVK::Texture* asset, UVK::FString& name
 void AssetSlot::displayFont(int32_t id, UVK::Texture* asset, UVK::FString& name) noexcept
 {
     UVK::EditorPointer editorPointer;
-    assetSlotBegin(editorPointer.fsicons()[FS_ICON_FONT], id, [&]()
+    assetSlotBegin(editorPointer.fsicons()[UVK::EditorTextures::FS_ICON_FONT], id, [&]()
     {
         if (ImGui::BeginDragDropTarget())
         {
@@ -106,7 +106,7 @@ void AssetSlot::displayFont(int32_t id, UVK::Texture* asset, UVK::FString& name)
 
     ImGui::TextWrapped("%s", name.c_str());
 
-    if (ImGui::ImageButton((void*)(intptr_t)editorPointer.fsicons()[FS_ICON_CLOSE].getImage(), { 16.0f, 16.0f }))
+    if (ImGui::ImageButton((void*)(intptr_t)editorPointer.fsicons()[UVK::EditorTextures::FS_ICON_CLOSE].getImage(), { 16.0f, 16.0f }))
     {
         asset = nullptr;
         name = "None";
@@ -117,7 +117,7 @@ void AssetSlot::displayFont(int32_t id, UVK::Texture* asset, UVK::FString& name)
 void AssetSlot::displayModel(int32_t id, UVK::Texture* asset, UVK::FString& name) noexcept
 {
     UVK::EditorPointer editorPointer;
-    assetSlotBegin(editorPointer.fsicons()[FS_ICON_MODEL], id, [&]()
+    assetSlotBegin(editorPointer.fsicons()[UVK::EditorTextures::FS_ICON_MODEL], id, [&]()
     {
         if (ImGui::BeginDragDropTarget())
         {
@@ -136,7 +136,7 @@ void AssetSlot::displayModel(int32_t id, UVK::Texture* asset, UVK::FString& name
 
     ImGui::TextWrapped("%s", name.c_str());
 
-    if (ImGui::ImageButton((void*)(intptr_t)editorPointer.fsicons()[FS_ICON_CLOSE].getImage(), { 16.0f, 16.0f }))
+    if (ImGui::ImageButton((void*)(intptr_t)editorPointer.fsicons()[UVK::EditorTextures::FS_ICON_CLOSE].getImage(), { 16.0f, 16.0f }))
     {
         asset = nullptr;
         name = "None";
@@ -147,7 +147,7 @@ void AssetSlot::displayModel(int32_t id, UVK::Texture* asset, UVK::FString& name
 void AssetSlot::displayShaders(int32_t id, UVK::Texture* asset, UVK::FString& name) noexcept
 {
     UVK::EditorPointer editorPointer;
-    assetSlotBegin(editorPointer.fsicons()[FS_ICON_CODE], id, [&]()
+    assetSlotBegin(editorPointer.fsicons()[UVK::EditorTextures::FS_ICON_CODE], id, [&]()
     {
         if (ImGui::BeginDragDropTarget())
         {
@@ -166,7 +166,7 @@ void AssetSlot::displayShaders(int32_t id, UVK::Texture* asset, UVK::FString& na
 
     ImGui::TextWrapped("%s", name.c_str());
 
-    if (ImGui::ImageButton((void*)(intptr_t)editorPointer.fsicons()[FS_ICON_CLOSE].getImage(), { 16.0f, 16.0f }))
+    if (ImGui::ImageButton((void*)(intptr_t)editorPointer.fsicons()[UVK::EditorTextures::FS_ICON_CLOSE].getImage(), { 16.0f, 16.0f }))
     {
         asset = nullptr;
         name = "None";
@@ -177,7 +177,7 @@ void AssetSlot::displayShaders(int32_t id, UVK::Texture* asset, UVK::FString& na
 void AssetSlot::displayVideo(int32_t id, UVK::Texture* asset, UVK::FString& name) noexcept
 {
     UVK::EditorPointer editorPointer;
-    assetSlotBegin(editorPointer.fsicons()[FS_ICON_VIDEO], id, [&]()
+    assetSlotBegin(editorPointer.fsicons()[UVK::EditorTextures::FS_ICON_VIDEO], id, [&]()
     {
         if (ImGui::BeginDragDropTarget())
         {
@@ -196,7 +196,7 @@ void AssetSlot::displayVideo(int32_t id, UVK::Texture* asset, UVK::FString& name
 
     ImGui::TextWrapped("%s", name.c_str());
 
-    if (ImGui::ImageButton((void*)(intptr_t)editorPointer.fsicons()[FS_ICON_CLOSE].getImage(), { 16.0f, 16.0f }))
+    if (ImGui::ImageButton((void*)(intptr_t)editorPointer.fsicons()[UVK::EditorTextures::FS_ICON_CLOSE].getImage(), { 16.0f, 16.0f }))
     {
         asset = nullptr;
         name = "None";

@@ -2,6 +2,7 @@
 #include <Core.hpp>
 #ifndef PRODUCTION
 #include "Engine/Renderer/Textures/Texture.hpp"
+#include <Renderer/EditorUI/EditorUtils/Structs.hpp>
 #ifndef __MINGW32__
 
 /**
@@ -9,7 +10,7 @@
  */
 namespace Filesystem
 {
-    bool display(std_filesystem::path& pt, UVK::Texture* textures, UVK::FilesystemWidgetData& data, bool& bShow) noexcept;
+    bool display(std_filesystem::path& pt, UVK::Texture* textures, UVK::EditorSettings::FilesystemWidgetData& data, bool& bShow) noexcept;
     void createFile(const std_filesystem::path& pt) noexcept;
     void createFolder(const std_filesystem::path& pt) noexcept;
     void deleteFile(std_filesystem::path& pt, std_filesystem::path& selectedFile) noexcept;

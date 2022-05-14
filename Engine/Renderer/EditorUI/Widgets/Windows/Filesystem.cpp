@@ -5,10 +5,78 @@
 #include <imgui.h>
 #include <cpp/imgui_stdlib.h>
 #include <State/StateTracker.hpp>
+#include <Renderer/EditorUI/EditorUtils/Structs.hpp>
 
 #ifndef __MINGW32__
-bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::FilesystemWidgetData& data, bool& bShow) noexcept
+// ---------------------------------------------------------------------------------------------------------------------
+// ------------------------------------------- Begin Macro definition section ------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
+#define HANDLE_MOUSE_BUTTONS                                                                        \
+            if (UVK::Input::getKey(Keys::MouseButtonLeft) == Keys::KeyPressed)                      \
+            {                                                                                       \
+                if (UVK::Input::getAction("editor-bind-modifier") == Keys::KeyPressed)              \
+                {                                                                                   \
+                    if (bFileSelected)                                                              \
+                    {                                                                               \
+                        if (it != selectedFiles.end())                                              \
+                            selectedFiles.erase(it);                                                \
+                        else                                                                        \
+                            currentSelectedFile.clear();                                            \
+                    }                                                                               \
+                    else                                                                            \
+                        selectedFiles.push_back(path);                                              \
+                }                                                                                   \
+                else                                                                                \
+                {                                                                                   \
+                    currentSelectedFile = path;                                                     \
+                    selectedFiles.clear();                                                          \
+                }                                                                                   \
+            }                                                                                       \
+            else if (ImGui::IsMouseClicked(ImGuiMouseButton_Right))                                 \
+            {                                                                                       \
+                ImGui::OpenPopup("##FSEditPopup");                                                  \
+                selectedEditFile = path;                                                            \
+            }                                                                                       \
+
+#define DOUBLE_POP                                                                                  \
+            if (bFileSelected)                                                                      \
+            {                                                                                       \
+                ImGui::PopStyleColor();                                                             \
+                ImGui::PopStyleColor();                                                             \
+            }                                                                                       \
+
+#define CREATE_FILE(x, y)                                                                           \
+        if (ImGui::MenuItem(x))                                                                     \
+        {                                                                                           \
+            y(pt);                                                                                  \
+            bNewFolder = true;                                                                      \
+            return bReturn;                                                                         \
+        }                                                                                           \
+
+void clearSelectedFilesAndSubmitTransaction(UVK::Transaction& transaction, std_filesystem::path& pt, const std_filesystem::path& pt2, volatile bool& bNewFolder, std::vector<std_filesystem::path>& selectedFiles, std_filesystem::path& currentSelectedFile) noexcept;
+auto applyColourToSelectedFiles(std::vector<std_filesystem::path>& selectedFiles, std_filesystem::path& currentSelectedFile, const std_filesystem::path& path, bool& bFileSelected) noexcept
 {
+    // TODO: We might want to fix this
+    auto it = std::find(selectedFiles.begin(), selectedFiles.end(), path);
+    bFileSelected = (it != selectedFiles.end());
+    if (bFileSelected || currentSelectedFile == path)
+    {
+        bFileSelected = true; // Needed so that we can pop the colours
+        ImGui::PushStyleColor(ImGuiCol_Button, { 0.87f, 0.64f, 0.03, 1.0f });
+        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, { 1.0f, 0.94f, 0.30f, 1.0f });
+    }
+    return it;
+}
+// ---------------------------------------------------------------------------------------------------------------------
+// ------------------------------------------- End Macro Definition section --------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
+
+bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::EditorSettings::FilesystemWidgetData& data, bool& bShow) noexcept
+{
+// ---------------------------------------------------------------------------------------------------------------------
+// ------------------------------------------- Begin variable section --------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
+
     bool bReturn = false;
 
     // Variables for the UI
@@ -35,6 +103,10 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::
 
     // Warning for when deleting a folder specifically
     static bool bDeleteWarning = false;
+// ---------------------------------------------------------------------------------------------------------------------
+// ------------------------------------------- End variable section ----------------------------------------------------
+// ---------------------------------------- Begin initialization section -----------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
 
     if (bNewFolder)
     {
@@ -53,30 +125,22 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::
 
     if (bCurrentlyUsingPreviews && (previews.size() != data.maxFileNum || bNewFolder))
         previews.resize(data.maxFileNum);
+// ---------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------- End initialization section ------------------------------------------------
+// -------------------------------------------- Begin Menubar section --------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
 
     ImGui::Begin("Filesystem##Widget", &bShow, ImGuiWindowFlags_MenuBar);
 
     ImGui::BeginMenuBar();
 
-    if (ImGui::MenuItem("+ Add File"))
-    {
-        createFile(pt);
-        bNewFolder = true;
-        return bReturn;
-    }
-
+    CREATE_FILE("+ Add File", createFile)
     if (ImGui::MenuItem("- Remove File") || (UVK::Input::getKey(Keys::Delete) == Keys::KeyPressed && ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows)))
     {
         bDeleteWarning = true;
         bCalledFromEditPopup = false;
     }
-
-    if (ImGui::MenuItem("+ Add Directory"))
-    {
-        createFolder(pt);
-        bNewFolder = true;
-        return bReturn;
-    }
+    CREATE_FILE("+ Add Directory", createFolder)
 
     if (ImGui::MenuItem("* Rename File") || (UVK::Input::getAction("editor-filesystem-rename") == Keys::KeyPressed && ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows) && !currentSelectedFile.empty()))
     {
@@ -98,7 +162,10 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::
     ImGui::Separator();
     ImGui::Text("%s", pt.string().c_str());
     ImGui::EndMenuBar();
-
+// ---------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------- End Menubar section ---------------------------------------------------
+// -------------------------------------------- Begin Warning section --------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
     if (bDeleteWarning)
     {
         if (!ImGui::IsPopupOpen("Warning##FileDeletion"))
@@ -139,42 +206,37 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::
             ImGui::EndPopup();
         }
     }
-
+// ---------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------- End Warning section ---------------------------------------------------
+// ------------------------------------------- Begin Explorer section --------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
     ImGui::BeginChild("Explorer");
 
+    // Decide on the number of columns
     columns = (int)(ImGui::GetContentRegionAvail().x / cellSize);
+    // If columns are less than one set them to 1 otherwise continue
     columns = columns < 1 ? 1 : columns;
 
+    // Create the columns for the elements
     ImGui::Columns(columns, nullptr, false);
 
     auto p = UVK::FString(pt.string());
     UVK::Utility::sanitiseFilepath(p, true);
     pt = std_filesystem::path(p.c_str());
 
+    // ---- Begin ../ button ----
     ImGui::PushStyleColor(ImGuiCol_Button, { 0.0f, 0.0f, 0.0f, 0.0f });
     if (!(p == "../Content/" || p == "../Content"))
     {
-        ImGui::ImageButton((void*)(intptr_t)textures[FS_ICON_FOLDER].getImage(), ImVec2(data.imageSize, data.imageSize));
+        ImGui::ImageButton((void*)(intptr_t)textures[UVK::EditorTextures::FS_ICON_FOLDER].getImage(), ImVec2(data.imageSize, data.imageSize));
         if (ImGui::BeginDragDropTarget())
         {
-            if (const auto* payload = ImGui::AcceptDragDropPayload("ENGINE_FS_WIDGET_LVL"))
+            //const ImGuiPayload* payload;
+            if (ImGui::AcceptDragDropPayload("ENGINE_FS_WIDGET_LVL") || ImGui::AcceptDragDropPayload("ENGINE_FS_WIDGET_ALL"))
             {
                 try
                 {
-                    for (auto& f : selectedFiles)
-                    {
-                        std_filesystem::copy(f, f.parent_path() / "../ " / f.filename());
-                        std_filesystem::remove_all(f);
-                    }
-                    std_filesystem::copy(currentSelectedFile, currentSelectedFile.parent_path() / ".." / currentSelectedFile.filename());
-                    std_filesystem::remove_all(currentSelectedFile);
-                }
-                catch (std_filesystem::filesystem_error&){}
-            }
-            else if ((payload = ImGui::AcceptDragDropPayload("ENGINE_FS_WIDGET_ALL")))
-            {
-                try
-                {
+                    // Copy the selected files one directory up, then
                     for (auto& f : selectedFiles)
                     {
                         std_filesystem::copy(f, f.parent_path() / ".." / f.filename());
@@ -185,10 +247,13 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::
                 }
                 catch (std_filesystem::filesystem_error&){}
             }
+            // TODO: Go back to commit 44f40ca if there are any problems here!
             ImGui::EndDragDropTarget();
         }
+        // Double-click on the ".." button makes us go one directory up
         if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
         {
+            // Submit transaction for undo/redo
             UVK::Transaction transaction =
             {
                 .undofunc = [](UVK::TransactionPayload& payload)
@@ -212,19 +277,15 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::
                     .path = &pt
                 }
             };
-            UVK::StateTracker::push(transaction);
-            pt = pt.parent_path();
-            bNewFolder = true;
-            selectedFiles.clear();
-            currentSelectedFile.clear();
-
+            clearSelectedFilesAndSubmitTransaction(transaction, pt, pt.parent_path(), bNewFolder, selectedFiles, currentSelectedFile);
             return bReturn;
         }
 
         ImGui::TextWrapped("../");
         ImGui::NextColumn();
     }
-
+    // ---- End ../ button ----
+    // ---- Begin iterative section ----
     int i = 0;
     for (auto& a : std_filesystem::directory_iterator(pt))
     {
@@ -233,18 +294,12 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::
         ImGui::PushID(path.string().c_str());
         if (a.is_directory())
         {
-            auto it = std::find(selectedFiles.begin(), selectedFiles.end(), path);
-            bool bFileSelected = (it != selectedFiles.end());
-            if (bFileSelected || currentSelectedFile == path)
-            {
-                bFileSelected = true; // Needed so that we can pop the colours
-                ImGui::PushStyleColor(ImGuiCol_Button, { 0.87f, 0.64f, 0.03, 1.0f });
-                ImGui::PushStyleColor(ImGuiCol_ButtonHovered, { 1.0f, 0.94f, 0.30f, 1.0f });
-            }
-            ImGui::ImageButton((void*)(intptr_t)textures[FS_ICON_FOLDER].getImage(), ImVec2(data.imageSize, data.imageSize));
+            bool bFileSelected;
+            auto it = applyColourToSelectedFiles(selectedFiles, currentSelectedFile, path, bFileSelected);
+            ImGui::ImageButton((void*)(intptr_t)textures[UVK::EditorTextures::FS_ICON_FOLDER].getImage(), ImVec2(data.imageSize, data.imageSize));
             if (ImGui::BeginDragDropTarget())
             {
-                if (const auto* payload = ImGui::AcceptDragDropPayload("ENGINE_FS_WIDGET_LVL"))
+                if (ImGui::AcceptDragDropPayload("ENGINE_FS_WIDGET_LVL") || ImGui::AcceptDragDropPayload("ENGINE_FS_WIDGET_ALL"))
                 {
                     try
                     {
@@ -258,20 +313,7 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::
                     }
                     catch (std_filesystem::filesystem_error&){}
                 }
-                else if ((payload = ImGui::AcceptDragDropPayload("ENGINE_FS_WIDGET_ALL")))
-                {
-                    try
-                    {
-                        for (auto& f : selectedFiles)
-                        {
-                            std_filesystem::copy(f, path);
-                            std_filesystem::remove_all(f);
-                        }
-                        std_filesystem::copy(currentSelectedFile, path);
-                        std_filesystem::remove_all(currentSelectedFile);
-                    }
-                    catch (std_filesystem::filesystem_error&){}
-                }
+                // TODO: Go back to commit 44f40ca if there are any problems here!
                 ImGui::EndDragDropTarget();
             }
             if (ImGui::IsItemHovered())
@@ -302,128 +344,47 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::
                             .path = &pt
                         }
                     };
-                    UVK::StateTracker::push(transaction);
-                    pt = pt / path.filename();
-                    selectedFiles.clear();
-                    bNewFolder = true;
-                    currentSelectedFile.clear();
-                    if (bFileSelected)
-                    {
-                        ImGui::PopStyleColor();
-                        ImGui::PopStyleColor();
-                    }
+                    clearSelectedFilesAndSubmitTransaction(transaction, pt, (pt / path.filename()),bNewFolder, selectedFiles, currentSelectedFile);
+                    DOUBLE_POP
                     return bReturn;
                 }
-                else if (ImGui::IsMouseClicked(ImGuiMouseButton_Right))
-                {
-                    ImGui::OpenPopup("##FSEditPopup");
-                    selectedEditFile = path;
-                }
-                else if (UVK::Input::getKey(Keys::MouseButtonLeft) == Keys::KeyPressed)
-                {
-                    if (UVK::Input::getAction("editor-bind-modifier") == Keys::KeyPressed)
-                    {
-                        if (bFileSelected)
-                        {
-                            if (it != selectedFiles.end())
-                                selectedFiles.erase(it);
-                            else
-                                currentSelectedFile.clear();
-                        }
-                        else
-                            selectedFiles.push_back(path);
-                    }
-                    else
-                    {
-                        currentSelectedFile = path;
-                        selectedFiles.clear();
-                    }
-                }
+                else HANDLE_MOUSE_BUTTONS
             }
-
-            if (bFileSelected)
-            {
-                ImGui::PopStyleColor();
-                ImGui::PopStyleColor();
-            }
+            DOUBLE_POP
         }
         else
         {
-            auto it = std::find(selectedFiles.begin(), selectedFiles.end(), path);
-            bool bFileSelected = (it != selectedFiles.end());
-            if (bFileSelected || currentSelectedFile == path)
-            {
-                bFileSelected = true; // Needed so that we can pop the colours
-                ImGui::PushStyleColor(ImGuiCol_Button, { 0.87f, 0.64f, 0.03, 1.0f });
-                ImGui::PushStyleColor(ImGuiCol_ButtonHovered, { 1.0f, 0.94f, 0.30f, 1.0f });
-            }
+            bool bFileSelected;
+            auto it = applyColourToSelectedFiles(selectedFiles, currentSelectedFile, path, bFileSelected);
             ImGui::ImageButton((void*)(intptr_t)(selectTextures(textures, a, previews, bCurrentlyUsingPreviews, i, bNewFolder)->getImage()), ImVec2(data.imageSize, data.imageSize));
             if (ImGui::IsItemHovered())
             {
-                if (UVK::Input::getKey(Keys::MouseButtonLeft) == Keys::KeyPressed)
-                {
-                    if (UVK::Input::getAction("editor-bind-modifier") == Keys::KeyPressed)
-                    {
-                        if (bFileSelected)
-                        {
-                            if (it != selectedFiles.end())
-                                selectedFiles.erase(it);
-                            else
-                                currentSelectedFile.clear();
-                        }
-                        else
-                            selectedFiles.push_back(path);
-                    }
-                    else
-                    {
-                        currentSelectedFile = path;
-                        selectedFiles.clear();
-                    }
-                }
-                else if (ImGui::IsMouseClicked(ImGuiMouseButton_Right))
-                {
-                    ImGui::OpenPopup("##FSEditPopup");
-                    selectedEditFile = path;
-                }
+                HANDLE_MOUSE_BUTTONS
             }
-            if (bFileSelected)
-            {
-                ImGui::PopStyleColor();
-                ImGui::PopStyleColor();
-            }
+            DOUBLE_POP
         }
-
+// ---------------------------------------------------------------------------------------------------------------------
+// -------------------------------------------- End Action subsection --------------------------------------------------
+// -------------------------------------------- Begin Popup subsection -------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
         if (ImGui::BeginDragDropSource())
         {
             if (!a.is_directory())
                 ImGui::Image((void*)(intptr_t)(selectTextures(textures, a, previews, bCurrentlyUsingPreviews, i, bNewFolder)->getImage()), ImVec2(data.imageSize, data.imageSize));
             else
-                ImGui::Image((void*)(intptr_t)textures[FS_ICON_FOLDER].getImage(), ImVec2(data.imageSize, data.imageSize));
+                ImGui::Image((void*)(intptr_t)textures[UVK::EditorTextures::FS_ICON_FOLDER].getImage(), ImVec2(data.imageSize, data.imageSize));
             ImGui::Text("%s", path.string().c_str());
-            if (path.string().ends_with(".uvklevel"))
+            if (path.extension() == ".uvklevel")
                 ImGui::SetDragDropPayload("ENGINE_FS_WIDGET_LVL", path.string().c_str(), path.string().size() - strlen(".uvklevel"), ImGuiCond_Once);
             else
                 ImGui::SetDragDropPayload("ENGINE_FS_WIDGET_ALL", path.string().c_str(), path.string().size(), ImGuiCond_Once);
 
             ImGui::EndDragDropSource();
         }
-
         if (selectedEditFile == path && ImGui::BeginPopup("##FSEditPopup"))
         {
-            if (ImGui::MenuItem("+ New Folder##FSEditorPopup"))
-            {
-                createFolder(pt);
-                bNewFolder = true;
-                return bReturn;
-            }
-
-            if (ImGui::MenuItem("+ New File##FSEditorPopup"))
-            {
-                createFile(pt);
-                bNewFolder = true;
-                return bReturn;
-            }
-
+            CREATE_FILE("+ New Folder##FSEditorPopup", createFolder);
+            CREATE_FILE("+ New File##FSEditorPopup", createFile);
             ImGui::Separator();
 
             if (ImGui::MenuItem("- Delete##FSEditorPopup"))
@@ -450,6 +411,10 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::
             }
             ImGui::EndPopup();
         }
+// ---------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------- End Popup subsection --------------------------------------------------
+// ------------------------------------------- Begin Rename subsection -------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
 
         if (bRenaming)
         {
@@ -479,6 +444,10 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::
         ImGui::NextColumn();
         ImGui::PopID();
     }
+// ---------------------------------------------------------------------------------------------------------------------
+// -------------------------------------------- End Explorer section ---------------------------------------------------
+// ------------------------------------------- Begin Settings section --------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
     // For some reason the neat popups that we tried to add when right-clicking on empty space after everything else is rendered
     // conflict with the other popups, also true fo SceneHierarchy
     // TODO: Fix someday
@@ -541,6 +510,9 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::
     ImGui::EndGroup();
     ImGui::End();
     return bReturn;
+// ---------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------- End Settings section---------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
 }
 
 void Filesystem::createFile(const std_filesystem::path &pt) noexcept
@@ -753,7 +725,7 @@ UVK::Texture* Filesystem::selectTextures(UVK::Texture* textures, const std_files
 
     for (const auto& b : audioExtensions)
         if (path.filename().extension().string() == b)
-            return &textures[FS_ICON_AUDIO];
+            return &textures[UVK::EditorTextures::FS_ICON_AUDIO];
 
     for (const auto& b : imageExtensions)
     {
@@ -769,26 +741,35 @@ UVK::Texture* Filesystem::selectTextures(UVK::Texture* textures, const std_files
                 }
                 return &previews[currentIndex];
             }
-            else return &textures[FS_ICON_IMAGE];
+            else return &textures[UVK::EditorTextures::FS_ICON_IMAGE];
         }
     }
 
     for (const auto& b : videoExtensions)
         if (path.filename().extension().string() == b)
-            return &textures[FS_ICON_VIDEO];
+            return &textures[UVK::EditorTextures::FS_ICON_VIDEO];
 
     for (const auto& b : objExtensions)
         if (path.filename().extension().string() == b)
-            return &textures[FS_ICON_MODEL];
+            return &textures[UVK::EditorTextures::FS_ICON_MODEL];
 
     for (const auto& b : codeExtensions)
         if (path.filename().extension().string() == b)
-            return &textures[FS_ICON_CODE];
+            return &textures[UVK::EditorTextures::FS_ICON_CODE];
 
     if (path.filename().extension().string() == ".ttf")
-        return &textures[FS_ICON_CODE];
+        return &textures[UVK::EditorTextures::FS_ICON_CODE];
 
-    return &textures[FS_ICON_UNKNOWN];
+    return &textures[UVK::EditorTextures::FS_ICON_UNKNOWN];
+}
+
+void clearSelectedFilesAndSubmitTransaction(UVK::Transaction& transaction, std_filesystem::path& pt, const std_filesystem::path& pt2, volatile bool& bNewFolder, std::vector<std_filesystem::path>& selectedFiles, std_filesystem::path& currentSelectedFile) noexcept
+{
+    UVK::StateTracker::push(transaction);
+    pt = pt2;
+    bNewFolder = true;
+    selectedFiles.clear();
+    currentSelectedFile.clear();
 }
 #endif
 #endif

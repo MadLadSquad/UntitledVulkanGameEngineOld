@@ -5,11 +5,16 @@
 
 void UVK::EditorResources::loadConfigs(Editor& editor) noexcept
 {
+    // Assign the global editor instance to the current editor instance
     global.instance->editor = &editor;
+    // Open the editor locale config
+    global.localeManager.openLocaleConfig(true);
 
+    // Get the short key string for the SHIFT and CTRL actions
     auto bindText = Utility::keyToText(Input::getAction("editor-bind-modifier").keyCode, false);
     auto shiftText = Utility::keyToText(Input::getAction("editor-shift").keyCode, false);
 
+    // Assign the strings in the EditorKeys struct, this struct contains keycode combinations strings that are used as hints on menu items
     editor.keys = EditorKeys
     {
         .editor_level_save = bindText + "+" + Utility::keyToText(Input::getAction("editor-level-save").keyCode, false),
@@ -21,10 +26,11 @@ void UVK::EditorResources::loadConfigs(Editor& editor) noexcept
         .editor_redo = bindText + "+" + Utility::keyToText(Input::getAction("editor-redo").keyCode, false),
     };
 
+    // Open the project config file
     YAML::Node file;
     try
     {
-        file = YAML::LoadFile((UVK::FString(UVK_CONFIG_PRJ_PATH) + "uvproj.yaml").c_str());
+        file = YAML::LoadFile(UVK::FString(UVK_CONFIG_PRJ_PATH) + "uvproj.yaml");
     }
     catch (YAML::BadFile&)
     {
@@ -34,6 +40,7 @@ void UVK::EditorResources::loadConfigs(Editor& editor) noexcept
 
     if (file["engine-version"] && file["name"] && file["version"] && file["startup-level"])
     {
+        // Assign the version, engine version, name and startup level strings to the EditorStrings struct. They are used to enable editing in editor
         editor.strings.engineVersion = file["engine-version"].as<std::string>();
         editor.strings.projectVersion = file["version"].as<std::string>();
         editor.strings.projectName = file["name"].as<std::string>();
@@ -42,7 +49,8 @@ void UVK::EditorResources::loadConfigs(Editor& editor) noexcept
 
     try
     {
-        file = YAML::LoadFile((UVK::FString(UVK_CONFIG_SETTINGS_PATH) + "Editor.yaml").c_str());
+        // Open the editor config file to assign settings to be changed later
+        file = YAML::LoadFile(UVK::FString(UVK_CONFIG_SETTINGS_PATH) + "Editor.yaml");
     }
     catch (YAML::BadFile&)
     {
@@ -76,32 +84,32 @@ void UVK::EditorResources::loadResources(Editor& editor, std_filesystem::path& p
     editor.textures.logoTxt = Texture(static_cast<UVK::FString>(pt.string() + "Engine/logo.png"));
     editor.textures.logoTxt.loadImgui();
 
-    editor.textures.fileTextures[FS_ICON_AUDIO] = Texture(static_cast<UVK::FString>(pt.string() + "Engine/audio.png"));
-    editor.textures.fileTextures[FS_ICON_AUDIO].loadImgui();
+    editor.textures.fileTextures[UVK::EditorTextures::FS_ICON_AUDIO] = Texture(static_cast<UVK::FString>(pt.string() + "Engine/audio.png"));
+    editor.textures.fileTextures[UVK::EditorTextures::FS_ICON_AUDIO].loadImgui();
 
-    editor.textures.fileTextures[FS_ICON_IMAGE] = Texture(static_cast<UVK::FString>(pt.string() + "Engine/image.png"));
-    editor.textures.fileTextures[FS_ICON_IMAGE].loadImgui();
+    editor.textures.fileTextures[UVK::EditorTextures::FS_ICON_IMAGE] = Texture(static_cast<UVK::FString>(pt.string() + "Engine/image.png"));
+    editor.textures.fileTextures[UVK::EditorTextures::FS_ICON_IMAGE].loadImgui();
 
-    editor.textures.fileTextures[FS_ICON_VIDEO] = Texture(static_cast<UVK::FString>(pt.string() + "Engine/video.png"));
-    editor.textures.fileTextures[FS_ICON_VIDEO].loadImgui();
+    editor.textures.fileTextures[UVK::EditorTextures::FS_ICON_VIDEO] = Texture(static_cast<UVK::FString>(pt.string() + "Engine/video.png"));
+    editor.textures.fileTextures[UVK::EditorTextures::FS_ICON_VIDEO].loadImgui();
 
-    editor.textures.fileTextures[FS_ICON_FOLDER] = Texture(static_cast<UVK::FString>(pt.string() + "Engine/folder.png"));
-    editor.textures.fileTextures[FS_ICON_FOLDER].loadImgui();
+    editor.textures.fileTextures[UVK::EditorTextures::FS_ICON_FOLDER] = Texture(static_cast<UVK::FString>(pt.string() + "Engine/folder.png"));
+    editor.textures.fileTextures[UVK::EditorTextures::FS_ICON_FOLDER].loadImgui();
 
-    editor.textures.fileTextures[FS_ICON_FONT] = Texture(static_cast<UVK::FString>(pt.string() + "Engine/font.png"));
-    editor.textures.fileTextures[FS_ICON_FONT].loadImgui();
+    editor.textures.fileTextures[UVK::EditorTextures::FS_ICON_FONT] = Texture(static_cast<UVK::FString>(pt.string() + "Engine/font.png"));
+    editor.textures.fileTextures[UVK::EditorTextures::FS_ICON_FONT].loadImgui();
 
-    editor.textures.fileTextures[FS_ICON_MODEL] = Texture(static_cast<UVK::FString>(pt.string() + "Engine/obj.png"));
-    editor.textures.fileTextures[FS_ICON_MODEL].loadImgui();
+    editor.textures.fileTextures[UVK::EditorTextures::FS_ICON_MODEL] = Texture(static_cast<UVK::FString>(pt.string() + "Engine/obj.png"));
+    editor.textures.fileTextures[UVK::EditorTextures::FS_ICON_MODEL].loadImgui();
 
-    editor.textures.fileTextures[FS_ICON_UNKNOWN] = Texture(static_cast<UVK::FString>(pt.string() + "Engine/unknown.png"));
-    editor.textures.fileTextures[FS_ICON_UNKNOWN].loadImgui();
+    editor.textures.fileTextures[UVK::EditorTextures::FS_ICON_UNKNOWN] = Texture(static_cast<UVK::FString>(pt.string() + "Engine/unknown.png"));
+    editor.textures.fileTextures[UVK::EditorTextures::FS_ICON_UNKNOWN].loadImgui();
 
-    editor.textures.fileTextures[FS_ICON_CODE] = Texture(static_cast<UVK::FString>(pt.string() + "Engine/code.png"));
-    editor.textures.fileTextures[FS_ICON_CODE].loadImgui();
+    editor.textures.fileTextures[UVK::EditorTextures::FS_ICON_CODE] = Texture(static_cast<UVK::FString>(pt.string() + "Engine/code.png"));
+    editor.textures.fileTextures[UVK::EditorTextures::FS_ICON_CODE].loadImgui();
 
-    editor.textures.fileTextures[FS_ICON_CLOSE] = Texture(static_cast<UVK::FString>(pt.string() + "Engine/close.png"));
-    editor.textures.fileTextures[FS_ICON_CLOSE].loadImgui();
+    editor.textures.fileTextures[UVK::EditorTextures::FS_ICON_CLOSE] = Texture(static_cast<UVK::FString>(pt.string() + "Engine/close.png"));
+    editor.textures.fileTextures[UVK::EditorTextures::FS_ICON_CLOSE].loadImgui();
 
     editor.textures.restart = Texture(static_cast<UVK::FString>(pt.string() + "Engine/refresh.png"));
     editor.textures.restart.loadImgui();
@@ -142,8 +150,8 @@ void UVK::EditorResources::loadResources(Editor& editor) noexcept
     editor.textures.fileTextures[7] = Texture(static_cast<UVK::FString>("../Content/Engine/code.png"));
     editor.textures.fileTextures[7].loadImgui();
 
-    editor.textures.fileTextures[FS_ICON_CLOSE] = Texture("../Content/Engine/close.png");
-    editor.textures.fileTextures[FS_ICON_CLOSE].loadImgui();
+    editor.textures.fileTextures[UVK::EditorTextures::FS_ICON_CLOSE] = Texture("../Content/Engine/close.png");
+    editor.textures.fileTextures[UVK::EditorTextures::FS_ICON_CLOSE].loadImgui();
 
     editor.textures.restart = Texture("../Content/Engine/refresh.png");
     editor.textures.restart.loadImgui();

@@ -32,7 +32,7 @@ bool RemoveFile::display(bool& bShow) noexcept
 
         if (ImGui::Button("Delete##delete"))
         {
-
+            // We check if it's a scriptable object here to remove the files accordingly
             if (bSO)
             {
 
@@ -40,8 +40,8 @@ bool RemoveFile::display(bool& bShow) noexcept
                 UBT::removeClass(in);
                 try
                 {
-                    std_filesystem::remove((UVK::FString(UVK_CONFIG_PRJ_PATH) + "Source/" + in + ".hpp").c_str());
-                    std_filesystem::remove((UVK::FString(UVK_CONFIG_PRJ_PATH) + "Source/" + in + ".cpp").c_str());
+                    std_filesystem::remove(UVK::FString(UVK_CONFIG_PRJ_PATH) + "Source/" + in + ".hpp");
+                    std_filesystem::remove(UVK::FString(UVK_CONFIG_PRJ_PATH) + "Source/" + in + ".cpp");
                 }
                 catch (std_filesystem::filesystem_error&)
                 {
@@ -54,8 +54,8 @@ bool RemoveFile::display(bool& bShow) noexcept
 #ifndef __MINGW32__
                 try
                 {
-                    std_filesystem::remove((UVK::FString(UVK_CONFIG_PRJ_PATH) + "Source/" + in + ".hpp").c_str());
-                    std_filesystem::remove((UVK::FString(UVK_CONFIG_PRJ_PATH) + "Source/" + in + ".cpp").c_str());
+                    std_filesystem::remove(UVK::FString(UVK_CONFIG_PRJ_PATH) + "Source/" + in + ".hpp");
+                    std_filesystem::remove(UVK::FString(UVK_CONFIG_PRJ_PATH) + "Source/" + in + ".cpp");
                 }
                 catch (std_filesystem::filesystem_error&)
                 {

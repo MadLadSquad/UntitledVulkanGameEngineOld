@@ -12,7 +12,7 @@ namespace UVK
     public:
         LocaleManager() = default;
         ~LocaleManager() noexcept;
-        void openLocaleConfig();
+        void openLocaleConfig(bool bEditor = false);
     private:
         friend class Locale;
         static constexpr String localeString[] =
