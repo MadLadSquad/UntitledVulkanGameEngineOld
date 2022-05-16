@@ -54,7 +54,7 @@
         }                                                                                           \
 
 void clearSelectedFilesAndSubmitTransaction(UVK::Transaction& transaction, std_filesystem::path& pt, const std_filesystem::path& pt2, volatile bool& bNewFolder, std::vector<std_filesystem::path>& selectedFiles, std_filesystem::path& currentSelectedFile) noexcept;
-auto applyColourToSelectedFiles(std::vector<std_filesystem::path>& selectedFiles, std_filesystem::path& currentSelectedFile, const std_filesystem::path& path, bool& bFileSelected) noexcept
+auto applyColourToSelectedFiles(std::vector<std_filesystem::path>& selectedFiles, const std_filesystem::path& currentSelectedFile, const std_filesystem::path& path, bool& bFileSelected) noexcept
 {
     // TODO: We might want to fix this
     auto it = std::find(selectedFiles.begin(), selectedFiles.end(), path);

@@ -19,14 +19,14 @@ void UVK::VKDescriptors::createDescriptorSetLayout() noexcept
             .binding = 0,
             .descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER,
             .descriptorCount = 1,
-            .stageFlags = VK_SHADER_STAGE_VERTEX_BIT,
+            .stageFlags = VK_SHADER_STAGE_ALL_GRAPHICS,
             .pImmutableSamplers = nullptr,
         },
         {
             .binding = 1,
             .descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC,
             .descriptorCount = 1,
-            .stageFlags = VK_SHADER_STAGE_VERTEX_BIT,
+            .stageFlags = VK_SHADER_STAGE_ALL_GRAPHICS,
             .pImmutableSamplers = nullptr
         }
     };
@@ -175,7 +175,7 @@ void UVK::VKDescriptors::createDescriptorSets() noexcept
             {
                 .buffer = resources->getUniformBuffers()[i].getBuffer(),
                 .offset = 0,
-                .range = sizeof(VP)
+                .range = global.instance->initInfo.shaderConstantStruct.size
             },
         };
         if (global.instance->initInfo.shaderMutableStruct.data != nullptr && global.instance->initInfo.shaderMutableStruct.size > 0)
@@ -221,20 +221,16 @@ void UVK::VKDescriptors::destroyDescriptorSets() noexcept
 
 void UVK::VKDescriptors::createPushConstantRange() noexcept
 {
-
+    pushConstantRange =
+    {
+        .stageFlags = VK_SHADER_STAGE_VERTEX_BIT,
+        .offset = 0,
+        .size = global.instance->initInfo.shaderPushConstant.size,
+    };
 }
 
-void UVK::VKDescriptors::destroyPushConstantRange() noexcept
-{
 
-}
-
-const VkPushConstantRange& UVK::VKDescriptors::getPushConstantRange() const noexcept
-{
-    return pushConstantRange;
-}
-
-const std::vector<VkDescriptorSet> &UVK::VKDescriptors::getDescriptorSets() const noexcept
+const std::vector<VkDescriptorSet>& UVK::VKDescriptors::getDescriptorSets() const noexcept
 {
     return descriptorSets;
 }
@@ -293,4 +289,9 @@ void UVK::VKDescriptors::destroyTextureDescriptor()
 const std::vector<VkDescriptorSet>& UVK::VKDescriptors::getSamplerDescriptorSets() const noexcept
 {
     return samplerDescriptorSets;
+}
+
+const VkPushConstantRange& UVK::VKDescriptors::getPushConstantRange() const noexcept
+{
+    return pushConstantRange;
 }

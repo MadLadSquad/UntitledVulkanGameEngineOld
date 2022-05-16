@@ -27,11 +27,10 @@ namespace UVK
         FVector scale = FVector(1.0f, 1.0f, 1.0f);
 
         FVector4 hue = FVector4(1.0f, 1.0f, 1.0f, 1.0f);
+        glm::mat4 model = glm::mat4(1.0f);
     private:
         void loadNode(aiNode* node, const aiScene* scene) noexcept;
         void loadMesh(aiMesh* mesh, const aiScene* scene) noexcept;
-
-        glm::mat4 model = glm::mat4(1.0f);
 
         VKDevice* device = nullptr;
         Commands* commands = nullptr;

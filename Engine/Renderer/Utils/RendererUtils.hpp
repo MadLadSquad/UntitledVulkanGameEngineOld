@@ -21,6 +21,12 @@ namespace UVK
     {
         glm::mat4 view;
         glm::mat4 projection;
+        glm::mat4 normal;
+        glm::mat4 inverseViewMatrix{1.0f};
+
+        glm::vec4 lightPosition = { 0.0f, 0.75f, -5.0f, 0.0f };
+        glm::vec4 lightColour = { 1.0f, 1.0f, 1.0f, 1.0f };
+        glm::vec4 ambientLightColour = { 0.0f, 0.0f, 0.0f, 0.0f };
     };
 
     struct UVK_PUBLIC_API ShaderPushConstantBase

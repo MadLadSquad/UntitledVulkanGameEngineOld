@@ -80,6 +80,8 @@ void UVK::MeshComponent::update(size_t index, uint32_t currentImage, GraphicsPip
     Math::rotate(model, rotation);
     Math::scale(model, scale);
     global.instance->initInfo.shaderPushConstant.data->model = model;
+    global.instance->initInfo.shaderConstantStruct.data->normal = glm::mat4(glm::mat3(glm::inverse(glm::transpose(glm::mat3(model)))));
+    global.instance->initInfo.shaderConstantStruct.data->ambientLightColour = global.ambientLight;
 
     auto& cmd = commands->getCommandBuffers()[currentImage];
     vkCmdPushConstants(cmd, pipeline.getPipelineLayout(), VK_SHADER_STAGE_VERTEX_BIT, 0, global.instance->initInfo.shaderPushConstant.size, global.instance->initInfo.shaderPushConstant.data);
@@ -130,6 +132,7 @@ void UVK::MeshComponent::loadMesh(aiMesh* mesh, const aiScene* scene) noexcept
         else
             vertices[i].uv = { 0.0f, 0.0f };
         vertices[i].colour = hue;
+        vertices[i].normal = { mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z };
     }
     for (size_t i = 0; i < mesh->mNumFaces; i++)
     {

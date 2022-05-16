@@ -75,6 +75,7 @@ namespace UVK
         FVector pos;
         FVector4 colour;
         FVector2 uv;
+        FVector normal;
     };
 
     struct VP

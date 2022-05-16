@@ -16,7 +16,6 @@ namespace UVK
         [[nodiscard]] const VkDescriptorSetLayout& samplerLayout() const noexcept;
 
         void createPushConstantRange() noexcept;
-        void destroyPushConstantRange() noexcept;
         [[nodiscard]] const VkPushConstantRange& getPushConstantRange() const noexcept;
 
         void createDescriptorPool() noexcept;
@@ -41,13 +40,7 @@ namespace UVK
 
         std::vector<VkDescriptorSet> descriptorSets;
         std::vector<VkDescriptorSet> samplerDescriptorSets;
-
-        static constexpr VkPushConstantRange pushConstantRange =
-        {
-            .stageFlags = VK_SHADER_STAGE_VERTEX_BIT,
-            .offset = 0,
-            .size = sizeof(Model)
-        };
+        VkPushConstantRange pushConstantRange{};
 
         Swapchain* swapchain = nullptr;
         VKDevice* device = nullptr;

@@ -23,7 +23,7 @@ void UVK::VulkanRenderer::run() noexcept
 
     auto& mcomp = actor.add<MeshComponent>();
     mcomp.hue = { 1.0f, 1.0f, 1.0f, 1.0f };
-    mcomp.create("../Content/Engine/teapot.obj", renderer.device, renderer.commands, renderer.descriptors);
+    mcomp.create("../Content/pot/testpot.obj", renderer.device, renderer.commands, renderer.descriptors);
 
     beginEvents();
 
@@ -31,6 +31,35 @@ void UVK::VulkanRenderer::run() noexcept
     double lastTime = 0.0f;
     while (!glfwWindowShouldClose(global.window.getWindow()))
     {
+        //const float c3 = glm::cos(mcomp.rotation.z);
+        //const float s3 = glm::sin(mcomp.rotation.z);
+        //const float c2 = glm::cos(mcomp.rotation.x);
+        //const float s2 = glm::sin(mcomp.rotation.x);
+        //const float c1 = glm::cos(mcomp.rotation.y);
+        //const float s1 = glm::sin(mcomp.rotation.y);
+        //const glm::vec3 invScale = 1.0f / mcomp.scale;
+//
+        //glm::mat4 mat = glm::mat3{
+        //        {
+        //                invScale.x * (c1 * c3 + s1 * s2 * s3),
+        //                invScale.x * (c2 * s3),
+        //                invScale.x * (c1 * s2 * s3 - c3 * s1),
+        //        },
+        //        {
+        //                invScale.y * (c3 * s1 * s2 - c1 * s3),
+        //                invScale.y * (c2 * c3),
+        //                invScale.y * (c1 * c3 * s2 + s1 * s3),
+        //        },
+        //        {
+        //                invScale.z * (c2 * s1),
+        //                invScale.z * (-s2),
+        //                invScale.z * (c1 * c2),
+        //        },
+        //};
+
+
+        //global.instance->initInfo.shaderConstantStruct.data->normal = mat;
+
         static double deltaTime = 0.0f;
         glfwPollEvents();
 
@@ -38,11 +67,14 @@ void UVK::VulkanRenderer::run() noexcept
         deltaTime = now - lastTime;
         lastTime = now;
 
+        //mcomp.translation = { 0.0f, -0.75f, 0.0f };
+        //mcomp.rotation = { 0.0f, 0.0f, 0.0f };
+        //mcomp.scale = { 0.25f, 0.25f, 0.25f };
         angle += ((angle + (1.0f * deltaTime)) >= 360.0f) ? -360.0f : 1.0f * deltaTime;
-        mcomp.translation = FVector(0.0f, sin(angle) - 0.75f, 0.0f);
+        mcomp.translation = FVector(0.0f, sin(angle) -0.75f, 0.0f);
         mcomp.rotation = FVector(0.0f, angle, 0.0f);
         mcomp.scale = FVector(0.025f, 0.025f, 0.025f);
-
+        global.instance->initInfo.shaderConstantStruct.data->lightPosition = FVector4(0.0f, 0.0, -0.5f, 0.0f);
         updateEvents(deltaTime);
         renderer.commands.draw();
     }

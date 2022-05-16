@@ -3,7 +3,7 @@
 #include "Depth.hpp"
 #include <Renderer/Renderer.hpp>
 
-UVK::GraphicsPipeline::GraphicsPipeline(UVK::VKDevice& dev, Swapchain& swap, const VKDescriptors& desc, VKDepthBuffer& depth) noexcept
+UVK::GraphicsPipeline::GraphicsPipeline(UVK::VKDevice& dev, Swapchain& swap, VKDescriptors& desc, VKDepthBuffer& depth) noexcept
 {
     device = &dev;
     swapchain = &swap;
@@ -13,6 +13,7 @@ UVK::GraphicsPipeline::GraphicsPipeline(UVK::VKDevice& dev, Swapchain& swap, con
 
 void UVK::GraphicsPipeline::createGraphicsPipeline() noexcept
 {
+    descriptors->createPushConstantRange();
     std::vector<VKShader> shaders;
     std::vector<VkPipelineShaderStageCreateInfo> stages;
 
@@ -58,7 +59,7 @@ void UVK::GraphicsPipeline::createGraphicsPipeline() noexcept
         .inputRate = VK_VERTEX_INPUT_RATE_VERTEX
     };
 
-    constexpr VkVertexInputAttributeDescription attributeDescriptions[3] =
+    constexpr VkVertexInputAttributeDescription attributeDescriptions[] =
     {
         {
             .location = 0,
@@ -77,6 +78,12 @@ void UVK::GraphicsPipeline::createGraphicsPipeline() noexcept
             .binding = 0,
             .format = VK_FORMAT_R32G32_SFLOAT,
             .offset = offsetof(VKVertex, uv)
+        },
+        {
+            .location = 3,
+            .binding = 0,
+            .format = VK_FORMAT_R32G32B32_SFLOAT,
+            .offset = offsetof(VKVertex, normal)
         }
     };
 
@@ -85,7 +92,7 @@ void UVK::GraphicsPipeline::createGraphicsPipeline() noexcept
         .sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO,
         .vertexBindingDescriptionCount = 1,
         .pVertexBindingDescriptions = &bindingDescription,
-        .vertexAttributeDescriptionCount = 3,
+        .vertexAttributeDescriptionCount = 4,
         .pVertexAttributeDescriptions = attributeDescriptions
     };
 

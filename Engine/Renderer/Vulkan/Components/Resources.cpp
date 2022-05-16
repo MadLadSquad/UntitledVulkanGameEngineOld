@@ -9,7 +9,6 @@
 
 void UVK::VKResources::createUniformBuffers(size_t dependencySizeLink) noexcept
 {
-    VkDeviceSize size = sizeof(VP);
     VkDeviceSize modelSize = modelUniformAlignment * VK_MAX_OBJECTS;
 
     uniformBuffers.resize(dependencySizeLink);
@@ -18,7 +17,7 @@ void UVK::VKResources::createUniformBuffers(size_t dependencySizeLink) noexcept
 
     for (size_t i = 0; i < dependencySizeLink; i++)
     {
-        uniformBuffers[i].create(*device, size, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
+        uniformBuffers[i].create(*device, global.instance->initInfo.shaderConstantStruct.size, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
         if (global.instance->initInfo.shaderMutableStruct.data != nullptr && global.instance->initInfo.shaderMutableStruct.size > 0)
             dynamicUniformBuffers[i].create(*device, modelSize, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
     }
@@ -28,11 +27,12 @@ void UVK::VKResources::updateUniformBuffers(UVK::VP& mvp, uint32_t imageIndex) n
 {
     global.instance->initInfo.shaderConstantStruct.data->projection = mvp.projection;
     global.instance->initInfo.shaderConstantStruct.data->view = mvp.view;
+    global.instance->initInfo.shaderConstantStruct.data->inverseViewMatrix = glm::inverse(mvp.view);
 
     void* data;
     vkMapMemory(device->getDevice(), uniformBuffers[imageIndex].getMemory(), 0, global.instance->initInfo.shaderConstantStruct.size, 0, &data);
     //memcpy(data, &global.instance->initInfo.shaderConstantStruct.data, global.instance->initInfo.shaderConstantStruct.size);
-    memcpy(data, &mvp, global.instance->initInfo.shaderConstantStruct.size);
+    memcpy(data, (void*)global.instance->initInfo.shaderConstantStruct.data, global.instance->initInfo.shaderConstantStruct.size);
     vkUnmapMemory(device->getDevice(), uniformBuffers[imageIndex].getMemory());
     if (global.instance->initInfo.shaderMutableStruct.data != nullptr && global.instance->initInfo.shaderMutableStruct.size > 0)
     {
