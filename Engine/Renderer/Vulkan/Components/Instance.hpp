@@ -9,13 +9,11 @@ namespace UVK
             logger.consoleLog("Vulkan Validation error: ", UVK_LOG_TYPE_ERROR, message);
             return VK_TRUE;
         }
-
         if (flags & VK_DEBUG_REPORT_WARNING_BIT_EXT)
         {
             logger.consoleLog("Vulkan Validation warning: ", UVK_LOG_TYPE_WARNING, message);
             return VK_FALSE;
         }
-
         return VK_FALSE;
     }
 
@@ -35,6 +33,5 @@ namespace UVK
         VkDebugReportCallbackEXT callback;
 
         void createDebugCallback() noexcept;
-
     };
 }

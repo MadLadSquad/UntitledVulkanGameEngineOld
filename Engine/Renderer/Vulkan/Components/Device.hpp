@@ -10,9 +10,17 @@ namespace UVK
     {
     public:
         VKDevice() = default;
+        /**
+         * @brief Initialize the class
+         * @param instance - The Global Vulkan instance
+         */
         explicit VKDevice(VKInstance& instance) noexcept;
         ~VKDevice() = default;
 
+        /**
+         * @brief Create the Device
+         * @param surface - The surface for which to create it
+         */
         void createDevice(Swapchain& surface) noexcept;
         void destroyDevice() noexcept;
 
@@ -27,6 +35,11 @@ namespace UVK
         friend class VKBuffer;
         friend class VKMesh;
 
+        /**
+         * @brief Create the Physical Device
+         * @param surface - The surface for which to create it
+         * @return The queue family indices for the device
+         */
         QueueFamilyIndices createPhysicalDevice(Swapchain& surface) noexcept;
 
         VkPhysicalDeviceProperties deviceProperties{};

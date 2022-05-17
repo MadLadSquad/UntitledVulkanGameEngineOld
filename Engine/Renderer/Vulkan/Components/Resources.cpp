@@ -17,6 +17,7 @@ void UVK::VKResources::createUniformBuffers(size_t dependencySizeLink) noexcept
 
     for (size_t i = 0; i < dependencySizeLink; i++)
     {
+        // Create the buffers
         uniformBuffers[i].create(*device, global.instance->initInfo.shaderConstantStruct.size, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
         if (global.instance->initInfo.shaderMutableStruct.data != nullptr && global.instance->initInfo.shaderMutableStruct.size > 0)
             dynamicUniformBuffers[i].create(*device, modelSize, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
@@ -25,17 +26,19 @@ void UVK::VKResources::createUniformBuffers(size_t dependencySizeLink) noexcept
 
 void UVK::VKResources::updateUniformBuffers(UVK::VP& mvp, uint32_t imageIndex) noexcept
 {
+    // Push standard data defined in the base shader struct automatically
     global.instance->initInfo.shaderConstantStruct.data->projection = mvp.projection;
     global.instance->initInfo.shaderConstantStruct.data->view = mvp.view;
     global.instance->initInfo.shaderConstantStruct.data->inverseViewMatrix = glm::inverse(mvp.view);
 
+    // Get the GPU memory and copy the data from the struct to the uniform buffer
     void* data;
     vkMapMemory(device->getDevice(), uniformBuffers[imageIndex].getMemory(), 0, global.instance->initInfo.shaderConstantStruct.size, 0, &data);
-    //memcpy(data, &global.instance->initInfo.shaderConstantStruct.data, global.instance->initInfo.shaderConstantStruct.size);
     memcpy(data, (void*)global.instance->initInfo.shaderConstantStruct.data, global.instance->initInfo.shaderConstantStruct.size);
     vkUnmapMemory(device->getDevice(), uniformBuffers[imageIndex].getMemory());
     if (global.instance->initInfo.shaderMutableStruct.data != nullptr && global.instance->initInfo.shaderMutableStruct.size > 0)
     {
+        // Update dynamic uniform buffers
         const auto& meshes = ECS::data().view<MeshComponent>();
         size_t i = 0;
         for (auto& a : meshes)
@@ -77,6 +80,7 @@ void UVK::VKResources::allocateDynamicUniformBufferTransferSpace() noexcept
     {
         // weird bit magic
         modelUniformAlignment = (global.instance->initInfo.shaderMutableStruct.size + device->deviceProperties.limits.minUniformBufferOffsetAlignment - 1) & ~(device->deviceProperties.limits.minUniformBufferOffsetAlignment - 1);
+        // Another rant centered at Windows here, ok so the C++ standard isn't fully compatible, I get it. But if you will make a function that mimics the standard, why do you switch the argument types???????????
 #ifdef _WIN32
         modelTransferSpace = _aligned_malloc(modelUniformAlignment * VK_MAX_OBJECTS, modelUniformAlignment);
 #else
@@ -89,6 +93,7 @@ void UVK::VKResources::freeDynamicUniformBufferTransferSpace() noexcept
 {
     if (global.instance->initInfo.shaderMutableStruct.data != nullptr && global.instance->initInfo.shaderMutableStruct.size > 0)
     {
+        // Weird free operations
 #ifdef _WIN32
     _aligned_free(modelTransferSpace);
 #else

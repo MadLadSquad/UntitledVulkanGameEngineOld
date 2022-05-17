@@ -8,12 +8,14 @@ void UVK::VKDevice::createDevice(Swapchain& swapchain) noexcept
 
     uint32_t queueFamilyCount = 0;
 
+    // Get the queue family properties for the given physical device
     vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice, &queueFamilyCount, nullptr);
     std::vector<VkQueueFamilyProperties> queueFamilyList(queueFamilyCount);
     vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice, &queueFamilyCount, queueFamilyList.data());
 
     constexpr float priority = 1.0f;
 
+    // Create the queues given the indices
     const VkDeviceQueueCreateInfo createInfos[] =
     {
         {
@@ -30,18 +32,20 @@ void UVK::VKDevice::createDevice(Swapchain& swapchain) noexcept
         }
     };
 
+    // Set sample rate shading to true or false depending on the setting
     VkBool32 sampleRateShading = Renderer::sampleRateShading() ? VK_TRUE : VK_FALSE;
 
+    // Enable physical device features
     const VkPhysicalDeviceFeatures deviceFeatures =
     {
         .sampleRateShading = sampleRateShading,
-        .samplerAnisotropy = VK_TRUE,
+        .samplerAnisotropy = VK_TRUE,           // We're using Anisotropy
     };
     constexpr VkPhysicalDeviceCustomBorderColorFeaturesEXT physicalDeviceCustomBorderColorFeaturesExt
     {
         .sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_CUSTOM_BORDER_COLOR_FEATURES_EXT,
-        .customBorderColors = VK_TRUE,
-        .customBorderColorWithoutFormat = VK_FALSE,
+        .customBorderColors = VK_TRUE,                                                  // Enable custom texture border colours
+        .customBorderColorWithoutFormat = VK_FALSE,                                     // Require format for the custom border colours
     };
 
     const uint32_t queueInfoCount = indices.graphicsFamily == indices.presentationFamily ? 1 : 2;
@@ -49,7 +53,7 @@ void UVK::VKDevice::createDevice(Swapchain& swapchain) noexcept
     const VkDeviceCreateInfo deviceCreateInfo =
     {
         .sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO,
-        .pNext = &physicalDeviceCustomBorderColorFeaturesExt,
+        .pNext = &physicalDeviceCustomBorderColorFeaturesExt,   // Set the pNext pointer to point to the custom border colours struct
         .queueCreateInfoCount = queueInfoCount,
         .pQueueCreateInfos = createInfos,
         .enabledExtensionCount = deviceExtensions.size(),
@@ -57,12 +61,14 @@ void UVK::VKDevice::createDevice(Swapchain& swapchain) noexcept
         .pEnabledFeatures = &deviceFeatures
     };
 
+    // Create the logical device
     auto result = vkCreateDevice(physicalDevice, &deviceCreateInfo, nullptr, &device);
     if (result != VK_SUCCESS)
     {
         logger.consoleLog("Failed to create a logical device! Error code: ", UVK_LOG_TYPE_ERROR, result);
         std::terminate();
     }
+    // Get the queues
     vkGetDeviceQueue(device, indices.graphicsFamily, 0, &queue);
     vkGetDeviceQueue(device, indices.presentationFamily, 0, &presentationQueue);
 }
@@ -85,6 +91,7 @@ UVK::VKDevice::VKDevice(UVK::VKInstance& instance) noexcept
 UVK::QueueFamilyIndices UVK::VKDevice::createPhysicalDevice(Swapchain& swapchain) noexcept
 {
     uint32_t deviceCount;
+    // Get the list of physical devices
     vkEnumeratePhysicalDevices(instance->data(), &deviceCount, nullptr);
     if (deviceCount == 0)
     {
@@ -101,9 +108,11 @@ UVK::QueueFamilyIndices UVK::VKDevice::createPhysicalDevice(Swapchain& swapchain
 
     for (size_t i = 0; i < devices.size(); i++)
     {
+        // Get the properties of the device
         VkPhysicalDeviceProperties properties = {};
         vkGetPhysicalDeviceProperties(devices[i], &properties);
 
+        // If it is not discrete skip this iteration
         if (properties.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU)
             bFoundDiscreteDevice = true;
         else
@@ -114,6 +123,7 @@ UVK::QueueFamilyIndices UVK::VKDevice::createPhysicalDevice(Swapchain& swapchain
 
         auto* heaps = memoryProperties.memoryHeaps;
         uint64_t size = 0;
+        // Set the size of the memory for the given GPU
         for (size_t j = 0; j < memoryProperties.memoryHeapCount; j++)
         {
             if (heaps[j].flags & VK_MEMORY_HEAP_DEVICE_LOCAL_BIT)
@@ -129,11 +139,13 @@ exit_embedded_loop:
         uint32_t extensionCount = 0;
         std::vector<VkExtensionProperties> extensions;
 
+        // Get the queue families
         vkGetPhysicalDeviceQueueFamilyProperties(devices[i], &queueFamilyCount, nullptr);
         std::vector<VkQueueFamilyProperties> queueFamilyList(queueFamilyCount);
         vkGetPhysicalDeviceQueueFamilyProperties(devices[i], &queueFamilyCount, queueFamilyList.data());
 
         int j = 0;
+        // Select the queue family
         for (; j < queueFamilyList.size(); j++)
         {
             const auto& a = queueFamilyList[j];
@@ -149,15 +161,18 @@ exit_embedded_loop:
             }
         }
 
+        // If invalid skip
         if (!families.valid())
             continue;
 skip_family_validity_check:
+        // Get the list of device extensions
         vkEnumerateDeviceExtensionProperties(devices[i], nullptr, &extensionCount, nullptr);
         if (extensionCount == 0)
             continue;
         extensions.resize(extensionCount);
         vkEnumerateDeviceExtensionProperties(devices[i], nullptr, &extensionCount, extensions.data());
 
+        // Iterate the list and make sure the device supports all
         for (const auto& a : deviceExtensions)
         {
             bool bHasExtension = false;
@@ -170,6 +185,7 @@ skip_family_validity_check:
                 }
             }
 breakout:
+            // If it doesn't have the extension, skip
             if (!bHasExtension)
                 goto continue_to_other_device_in_list;
         }
@@ -177,6 +193,7 @@ breakout:
         if (!swapchain.getSwapchainDetails(devices[i], families))
             continue;
 
+        // If the size is larger set the index of the device to this since it's the best one so far
         if (size > largestMemorySize)
         {
             largestMemorySize = size;
@@ -186,11 +203,13 @@ breakout:
 continue_to_other_device_in_list:;
     }
 
+    // Set device[0] if we couldn't find it lol
     if (!bFoundDiscreteDevice || largestMemorySizeFoundIndex == 0)
         physicalDevice = devices[0];
     else
         physicalDevice = devices[largestMemorySizeFoundIndex];
 
+    // Set the device properties variable real quick
     vkGetPhysicalDeviceProperties(physicalDevice, &deviceProperties);
     setMSAASamples();
     logger.consoleLog("Loaded Vulkan device ", UVK_LOG_TYPE_SUCCESS, deviceProperties.deviceName);
@@ -219,6 +238,7 @@ VkPhysicalDevice& UVK::VKDevice::getPhysicalDevice() noexcept
 
 void UVK::VKDevice::setMSAASamples() const noexcept
 {
+    // Set the MSAA sample level given the hardware supports it and is defined in the config file
     const VkSampleCountFlags counts = deviceProperties.limits.framebufferColorSampleCounts & deviceProperties.limits.framebufferDepthSampleCounts;
     if ((counts & VK_SAMPLE_COUNT_64_BIT) && UVK::Renderer::msaaSampleCount() > 32)
         UVK::Renderer::msaaSampleCount() = VK_SAMPLE_COUNT_64_BIT;

@@ -17,6 +17,10 @@ namespace UVK
         Swapchain(VKInstance& inst, VKDevice& dev) noexcept;
         ~Swapchain() = default;
 
+        /**
+         * @brief Creates a new swapchain from an optional old swapchain
+         * @param oldswapchain - If a value is provided when the swapchain gets created the old swapcahin will be used to make the recreation more performant
+         */
         void createSwapchain(VkSwapchainKHR oldswapchain = VK_NULL_HANDLE) noexcept;
         void destroySwapchain(bool bNoDestroy = false) noexcept;
 

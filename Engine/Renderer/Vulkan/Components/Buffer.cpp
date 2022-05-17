@@ -4,14 +4,16 @@ void UVK::VKBuffer::create(UVK::VKDevice& dev, VkDeviceSize bufferSize, VkBuffer
 {
     device = &dev;
     bufferSz = bufferSize;
+    // The template for creating a Vulkan buffer
     const VkBufferCreateInfo bufferInfo =
     {
         .sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO,
         .size = bufferSize,
         .usage = bufferUsageFlags,
-        .sharingMode = VK_SHARING_MODE_EXCLUSIVE
+        .sharingMode = VK_SHARING_MODE_EXCLUSIVE        // Not supporting concurrent buffer access
     };
 
+    // Create the buffer duh
     auto result = vkCreateBuffer(dev.getDevice(), &bufferInfo, nullptr, &buffer);
     if (result != VK_SUCCESS)
     {
@@ -29,13 +31,14 @@ void UVK::VKBuffer::create(UVK::VKDevice& dev, VkDeviceSize bufferSize, VkBuffer
         .memoryTypeIndex = findMemoryTypeIndex(memoryRequirements.memoryTypeBits, propertyFlags)
     };
 
+    // Allocate the memory duh
     result = vkAllocateMemory(dev.getDevice(), &memoryAllocateInfo, nullptr, &memory);
     if (result != VK_SUCCESS)
     {
         logger.consoleLog("Couldn't allocate memory for the vertex buffer! Error code: ", UVK_LOG_TYPE_ERROR, result);
         std::terminate();
     }
-
+    // Bind the buffer memory to be ussed by the buffer
     vkBindBufferMemory(dev.getDevice(), buffer, memory, 0);
 }
 

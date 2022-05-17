@@ -13,6 +13,7 @@ UVK::VKDescriptors::VKDescriptors(UVK::VKDevice& dev, Swapchain& swap, VKResourc
 
 void UVK::VKDescriptors::createDescriptorSetLayout() noexcept
 {
+    // Creates the bindings for the descriptor set layout, so it holds the data for the normal and dynamic uniform buffers
     constexpr VkDescriptorSetLayoutBinding layoutBindings[] =
     {
         {
@@ -31,15 +32,17 @@ void UVK::VKDescriptors::createDescriptorSetLayout() noexcept
         }
     };
     uint8_t size = 1;
+    // Change the size to include the dynamic uniform buffer part if the programmer is using dynamic uniform buffers
     if (global.instance->initInfo.shaderMutableStruct.data != nullptr && global.instance->initInfo.shaderMutableStruct.size > 0)
         size = 2;
     const VkDescriptorSetLayoutCreateInfo layoutCreateInfo =
     {
         .sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO,
         .bindingCount = size,
-        .pBindings = layoutBindings
+        .pBindings = layoutBindings // Pass the bindings
     };
 
+    // Create the layout
     auto result = vkCreateDescriptorSetLayout(device->getDevice(), &layoutCreateInfo, nullptr, &descriptorSetLayout);
     if (result != VK_SUCCESS)
     {
@@ -47,10 +50,11 @@ void UVK::VKDescriptors::createDescriptorSetLayout() noexcept
         std::terminate();
     }
 
+    // Create the binding for the sampler bindings
     constexpr VkDescriptorSetLayoutBinding samplerLayoutBindings
     {
         .binding = 0,
-        .descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER,
+        .descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER,    // Here it needs to be combined
         .descriptorCount = 1,
         .stageFlags = VK_SHADER_STAGE_FRAGMENT_BIT,
         .pImmutableSamplers = nullptr
@@ -60,8 +64,9 @@ void UVK::VKDescriptors::createDescriptorSetLayout() noexcept
     {
         .sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO,
         .bindingCount = 1,
-        .pBindings = &samplerLayoutBindings
+        .pBindings = &samplerLayoutBindings // Pass the sampler bindings
     };
+    // Create the sampler bindings
     result = vkCreateDescriptorSetLayout(device->getDevice(), &samplerDescriptorSetCreateInfo, nullptr, &samplerSetLayout);
     if (result != VK_SUCCESS)
     {
@@ -87,6 +92,7 @@ const VkDescriptorSetLayout& UVK::VKDescriptors::layout() const noexcept
 
 void UVK::VKDescriptors::createDescriptorPool() noexcept
 {
+    // Set the sizes for the uniform and dynamic uniform buffers
     const VkDescriptorPoolSize poolSizes[] =
     {
         {
@@ -100,17 +106,19 @@ void UVK::VKDescriptors::createDescriptorPool() noexcept
     };
 
     uint8_t size = 1;
+    // Set the size to include the dynamic uniform buffer if the programmer has defined one
     if (global.instance->initInfo.shaderMutableStruct.data != nullptr && global.instance->initInfo.shaderMutableStruct.size > 0)
         size = 2;
 
     const VkDescriptorPoolCreateInfo poolCreateInfo =
     {
         .sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO,
-        .maxSets = static_cast<uint32_t>(resources->getUniformBuffers().size()),
+        .maxSets = static_cast<uint32_t>(resources->getUniformBuffers().size()),    // Create a set for every uniform buffer
         .poolSizeCount = size,
         .pPoolSizes = poolSizes
     };
 
+    // Create the destriptor pool
     auto result = vkCreateDescriptorPool(device->getDevice(), &poolCreateInfo, nullptr, &descriptorPool);
     if (result != VK_SUCCESS)
     {
@@ -166,6 +174,7 @@ void UVK::VKDescriptors::createDescriptorSets() noexcept
         std::terminate();
     }
     uint8_t size = 1;
+    // Set the size variable to include dynamic uniform buffers
     if (global.instance->initInfo.shaderMutableStruct.data != nullptr && global.instance->initInfo.shaderMutableStruct.size > 0)
         size = 2;
     for (size_t i = 0; i < resources->getUniformBuffers().size(); i++)
@@ -173,18 +182,18 @@ void UVK::VKDescriptors::createDescriptorSets() noexcept
         VkDescriptorBufferInfo descriptorBufferInfos[2] =
         {
             {
-                .buffer = resources->getUniformBuffers()[i].getBuffer(),
+                .buffer = resources->getUniformBuffers()[i].getBuffer(),        // The uniform buffer
                 .offset = 0,
-                .range = global.instance->initInfo.shaderConstantStruct.size
+                .range = global.instance->initInfo.shaderConstantStruct.size    // Basically the size of the struct
             },
         };
         if (global.instance->initInfo.shaderMutableStruct.data != nullptr && global.instance->initInfo.shaderMutableStruct.size > 0)
         {
             descriptorBufferInfos[1] =
             {
-                .buffer = resources->getDynamicUniformBuffers()[i].getBuffer(),
+                .buffer = resources->getDynamicUniformBuffers()[i].getBuffer(),     // The dynamic uniform buffer
                 .offset = 0,
-                .range = resources->getModelUniformAlignment()
+                .range = resources->getModelUniformAlignment()                      // The size of the dynamic uniform buffer
             };
         }
 
@@ -210,6 +219,7 @@ void UVK::VKDescriptors::createDescriptorSets() noexcept
             }
         };
 
+        // Update the sets
         vkUpdateDescriptorSets(device->getDevice(), size, descriptorWrites, 0, nullptr);
     }
 }
@@ -221,6 +231,7 @@ void UVK::VKDescriptors::destroyDescriptorSets() noexcept
 
 void UVK::VKDescriptors::createPushConstantRange() noexcept
 {
+    // Define the push constants
     pushConstantRange =
     {
         .stageFlags = VK_SHADER_STAGE_VERTEX_BIT,

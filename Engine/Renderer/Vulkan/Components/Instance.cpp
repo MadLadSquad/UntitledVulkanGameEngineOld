@@ -19,17 +19,21 @@ void UVK::VKInstance::create() noexcept
     };
 
     uint32_t glfwExtensionCount = 0;
+    // Get the extensions that glfw requires
     const char** glfwExtensions = glfwGetRequiredInstanceExtensions(&glfwExtensionCount);
 
     std::vector<const char*> instanceExtensions;
     std::vector<const char*> instanceLayers;
+    // Push she extensions to the array
     for (size_t i = 0; i < glfwExtensionCount; i++)
         instanceExtensions.push_back(glfwExtensions[i]);
 #ifdef DEVELOPMENT
+    // Add the debug extensions for development
     instanceExtensions.push_back("VK_EXT_debug_report");
     instanceLayers.push_back("VK_LAYER_KHRONOS_validation");
 #endif
 
+    // Check instance extension support
     if (!checkInstanceExtensionsSupport(instanceExtensions.data(), instanceExtensions.size()))
     {
         logger.consoleLog("Couldn't load all required extensions!", UVK_LOG_TYPE_ERROR);
@@ -47,23 +51,27 @@ void UVK::VKInstance::create() noexcept
         .ppEnabledExtensionNames = instanceExtensions.data(),
     };
 
+    // Check if the validation layers are supported
     if (!checkValidationLayerSupport(instanceLayers))
     {
         logger.consoleLog("Couldn't create validation layers!", UVK_LOG_TYPE_ERROR);
         std::terminate();
     }
 
+    // Create the instance
     auto result = vkCreateInstance(&instanceInfo, nullptr, &instance);
     if (result != VK_SUCCESS)
     {
         logger.consoleLog("Could not create a Vulkan instance! Error code: ", UVK_LOG_TYPE_ERROR, result);
         std::terminate();
     }
+    // Create the debug callback
     createDebugCallback();
 }
 
 void UVK::VKInstance::destroy() noexcept
 {
+    // Cleanup from the validation layers
 #ifdef DEVELOPMENT
     PFN_vkDestroyDebugReportCallbackEXT destroyDebugReportCallback = VK_NULL_HANDLE;
     destroyDebugReportCallback = (PFN_vkDestroyDebugReportCallbackEXT)vkGetInstanceProcAddr(instance, "vkDestroyDebugReportCallbackEXT");
@@ -134,6 +142,7 @@ bool UVK::VKInstance::checkValidationLayerSupport(const std::vector<const char*>
 void UVK::VKInstance::createDebugCallback() noexcept
 {
 #ifdef DEVELOPMENT
+    // Push the callback
     VkDebugReportCallbackCreateInfoEXT callbackCreateInfo =
     {
         .sType = VK_STRUCTURE_TYPE_DEBUG_REPORT_CALLBACK_CREATE_INFO_EXT,

@@ -12,7 +12,7 @@ void UVK::Commands::createCommandPool() noexcept
     const VkCommandPoolCreateInfo poolInfo =
     {
         .sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO,
-        .flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT,
+        .flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT,                           // Allow the command buffer to be individually reset to the initial state
         .queueFamilyIndex = static_cast<uint32_t>(device->getIndices().graphicsFamily),
     };
 
@@ -37,10 +37,10 @@ void UVK::Commands::createCommandBuffers(size_t dependencySizeLink) noexcept
     {
         .sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO,
         .commandPool = commandPool,
-        .level = VK_COMMAND_BUFFER_LEVEL_PRIMARY,
+        .level = VK_COMMAND_BUFFER_LEVEL_PRIMARY,                               // Use the primary command buffer
         .commandBufferCount = static_cast<uint32_t>(commandBuffers.size()),
     };
-
+    // Allocate the command buffers duh
     const auto result = vkAllocateCommandBuffers(device->getDevice(), &commandBufferAllocateInfo, commandBuffers.data());
     if (result != VK_SUCCESS)
     {
@@ -59,6 +59,7 @@ void UVK::Commands::draw() noexcept
     static uint32_t currentFrame = 0;
     uint32_t imageIndex;
 
+    // Wait for the fence to be signaled
     vkWaitForFences(device->getDevice(), 1, &fences[currentFrame], VK_TRUE, std::numeric_limits<uint64_t>::max());
 
     auto result = vkAcquireNextImageKHR(device->getDevice(), swapchain->getSwapchain(), std::numeric_limits<uint64_t>::max(), imageAvailable[currentFrame], VK_NULL_HANDLE, &imageIndex);
@@ -69,12 +70,14 @@ void UVK::Commands::draw() noexcept
     }
     else if (result == VK_ERROR_OUT_OF_DATE_KHR)
     {
-        global.renderer->recreate();
+        global.renderer->recreate(); // Recreate the swapchain for window resize
         return;
     }
+    // Reset the fences to be unsignaled
     vkResetFences(device->getDevice(), 1, &fences[currentFrame]);
     recordCommands(imageIndex);
 
+    // TODO: Please remove this from here in the future
     const auto& camera = UVK::Level::getPawn(global.currentLevel)->camera;
     VP vp =
     {
@@ -83,8 +86,10 @@ void UVK::Commands::draw() noexcept
         //.view = camera.calculateViewMatrix(),
         //.projection = camera.projection().data()
     };
+    // Inverts the projection matrix's Y coordinates so +Y is up, not down as per the vulkan standard
     vp.projection[1][1] *= -1;
 
+    // Updates the uniform buffers duh
     resources->updateUniformBuffers(vp, imageIndex);
     constexpr VkPipelineStageFlags waitStages[] =
     {
@@ -94,28 +99,31 @@ void UVK::Commands::draw() noexcept
     {
         .sType = VK_STRUCTURE_TYPE_SUBMIT_INFO,
         .waitSemaphoreCount = 1,
-        .pWaitSemaphores = &imageAvailable[currentFrame],
-        .pWaitDstStageMask = waitStages,
+        .pWaitSemaphores = &imageAvailable[currentFrame],       // The number of semaphores to wait on before executing the command buffers in the batch
+        .pWaitDstStageMask = waitStages,                        // A pointer to an array of pipeline stages at which the semaphores should wait
         .commandBufferCount = 1,
-        .pCommandBuffers = &commandBuffers[imageIndex],
-        .signalSemaphoreCount = 1,
-        .pSignalSemaphores = &renderFinished[currentFrame]
+        .pCommandBuffers = &commandBuffers[imageIndex],         // The command buffer to be used
+        .signalSemaphoreCount = 1,                              // The number of semaphores to be signaled once the commands at the pCommandBuffers have completed execution
+        .pSignalSemaphores = &renderFinished[currentFrame]      // An array of semaphores to be signaled when the command buffers finish execution
     };
+    // Submits the commands to the queue
     result = vkQueueSubmit(device->getGraphicsQueue(), 1, &submitInfo, fences[currentFrame]);
     if (result != VK_SUCCESS)
     {
         logger.consoleLog("Couldn't submit command buffer to the queue! Error code: ", UVK_LOG_TYPE_ERROR, result);
         std::terminate();
     }
+    // Information on how to present the image
     const VkPresentInfoKHR presentInfo =
     {
         .sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR,
         .waitSemaphoreCount = 1,
-        .pWaitSemaphores = &renderFinished[currentFrame],
+        .pWaitSemaphores = &renderFinished[currentFrame],   // The semaphore to wait for before issuing the present request
         .swapchainCount = 1,
-        .pSwapchains = &swapchain->getSwapchain(),
+        .pSwapchains = &swapchain->getSwapchain(),          // The current swapchain
         .pImageIndices = &imageIndex
     };
+    // Presents the image
     result = vkQueuePresentKHR(device->getPresentationQueue(), &presentInfo);
     if (result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR && result != VK_ERROR_OUT_OF_DATE_KHR)
     {
@@ -123,7 +131,7 @@ void UVK::Commands::draw() noexcept
         std::terminate();
     }
     else if (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR || global.window.resized())
-        global.renderer->recreate();
+        global.renderer->recreate();    // Recreate the swapchain for vieport resize
     currentFrame = (currentFrame + 1) % VK_MAX_CONCURRENT_IMAGE_DRAW;
 }
 
@@ -137,13 +145,14 @@ void UVK::Commands::recordCommands(uint32_t currentImage) noexcept
     // TODO: Add depth attachment clear value
     const VkClearValue clearValues[] =
     {
+        // Pass in the background colour
         {
             .color = { global.colour.x, global.colour.y, global.colour.z, global.colour.w }
         },
         {
             .depthStencil =
             {
-                .depth = 1.0f,
+                .depth = 1.0f,  // Depth values in Vulkan are from 0 to 1, unlike OpenGL where they are -1 to 1
             }
         }
     };
@@ -163,15 +172,17 @@ void UVK::Commands::recordCommands(uint32_t currentImage) noexcept
     };
 
     auto& a = commandBuffers[currentImage];
+    // Begin the render command
     auto result = vkBeginCommandBuffer(a, &commandBufferBeginInfo);
     if (result != VK_SUCCESS)
     {
         logger.consoleLog("Failed to start recording the Vulkan command buffer! Error code: ", UVK_LOG_TYPE_ERROR, result);
         std::terminate();
     }
-
+    // Being the rendering
     vkCmdBeginRenderPass(a, &renderPassBeginInfo, VK_SUBPASS_CONTENTS_INLINE);
 
+    // Recreate the viewport for dynamic state
     const VkViewport viewport =
     {
         .x = 0.0f,
@@ -181,17 +192,19 @@ void UVK::Commands::recordCommands(uint32_t currentImage) noexcept
         .minDepth = 0.0f,
         .maxDepth = 1.0f,
     };
-
+    // Same as the viewport
     const VkRect2D scissor =
     {
         .offset = { 0, 0 },
         .extent = swapchain->getExtent()
     };
+    // Set the viewport and scissor
     vkCmdSetViewport(commandBuffers[currentImage], 0, 1, &viewport);
     vkCmdSetScissor(commandBuffers[currentImage], 0, 1, &scissor);
 
+    // Bind the graphics pipeline
     vkCmdBindPipeline(a, VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline->getPipeline());
-
+    // Render
     size_t f = 0;
     //ECS::forEveryComponent<MeshComponentRaw>([&](Actor& actor){
     //    auto& mesh = actor.get<MeshComponentRaw>();
@@ -230,8 +243,10 @@ void UVK::Commands::recordCommands(uint32_t currentImage) noexcept
     //    vkCmdDrawIndexed(commandBuffers[currentImage], meshes[f].indexCount(), 1, 0, 0, 0);
     //}
 //
+    // Stop rendering
     vkCmdEndRenderPass(a);
 
+    // Stop the render command
     result = vkEndCommandBuffer(a);
     if (result != VK_SUCCESS)
     {
@@ -254,7 +269,7 @@ void UVK::Commands::createSynchronization() noexcept
     constexpr VkFenceCreateInfo fenceCreateInfo =
     {
         .sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO,
-        .flags = VK_FENCE_CREATE_SIGNALED_BIT
+        .flags = VK_FENCE_CREATE_SIGNALED_BIT           // Create the fence to be already signaled when created
     };
 
     for (size_t i = 0; i < VK_MAX_CONCURRENT_IMAGE_DRAW; i++)
