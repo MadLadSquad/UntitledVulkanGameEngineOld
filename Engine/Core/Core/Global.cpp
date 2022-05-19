@@ -1,5 +1,6 @@
 #include "Global.hpp"
 #include <GameFramework/GameplayClasses/Level/Level.hpp>
+#include <UVKShaderCompiler/Src/Functions.hpp>
 #ifdef _WIN32
     #include <windows.h>
 #endif
@@ -21,6 +22,9 @@ UVK::UVKGlobal::UVKGlobal() noexcept
         colour = FVector4(1.0f, 1.0f, 1.0f, 1.0f);
         assetManager.load();
         localeManager.openLocaleConfig();
+        // Set the UVKShaderCompiler path and check for recompilation
+        USC::setPrefixDir("../");
+        USC::checkForCompile();
         bFirst = false;
     }
 }

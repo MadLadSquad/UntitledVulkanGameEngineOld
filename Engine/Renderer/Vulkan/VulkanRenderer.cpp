@@ -5,16 +5,12 @@
 #include <Engine/Core/Core/Global.hpp>
 #include <glfw3.h>
 #include <Core/Events/Events.hpp>
-#include <UVKShaderCompiler/Src/Functions.hpp>
 #include <Renderer/Camera/Projection.hpp>
 #include <Renderer/EditorUI/Editor.hpp>
 #include <codecvt>
 
 void UVK::VulkanRenderer::run() noexcept
 {
-    // Set the UVKShaderCompiler path and check for recompilation
-    USC::setPrefixDir("../");
-    USC::checkForCompile();
     global.window.createWindow();
     global.renderer = &renderer;
     renderer.create();
