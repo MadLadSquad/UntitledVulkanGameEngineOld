@@ -43,7 +43,7 @@ jobs:
     - name: Install the engine
       run: bash install.sh ci
     - name: Install the project
-      run: bash create-project.sh t ci
+      run: bash create-project.sh t ci || bash -c "cat cmake.bak"
   #Windows:
   #  runs-on: windows-latest
   #  steps:
