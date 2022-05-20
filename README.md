@@ -5,10 +5,10 @@
 [![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://lbesson.mit-license.org/)
 [![Discord](https://img.shields.io/discord/717037253292982315.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/4wgH8ZE)
 
->>Last stable release: Alpha 0.9.4.4
+>>Last stable release: Alpha 0.9.4.9
 >>
 >
->>Current code version: Alpha 0.9.4.4
+>>Current code version: Alpha 0.9.4.9
 >>
 >
 >>Currently, stable on: Linux, BSD and Windows
