@@ -19,7 +19,7 @@ void UVK::VulkanRenderer::run() noexcept
 
     auto& mcomp = actor.add<MeshComponent>();
     mcomp.hue = { 1.0f, 1.0f, 1.0f, 1.0f };
-    mcomp.create("../Content/pot/testpot.obj", renderer.device, renderer.commands, renderer.descriptors);
+    mcomp.create("../Content/Engine/teapot.obj", renderer.device, renderer.commands, renderer.descriptors);
 
     beginEvents();
 
@@ -67,10 +67,10 @@ void UVK::VulkanRenderer::run() noexcept
         //mcomp.rotation = { 0.0f, 0.0f, 0.0f };
         //mcomp.scale = { 0.25f, 0.25f, 0.25f };
         angle += ((angle + (1.0f * deltaTime)) >= 360.0f) ? -360.0f : 1.0f * deltaTime;
-        mcomp.translation = FVector(0.0f, sin(angle) -0.75f, 0.0f);
+        mcomp.translation = FVector(0.0f, sin(angle) - 0.75f, 0.0f);
         mcomp.rotation = FVector(0.0f, angle, 0.0f);
         mcomp.scale = FVector(0.025f, 0.025f, 0.025f);
-        global.instance->initInfo.shaderConstantStruct.data->lightPosition = FVector4(0.0f, 0.0, -0.5f, 0.0f);
+        global.instance->initInfo.shaderConstantStruct.data->lightPosition = FVector4(0.0f, 0.0f, -0.5f, 0.0f);
         updateEvents(deltaTime);
         renderer.commands.draw();
     }

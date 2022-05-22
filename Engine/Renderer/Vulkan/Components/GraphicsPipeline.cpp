@@ -19,6 +19,7 @@ void UVK::GraphicsPipeline::createGraphicsPipeline() noexcept
 
     VKShader::each([&](VKShader& shader){
         // TODO: Remove this and make the shaders per object
+        Utility::sanitiseFilepath(shader.name, false);
         if (shader.name.find("../Content/Engine/vkshader.") != FString::npos)
             shaders.push_back(shader);
     });

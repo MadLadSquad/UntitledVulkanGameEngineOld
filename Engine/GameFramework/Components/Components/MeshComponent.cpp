@@ -132,7 +132,8 @@ void UVK::MeshComponent::loadMesh(aiMesh* mesh, const aiScene* scene) noexcept
         else
             vertices[i].uv = { 0.0f, 0.0f };
         vertices[i].colour = hue;
-        vertices[i].normal = { mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z };
+        if (mesh->HasNormals())
+            vertices[i].normal = { mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z };
     }
     for (size_t i = 0; i < mesh->mNumFaces; i++)
     {
