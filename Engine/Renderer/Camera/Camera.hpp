@@ -4,7 +4,7 @@
 
 namespace UVK
 {
-    class Pawn;
+    //class Pawn;
     struct CoreComponent;
 
     /**
