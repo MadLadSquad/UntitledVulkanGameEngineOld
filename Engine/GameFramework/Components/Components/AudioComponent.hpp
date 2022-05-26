@@ -26,6 +26,11 @@ namespace UVK
 
         AudioSource source;
     private:
+        friend class Level;
+
+        void saveToLevel(YAML::Emitter& out) noexcept;
+        static void openToLevel(Actor& actor, const YAML::Node& entity) noexcept;
+
         UVK::FString currentFile;
 
         UVK::CoreComponent* core = nullptr;

@@ -29,6 +29,8 @@ namespace UVK
     private:
         friend class Actor;
         friend class Level;
+        friend class CoreComponent;
+
         uint64_t id = 0;
     };
 }

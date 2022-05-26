@@ -62,12 +62,6 @@ namespace YAML {
     };
 }
 
-YAML::Emitter& operator<<(YAML::Emitter& out, const UVK::FString& val) noexcept
-{
-    out << val.c_str();
-    return out;
-}
-
 // Operator overloads for future transform component
 YAML::Emitter& operator<<(YAML::Emitter& out, const UVK::FVector& vect) noexcept
 {
@@ -87,17 +81,7 @@ void UVK::Level::saveEntity(YAML::Emitter& out, entt::entity act) noexcept
     out << YAML::BeginMap;
 
     if (global.ecs.data().any_of<CoreComponent>(act))
-    {
-        auto& a = global.ecs.data().get<CoreComponent>(act);
-        out << YAML::Key << "actor" << YAML::Value << a.name.c_str();
-        out << YAML::Key << "id" << YAML::Value << a.id;
-        out << YAML::Key << "dev-name" << YAML::Value << a.devName.c_str();
-        out << YAML::Key << "uuid" << YAML::Value << a.uuid.data();
-        out << YAML::Key << "standart" << YAML::Value << a.standart();
-        out << YAML::Key << "translation" << YAML::Value << a.translation;
-        out << YAML::Key << "rotation" << YAML::Value << a.rotation;
-        out << YAML::Key << "scale" << YAML::Value << a.scale;
-    }
+        global.ecs.data().get<CoreComponent>(act).saveToLevel(out);
 
     for (auto& a : global.instance->editor->currentLevelFolders)
     {
@@ -112,14 +96,10 @@ void UVK::Level::saveEntity(YAML::Emitter& out, entt::entity act) noexcept
     }
 exit_folder_setting:
     if (global.ecs.data().any_of<UVK::AudioComponent>(act))
-    {
-        auto& a = global.ecs.data().get<UVK::AudioComponent>(act);
-        out << YAML::Key << "audio-pitch" << YAML::Value << a.source.audioData().pitch;
-        out << YAML::Key << "audio-gain" << YAML::Value << a.source.audioData().gain;
-        out << YAML::Key << "audio-loop" << YAML::Value << a.source.audioData().bLoop;
-        out << YAML::Key << "audio-velocity" << YAML::Value << a.source.audioData().velocity;
-        out << YAML::Key << "audio-file" << YAML::Value << a.source.audioData().location.c_str();
-    }
+        global.ecs.data().get<UVK::AudioComponent>(act).saveToLevel(out);
+    if (global.ecs.data().any_of<UVK::MeshComponent>(act))
+        global.ecs.data().get<UVK::MeshComponent>(act).saveToLevel(out);
+
     out << YAML::EndMap;
 }
 
@@ -150,7 +130,7 @@ void UVK::Level::openInternal(UVK::String location, bool first) noexcept
     YAML::Node out;
     try
     {
-        out = YAML::LoadFile((location + UVK::FString(".uvklevel")).c_str());
+        out = YAML::LoadFile(location + UVK::FString(".uvklevel"));
     }
     catch (YAML::BadFile&)
     {
@@ -200,17 +180,9 @@ void UVK::Level::openInternal(UVK::String location, bool first) noexcept
 
         for (const YAML::Node& entity : entities)
         {
-            auto name = entity["actor"].as<std::string>();
-            auto id = entity["id"].as<uint64_t>();
-            auto devName = entity["dev-name"].as<std::string>();
+            Actor act;
+            UVK::CoreComponent::openToLevel(act, entity);
 
-            auto act = Actor(name, id, devName);
-            auto& core = act.get<CoreComponent>();
-            core.uuid.id = entity["uuid"].as<uint64_t>();
-            core.bHasUUID = entity["standart"].as<bool>();
-            core.translation = entity["translation"].as<FVector>();
-            core.rotation = entity["rotation"].as<FVector>();
-            core.scale = entity["scale"].as<FVector>();
             if (entity["sh-folder-name"] && global.bEditor)
             {
                 for (auto& a : global.instance->editor->currentLevelFolders)
@@ -231,16 +203,8 @@ void UVK::Level::openInternal(UVK::String location, bool first) noexcept
                 global.instance->editor->currentLevelFolders.emplace_back(folder);
             }
 escape_editor_folders:
-            if (entity["audio-pitch"] && entity["audio-gain"] && entity["audio-loop"] && entity["audio-velocity"] && entity["audio-file"])
-            {
-                auto& a = act.add<UVK::AudioComponent>();
-
-                a.source.audioData().pitch = entity["audio-pitch"].as<float>();
-                a.source.audioData().gain = entity["audio-gain"].as<float>();
-                a.source.audioData().bLoop = entity["audio-loop"].as<bool>();
-                a.source.audioData().velocity = entity["audio-velocity"].as<FVector>();
-                a.source.audioData().location = entity["audio-file"].as<std::string>();
-            }
+            UVK::AudioComponent::openToLevel(act, entity);
+            UVK::MeshComponent::openFromLevel(act, entity);
         }
         logger.consoleLog("Iterated entities", UVK_LOG_TYPE_SUCCESS);
     }

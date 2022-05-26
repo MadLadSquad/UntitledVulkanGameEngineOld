@@ -62,5 +62,10 @@
 
 #define GLM_FORCE_DEPTH_ZERO_TO_ONE
 
+// The max number of objects allowed
 #define VK_MAX_OBJECTS 100000
+
+// The max number of point lights allowed
+#define VK_MAX_DYNAMIC_POINT_LIGHTS 4096
+
 //#define GLEW_STATIC

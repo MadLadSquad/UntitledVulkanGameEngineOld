@@ -5,6 +5,7 @@
 
 namespace UVK
 {
+    class Actor;
     /**
      * @brief The base component every entity has
      * @param name, id, devName - used for identification of entities
@@ -25,5 +26,11 @@ namespace UVK
             return bHasUUID;
         }
         bool bHasUUID = true;
+    private:
+        friend class Level;
+
+        void saveToLevel(YAML::Emitter& out) const noexcept;
+        static void openToLevel(Actor& actor, const YAML::Node& entity) noexcept;
+
     };
 }

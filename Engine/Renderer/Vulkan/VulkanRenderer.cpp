@@ -16,10 +16,41 @@ void UVK::VulkanRenderer::run() noexcept
     renderer.create();
 
     Actor actor("Maikati", 10, "test");
+    Actor actor2("Maikati2", 10, "test2");
+    Actor actor3("Maikati3", 10, "test3");
+    Actor actor4("Maikati4", 10, "test4");
+    Actor actor5("Maikati5", 10, "test5");
+    Actor actor6("Maikati6", 10, "test6");
+    Actor actor7("Maikati7", 10, "test7");
+    Actor actor8("Maikati8", 10, "test8");
+
 
     auto& mcomp = actor.add<MeshComponent>();
     mcomp.hue = { 1.0f, 1.0f, 1.0f, 1.0f };
-    mcomp.create("../Content/Engine/teapot.obj", renderer.device, renderer.commands, renderer.descriptors);
+    mcomp.create("../Content/Engine/generic_object_sphere.obj", renderer.device, renderer.commands, renderer.descriptors, actor.get<CoreComponent>());
+
+    auto& mcomp2 = actor2.add<MeshComponent>();
+    mcomp2.hue = { 1.0f, 1.0f, 1.0f, 1.0f };
+    mcomp2.create("../Content/Engine/generic_object_torus.obj", renderer.device, renderer.commands, renderer.descriptors, actor2.get<CoreComponent>());
+
+    auto& mcomp3 = actor3.add<MeshComponent>();
+    mcomp3.create("../Content/Engine/generic_object_monkey.obj", renderer.device, renderer.commands, renderer.descriptors, actor3.get<CoreComponent>());
+
+    auto& mcomp4 = actor4.add<MeshComponent>();
+    auto& core = actor4.get<CoreComponent>();
+    mcomp4.create("../Content/Engine/generic_object_teapot.obj", renderer.device, renderer.commands, renderer.descriptors, core);
+
+    auto& mcomp5 = actor5.add<MeshComponent>();
+    mcomp5.create("../Content/Engine/generic_object_cylinder.obj", renderer.device, renderer.commands, renderer.descriptors, actor5.get<CoreComponent>());
+
+    auto& mcomp6 = actor6.add<MeshComponent>();
+    mcomp6.create("../Content/Engine/generic_object_cube.obj", renderer.device, renderer.commands, renderer.descriptors, actor6.get<CoreComponent>());
+
+    auto& mcomp7 = actor7.add<MeshComponent>();
+    mcomp7.create("../Content/Engine/generic_object_cone.obj", renderer.device, renderer.commands, renderer.descriptors, actor7.get<CoreComponent>());
+
+    auto& mcomp8 = actor8.add<MeshComponent>();
+    mcomp8.create("../Content/Engine/generic_object_pyramid.obj", renderer.device, renderer.commands, renderer.descriptors, actor8.get<CoreComponent>());
 
     beginEvents();
 
@@ -27,35 +58,6 @@ void UVK::VulkanRenderer::run() noexcept
     double lastTime = 0.0f;
     while (!glfwWindowShouldClose(global.window.getWindow()))
     {
-        //const float c3 = glm::cos(mcomp.rotation.z);
-        //const float s3 = glm::sin(mcomp.rotation.z);
-        //const float c2 = glm::cos(mcomp.rotation.x);
-        //const float s2 = glm::sin(mcomp.rotation.x);
-        //const float c1 = glm::cos(mcomp.rotation.y);
-        //const float s1 = glm::sin(mcomp.rotation.y);
-        //const glm::vec3 invScale = 1.0f / mcomp.scale;
-//
-        //glm::mat4 mat = glm::mat3{
-        //        {
-        //                invScale.x * (c1 * c3 + s1 * s2 * s3),
-        //                invScale.x * (c2 * s3),
-        //                invScale.x * (c1 * s2 * s3 - c3 * s1),
-        //        },
-        //        {
-        //                invScale.y * (c3 * s1 * s2 - c1 * s3),
-        //                invScale.y * (c2 * c3),
-        //                invScale.y * (c1 * c3 * s2 + s1 * s3),
-        //        },
-        //        {
-        //                invScale.z * (c2 * s1),
-        //                invScale.z * (-s2),
-        //                invScale.z * (c1 * c2),
-        //        },
-        //};
-
-
-        //global.instance->initInfo.shaderConstantStruct.data->normal = mat;
-
         static double deltaTime = 0.0f;
         glfwPollEvents();
 
@@ -63,13 +65,33 @@ void UVK::VulkanRenderer::run() noexcept
         deltaTime = now - lastTime;
         lastTime = now;
 
-        //mcomp.translation = { 0.0f, -0.75f, 0.0f };
-        //mcomp.rotation = { 0.0f, 0.0f, 0.0f };
-        //mcomp.scale = { 0.25f, 0.25f, 0.25f };
         angle += ((angle + (1.0f * deltaTime)) >= 360.0f) ? -360.0f : 1.0f * deltaTime;
-        mcomp.translation = FVector(0.0f, sin(angle) - 0.75f, 0.0f);
-        mcomp.rotation = FVector(0.0f, angle, 0.0f);
-        mcomp.scale = FVector(0.025f, 0.025f, 0.025f);
+        mcomp.translationOffset = FVector(0.0f, sin(angle) - 0.75f, 0.0f);
+        mcomp.rotationOffset = FVector(0.0f, angle, 0.0f);
+        mcomp.scaleOffset = FVector(-0.25f, -0.25f, -0.25f);
+
+        mcomp2.translationOffset = FVector(0.0f, -0.85f, 0.0f);
+        mcomp2.rotationOffset = FVector(0.0f, angle, 0.0f);
+
+        mcomp3.translationOffset = FVector(-5.0f, 3.0f, 0.0f);
+        mcomp3.rotationOffset = FVector(angle * 0.5f, 0.0f, 135.0f);
+
+        mcomp4.translationOffset = FVector(5.0f, 2.75f, 0.0f);
+        mcomp4.rotationOffset = FVector(angle, 0.0f, 45.0f);
+        core.scale = FVector(0.020f, 0.020f, 0.020f);
+
+        mcomp5.translationOffset = FVector(-5.0f, -3.0f, 0.0f);
+        mcomp5.rotationOffset = FVector(angle * 1.5f, 0.0f, 135.0f);
+
+        mcomp6.translationOffset = FVector(5.0f, -3.0f, 0.0f);
+        mcomp6.rotationOffset = FVector(angle * 0.5f, 0.0f, 45.0f);
+
+        mcomp7.translationOffset = FVector(-5.0f, 0.0f, 0.0f);
+        mcomp7.rotationOffset = FVector(angle, 0.0f, 135.0f);
+
+        mcomp8.translationOffset = FVector(5.0f, 0.0f, 0.0f);
+        mcomp8.rotationOffset = FVector(angle * 1.5f, 0.0f, 45.0f);
+
         global.instance->initInfo.shaderConstantStruct.data->lightPosition = FVector4(0.0f, 0.0f, -0.5f, 0.0f);
         updateEvents(deltaTime);
         renderer.commands.draw();

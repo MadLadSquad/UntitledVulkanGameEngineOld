@@ -1,5 +1,5 @@
 #pragma once
-
+#include <GameFramework/Components/Components/PointLightComponent.hpp>
 
 namespace UVK
 {
