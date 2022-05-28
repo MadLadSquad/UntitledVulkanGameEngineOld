@@ -18,7 +18,6 @@ void UVK::AssetManager::loadRaw()
     std::random_device device;
     std::mt19937_64 engine(device());
     std::uniform_int_distribution<uint64_t> uniformDistribution;
-    uniformDistribution(engine);
 
     for (auto& a : std_filesystem::recursive_directory_iterator(std_filesystem::path(UVK_CONTENT_PATH)))
     {

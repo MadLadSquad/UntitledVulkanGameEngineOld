@@ -31,3 +31,8 @@ void UVK::Window::setCursorVisibility(bool bVisible) noexcept
     global.window.setCursorVisibility(bVisible);
     //ImGui::GetIO().WantCaptureMouse = bVisible;
 }
+
+float UVK::Window::aspectRatio() noexcept
+{
+    return windowSize().x / windowSize().y;
+}

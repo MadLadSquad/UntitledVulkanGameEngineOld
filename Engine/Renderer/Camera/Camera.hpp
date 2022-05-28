@@ -1,11 +1,10 @@
 #pragma once
 #include "Projection.hpp"
 #include <Core/Interfaces/WindowInterface.hpp>
+#include <GameFramework/Components/Components/CoreComponent.hpp>
 
 namespace UVK
 {
-    //class Pawn;
-    struct CoreComponent;
 
     /**
      * @brief A cross-renderer camera abstraction
@@ -49,7 +48,7 @@ namespace UVK
          * @param fov Describes the horizontal field of view of the perspective projection
          * @param aspectRatio The aspect ratio of the screen/viewport for the perspective projection
          */
-        static Camera makeCamera(const CoreComponent& coreComponent, FVector translation = FVector(0.0f, 0.0f, 0.0f), FVector rotation = FVector(0.0f, 0.0f, 0.0f), FVector up = FVector(0.0f, 1.0f, 0.0f), FVector2 planes = FVector2(0.1f, 100.0f), float fov = 90.0f, float aspectRatio = Window::windowSize().x / Window::windowSize().y) noexcept;
+        static Camera makeCamera(const CoreComponent& coreComponent, float aspectRatio = Window::aspectRatio(), FVector translation = FVector(0.0f, 0.0f, 0.0f), FVector rotation = FVector(0.0f, 0.0f, 0.0f), FVector up = FVector(0.0f, 1.0f, 0.0f), FVector2 planes = FVector2(0.1f, 100.0f), float fov = 90.0f) noexcept;
 
         FVector front{};
         FVector up{};

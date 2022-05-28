@@ -47,9 +47,9 @@ UVK::Projection& UVK::Camera::projection() noexcept
     return proj;
 }
 
-UVK::Camera UVK::Camera::makeCamera(const CoreComponent& coreComponent, FVector position, FVector rotation, FVector up, FVector2 planes, float fov, float aspectRatio) noexcept
+UVK::Camera UVK::Camera::makeCamera(const CoreComponent& coreComponent, float aspectRatio, FVector translation, FVector rotation, FVector up, FVector2 planes, float fov) noexcept
 {
-    auto camera = Camera(coreComponent, position, rotation, up);
+    auto camera = Camera(coreComponent, translation, rotation, up);
     camera.projection().planes() = planes;
     camera.projection().fov() = fov;
     camera.projection().aspectRatio() = aspectRatio;

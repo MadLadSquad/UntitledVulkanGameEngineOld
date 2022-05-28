@@ -3,6 +3,7 @@
 #include <Core/Actor.hpp>
 #include "../Editor.hpp"
 #include "GameFramework/GameplayClasses/GameInstance.hpp"
+#include <Renderer/Camera/Camera.hpp>
 
 #ifndef PRODUCTION
 void UVK::EditorPawn::beginPlay()
@@ -16,7 +17,7 @@ void UVK::EditorPawn::beginPlay()
     coreCache->rotation = { 0.0f, 0.0f, 0.0f };
     coreCache->scale = { 1.0f, 1.0f, 1.0f };
 
-    camera = Camera::makeCamera(*coreCache);
+    camera = Camera::makeCamera(*coreCache, UVK::Window::aspectRatio());
     //camera.recalculate();
     //camera = Camera::makeCamera(*coreCache, FVector(0.0f, 0.0f, -5.0f), FVector(0.0f, 0.0f, 0.0f), FVector(0.0f, 1.0f, 0.0f), FVector2(0.1f, 100.0f), 90.0f, Window::windowSize().x / Window::windowSize().y);
     //camera.recalculate();

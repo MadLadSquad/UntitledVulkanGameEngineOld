@@ -2,10 +2,6 @@
 #include <ctime>
 #include "UVKLogImGui.h"
 
-#if _MSC_VER && !__INTEL_COMPILER
-    #define _CRT_SECURE_NO_WARNINGS
-#endif
-
 void Timer::startRecording()
 {
     start = std::chrono::high_resolution_clock::now();

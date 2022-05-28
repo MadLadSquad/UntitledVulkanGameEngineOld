@@ -15,6 +15,8 @@ namespace UVK
         static void setTitle(UVK::String name) noexcept;
         static void setCursorVisibility(bool bVisible) noexcept;
 
+        static float aspectRatio() noexcept;
+
         static FVector2& windowSize() noexcept;
         static bool& fullscreen() noexcept;
 
