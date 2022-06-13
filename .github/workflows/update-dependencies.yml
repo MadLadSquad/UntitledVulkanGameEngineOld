@@ -25,8 +25,8 @@ jobs:
       - name: Update submodules
         id: mod
         run: |
-          git config --global user.name "github-actions"
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "Madman10K"
+          git config --global user.email "40400590+Madman10K@users.noreply.github.com"
           git fetch --all
           git checkout auto || git checkout -b auto
           echo "::set-output name=out::$(git submodule update --remote --merge)?"
