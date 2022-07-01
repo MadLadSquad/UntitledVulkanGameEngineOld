@@ -3,7 +3,7 @@
 #include <Core.hpp>
 #include <imgui.h>
 #include <cpp/imgui_stdlib.h>
-#include <UVKBuildTool/src/ActorListGenerator.hpp>
+#include <UVKBuildTool/src/UntitledVulkanGameEngine/ActorListGenerator.hpp>
 
 bool RemoveFile::display(bool& bShow) noexcept
 {

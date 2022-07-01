@@ -27,7 +27,7 @@
 #include <Renderer/EditorUI/EditorUtils/Settings.hpp>
 #include <Renderer/EditorUI/EditorUtils/GUI.hpp>
 
-#include <UVKBuildTool/src/Utility.h>
+#include <UVKBuildTool/src/Uniform/UniformUtility.h>
 
 #include <imguiex/imguizmo/ImGuizmo.h>
 #include <GameFramework/GameplayClasses/Level/Level.hpp>

@@ -1,9 +1,9 @@
 #include "ProjectSettings.hpp"
 #include <imgui.h>
 #include <cpp/imgui_stdlib.h>
-#include <UVKBuildTool/src/CMakeGenerator.hpp>
-#include <UVKBuildTool/src/ActorListGenerator.hpp>
-#include <UVKBuildTool/src/SourceGenerator.hpp>
+#include <UVKBuildTool/src/UntitledVulkanGameEngine/CMakeGenerator.hpp>
+#include <UVKBuildTool/src/UntitledVulkanGameEngine/ActorListGenerator.hpp>
+#include <UVKBuildTool/src/UntitledVulkanGameEngine/SourceGenerator.hpp>
 
 void UVK::ProjectSettingsWidget::displayProjectSettings(bool& bReturn, UVK::FString& name, UVK::FString& ver, UVK::FString& enginever, UVK::FString& startupLevel, bool& bOpen) noexcept
 {

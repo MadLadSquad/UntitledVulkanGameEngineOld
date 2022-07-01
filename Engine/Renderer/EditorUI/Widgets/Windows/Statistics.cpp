@@ -86,7 +86,7 @@ void Statistics::display(double* data, bool& bShow) noexcept
         ImPlot::SetupAxesLimits(0, 1, 0, 1, ImPlotCond_Always);
 
         ImPlot::SetupLegend(ImPlotLocation_North | ImPlotLocation_West, ImPlotLegendFlags_Horizontal);
-        ImPlot::PlotPieChart(labels, dt, 2, 0.5, 0.5, 0.4, true, "%.3f");
+        ImPlot::PlotPieChart(labels, dt, 2, 0.5, 0.5, 0.4, "%.3f", 90.0f, ImPlotPieChartFlags_Normalize);
         ImPlot::EndPlot();
     }
 

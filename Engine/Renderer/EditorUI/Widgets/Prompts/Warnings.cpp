@@ -5,9 +5,9 @@
 #include <Core/Global.hpp>
 #include <GameFramework/GameplayClasses/Level/Level.hpp>
 #include <glfw3.h>
-#include <UVKBuildTool/src/CMakeGenerator.hpp>
-#include <UVKBuildTool/src/SourceGenerator.hpp>
-#include <UVKBuildTool/src/ActorListGenerator.hpp>
+#include <UVKBuildTool/src/UntitledVulkanGameEngine/CMakeGenerator.hpp>
+#include <UVKBuildTool/src/UntitledVulkanGameEngine/SourceGenerator.hpp>
+#include <UVKBuildTool/src/UntitledVulkanGameEngine/ActorListGenerator.hpp>
 
 void Warnings::displayExitWarning(bool& bOpen) noexcept
 {
