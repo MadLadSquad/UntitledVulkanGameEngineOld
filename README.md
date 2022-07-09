@@ -17,6 +17,7 @@
 >>Development status: Under heavy construction, we commit directly to master so there will be and possibly are countless bugs in the current master branch
 >>
 >
+# Development of the engine is paused until at least December 31st 2023. It is still maintained and in no way cancelled but development resources have to be reallocated to other projects at this time. Issues and PRs are still checked and are going to be fixed and merged!
 ## Info
 The Untitled Vulkan Game Engine is a 3D, C++ game engine made for ease of use, simplicity and performance
 
