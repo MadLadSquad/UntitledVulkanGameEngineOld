@@ -36,4 +36,4 @@ cp Release/UVKBuildToolLib.lib . 2> /dev/null || cp Release/libUVKBuildToolLib.l
 cp yaml-cpp/Release/yaml-cpp.dll . 2> /dev/null || cp yaml-cpp/Release/libyaml-cpp.dll . 2> /dev/null || echo " "
 
 cd ../../ || exit
-echo "\x1b[32mSuccessfully updated the game engine, you can now run the \"UVKBuildTool --generate\" command on your project to regenerate your files for the new engine version!\x1b[0m"
+echo -e "\x1b[32mSuccessfully updated the game engine, you can now run the \"UVKBuildTool --generate\" command on your project to regenerate your files for the new engine version!\x1b[0m"
