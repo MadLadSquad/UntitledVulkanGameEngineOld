@@ -28,13 +28,13 @@ void UVK::VulkanRenderer::run() noexcept
     auto& mcomp = actor.add<MeshComponent>();
     mcomp.hue = { 1.0f, 1.0f, 1.0f, 1.0f };
     mcomp.create("../Content/Engine/generic_object_sphere.obj", renderer.device, renderer.commands, renderer.descriptors, actor.get<CoreComponent>());
+//
+    //auto& mcomp2 = actor2.add<MeshComponent>();
+    //mcomp2.hue = { 1.0f, 1.0f, 1.0f, 1.0f };
+    //mcomp2.create("../Content/Engine/generic_object_torus.obj", renderer.device, renderer.commands, renderer.descriptors, actor2.get<CoreComponent>());
 
-    auto& mcomp2 = actor2.add<MeshComponent>();
-    mcomp2.hue = { 1.0f, 1.0f, 1.0f, 1.0f };
-    mcomp2.create("../Content/Engine/generic_object_torus.obj", renderer.device, renderer.commands, renderer.descriptors, actor2.get<CoreComponent>());
-
-    auto& mcomp3 = actor3.add<MeshComponent>();
-    mcomp3.create("../Content/Engine/generic_object_monkey.obj", renderer.device, renderer.commands, renderer.descriptors, actor3.get<CoreComponent>());
+    //auto& mcomp3 = actor3.add<MeshComponent>();
+    //mcomp3.create("../Content/Engine/generic_object_monkey.obj", renderer.device, renderer.commands, renderer.descriptors, actor3.get<CoreComponent>());
 
     auto& mcomp4 = actor4.add<MeshComponent>();
     auto& core = actor4.get<CoreComponent>();
@@ -66,15 +66,15 @@ void UVK::VulkanRenderer::run() noexcept
         lastTime = now;
 
         angle += ((angle + (1.0f * deltaTime)) >= 360.0f) ? -360.0f : 1.0f * deltaTime;
-        mcomp.translationOffset = FVector(0.0f, sin(angle) - 0.75f, 0.0f);
-        mcomp.rotationOffset = FVector(0.0f, angle, 0.0f);
-        mcomp.scaleOffset = FVector(-0.25f, -0.25f, -0.25f);
+        //mcomp.translationOffset = FVector(0.0f, sin(angle) - 0.75f, 0.0f);
+        //mcomp.rotationOffset = FVector(0.0f, angle, 0.0f);
+        //mcomp.scaleOffset = FVector(-0.25f, -0.25f, -0.25f);
+//
+        //mcomp2.translationOffset = FVector(0.0f, -0.85f, 0.0f);
+        //mcomp2.rotationOffset = FVector(0.0f, angle, 0.0f);
 
-        mcomp2.translationOffset = FVector(0.0f, -0.85f, 0.0f);
-        mcomp2.rotationOffset = FVector(0.0f, angle, 0.0f);
-
-        mcomp3.translationOffset = FVector(-5.0f, 3.0f, 0.0f);
-        mcomp3.rotationOffset = FVector(angle * 0.5f, 0.0f, 135.0f);
+        //mcomp3.translationOffset = FVector(-5.0f, 3.0f, 0.0f);
+        //mcomp3.rotationOffset = FVector(angle * 0.5f, 0.0f, 135.0f);
 
         mcomp4.translationOffset = FVector(5.0f, 2.75f, 0.0f);
         mcomp4.rotationOffset = FVector(angle, 0.0f, 45.0f);
