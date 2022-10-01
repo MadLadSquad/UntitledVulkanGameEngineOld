@@ -1,8 +1,7 @@
 # UntitledVulkanGameEngine
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/f40d6188c862462fb6a1e65f6e73d83c)](https://www.codacy.com/gh/MadLadSquad/UntitledVulkanGameEngine/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=MadLadSquad/UntitledVulkanGameEngine&amp;utm_campaign=Badge_Grade)
 ![CI](https://github.com/MadLadSquad/UntitledVulkanGameEngine/workflows/CI/badge.svg)
-[![Codacy Security Scan](https://github.com/MadLadSquad/UntitledVulkanGameEngine/actions/workflows/codacy-analysis.yml/badge.svg)](https://github.com/MadLadSquad/UntitledVulkanGameEngine/actions/workflows/codacy-analysis.yml)
 [![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://lbesson.mit-license.org/)
+[![trello](https://img.shields.io/badge/Trello-UDE-blue])](https://trello.com/b/0upjsxT0/untitledvukangameengine)
 [![Discord](https://img.shields.io/discord/717037253292982315.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/4wgH8ZE)
 
 >>Last stable release: Alpha 0.9.4.9
