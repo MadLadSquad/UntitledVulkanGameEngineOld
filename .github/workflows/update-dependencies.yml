@@ -40,7 +40,8 @@ jobs:
           git config --global user.email "contact@madladsquad.com"
           git fetch --all
           git checkout auto || git checkout -b auto
-          echo "out=$(git submodule update --remote --merge)?" >> $GITHUB_OUTPUT
+          o=$(git submodule update --remote --merge)
+          echo "out=$(o | head -1)?" >> $GITHUB_OUTPUT
       - name: Commit
         if: "steps.mod.outputs.out != '?'"
         id: commit
