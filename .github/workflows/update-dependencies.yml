@@ -41,7 +41,7 @@ jobs:
           git fetch --all
           git checkout auto || git checkout -b auto
           o=$(git submodule update --remote --merge)
-          echo "out=$("${o:0:1}")?" >> $GITHUB_OUTPUT
+          echo "out=${o:0:1}?" >> $GITHUB_OUTPUT
       - name: Commit
         if: "steps.mod.outputs.out != '?'"
         id: commit
