@@ -40,12 +40,12 @@ jobs:
           git config --global user.email "contact@madladsquad.com"
           git fetch --all
           git checkout auto || git checkout -b auto
-          echo "::set-output name=out::$(git submodule update --remote --merge)?"
+          echo "out=$(git submodule update --remote --merge)?" >> $GITHUB_OUTPUT
       - name: Commit
         if: "steps.mod.outputs.out != '?'"
         id: commit
         run: |
-          (git add . && git commit -m "auto" && git push origin auto && echo '::set-output name=com::+') || echo "::set-output name=com::?"
+          (git add . && git commit -m "auto" && git push origin auto && echo "com=+" >> $GITHUB_OUTPUT) || echo "com=?" >> $GITHUB_OUTPUT
       - name: Test
         run: "echo '${{ steps.mod.outputs.out }} ${{ steps.commits.outputs.com }}!'"
       - name: Create PR
