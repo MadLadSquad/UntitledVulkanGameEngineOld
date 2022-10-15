@@ -81,9 +81,9 @@ echo -e "\x1B[32m---------------------------------------------------------------
 echo " "
 
 if [ "$2" == "ci" ]; then
-  cmake .. || exit
+  cmake .. -DCMAKE_BUILD_TYPE=RELEASE || exit
 else
-  cmake .. -G "Visual Studio ${VSShortVer} ${VSVer}" || cmake .. -G "Unix Makefiles" || exit # Generate build files for the project
+  cmake .. -G "Visual Studio ${VSShortVer} ${VSVer}" -DCMAKE_BUILD_TYPE=RELEASE || cmake .. -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=RELEASE || exit # Generate build files for the project
 fi
 
 # Try to run MSBuild first, if it fails we are either on a non-windows system or the user doesn't have Visual Studio installed

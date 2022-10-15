@@ -42,9 +42,9 @@ mkdir build || exit # Will store our compiled binary
 cd build || exit
 
 if [ "$1" == "ci" ]; then
-  cmake .. || exit
+  cmake .. -DCMAKE_BUILD_TYPE=RELEASE || exit
 else
-  cmake .. -G "Visual Studio ${VSShortVer} ${VSVer}" || cmake .. -G "Unix Makefiles" || exit # Generate the UVKBuildTool project files
+  cmake .. -G "Visual Studio ${VSShortVer} ${VSVer}" -DCMAKE_BUILD_TYPE=RELEASE || cmake .. -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=RELEASE || exit # Generate the UVKBuildTool project files
 fi
 
 # Try to run MSBuild first, if it fails we are either on a non-Windows system or the user doesn't have Visual Studio installed
@@ -66,9 +66,9 @@ mkdir build
 cd build || exit
 
 if [ "$1" == "ci" ]; then
-  cmake .. || exit
+  cmake .. -DCMAKE_BUILD_TYPE=RELEASE || exit
 else
-  cmake .. -G "Visual Studio ${VSShortVer} ${VSVer}" || cmake .. -G "Unix Makefiles" || exit
+  cmake .. -G "Visual Studio ${VSShortVer} ${VSVer}" -DCMAKE_BUILD_TYPE=RELEASE || cmake .. -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=RELEASE || exit
 fi
 
 echo " "
