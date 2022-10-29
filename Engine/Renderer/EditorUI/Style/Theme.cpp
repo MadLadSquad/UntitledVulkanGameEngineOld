@@ -52,7 +52,7 @@ void UVK::EditorTheme::setTheme(UVK::String theme) noexcept
     }
     catch (YAML::BadFile&)
     {
-        logger.consoleLog("Invalid theme location or file", UVK_LOG_TYPE_ERROR);
+        Logger::log("Invalid theme location or file", UVK_LOG_TYPE_ERROR);
         return;
     }
 

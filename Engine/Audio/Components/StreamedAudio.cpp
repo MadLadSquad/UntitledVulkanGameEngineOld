@@ -17,7 +17,7 @@ void UVK::AudioBufferStreamed::addSound(String loc) noexcept
     sndfile = sf_open(loc, SFM_READ, &sndinfo);
     if (!sndfile)
     {
-        logger.consoleLog("Could not open audio file with location: ", UVK_LOG_TYPE_ERROR, loc);
+        Logger::log("Could not open audio file with location: ", UVK_LOG_TYPE_ERROR, loc);
         return;
     }
 
@@ -65,16 +65,16 @@ void UVK::AudioSourceStreamed::init() noexcept
 
     if (alGetError() != AL_NO_ERROR)
     {
-        logger.consoleLog("Error when buffering for playing!", UVK_LOG_TYPE_ERROR);
+        Logger::log("Error when buffering for playing!", UVK_LOG_TYPE_ERROR);
         return;
     }
 
     alSourceQueueBuffers(audioDt.source, buffer().buffers.size(), buffer().buffers.data());
     alSourcePlay(audioDt.source);
-
+    
     if (alGetError() != AL_NO_ERROR)
     {
-        logger.consoleLog("Error starting playback!", UVK_LOG_TYPE_ERROR);
+        Logger::log("Error starting playback!", UVK_LOG_TYPE_ERROR);
         return;
     }
 }
@@ -89,7 +89,7 @@ void UVK::AudioSourceStreamed::update(const UVK::FVector& position) noexcept
 
     if (alGetError() != AL_NO_ERROR)
     {
-        logger.consoleLog("Error when checking audio source state", UVK_LOG_TYPE_ERROR);
+        Logger::log("Error when checking audio source state", UVK_LOG_TYPE_ERROR);
         return;
     }
 
@@ -110,7 +110,7 @@ void UVK::AudioSourceStreamed::update(const UVK::FVector& position) noexcept
         }
         if (alGetError() != AL_NO_ERROR)
         {
-            logger.consoleLog("Error when buffering audio data", UVK_LOG_TYPE_ERROR);
+            Logger::log("Error when buffering audio data", UVK_LOG_TYPE_ERROR);
             return;
         }
     }
@@ -124,7 +124,7 @@ void UVK::AudioSourceStreamed::update(const UVK::FVector& position) noexcept
 
         alSourcePlay(audioDt.source);
         if (alGetError() != AL_NO_ERROR)
-            logger.consoleLog("Error when restarting audio playback", UVK_LOG_TYPE_ERROR);
+            Logger::log("Error when restarting audio playback", UVK_LOG_TYPE_ERROR);
     }
 }
 

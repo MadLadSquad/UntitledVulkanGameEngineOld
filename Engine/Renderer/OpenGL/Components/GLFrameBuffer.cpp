@@ -36,7 +36,7 @@ void UVK::GLFrameBuffer::init(int width, int height)
 
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
     {
-        logger.consoleLog("Could not create framebuffer", UVK_LOG_TYPE_ERROR);
+        Logger::log("Could not create framebuffer", UVK_LOG_TYPE_ERROR);
     }
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }

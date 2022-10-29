@@ -19,7 +19,7 @@ UVK::FString UVK::GLShader::readFile(UVK::String location)
 	std::ifstream fileStream(location, std::ios::in);
 
 	if (!fileStream.is_open()) {
-		logger.consoleLog("Failed to read file at location:", UVK_LOG_TYPE_ERROR, location);
+		Logger::log("Failed to read file at location:", UVK_LOG_TYPE_ERROR, location);
 		return "";
 	}
 
@@ -72,7 +72,7 @@ void UVK::GLShader::compileShader(UVK::String vertex, UVK::String fragment)
 
 	if (!shaderID)
 	{
-		logger.consoleLog("Failed to create shader program", UVK_LOG_TYPE_ERROR);
+		Logger::log("Failed to create shader program", UVK_LOG_TYPE_ERROR);
 		return;
 	}
 
@@ -87,7 +87,7 @@ void UVK::GLShader::compileShader(UVK::String vertex, UVK::String fragment)
 	if (!result)
 	{
 		glGetProgramInfoLog(shaderID, sizeof(errorLog), nullptr, errorLog);
-		logger.consoleLog("Error linking program", UVK_LOG_TYPE_ERROR, errorLog);
+		Logger::log("Error linking program", UVK_LOG_TYPE_ERROR, errorLog);
 		return;
 	}
 
@@ -96,7 +96,7 @@ void UVK::GLShader::compileShader(UVK::String vertex, UVK::String fragment)
 	if (!result)
 	{
 		glGetProgramInfoLog(shaderID, sizeof(errorLog), nullptr, errorLog);
-		logger.consoleLog("Error validating program", UVK_LOG_TYPE_ERROR, errorLog);
+		Logger::log("Error validating program", UVK_LOG_TYPE_ERROR, errorLog);
 		return;
 	}
 
@@ -122,7 +122,7 @@ void UVK::GLShader::addShader(GLuint program, const UVK::FString& shader, GLenum
 	if (!result)
 	{
 		glGetShaderInfoLog(theShader, sizeof(errorLog), nullptr, errorLog);
-		logger.consoleLog("Failed to compile shader with type", UVK_LOG_TYPE_ERROR, shaderType, errorLog);
+		Logger::log("Failed to compile shader with type", UVK_LOG_TYPE_ERROR, shaderType, errorLog);
 		return;
 	}
 
@@ -156,7 +156,7 @@ void UVK::GLShaderSPV::compileShader()
         str[1023] = '\0';
         glGetProgramInfoLog(program, len, &len, str);
 
-        logger.consoleLog("OpenGL error: ", UVK_LOG_TYPE_ERROR, (const char*)str);
+        Logger::log("OpenGL error: ", UVK_LOG_TYPE_ERROR, (const char*)str);
 
         glDeleteProgram(program);
         glDeleteShader(shaderID);
@@ -186,7 +186,7 @@ void UVK::GLShaderSPV::compileShader()
 
         std::vector<GLchar> infoLog(maxLength);
         glGetShaderInfoLog(vertexShader, maxLength, &maxLength, &infoLog[0]);
-        logger.consoleLog("Error in compiling vertex shader! Log: ", UVK_LOG_TYPE_ERROR, infoLog.data());
+        Logger::log("Error in compiling vertex shader! Log: ", UVK_LOG_TYPE_ERROR, infoLog.data());
         glDeleteShader(vertexShader);
 
         GLint maxLengthF = 0;
@@ -195,7 +195,7 @@ void UVK::GLShaderSPV::compileShader()
         std::vector<GLchar> infoLogF(maxLengthF);
         glGetShaderInfoLog(vertexShader, maxLength, &maxLength, &infoLog[0]);
 
-        logger.consoleLog("Error in compiling fragment shader! Log: ", UVK_LOG_TYPE_ERROR, infoLogF.data());
+        Logger::log("Error in compiling fragment shader! Log: ", UVK_LOG_TYPE_ERROR, infoLogF.data());
 
         glDeleteShader(fragmentShader);
         return;
@@ -218,7 +218,7 @@ void UVK::GLShaderSPV::compileShader()
         std::vector<GLchar> infoLog(maxLength);
         glGetProgramInfoLog(shaderID, maxLength, &maxLength, &infoLog[0]);
 
-        logger.consoleLog("Could not link program, Error: ", UVK_LOG_TYPE_ERROR, infoLog.data());
+        Logger::log("Could not link program, Error: ", UVK_LOG_TYPE_ERROR, infoLog.data());
 
         glDeleteProgram(shaderID);
         glDeleteShader(vertexShader);

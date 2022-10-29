@@ -34,6 +34,7 @@
 #include <imgui_impl_vulkan.h>
 
 #include <Renderer/Vulkan/VulkanRenderer.hpp>
+#include <UVKLogImGui.h>
 
 void UVK::Editor::initEditor() noexcept
 {
@@ -41,7 +42,7 @@ void UVK::Editor::initEditor() noexcept
     UBT::setPath("../");
 
     Timer tm;
-    tm.startRecording();
+    tm.start();
     EditorResources::loadConfigs(*this);
 #ifdef __MINGW32__
     EditorResources::loadResources(*this);
@@ -51,11 +52,11 @@ void UVK::Editor::initEditor() noexcept
 #endif
     EditorUtilSettings::loadImGuiSettings(*this, strings.colTheme, *global.renderer);
 
-    tm.stopRecording();
-    frameTimeData[0] = tm.getDuration();
+    tm.stop();
+    frameTimeData[0] = tm.get();
     bools.bEditorUsingTextbox = false;
 
-    logger.consoleLog("Starting the renderer took: ", UVK_LOG_TYPE_NOTE, tm.getDuration(), "ms!");
+    Logger::log("Starting the renderer took: ", UVK_LOG_TYPE_NOTE, tm.get(), "ms!");
 }
 
 void UVK::Editor::runEditor(FVector4& colour, Camera& camera, UVK::Level* lvl, const float& deltaTime) noexcept
@@ -141,7 +142,7 @@ void UVK::Editor::displayEditor(FVector4& colour, Camera& camera, UVK::Level* lv
     if (bools.bShowEditorSettings)
         bools.bEditorUsingTextbox = UVK::SettingsWidgets::displayEditorSettings(bools.bShowEditorSettings, *this);
     if (bools.bShowDeveloperConsole)
-        loggerwidget.displayFull(bools.bShowDeveloperConsole, bools.bEditorUsingTextbox);
+        loggerwidget.displayFull(bools.bShowDeveloperConsole, &bools.bEditorUsingTextbox);
     moduleManager.renderIndependentModule(bools.bEditorUsingTextbox);
 }
 

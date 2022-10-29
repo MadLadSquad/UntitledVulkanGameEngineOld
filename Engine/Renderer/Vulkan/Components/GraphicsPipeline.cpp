@@ -40,7 +40,7 @@ void UVK::GraphicsPipeline::createGraphicsPipeline() noexcept
         VkResult result = vkCreateShaderModule(device->getDevice(), &shaderModuleCreateInfo, nullptr, &module);
         if (result != VK_SUCCESS)
         {
-            logger.consoleLog("Failed to create a Vulkan shader module! Error code: ", UVK_LOG_TYPE_ERROR, result);
+            Logger::log("Failed to create a Vulkan shader module! Error code: ", UVK_LOG_TYPE_ERROR, result);
             std::terminate();
         }
 
@@ -192,7 +192,7 @@ void UVK::GraphicsPipeline::createGraphicsPipeline() noexcept
     auto result = vkCreatePipelineLayout(device->getDevice(), &pipelineLayoutCreateInfo, nullptr, &pipelineLayout);
     if (result != VK_SUCCESS)
     {
-        logger.consoleLog("Couldn't create a Vulkan graphics pipeline layout! Error code: ", UVK_LOG_TYPE_ERROR, result);
+        Logger::log("Couldn't create a Vulkan graphics pipeline layout! Error code: ", UVK_LOG_TYPE_ERROR, result);
         std::terminate();
     }
 
@@ -241,7 +241,7 @@ void UVK::GraphicsPipeline::createGraphicsPipeline() noexcept
     result = vkCreateGraphicsPipelines(device->getDevice(), VK_NULL_HANDLE, 1, &pipelineCreateInfo, nullptr, &graphicsPipeline);
     if (result != VK_SUCCESS)
     {
-        logger.consoleLog("Failed to create a Vulkan graphics pipeline! Error code: ", UVK_LOG_TYPE_ERROR, result);
+        Logger::log("Failed to create a Vulkan graphics pipeline! Error code: ", UVK_LOG_TYPE_ERROR, result);
         std::terminate();
     }
 
@@ -379,7 +379,7 @@ void UVK::GraphicsPipeline::createRenderPass() noexcept
     auto result = vkCreateRenderPass(device->getDevice(), &renderPassCreateInfo, nullptr, &renderPass);
     if (result != VK_SUCCESS)
     {
-        logger.consoleLog("Failed to create a Vulkan render pass! Error code: ", UVK_LOG_TYPE_ERROR, result);
+        Logger::log("Failed to create a Vulkan render pass! Error code: ", UVK_LOG_TYPE_ERROR, result);
         std::terminate();
     }
 }

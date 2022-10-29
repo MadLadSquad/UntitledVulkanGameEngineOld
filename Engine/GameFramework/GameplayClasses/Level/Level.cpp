@@ -134,7 +134,7 @@ void UVK::Level::openInternal(UVK::String location, bool first) noexcept
     }
     catch (YAML::BadFile&)
     {
-        logger.consoleLog("Invalid level file location of file!", UVK_LOG_TYPE_ERROR);
+        Logger::log("Invalid level file location of file!", UVK_LOG_TYPE_ERROR);
         return;
     }
 
@@ -164,19 +164,19 @@ void UVK::Level::openInternal(UVK::String location, bool first) noexcept
 #endif
     }
 
-    logger.consoleLog("Opening level with location: ", UVK_LOG_TYPE_NOTE, location);
+    Logger::log("Opening level with location: ", UVK_LOG_TYPE_NOTE, location);
 
     // Load a bunch of metadata into the global state
     global.levelName = out["name"].as<std::string>();
     global.levelLocation = location;
-    logger.consoleLog("Opened file with name: ", UVK_LOG_TYPE_SUCCESS, global.levelName);
+    Logger::log("Opened file with name: ", UVK_LOG_TYPE_SUCCESS, global.levelName);
     global.colour = out["background-colour"].as<FVector4>();
     global.ambientLight = out["ambient-light"].as<FVector4>();
 
     auto entities = out["actors"];
     if (entities)
     {
-        logger.consoleLog("Iterating entities", UVK_LOG_TYPE_NOTE);
+        Logger::log("Iterating entities", UVK_LOG_TYPE_NOTE);
 
         for (const YAML::Node& entity : entities)
         {
@@ -206,7 +206,7 @@ escape_editor_folders:
             UVK::AudioComponent::openToLevel(act, entity);
             UVK::MeshComponent::openFromLevel(act, entity);
         }
-        logger.consoleLog("Iterated entities", UVK_LOG_TYPE_SUCCESS);
+        Logger::log("Iterated entities", UVK_LOG_TYPE_SUCCESS);
     }
 
     if (!global.bEditor)

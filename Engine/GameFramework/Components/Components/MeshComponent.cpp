@@ -78,7 +78,7 @@ void UVK::MeshComponent::create(UVK::String location, VKDevice &dev, Commands& c
     const aiScene* scene = importer.ReadFile(location, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_JoinIdenticalVertices);
     if (scene == nullptr)
     {
-        logger.consoleLog("Couldn't load model at location: ", UVK_LOG_TYPE_ERROR, location);
+        Logger::log("Couldn't load model at location: ", UVK_LOG_TYPE_ERROR, location);
         std::terminate();
     }
 

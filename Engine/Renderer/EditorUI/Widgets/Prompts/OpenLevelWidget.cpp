@@ -27,13 +27,13 @@ bool OpenLevelWidget::display(UVK::FString &openLevel, bool &bShowOpenLevelWidge
         if (ImGui::Button("Submit"))
         {
             Timer tm;
-            tm.startRecording();
+            tm.start();
 
             auto loc = UVK_CONTENT_PATH + openLevel;
             UVK::Level::open<UVK::EditorLevel>(loc);
 
-            tm.stopRecording();
-            dr = tm.getDuration();
+            tm.stop();
+            dr = tm.get();
 
             bShowOpenLevelWidget = false;
         }

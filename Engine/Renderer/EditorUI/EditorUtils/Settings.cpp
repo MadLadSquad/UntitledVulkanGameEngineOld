@@ -40,7 +40,7 @@ void UVK::EditorUtilSettings::loadImGuiSettings(Editor& editor, const char* colT
     auto result = vkCreateDescriptorPool(renderer.device.getDevice(), &poolCreateInfo, nullptr, &imguiPool);
     if (result != VK_SUCCESS)
     {
-        logger.consoleLog("Couldn't create the descriptor pool for Dear imgui! Error code: ", UVK_LOG_TYPE_ERROR, result);
+        Logger::log("Couldn't create the descriptor pool for Dear imgui! Error code: ", UVK_LOG_TYPE_ERROR, result);
         std::terminate();
     }
 

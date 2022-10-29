@@ -36,7 +36,7 @@ void UVK::VKInstance::create() noexcept
     // Check instance extension support
     if (!checkInstanceExtensionsSupport(instanceExtensions.data(), instanceExtensions.size()))
     {
-        logger.consoleLog("Couldn't load all required extensions!", UVK_LOG_TYPE_ERROR);
+        Logger::log("Couldn't load all required extensions!", UVK_LOG_TYPE_ERROR);
         std::terminate();
     }
 
@@ -54,7 +54,7 @@ void UVK::VKInstance::create() noexcept
     // Check if the validation layers are supported
     if (!checkValidationLayerSupport(instanceLayers))
     {
-        logger.consoleLog("Couldn't create validation layers!", UVK_LOG_TYPE_ERROR);
+        Logger::log("Couldn't create validation layers!", UVK_LOG_TYPE_ERROR);
         std::terminate();
     }
 
@@ -62,7 +62,7 @@ void UVK::VKInstance::create() noexcept
     auto result = vkCreateInstance(&instanceInfo, nullptr, &instance);
     if (result != VK_SUCCESS)
     {
-        logger.consoleLog("Could not create a Vulkan instance! Error code: ", UVK_LOG_TYPE_ERROR, result);
+        Logger::log("Could not create a Vulkan instance! Error code: ", UVK_LOG_TYPE_ERROR, result);
         std::terminate();
     }
     // Create the debug callback
@@ -154,7 +154,7 @@ void UVK::VKInstance::createDebugCallback() noexcept
     auto result = CreateDebugReportCallback(instance, &callbackCreateInfo, nullptr, &callback);
     if (result != VK_SUCCESS)
     {
-        logger.consoleLog("Failed to create a debug callback! Error code: ", UVK_LOG_TYPE_ERROR, result);
+        Logger::log("Failed to create a debug callback! Error code: ", UVK_LOG_TYPE_ERROR, result);
         std::terminate();
     }
 #endif

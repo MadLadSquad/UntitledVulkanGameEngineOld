@@ -45,7 +45,7 @@ bool RemoveFile::display(bool& bShow) noexcept
                 }
                 catch (std_filesystem::filesystem_error&)
                 {
-                    logger.consoleLog("Failed to delete files", UVK_LOG_TYPE_ERROR);
+                    Logger::log("Failed to delete files", UVK_LOG_TYPE_ERROR);
                 }
 #endif
             }
@@ -59,7 +59,7 @@ bool RemoveFile::display(bool& bShow) noexcept
                 }
                 catch (std_filesystem::filesystem_error&)
                 {
-                    logger.consoleLog("Failed to delete files", UVK_LOG_TYPE_ERROR);
+                    Logger::log("Failed to delete files", UVK_LOG_TYPE_ERROR);
                 }
 #endif
             }

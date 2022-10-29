@@ -28,9 +28,9 @@ void UVK::LocaleManager::openLocaleConfig(bool bEditor)
     catch (YAML::BadFile&)
     {
         if (!bEditor)
-            logger.consoleLog("Couldn't open the translation base file!", UVK_LOG_TYPE_WARNING);
+            Logger::log("Couldn't open the translation base file!", UVK_LOG_TYPE_WARNING);
         else
-            logger.consoleLog("Couldn't open the Editor translations base file!", UVK_LOG_TYPE_WARNING);
+            Logger::log("Couldn't open the Editor translations base file!", UVK_LOG_TYPE_WARNING);
         return;
     }
 
@@ -44,7 +44,7 @@ void UVK::LocaleManager::openLocaleConfig(bool bEditor)
         defaultLayout = UVK::Locale::getLocaleID(str);
         if (defaultLayout == static_cast<UVK::LocaleTypes>(-1))
         {
-            logger.consoleLog("A non-valid default layout string was submitted! The layout will not be used until the error is fixed! String: ", UVK_LOG_TYPE_WARNING, str);
+            Logger::log("A non-valid default layout string was submitted! The layout will not be used until the error is fixed! String: ", UVK_LOG_TYPE_WARNING, str);
             return;
         }
         currentLayout = defaultLayout;
@@ -94,7 +94,7 @@ const UVK::FString& UVK::LocaleManager::getLocaleString(String original, UVK::Lo
     for (auto& a : arr)
         if (a.first == original)
             return a.second;
-    logger.consoleLog("Couldn't find the translated string for locale ", UVK_LOG_TYPE_WARNING, UVK::Locale::getLocaleName(locale, true), ". Reverting to default layout ", UVK::Locale::getLocaleName(defaultLayout, true), "!");
+    Logger::log("Couldn't find the translated string for locale ", UVK_LOG_TYPE_WARNING, UVK::Locale::getLocaleName(locale, true), ". Reverting to default layout ", UVK::Locale::getLocaleName(defaultLayout, true), "!");
     return emptyString;
 }
 
@@ -110,7 +110,7 @@ UVK::FString& UVK::Locale::getLocaleString(String original, UVK::LocaleTypes loc
     for (auto& a : global.localeManager.translations[static_cast<int>(locale)])
         if (a.first == original)
             return a.second;
-    logger.consoleLog("Couldn't find string in locale ", UVK_LOG_TYPE_WARNING, Locale::getLocaleName(locale, true), "! Reverting to original layout!");
+    Logger::log("Couldn't find string in locale ", UVK_LOG_TYPE_WARNING, Locale::getLocaleName(locale, true), "! Reverting to original layout!");
     for (auto& a : global.localeManager.translations[static_cast<int>(locale)])
         if (a.first == original)
             return a.second;

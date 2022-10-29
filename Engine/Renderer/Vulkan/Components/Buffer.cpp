@@ -17,7 +17,7 @@ void UVK::VKBuffer::create(UVK::VKDevice& dev, VkDeviceSize bufferSize, VkBuffer
     auto result = vkCreateBuffer(dev.getDevice(), &bufferInfo, nullptr, &buffer);
     if (result != VK_SUCCESS)
     {
-        logger.consoleLog("Couldn't create a vertex buffer! Error code: ", UVK_LOG_TYPE_ERROR, result);
+        Logger::log("Couldn't create a vertex buffer! Error code: ", UVK_LOG_TYPE_ERROR, result);
         std::terminate();
     }
 
@@ -35,7 +35,7 @@ void UVK::VKBuffer::create(UVK::VKDevice& dev, VkDeviceSize bufferSize, VkBuffer
     result = vkAllocateMemory(dev.getDevice(), &memoryAllocateInfo, nullptr, &memory);
     if (result != VK_SUCCESS)
     {
-        logger.consoleLog("Couldn't allocate memory for the vertex buffer! Error code: ", UVK_LOG_TYPE_ERROR, result);
+        Logger::log("Couldn't allocate memory for the vertex buffer! Error code: ", UVK_LOG_TYPE_ERROR, result);
         std::terminate();
     }
     // Bind the buffer memory to be ussed by the buffer

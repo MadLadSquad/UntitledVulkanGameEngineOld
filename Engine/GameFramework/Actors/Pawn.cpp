@@ -13,7 +13,7 @@ void UVK::Pawn::destroyPawn(Pawn* pw) noexcept
 
     if (bUsingFallbackPawn)
     {
-        logger.consoleLog("You are trying to destroy the pawn you are currently using! Switching to fallback pawn!", UVK_LOG_TYPE_ERROR);
+        Logger::log("You are trying to destroy the pawn you are currently using! Switching to fallback pawn!", UVK_LOG_TYPE_ERROR);
 
         auto* fbp = new FallbackPawn();
         global.currentLevel->gameMode->playerController->pawn = fbp;

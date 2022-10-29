@@ -29,7 +29,7 @@ std::vector<char> UVK::VKShader::getShaderBytecode() const noexcept
     std::ifstream in("../Generated/" + hash + ".spv", std::ios::ate | std::ios::binary);
     if (!in.is_open())
     {
-        logger.consoleLog("Failed to load file!", UVK_LOG_TYPE_ERROR);
+        Logger::log("Failed to load file!", UVK_LOG_TYPE_ERROR);
         std::terminate();
     }
 
@@ -88,7 +88,7 @@ VkFormat UVK::SwapchainImage::findBestImageFormat(const std::vector<VkFormat>& f
         if ((tiling == VK_IMAGE_TILING_LINEAR && (properties.linearTilingFeatures & featureFlags) == featureFlags) || (tiling == VK_IMAGE_TILING_OPTIMAL && (properties.optimalTilingFeatures & featureFlags) == featureFlags))
             return a;
     }
-    logger.consoleLog("Couldn't find optimal image format!", UVK_LOG_TYPE_ERROR);
+    Logger::log("Couldn't find optimal image format!", UVK_LOG_TYPE_ERROR);
     std::terminate();
 }
 
@@ -116,7 +116,7 @@ void UVK::SwapchainImage::createImage(const UVK::FVector2& size, const VkFormat&
     auto result = vkCreateImage(device.getDevice(), &imageCreateInfo, nullptr, &image);
     if (result != VK_SUCCESS)
     {
-        logger.consoleLog("Couldn't create a vulkan image! Error code: ", UVK_LOG_TYPE_ERROR, result);
+        Logger::log("Couldn't create a vulkan image! Error code: ", UVK_LOG_TYPE_ERROR, result);
         std::terminate();
     }
 
@@ -130,7 +130,7 @@ void UVK::SwapchainImage::createImage(const UVK::FVector2& size, const VkFormat&
     for (; i < memoryProperties.memoryTypeCount; i++)
         if ((memoryRequirements.memoryTypeBits & (1 << i)) && (memoryProperties.memoryTypes[i].propertyFlags & propertyFlags) == propertyFlags)
             goto success;
-    logger.consoleLog("Couldn't get required memory property flags from the currently selected device!", UVK_LOG_TYPE_ERROR);
+    Logger::log("Couldn't get required memory property flags from the currently selected device!", UVK_LOG_TYPE_ERROR);
     std::terminate();
     success:
     const VkMemoryAllocateInfo memoryAllocateInfo =
@@ -143,7 +143,7 @@ void UVK::SwapchainImage::createImage(const UVK::FVector2& size, const VkFormat&
     result = vkAllocateMemory(device.getDevice(), &memoryAllocateInfo, nullptr, &memory);
     if (result != VK_SUCCESS)
     {
-        logger.consoleLog("Couldn't allocate memory for hte given image! Error code: ", UVK_LOG_TYPE_ERROR, result);
+        Logger::log("Couldn't allocate memory for hte given image! Error code: ", UVK_LOG_TYPE_ERROR, result);
         std::terminate();
     }
     vkBindImageMemory(device.getDevice(), image, memory, 0);
@@ -176,7 +176,7 @@ void UVK::SwapchainImage::createImageView(const VkFormat& format, const VkImageA
     auto result = vkCreateImageView(dev.getDevice(), &viewCreateInfo, nullptr, &imageView);
     if (result != VK_SUCCESS)
     {
-        logger.consoleLog("Failed to create an image view! Error code: ", UVK_LOG_TYPE_ERROR, result);
+        Logger::log("Failed to create an image view! Error code: ", UVK_LOG_TYPE_ERROR, result);
         std::terminate();
     }
 }

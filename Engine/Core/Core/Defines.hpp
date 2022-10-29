@@ -10,7 +10,8 @@
 #else
     #define UVK_PUBLIC_API
 #endif
-#include <logger/UVKLog.h>
+#include <UVKLog.h>
+using namespace UVKLog;
 
 // This is for MinGW32 because it is retarded
 #ifndef __MINGW32__
@@ -27,10 +28,14 @@
 
 #ifdef PRODUCTION
     #define UVK_START(x) std::ios_base::sync_with_stdio(!(x)); \
-    logger.setCrashOnError(true); \
+    Logger::setLogOperation(UVKLog::UVK_LOG_OPERATION_FILE_AND_TERMINAL); \
+    Logger::setCurrentLogFile("../Generated/run.log"); \
+    Logger::setCrashOnError(true); \
     UVK::Utility::removeConsole()
 #else
-    #define UVK_START(x) std::ios_base::sync_with_stdio(!(x))
+    #define UVK_START(x) std::ios_base::sync_with_stdio(!(x)); \
+    Logger::setLogOperation(UVKLog::UVK_LOG_OPERATION_FILE_AND_TERMINAL); \
+    Logger::setCurrentLogFile("../Generated/run.log")
 #endif
 
 

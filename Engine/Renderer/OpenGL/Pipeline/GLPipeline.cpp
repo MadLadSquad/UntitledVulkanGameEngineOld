@@ -49,7 +49,7 @@ void UVK::GLPipeline::begin(bool bHasEditor, Level* lvl)
     }
     enableFeatures();
 
-    logger.consoleLog("Starting OpenGL renderer", UVK_LOG_TYPE_NOTE);
+    Logger::log("Starting OpenGL renderer", UVK_LOG_TYPE_NOTE);
 }
 
 void UVK::GLPipeline::tick()

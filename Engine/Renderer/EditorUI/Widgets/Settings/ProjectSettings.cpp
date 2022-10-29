@@ -60,7 +60,7 @@ void UVK::ProjectSettingsWidget::displayProjectSettings(bool& bReturn, UVK::FStr
         }
         catch (YAML::BadFile&)
         {
-            logger.consoleLog("Couldn't open the uvproj.yaml file!", UVK_LOG_TYPE_ERROR);
+            Logger::log("Couldn't open the uvproj.yaml file!", UVK_LOG_TYPE_ERROR);
             std::terminate();
         }
 

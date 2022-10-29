@@ -9,7 +9,7 @@ void UVK::Swapchain::createSurface() noexcept
     const auto result = glfwCreateWindowSurface(instance->data(), global.window.getWindow(), nullptr, &surface);
     if (result != VK_SUCCESS)
     {
-        logger.consoleLog("Failed to create a window surface! Error code: ", UVK_LOG_TYPE_ERROR, result);
+        Logger::log("Failed to create a window surface! Error code: ", UVK_LOG_TYPE_ERROR, result);
         std::terminate();
     }
 }
@@ -117,7 +117,7 @@ void UVK::Swapchain::createSwapchain(VkSwapchainKHR oldswapchain) noexcept
     const auto result = vkCreateSwapchainKHR(device->device, &swapchainCreateInfo, nullptr, &swapchain);
     if (result != VK_SUCCESS)
     {
-        logger.consoleLog("Failed to create a swapchain! Error code: ", UVK_LOG_TYPE_ERROR, result);
+        Logger::log("Failed to create a swapchain! Error code: ", UVK_LOG_TYPE_ERROR, result);
         std::terminate();
     }
     uint32_t swapchainImageCount;
@@ -231,7 +231,7 @@ void UVK::Swapchain::createFramebuffers(GraphicsPipeline& graphicsPipeline) noex
         const auto result = vkCreateFramebuffer(device->device, &framebufferCreateInfo, nullptr, &framebuffers[i]);
         if (result != VK_SUCCESS)
         {
-            logger.consoleLog("Failed to create a Vulkan framebuffer! Error code: ", UVK_LOG_TYPE_ERROR, result);
+            Logger::log("Failed to create a Vulkan framebuffer! Error code: ", UVK_LOG_TYPE_ERROR, result);
             std::terminate();
         }
     }

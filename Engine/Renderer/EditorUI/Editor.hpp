@@ -3,6 +3,7 @@
 #include <Renderer/Textures/Texture.hpp>
 #include <Renderer/OpenGL/Components/GLFrameBuffer.hpp>
 #include <Core/Actor.hpp>
+
 #include <UVKLogImGui.h>
 #include <Renderer/EditorUI/EditorUtils/Structs.hpp>
 
@@ -68,7 +69,7 @@ namespace UVK
         std_filesystem::path pt;
         double frameTimeData[2] = { 0.0, 0.0 };
 #endif
-        UVKLogImGui loggerwidget;
+        UVKLog::ImGuiConsole loggerwidget;
         EditorKeys keys;
 
         EditorSettings settings;

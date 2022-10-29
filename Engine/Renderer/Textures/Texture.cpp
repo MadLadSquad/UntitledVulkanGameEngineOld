@@ -68,7 +68,7 @@ void UVK::Texture::load() noexcept
     const auto result = vkCreateSampler(device->getDevice(), &samplerCreateInfo, nullptr, &textureSampler);
     if (result != VK_SUCCESS)
     {
-        logger.consoleLog("Couldn't create a texture sampler! Error code: ", UVK_LOG_TYPE_ERROR, result);
+        Logger::log("Couldn't create a texture sampler! Error code: ", UVK_LOG_TYPE_ERROR, result);
         std::terminate();
     }
     descriptorLocation = descriptors->createTextureDescriptor(image.imageView, textureSampler);
@@ -97,7 +97,7 @@ unsigned char* UVK::Texture::gen() noexcept
     unsigned char* img = stbi_load(location.c_str(), &width, &height, &channels, STBI_rgb_alpha);
     if (img == nullptr)
     {
-        logger.consoleLog("Failed to load image file at location: ", UVK_LOG_TYPE_ERROR, location);
+        Logger::log("Failed to load image file at location: ", UVK_LOG_TYPE_ERROR, location);
         std::terminate();
     }
     size = width * height * 4;

@@ -19,7 +19,7 @@ void UVK::Commands::createCommandPool() noexcept
     const auto result = vkCreateCommandPool(device->getDevice(), &poolInfo, nullptr, &commandPool);
     if (result != VK_SUCCESS)
     {
-        logger.consoleLog("Couldn't create a Vulkan command pool! Error code: ", UVK_LOG_TYPE_ERROR, result);
+        Logger::log("Couldn't create a Vulkan command pool! Error code: ", UVK_LOG_TYPE_ERROR, result);
         std::terminate();
     }
 }
@@ -44,7 +44,7 @@ void UVK::Commands::createCommandBuffers(size_t dependencySizeLink) noexcept
     const auto result = vkAllocateCommandBuffers(device->getDevice(), &commandBufferAllocateInfo, commandBuffers.data());
     if (result != VK_SUCCESS)
     {
-        logger.consoleLog("Failed to allocate the Vulkan command buffers! Error code: ", UVK_LOG_TYPE_ERROR, result);
+        Logger::log("Failed to allocate the Vulkan command buffers! Error code: ", UVK_LOG_TYPE_ERROR, result);
         std::terminate();
     }
 }
@@ -65,7 +65,7 @@ void UVK::Commands::draw() noexcept
     auto result = vkAcquireNextImageKHR(device->getDevice(), swapchain->getSwapchain(), std::numeric_limits<uint64_t>::max(), imageAvailable[currentFrame], VK_NULL_HANDLE, &imageIndex);
     if (result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR && result != VK_ERROR_OUT_OF_DATE_KHR)
     {
-        logger.consoleLog("Couldn't acquire next image from the swapchain! Error code:", UVK_LOG_TYPE_ERROR, result);
+        Logger::log("Couldn't acquire next image from the swapchain! Error code:", UVK_LOG_TYPE_ERROR, result);
         std::terminate();
     }
     else if (result == VK_ERROR_OUT_OF_DATE_KHR)
@@ -110,7 +110,7 @@ void UVK::Commands::draw() noexcept
     result = vkQueueSubmit(device->getGraphicsQueue(), 1, &submitInfo, fences[currentFrame]);
     if (result != VK_SUCCESS)
     {
-        logger.consoleLog("Couldn't submit command buffer to the queue! Error code: ", UVK_LOG_TYPE_ERROR, result);
+        Logger::log("Couldn't submit command buffer to the queue! Error code: ", UVK_LOG_TYPE_ERROR, result);
         std::terminate();
     }
     // Information on how to present the image
@@ -127,7 +127,7 @@ void UVK::Commands::draw() noexcept
     result = vkQueuePresentKHR(device->getPresentationQueue(), &presentInfo);
     if (result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR && result != VK_ERROR_OUT_OF_DATE_KHR)
     {
-        logger.consoleLog("Failed to present the image! Error code: ", UVK_LOG_TYPE_ERROR, result);
+        Logger::log("Failed to present the image! Error code: ", UVK_LOG_TYPE_ERROR, result);
         std::terminate();
     }
     else if (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR || global.window.resized())
@@ -176,7 +176,7 @@ void UVK::Commands::recordCommands(uint32_t currentImage) noexcept
     auto result = vkBeginCommandBuffer(a, &commandBufferBeginInfo);
     if (result != VK_SUCCESS)
     {
-        logger.consoleLog("Failed to start recording the Vulkan command buffer! Error code: ", UVK_LOG_TYPE_ERROR, result);
+        Logger::log("Failed to start recording the Vulkan command buffer! Error code: ", UVK_LOG_TYPE_ERROR, result);
         std::terminate();
     }
     // Being the rendering
@@ -250,7 +250,7 @@ void UVK::Commands::recordCommands(uint32_t currentImage) noexcept
     result = vkEndCommandBuffer(a);
     if (result != VK_SUCCESS)
     {
-        logger.consoleLog("Failed to stop recording the Vulkan command buffer! Error code: ", UVK_LOG_TYPE_ERROR, result);
+        Logger::log("Failed to stop recording the Vulkan command buffer! Error code: ", UVK_LOG_TYPE_ERROR, result);
         std::terminate();
     }
 }
@@ -277,19 +277,19 @@ void UVK::Commands::createSynchronization() noexcept
         auto result = vkCreateSemaphore(device->getDevice(), &semaphoreCreateInfo, nullptr, &imageAvailable[i]);
         if (result != VK_SUCCESS)
         {
-            logger.consoleLog("Failed to create the image available Vulkan semaphore! Error code: ", UVK_LOG_TYPE_ERROR, result);
+            Logger::log("Failed to create the image available Vulkan semaphore! Error code: ", UVK_LOG_TYPE_ERROR, result);
             std::terminate();
         }
         result = vkCreateSemaphore(device->getDevice(), &semaphoreCreateInfo, nullptr, &renderFinished[i]);
         if (result != VK_SUCCESS)
         {
-            logger.consoleLog("Failed to create the render finished Vulkan semaphore! Error code: ", UVK_LOG_TYPE_ERROR, result);
+            Logger::log("Failed to create the render finished Vulkan semaphore! Error code: ", UVK_LOG_TYPE_ERROR, result);
             std::terminate();
         }
         result = vkCreateFence(device->getDevice(), &fenceCreateInfo, nullptr, &fences[i]);
         if (result != VK_SUCCESS)
         {
-            logger.consoleLog("Failed to create a fence! Error code: ", UVK_LOG_TYPE_ERROR, result);
+            Logger::log("Failed to create a fence! Error code: ", UVK_LOG_TYPE_ERROR, result);
             std::terminate();
         }
     }

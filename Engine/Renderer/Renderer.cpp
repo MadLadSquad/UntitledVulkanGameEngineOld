@@ -99,7 +99,7 @@ void UVK::Renderer::loadSettings() noexcept
     {
         bUsesConf = false;
 
-        logger.consoleLog("Invalid renderer file defaulting to OpenGL with default theme if the editor is in use!", UVK_LOG_TYPE_ERROR);
+        Logger::log("Invalid renderer file defaulting to OpenGL with default theme if the editor is in use!", UVK_LOG_TYPE_ERROR);
     }
 
     if (bUsesConf)

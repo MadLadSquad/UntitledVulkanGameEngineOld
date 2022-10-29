@@ -7,7 +7,7 @@ void UVK::AudioManager::createDevice() noexcept
 
     if (!device)
     {
-        logger.consoleLog("Failed to get sound device", UVK_LOG_TYPE_ERROR);
+        Logger::log("Failed to get sound device", UVK_LOG_TYPE_ERROR);
         return;
     }
 
@@ -15,13 +15,13 @@ void UVK::AudioManager::createDevice() noexcept
 
     if (!context)
     {
-        logger.consoleLog("Failed to get sound context", UVK_LOG_TYPE_ERROR);
+        Logger::log("Failed to get sound context", UVK_LOG_TYPE_ERROR);
         return;
     }
 
     if (!alcMakeContextCurrent(context))
     {
-        logger.consoleLog("Failed to use the context", UVK_LOG_TYPE_ERROR);
+        Logger::log("Failed to use the context", UVK_LOG_TYPE_ERROR);
         return;
     }
 
@@ -31,7 +31,7 @@ void UVK::AudioManager::createDevice() noexcept
         name = alcGetString(device, ALC_ALL_DEVICES_SPECIFIER);
     if (!name || alcGetError(device) != AL_NO_ERROR)
         name = alcGetString(device, ALC_DEVICE_SPECIFIER);
-    logger.consoleLog("Loaded sound device \"", UVK_LOG_TYPE_SUCCESS, name, "\"");
+    Logger::log("Loaded sound device \"", UVK_LOG_TYPE_SUCCESS, name, "\"");
 }
 
 void UVK::AudioManager::destroyDevice() noexcept

@@ -46,7 +46,7 @@ void UVK::VKDescriptors::createDescriptorSetLayout() noexcept
     auto result = vkCreateDescriptorSetLayout(device->getDevice(), &layoutCreateInfo, nullptr, &descriptorSetLayout);
     if (result != VK_SUCCESS)
     {
-        logger.consoleLog("Couldn't create a Vulkan descriptor set layout! Error code: ", UVK_LOG_TYPE_ERROR, result);
+        Logger::log("Couldn't create a Vulkan descriptor set layout! Error code: ", UVK_LOG_TYPE_ERROR, result);
         std::terminate();
     }
 
@@ -70,7 +70,7 @@ void UVK::VKDescriptors::createDescriptorSetLayout() noexcept
     result = vkCreateDescriptorSetLayout(device->getDevice(), &samplerDescriptorSetCreateInfo, nullptr, &samplerSetLayout);
     if (result != VK_SUCCESS)
     {
-        logger.consoleLog("Couldn't create the sampler descriptor set layout! Error code: ", UVK_LOG_TYPE_ERROR, result);
+        Logger::log("Couldn't create the sampler descriptor set layout! Error code: ", UVK_LOG_TYPE_ERROR, result);
         std::terminate();
     }
 }
@@ -122,7 +122,7 @@ void UVK::VKDescriptors::createDescriptorPool() noexcept
     auto result = vkCreateDescriptorPool(device->getDevice(), &poolCreateInfo, nullptr, &descriptorPool);
     if (result != VK_SUCCESS)
     {
-        logger.consoleLog("Couldn't create a Vulkan descriptor pool! Error code: ", UVK_LOG_TYPE_ERROR, result);
+        Logger::log("Couldn't create a Vulkan descriptor pool! Error code: ", UVK_LOG_TYPE_ERROR, result);
         std::terminate();
     }
 
@@ -143,7 +143,7 @@ void UVK::VKDescriptors::createDescriptorPool() noexcept
     result = vkCreateDescriptorPool(device->getDevice(), &samplerPoolCreateInfo, nullptr, &samplerDescriptorPool);
     if (result != VK_SUCCESS)
     {
-        logger.consoleLog("Couldn't create the texture sampler descriptor pool! Error code: ", UVK_LOG_TYPE_ERROR, result);
+        Logger::log("Couldn't create the texture sampler descriptor pool! Error code: ", UVK_LOG_TYPE_ERROR, result);
         std::terminate();
     }
 }
@@ -170,7 +170,7 @@ void UVK::VKDescriptors::createDescriptorSets() noexcept
     const auto result = vkAllocateDescriptorSets(device->getDevice(), &descriptorSetAllocateInfo, descriptorSets.data());
     if (result != VK_SUCCESS)
     {
-        logger.consoleLog("Couldn't allocate vulkan descriptor sets! Error code: ", UVK_LOG_TYPE_ERROR, result);
+        Logger::log("Couldn't allocate vulkan descriptor sets! Error code: ", UVK_LOG_TYPE_ERROR, result);
         std::terminate();
     }
     uint8_t size = 1;
@@ -265,7 +265,7 @@ size_t UVK::VKDescriptors::createTextureDescriptor(VkImageView imageView, const 
     auto result = vkAllocateDescriptorSets(device->getDevice(), &descriptorSetAllocateInfo, &descriptorSet);
     if (result != VK_SUCCESS)
     {
-        logger.consoleLog("Failed to allocate the sampler descriptor set! Error code: ", UVK_LOG_TYPE_ERROR, result);
+        Logger::log("Failed to allocate the sampler descriptor set! Error code: ", UVK_LOG_TYPE_ERROR, result);
         std::terminate();
     }
 

@@ -69,11 +69,11 @@ void UVK::WindowInternal::createWindow() noexcept
 
     if (!glfwInit())
     {
-        logger.consoleLog("GLFW initialisation failed!", UVK_LOG_TYPE_ERROR);
+        Logger::log("GLFW initialisation failed!", UVK_LOG_TYPE_ERROR);
         glfwTerminate();
         return;
     }
-    logger.consoleLog("Setting up the window", UVK_LOG_TYPE_NOTE);
+    Logger::log("Setting up the window", UVK_LOG_TYPE_NOTE);
 
     if (!global.bUsesVulkan)
     {
@@ -92,16 +92,16 @@ void UVK::WindowInternal::createWindow() noexcept
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
     }
 
-    logger.consoleLog("Window settings configured", UVK_LOG_TYPE_NOTE);
+    Logger::log("Window settings configured", UVK_LOG_TYPE_NOTE);
     if (resources.fullscreen)
     {
         windowMain = glfwCreateWindow((int)resources.size.x, (int)resources.size.y, resources.name.c_str(), glfwGetPrimaryMonitor(), nullptr);
-        logger.consoleLog("Created window", UVK_LOG_TYPE_NOTE);
+        Logger::log("Created window", UVK_LOG_TYPE_NOTE);
     }
     else
     {
         windowMain = glfwCreateWindow((int)resources.size.x, (int)resources.size.y, resources.name.c_str(), nullptr, nullptr);
-        logger.consoleLog("Created window", UVK_LOG_TYPE_NOTE);
+        Logger::log("Created window", UVK_LOG_TYPE_NOTE);
     }
 
     GLFWimage images[1];
@@ -111,11 +111,11 @@ void UVK::WindowInternal::createWindow() noexcept
 
     if (!windowMain)
     {
-        logger.consoleLog("GLFW window creation failed!", UVK_LOG_TYPE_ERROR);
+        Logger::log("GLFW window creation failed!", UVK_LOG_TYPE_ERROR);
         glfwTerminate();
         return;
     }
-    logger.consoleLog("Window was created successfully", UVK_LOG_TYPE_SUCCESS);
+    Logger::log("Window was created successfully", UVK_LOG_TYPE_SUCCESS);
 
     int tempx = (int)resources.size.x;
     int tempy = (int)resources.size.y;
@@ -144,7 +144,7 @@ void UVK::WindowInternal::createWindow() noexcept
     {
         if (glewInit() != GLEW_OK)
         {
-            logger.consoleLog("GLEW initialisation failed!", UVK_LOG_TYPE_ERROR);
+            Logger::log("GLEW initialisation failed!", UVK_LOG_TYPE_ERROR);
 
             glfwDestroyWindow(windowMain);
             glfwTerminate();
@@ -462,7 +462,7 @@ const UVK::InputAction& UVK::Input::getAction(const UVK::FString& name) noexcept
         if (a.name == name)
             return a;
 
-    logger.consoleLog("Input action with name: ", UVK_LOG_TYPE_ERROR, name, ", does not exist!");
+    Logger::log("Input action with name: ", UVK_LOG_TYPE_ERROR, name, ", does not exist!");
     std::terminate();
 }
 

@@ -65,7 +65,7 @@ void UVK::VKDevice::createDevice(Swapchain& swapchain) noexcept
     auto result = vkCreateDevice(physicalDevice, &deviceCreateInfo, nullptr, &device);
     if (result != VK_SUCCESS)
     {
-        logger.consoleLog("Failed to create a logical device! Error code: ", UVK_LOG_TYPE_ERROR, result);
+        Logger::log("Failed to create a logical device! Error code: ", UVK_LOG_TYPE_ERROR, result);
         std::terminate();
     }
     // Get the queues
@@ -95,7 +95,7 @@ UVK::QueueFamilyIndices UVK::VKDevice::createPhysicalDevice(Swapchain& swapchain
     vkEnumeratePhysicalDevices(instance->data(), &deviceCount, nullptr);
     if (deviceCount == 0)
     {
-        logger.consoleLog("Could not find any graphics devices on this system!", UVK_LOG_TYPE_ERROR);
+        Logger::log("Could not find any graphics devices on this system!", UVK_LOG_TYPE_ERROR);
         std::terminate();
     }
     std::vector<VkPhysicalDevice> devices(deviceCount);
@@ -212,7 +212,7 @@ continue_to_other_device_in_list:;
     // Set the device properties variable real quick
     vkGetPhysicalDeviceProperties(physicalDevice, &deviceProperties);
     setMSAASamples();
-    logger.consoleLog("Loaded Vulkan device ", UVK_LOG_TYPE_SUCCESS, deviceProperties.deviceName);
+    Logger::log("Loaded Vulkan device ", UVK_LOG_TYPE_SUCCESS, deviceProperties.deviceName);
     return lastSavedIndex;
 }
 

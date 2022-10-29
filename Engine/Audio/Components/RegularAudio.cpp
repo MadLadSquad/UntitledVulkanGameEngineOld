@@ -20,13 +20,13 @@ void UVK::AudioBuffer::addSound(String loc) noexcept
 
     if (!sndfile)
     {
-        logger.consoleLog("Could not open audio file with location: ", UVK_LOG_TYPE_ERROR, loc);
+        Logger::log("Could not open audio file with location: ", UVK_LOG_TYPE_ERROR, loc);
         return;
     }
 
     if (sfinfo.frames < 1 || sfinfo.frames > (sf_count_t)(INT_MAX / sizeof(short)) / sfinfo.channels)
     {
-        logger.consoleLog("Bad sample count in file: ", UVK_LOG_TYPE_ERROR, loc, ", sample number: ", sfinfo.frames);
+        Logger::log("Bad sample count in file: ", UVK_LOG_TYPE_ERROR, loc, ", sample number: ", sfinfo.frames);
         return;
     }
 
@@ -41,7 +41,7 @@ void UVK::AudioBuffer::addSound(String loc) noexcept
     {
         free(memoryBuffer);
         sf_close(sndfile);
-        logger.consoleLog("Failed to read samples from file: ", UVK_LOG_TYPE_ERROR, loc, ", with the amount of samples: ", frameNum);
+        Logger::log("Failed to read samples from file: ", UVK_LOG_TYPE_ERROR, loc, ", with the amount of samples: ", frameNum);
         return;
     }
 
@@ -58,7 +58,7 @@ void UVK::AudioBuffer::addSound(String loc) noexcept
 
     if (error != AL_NO_ERROR && error != AL_INVALID_NAME)
     {
-        logger.consoleLog("OpenAL error: ", UVK_LOG_TYPE_ERROR, alGetString(error));
+        Logger::log("OpenAL error: ", UVK_LOG_TYPE_ERROR, alGetString(error));
 
         if (bufferI && alIsBuffer(bufferI))
             alDeleteBuffers(1, &bufferI);
@@ -100,7 +100,7 @@ void UVK::AudioBuffer::findFormat(ALenum& format, const SF_INFO& info, SNDFILE* 
 
     if (!format)
     {
-        logger.consoleLog("Unsupported channel count: ", UVK_LOG_TYPE_ERROR, info.channels);
+        Logger::log("Unsupported channel count: ", UVK_LOG_TYPE_ERROR, info.channels);
         sf_close(sndfile);
         sndfile = nullptr;
         return;

@@ -34,7 +34,7 @@ void UVK::EditorResources::loadConfigs(Editor& editor) noexcept
     }
     catch (YAML::BadFile&)
     {
-        logger.consoleLog("Could not find uvproj.yaml file", UVK_LOG_TYPE_ERROR);
+        Logger::log("Could not find uvproj.yaml file", UVK_LOG_TYPE_ERROR);
         std::terminate();
     }
 
@@ -54,7 +54,7 @@ void UVK::EditorResources::loadConfigs(Editor& editor) noexcept
     }
     catch (YAML::BadFile&)
     {
-        logger.consoleLog("Could not open the Config/Settings/Editor.yaml file! Switching to default settings!", UVK_LOG_TYPE_ERROR);
+        Logger::log("Could not open the Config/Settings/Editor.yaml file! Switching to default settings!", UVK_LOG_TYPE_ERROR);
     }
 
     if (file["filesystem-file-padding"])

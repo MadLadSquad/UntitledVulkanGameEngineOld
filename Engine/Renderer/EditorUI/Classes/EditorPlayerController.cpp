@@ -10,7 +10,7 @@ UVK::EditorPlayerController::EditorPlayerController()
 void UVK::EditorPlayerController::beginPlay()
 {
     if (!global.getEditor())
-        logger.consoleLog("You are currently using an Editor Player Controller ingame. This is a safety measure in order to prevent instant crashes of your game, however, the code for the EditorPlayerController will not compile in production which will cause a crash!", UVK_LOG_TYPE_ERROR);
+        Logger::log("You are currently using an Editor Player Controller ingame. This is a safety measure in order to prevent instant crashes of your game, however, the code for the EditorPlayerController will not compile in production which will cause a crash!", UVK_LOG_TYPE_ERROR);
     beginAutohandle();
 }
 
