@@ -1,23 +1,45 @@
 #!/bin/bash
+download_vswhere() {
+  # Get the raw JSON code for the releases from Github, get the lines that have the browser download URL and truncate the string in the front and back
+  # to get the URL, then we use the URL to download the application, this only happens if we cannot find
+  line=$(curl https://api.github.com/repos/microsoft/vswhere/releases 2> /dev/null | grep "https://github.com/microsoft/vswhere/releases/download/")
+  line="${line:33}"
+  line="${line%\"*}"
+
+  # Set a fake user agent string here so that we evade being blocked by GitHub
+  curl "${line}" -L -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:106.0) Gecko/20100101 Firefox/106.0" -o vswhere.exe
+}
+
+
 if [ "$1" != "" ]; then
   prjname="$1"
 else
   read -rp "Enter Your Application Name: " prjname # read the project name
 fi
 
-wdir=$(pwd) # get the working dir since we are going to be returning there
-cd "C:/Program Files (x86)/Microsoft Visual Studio/" 2> /dev/null
-VSVer=$(find "2022" -maxdepth 0 2> /dev/null) || VSVer=$(find "2019" -maxdepth 0 2> /dev/null) || VSVer=$(find "2017" -maxdepth 0 2> /dev/null)
-cd "${wdir}" 2> /dev/null
-if [ "$VSVer" == "2022" ]; then VSShortVer="17"
-elif [ "$VSVer" == "2019" ]; then VSShortVer="16"
-elif [ "$VSVer" == "2017" ]; then VSShortVer="15"
-else VSShortVer="1"
-fi
-
 prjname=${prjname/ /} # Remove any spaces if the name contains them
 cpus=$(grep -c processor /proc/cpuinfo) ## get the cpu threads for maximum performance when compiling
 echo -e "\x1B[32mCopiling with ${cpus} compute jobs!\033[0m"
+
+windows=false
+env | grep "OS=Windows" > /dev/null && windows=true
+
+if [ "${windows}" = true ]; then
+  wd=$(pwd)
+  cd "C:/Program Files (x86)/Microsoft Visual Studio/Installer/"
+  find "vswhere.exe" -maxdepth 0 &> /dev/null || (cd "${wd}" && download_vswhere)
+  vs_path=$(./vswhere.exe | grep "installationPath")
+  vs_path="${vs_path:18}"
+
+  VSShortVer=$(./vswhere.exe | grep "catalog_productLine: Dev17")
+  VSShortVer="${VSShortVer:24}"
+
+  VSVer=$(./vswhere.exe | grep "catalog_productLineVersion:")
+  VSVer="${VSVer:28}"
+
+  setx PATH "${vs_path}/MSBuild/Current/Bin/amd64/;%PATH%" 2> /dev/null
+  cd "${wd}"
+fi
 
 cd Projects/ || exit
 mkdir "${prjname}" || echo "Project already exists!"
@@ -45,8 +67,6 @@ cd .. || exit
 echo " "
 echo -e "\x1B[32m--------------------------------------------------------------------------------\033[0m"
 echo -e "\x1B[32mCreating project file with default settings ...\033[0m"
-echo -e "\x1B[32m--------------------------------------------------------------------------------\033[0m"
-echo " "
 
 # We create a project file which will be used to configure our generated files
 touch uvproj.yaml && echo "\
@@ -55,11 +75,7 @@ startup-level: \"lvl\"
 version: 1.0.0
 engine-version: 1.0.0" > uvproj.yaml
 
-echo " "
-echo -e "\x1B[32m--------------------------------------------------------------------------------\033[0m"
 echo -e "\x1B[32mCreating symbolic links and generating files ...\033[0m"
-echo -e "\x1B[32m--------------------------------------------------------------------------------\033[0m"
-echo " "
 
 # We symlink the Engine source folder so that 
 ln -rs "../../Engine/" Engine 2> /dev/null || cp ../../Engine/ . -r
@@ -68,40 +84,41 @@ ln -rs "../../UVKShaderCompiler/" UVKShaderCompiler 2> /dev/null || cp ../../UVK
 cp ../../export.sh .
 
 cd ../../UVKBuildTool/build || exit
-./UVKBuildTool.exe --install "../../Projects/${prjname}" || ./UVKBuildTool --install "../../Projects/${prjname}" || exit
-cd ../../UVKShaderCompiler/build || exit
-./UVKShaderCompiler.exe --compile "../../Projects/${prjname}" || ./UVKShaderCompiler --compile "../../Projects/${prjname}" || exit
+if [ "${windows}" == true ]; then
+  ./UVKBuildTool.exe --install "../../Projects/${prjname}" || exit
+  cd ../../UVKShaderCompiler/build || exit
+  ./UVKShaderCompiler.exe --compile "../../Projects/${prjname}" || exit
+else
+  ./UVKBuildTool --install "../../Projects/${prjname}" || exit
+  cd ../../UVKShaderCompiler/build || exit
+  ./UVKShaderCompiler --compile "../../Projects/${prjname}" || exit
+fi
+
 cd "../../Projects/${prjname}" || exit
 cd build || exit
 
-echo " "
 echo -e "\x1B[32m--------------------------------------------------------------------------------\033[0m"
 echo -e "\x1B[32mCompiling ${prjname} ...\033[0m"
 echo -e "\x1B[32m--------------------------------------------------------------------------------\033[0m"
-echo " "
 
-if [ "$2" == "ci" ]; then
-  cmake .. -DCMAKE_BUILD_TYPE=RELEASE || exit
+if [ "${windows}" == true ]; then
+  cmake .. -G "Visual Studio ${VSShortVer} ${VSVer}" -DCMAKE_BUILD_TYPE=RELEASE || exit
+  MSBuild.exe "${prjname}".sln -property:Configuration=Release -property:Platform=x64 -property:maxCpuCount="${cpus}" || exit
+
+  cp Engine/ThirdParty/openal/Release/OpenAL32.dll . &> /dev/null || exit
+  cp OpenAL32.dll Release/ &> /dev/null || exit
+  
+  cd ../Engine/ThirdParty/vulkan || exit
+  cp sndfile.dll ../../../build/ || exit
+  
+  cd ../../../build/ || exit
+  cp sndfile.dll Release || exit
+
+  cp Release/"${prjname}".exe . || exit
+  cp Engine/ThirdParty/yaml/Release/yaml-cpp.dll ../UVKShaderCompiler/build/Release/UVKShaderCompilerLib.dll ../UVKBuildTool/build/Release/UVKBuildToolLib.dll . || exit
 else
-  cmake .. -G "Visual Studio ${VSShortVer} ${VSVer}" -DCMAKE_BUILD_TYPE=RELEASE || cmake .. -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=RELEASE || exit # Generate build files for the project
+  cmake .. -D "Unix Makefiles" -DCMAKE_BUILD_TYPE=RELEASE || exit
+  make -j "${cpus}" || exit
 fi
-
-# Try to run MSBuild first, if it fails we are either on a non-windows system or the user doesn't have Visual Studio installed
-MSBuild.exe "${prjname}".sln -property:Configuration=Release -property:Platform=x64 -property:maxCpuCount="${cpus}" || make -j "${cpus}" || exit
-
-echo " "
-echo -e "\x1B[32m--------------------------------------------------------------------------------\033[0m"
-echo -e "\x1B[32mCopying required libraries ...\033[0m"
-echo -e "\x1B[32m--------------------------------------------------------------------------------\033[0m"
-echo " "
-
-cp Engine/ThirdParty/openal/Release/OpenAL32.dll . &> /dev/null
-cp OpenAL32.dll Release/ &> /dev/null
-cd ../Engine/ThirdParty/vulkan/ || exit # Go to the vulkan folder because there are a lot of libraries there
-cp sndfile.dll ../../../build/ &> /dev/null
-cd ../../../build/ || exit # Go back to the build folder
-cp sndfile.dll Release/ &> /dev/null
-cp Release/"${prjname}".exe . &> /dev/null
-cp Engine/ThirdParty/yaml/Release/yaml-cpp.dll ../UVKShaderCompiler/build/Release/UVKShaderCompilerLib.dll ../UVKBuildTool/build/Release/UVKBuildToolLib.dll .
-
-echo -e "\x1B[32mEngine and project successfully installed! \033[0m" # Print a success message in green
+echo -e "\x1b[32m--------------------------------------------------------------------------------\x1b[0m"
+echo -e "\x1B[32mEngine and project successfully installed! \033[0m"
