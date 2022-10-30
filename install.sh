@@ -60,7 +60,7 @@ cd ../../ || exit
 
 cd UVKShaderCompiler/ || exit
 cd ThirdParty/shaderc/utils/ || exit
-./git-sync-deps || python3 git-sync-deps || py git-sync-deps || (echo -e "\x1b[31mCouldn't sync dependencies!\x1b[0m" && exit)
+./git-sync-deps 2> /dev/null || python3 git-sync-deps 2> /dev/null || py git-sync-deps 2> /dev/null || (echo -e "\x1b[31mCouldn't sync dependencies!\x1b[0m" && exit)
 cd ../../../ || exit
 mkdir build
 cd build || exit
