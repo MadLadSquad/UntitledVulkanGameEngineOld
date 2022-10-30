@@ -117,7 +117,7 @@ if [ "${windows}" == true ]; then
   cp Release/"${prjname}".exe . || exit
   cp Engine/ThirdParty/yaml/Release/yaml-cpp.dll ../UVKShaderCompiler/build/Release/UVKShaderCompilerLib.dll ../UVKBuildTool/build/Release/UVKBuildToolLib.dll . || exit
 else
-  cmake .. -D "Unix Makefiles" -DCMAKE_BUILD_TYPE=RELEASE || exit
+  cmake .. -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=RELEASE || exit
   make -j "${cpus}" || exit
 fi
 echo -e "\x1b[32m--------------------------------------------------------------------------------\x1b[0m"
