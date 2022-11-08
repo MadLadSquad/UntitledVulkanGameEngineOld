@@ -1,6 +1,6 @@
 #include "KeybindSettings.hpp"
-#include "Renderer/Window/Window.hpp"
 #include <Core/Interfaces/InputInterface.hpp>
+#include "Renderer/Window/Window.hpp"
 #include "Core/Interfaces/SettingsManager.hpp"
 #include <imgui.h>
 #include <cpp/imgui_stdlib.h>
@@ -54,27 +54,28 @@ void UVK::KeybindSettingsWidget::displayKeybindsGame(bool& bReturn, bool& bOpen)
     ImGui::EndMenuBar();
 
     int j = 0;
-    for (int i = 0; i < UVK::Input::getActions().size(); i++)
+    auto& actions = UVK::Input::getActions();
+    for (int i = 0; i < actions.size(); i++)
     {
-        if (UVK::Input::getActions()[i].name.find("editor-") == UVK::FString::npos)
+        if (actions[i].name.find("editor-") == UVK::FString::npos)
         {
             if (bDestroy)
             {
-                UVK::Input::getActions().erase(UVK::Input::getActions().begin() + i);
+                actions.erase(actions.begin() + i);
                 bDestroy = false;
             }
             else
             {
-                ImGui::TextWrapped("%s", UVK::Input::getActions()[i].name.c_str());
+                ImGui::TextWrapped("%s", actions[i].name.c_str());
 
                 ImGui::TextWrapped("Name");
                 ImGui::SameLine();
-                if (ImGui::InputText(static_cast<UVK::FString>("##Name##" + UVK::FString(UVK::Input::getActions()[i].name + std::to_string(UVK::Input::getActions()[i].keyCode))).c_str(), &UVK::Input::getActions()[i].name) || ImGui::IsItemActive())
+                if (ImGui::InputText(static_cast<UVK::FString>("##Name##" + UVK::FString(actions[i].name + std::to_string(actions[i].keyCode))).c_str(), &actions[i].name) || ImGui::IsItemActive())
                     bReturn = true;
 
                 ImGui::TextWrapped("Keycode");
                 ImGui::SameLine();
-                showKeySelect(("##Keycode##" + UVK::Input::getActions()[i].name + UVK::FString(std::to_string(UVK::Input::getActions()[i].keyCode) + std::to_string(j))).c_str(), UVK::Input::getActions()[i].keyCode);
+                showKeySelect(("##Keycode##" + actions[i].name + UVK::FString(std::to_string(actions[i].keyCode) + std::to_string(j))).c_str(), actions[i].keyCode);
                 ImGui::Separator();
                 j++;
             }

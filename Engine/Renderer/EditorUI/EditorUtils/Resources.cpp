@@ -2,6 +2,7 @@
 #include <Core/Core/Global.hpp>
 #include <GameFramework/GameplayClasses/GameInstance.hpp>
 #include <Renderer/EditorUI/Editor.hpp>
+#include <Core/Interfaces/InputInterface.hpp>
 
 void UVK::EditorResources::loadConfigs(Editor& editor) noexcept
 {
