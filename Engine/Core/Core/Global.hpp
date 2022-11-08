@@ -52,7 +52,6 @@ namespace UVK
         bool bEditor{};
         ECSManager ecs;
 
-        std::vector<InputAction> inputActionList{};
         UIInternal ui{};
         LocaleManager localeManager{};
 
@@ -64,6 +63,7 @@ namespace UVK
 
         std::function<void(void)> openFunction = [=](){};
 
+        friend class RendererInternal;
         friend class Renderer;
         friend class Camera;
         friend class Editor;

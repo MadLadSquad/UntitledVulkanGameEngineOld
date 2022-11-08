@@ -235,7 +235,7 @@ void UVK::WindowInternal::openConfig() noexcept
                     InputAction action{};
                     action.name = a["key"].as<std::string>();
                     action.keyCode = a["val"].as<uint16_t>();
-                    global.inputActionList.push_back(action);
+                    global.window.inputActionList.push_back(action);
                 }
             }
         }
@@ -264,7 +264,7 @@ void UVK::WindowInternal::openConfig() noexcept
                 InputAction action{};
                 action.name = a["key"].as<std::string>();
                 action.keyCode = a["val"].as<uint16_t>();
-                global.inputActionList.push_back(action);
+                global.window.inputActionList.push_back(action);
             }
         }
     }
@@ -272,7 +272,7 @@ void UVK::WindowInternal::openConfig() noexcept
 
 void UVK::WindowInternal::keyboardInputCallback(GLFWwindow* window, int key, int scanCode, int action, int mods) noexcept
 {
-    for (auto& a : global.inputActionList)
+    for (auto& a : global.window.inputActionList)
     {
         if (a.keyCode == key)
         {
@@ -309,7 +309,7 @@ void UVK::WindowInternal::mouseCursorPositionCallback(GLFWwindow* window, double
 
 void UVK::WindowInternal::mouseKeyInputCallback(GLFWwindow* window, int button, int action, int mods) noexcept
 {
-    for (auto& a : global.inputActionList)
+    for (auto& a : global.window.inputActionList)
     {
         if (a.keyCode == button)
         {
@@ -381,7 +381,7 @@ void UVK::WindowInternal::saveEditorKeybinds() noexcept
 {
     YAML::Emitter out;
     out << YAML::BeginMap << YAML::Key << "bindings" << YAML::BeginSeq;
-    for (auto& a : global.inputActionList)
+    for (auto& a : global.window.inputActionList)
     {
         if (a.name.find("editor-") != UVK::FString::npos)
         {
@@ -401,7 +401,7 @@ void UVK::WindowInternal::saveGameKeybinds() noexcept
 {
     YAML::Emitter out;
     out << YAML::BeginMap << YAML::Key << "bindings" << YAML::BeginSeq;
-    for (auto& a : global.inputActionList)
+    for (auto& a : global.window.inputActionList)
     {
         if (a.name.find("editor-") == UVK::FString::npos)
         {
@@ -434,46 +434,6 @@ void UVK::WindowInternal::saveWindowSettings() const noexcept
 bool& UVK::WindowInternal::resized() noexcept
 {
     return bResized;
-}
-
-UVK::FVector2 UVK::Input::getLastMousePosition() noexcept
-{
-    return global.window.getLastMousePosition();
-}
-
-UVK::FVector2 UVK::Input::getCurrentMousePosition() noexcept
-{
-    return global.window.getCurrentMousePosition();
-}
-
-UVK::FVector2 UVK::Input::getMousePositionChange() noexcept
-{
-    return global.window.getMousePositionChange();
-}
-
-UVK::FVector2 UVK::Input::getScroll() noexcept
-{
-    return global.window.getScroll();
-}
-
-const UVK::InputAction& UVK::Input::getAction(const UVK::FString& name) noexcept
-{
-    for (auto& a : global.inputActionList)
-        if (a.name == name)
-            return a;
-
-    Logger::log("Input action with name: ", UVK_LOG_TYPE_ERROR, name, ", does not exist!");
-    std::terminate();
-}
-
-uint8_t UVK::Input::getKey(uint16_t key) noexcept
-{
-    return global.window.getKeys()[key];
-}
-
-std::vector<UVK::InputAction>& UVK::Input::getActions() noexcept
-{
-    return global.inputActionList;
 }
 
 bool UVK::InputAction::operator!=(const uint8_t& st) const noexcept

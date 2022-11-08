@@ -1,6 +1,6 @@
 #include "Device.hpp"
 #include "Swapchain.hpp"
-#include <Renderer/Renderer.hpp>
+#include <Core/Interfaces/RendererInterface.hpp>
 
 void UVK::VKDevice::createDevice(Swapchain& swapchain) noexcept
 {

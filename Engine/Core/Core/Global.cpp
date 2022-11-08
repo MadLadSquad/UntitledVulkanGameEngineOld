@@ -47,7 +47,7 @@ void UVK::UVKGlobal::finalizeOpening() noexcept
 
 std::vector<UVK::InputAction>& UVK::UVKGlobal::getActions() noexcept
 {
-    return inputActionList;
+    return window.inputActionList;
 }
 
 bool& UVK::UVKGlobal::getEditor() noexcept

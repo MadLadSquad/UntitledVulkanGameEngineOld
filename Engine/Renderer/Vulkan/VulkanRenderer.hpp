@@ -39,7 +39,7 @@ namespace UVK
         void beginEvents() noexcept;
         static void destroyEvents() noexcept;
 
-        friend class Renderer;
+        friend class RendererInternal;
 
         void run() noexcept;
         Editor ed;

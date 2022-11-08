@@ -6,21 +6,6 @@ struct GLFWwindow;
 namespace UVK
 {
     struct InternalRendererComponents;
-    /**
-     * @brief The input action struct
-     */
-    struct UVK_PUBLIC_API InputAction
-    {
-        InputAction() = default;
-
-        // Used for doing comparing the state
-        bool operator==(const uint8_t& st) const noexcept;
-        bool operator!=(const uint8_t& st) const noexcept;
-
-        UVK::FString name{};
-        uint16_t keyCode{};
-        uint8_t state{};
-    };
 
     /**
      * @brief Generic internal window data
@@ -34,6 +19,22 @@ namespace UVK
         UVK::FString image = "../Content/Engine/icon.png";
         UVK::FString name = "Untitled Vulkan Game Engine Editor";
         FVector2 size = FVector2(800, 600);
+    };
+
+    /**
+ * @brief The input action struct
+ */
+    struct UVK_PUBLIC_API InputAction
+    {
+        InputAction() = default;
+
+        // Used for doing comparing the state
+        bool operator==(const uint8_t& st) const noexcept;
+        bool operator!=(const uint8_t& st) const noexcept;
+
+        UVK::FString name{};
+        uint16_t keyCode{};
+        uint8_t state{};
     };
 
     /**
@@ -90,6 +91,7 @@ namespace UVK
         friend class SettingsManager;
         friend class UIInternal;
         friend class GameInstance;
+        friend class UVKGlobal;
 
         [[nodiscard]] FVector2 getLastMousePosition() const noexcept;
         [[nodiscard]] FVector2 getCurrentMousePosition() const noexcept;
@@ -117,6 +119,9 @@ namespace UVK
          */
         std::array<uint16_t, 350> keysArr{};
         const std::array<uint16_t, 350>& getKeys() noexcept;
+
+        // Input actions
+        std::vector<InputAction> inputActionList{};
 
         // Holds the scroll velocity
         FVector2 scroll{};
@@ -157,37 +162,5 @@ namespace UVK
         double lastPosY = 0;
         double offsetX = 0;
         double offsetY = 0;
-    };
-}
-
-namespace UVK
-{
-    /**
-     * @brief A standard cross-renderer input abstraction
-     */
-    class UVK_PUBLIC_API Input
-    {
-    public:
-        Input() = delete;
-        Input(const Input&) = delete;
-        void operator=(Input const&) = delete;
-
-        // Given a valid keyboard key from the Keys namespace it will return weather the key was pressed
-        static uint8_t getKey(uint16_t key) noexcept;
-
-        // Input actions are a way of handling key input events by assigning a name to a key.
-        // This name and key is stored in a config file, which enables you and your users to rebind key actions
-        static const InputAction& getAction(const UVK::FString& name) noexcept;
-
-        // Returns a list of all input actions
-        static std::vector<InputAction>& getActions() noexcept;
-
-        static FVector2 getMousePositionChange() noexcept;
-        static FVector2 getCurrentMousePosition() noexcept;
-        static FVector2 getLastMousePosition() noexcept;
-
-        // Returns scroll velocity
-        static FVector2 getScroll() noexcept;
-    private:
     };
 }

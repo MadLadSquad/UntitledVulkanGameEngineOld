@@ -1,5 +1,5 @@
 #include "Depth.hpp"
-#include <Renderer/Renderer.hpp>
+#include <Core/Interfaces/RendererInterface.hpp>
 
 void UVK::VKDepthBuffer::createDepthBufferImage(const Swapchain& swapchain, VKDevice& device) noexcept
 {

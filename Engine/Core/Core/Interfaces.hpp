@@ -4,4 +4,5 @@
 #include "Interfaces/WindowInterface.hpp"
 #include "Interfaces/ECSInterface.hpp"
 #include "Interfaces/EditorModuleInterface.hpp"
-#include <Renderer/Renderer.hpp>
+#include "Interfaces/RendererInterface.hpp"
+#include "Interfaces/InputInterface.hpp"

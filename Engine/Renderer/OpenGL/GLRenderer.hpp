@@ -15,7 +15,7 @@ namespace UVK
     public:
         GLRenderer() = delete;
     private:
-        friend class Renderer;
+        friend class RendererInternal;
 
         explicit GLRenderer(Level* level, const bool& bUsesEditor, UVK::String theme);
         void start(Level* level) const noexcept;

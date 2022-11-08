@@ -1,7 +1,7 @@
 #include "GraphicsPipeline.hpp"
 #include "Swapchain.hpp"
 #include "Depth.hpp"
-#include <Renderer/Renderer.hpp>
+#include <Core/Interfaces/RendererInterface.hpp>
 
 UVK::GraphicsPipeline::GraphicsPipeline(UVK::VKDevice& dev, Swapchain& swap, VKDescriptors& desc, VKDepthBuffer& depth) noexcept
 {

@@ -35,20 +35,6 @@ namespace YAML
     };
 }
 
-UVK::Renderer::Renderer(UVK::Level* lvl, bool bUsesEditor) noexcept
-{
-    startRenderer(lvl, bUsesEditor);
-}
-
-void UVK::Renderer::switchRenderer() noexcept
-{
-    if (global.bUsesVulkan) global.bUsesVulkan = false;
-    else global.bUsesVulkan = true;
-
-    global.rendererSettings.saveSettings();
-
-    GameInstance::exit();
-}
 
 void UVK::RendererSettings::saveSettings() const noexcept
 {
@@ -69,7 +55,12 @@ void UVK::RendererSettings::saveSettings() const noexcept
     fileout << out.c_str();
 }
 
-void UVK::Renderer::startRenderer(UVK::Level* lvl, bool bUsesEditor) noexcept
+UVK::RendererInternal::RendererInternal(UVK::Level* lvl, bool bUsesEditor) noexcept
+{
+    startRenderer(lvl, bUsesEditor);
+}
+
+void UVK::RendererInternal::startRenderer(UVK::Level* lvl, bool bUsesEditor) noexcept
 {
     loadSettings();
 
@@ -84,7 +75,7 @@ void UVK::Renderer::startRenderer(UVK::Level* lvl, bool bUsesEditor) noexcept
     }
 }
 
-void UVK::Renderer::loadSettings() noexcept
+void UVK::RendererInternal::loadSettings() noexcept
 {
     YAML::Node a;
     bool bUsesConf = true;
@@ -126,34 +117,4 @@ void UVK::Renderer::loadSettings() noexcept
     {
         global.bUsesVulkan = false;
     }
-}
-
-bool& UVK::Renderer::getVSync() noexcept
-{
-    return global.rendererSettings.bVsync;
-}
-
-void UVK::Renderer::saveSettings() noexcept
-{
-    global.rendererSettings.saveSettings();
-}
-
-bool& UVK::Renderer::getImmediateRender() noexcept
-{
-    return global.rendererSettings.bVsyncImmediate;
-}
-
-uint32_t& UVK::Renderer::msaaSampleCount() noexcept
-{
-    return global.rendererSettings.samples;
-}
-
-bool& UVK::Renderer::sampleRateShading() noexcept
-{
-    return global.rendererSettings.sampleRateShading;
-}
-
-float& UVK::Renderer::sampleRateShadingMult() noexcept
-{
-    return global.rendererSettings.sampleRateShadingMult;
 }

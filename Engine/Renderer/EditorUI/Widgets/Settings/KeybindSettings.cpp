@@ -1,5 +1,6 @@
 #include "KeybindSettings.hpp"
 #include "Renderer/Window/Window.hpp"
+#include <Core/Interfaces/InputInterface.hpp>
 #include "Core/Interfaces/SettingsManager.hpp"
 #include <imgui.h>
 #include <cpp/imgui_stdlib.h>
