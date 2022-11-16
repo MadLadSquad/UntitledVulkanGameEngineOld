@@ -179,7 +179,7 @@ void UVK::WindowInternal::openConfig() noexcept
 
     try
     {
-        out = YAML::LoadFile((UVK::FString(UVK_CONFIG_SETTINGS_PATH) + "Window.yaml").c_str());
+        out = YAML::LoadFile(UVK::FString(UVK_CONFIG_SETTINGS_PATH) + "Window.yaml");
     }
     catch (YAML::BadFile&)
     {
@@ -217,7 +217,7 @@ void UVK::WindowInternal::openConfig() noexcept
         bValid = true;
         try
         {
-            keybinds = YAML::LoadFile((UVK::FString(UVK_CONFIG_ENGINE_PATH) + "EditorKeybinds.yaml").c_str());
+            keybinds = YAML::LoadFile(UVK::FString(UVK_CONFIG_ENGINE_PATH) + "EditorKeybinds.yaml");
         }
         catch (YAML::BadFile&)
         {
@@ -246,7 +246,7 @@ void UVK::WindowInternal::openConfig() noexcept
     bValid = true;
     try
     {
-        keybinds = YAML::LoadFile((UVK::FString(UVK_CONFIG_ENGINE_PATH) + "GameKeybinds.yaml").c_str());
+        keybinds = YAML::LoadFile(UVK::FString(UVK_CONFIG_ENGINE_PATH) + "GameKeybinds.yaml");
     }
     catch (YAML::BadFile&)
     {

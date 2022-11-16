@@ -115,6 +115,8 @@ void UVK::Swapchain::createSwapchain(VkSwapchainKHR oldswapchain) noexcept
     };
 
     const auto result = vkCreateSwapchainKHR(device->device, &swapchainCreateInfo, nullptr, &swapchain);
+    // Destroy the old swapchain here, first swapchain is an invalid handle anyway so this operation is safe
+    vkDestroySwapchainKHR(device->device, oldswapchain, nullptr);
     if (result != VK_SUCCESS)
     {
         Logger::log("Failed to create a swapchain! Error code: ", UVK_LOG_TYPE_ERROR, result);
