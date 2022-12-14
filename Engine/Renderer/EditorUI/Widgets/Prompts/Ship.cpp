@@ -51,7 +51,6 @@ bool Shipping::display(bool& bShow, const UVK::FString& prjname) noexcept
 #endif
 
                 runner.init(args, 64);
-                runner.updateBufferSize();
                 runner.update(true);
                 bShowPlay = false;
             }
