@@ -62,7 +62,7 @@ void TopToolbar::startProcess(const UVK::FString& projectName, uexec::ScriptRunn
 #endif
     char* const args[] = { str.data(), nullptr };
     runner.init(args, 64);
-    runner.update(true);
+    runner.update();
     bShowPlay = false;
 }
 #endif
