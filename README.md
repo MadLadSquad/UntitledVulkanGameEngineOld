@@ -24,6 +24,7 @@ so on will be acknowledged and dealt with. This is just a temporary state as we
 have a very limited number of active developers, meaning that splitting work across all projects
 is unfeasible, and we unfortunately have to schedule feature updates ahead of time due to this.
 This state should last from release 1.1.0.0 until may 2024
+
 ## Info
 The Untitled Vulkan Game Engine is a 3D, C++ game engine made for ease of use, simplicity and performance
 
@@ -40,6 +41,7 @@ The Untitled Vulkan Game Engine is a 3D, C++ game engine made for ease of use, s
 -   Production shipping and export
 -   Windows, Linux and BSD support
 -   Easy C++ scripting API
+
 
 ## Learning
 See the [Wiki](https://github.com/MadLadSquad/UntitledVulkanGameEngine/wiki)
