@@ -10,9 +10,10 @@ jobs:
     - uses: actions/checkout@v3
       with:
         lfs: false
-    - name: Get dependencies
-      shell: bash
-      run: sudo apt update && sudo apt-get install x11-xserver-utils libgl1-mesa-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev gcc make g++ libxmu-dev libxi-dev libgl-dev libglu1-mesa-dev libvulkan1 mesa-vulkan-drivers vulkan-tools libvulkan-dev libasound2-dev libflac-dev libogg-dev libtool libvorbis-dev libopus-dev libsndfile1-dev libglew-dev libssl-dev zlib1g zlib1g-dev
+    - uses: awalsh128/cache-apt-pkgs-action@latest
+      with:
+        packages: x11-xserver-utils libgl1-mesa-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev gcc make g++ libxmu-dev libxi-dev libgl-dev libglu1-mesa-dev libvulkan1 mesa-vulkan-drivers vulkan-tools libvulkan-dev libasound2-dev libflac-dev libogg-dev libtool libvorbis-dev libopus-dev libsndfile1-dev libglew-dev libssl-dev zlib1g zlib1g-dev
+        version: 1.0
     - name: Checkout submodules
       shell: bash
       run: |
