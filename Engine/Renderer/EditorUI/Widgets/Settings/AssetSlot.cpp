@@ -12,7 +12,7 @@ void AssetSlot::assetSlotBegin(UVK::Texture& thumbnail, const int32_t& id, const
     ImGui::PushStyleColor(ImGuiCol_Button, { 0.0f, 0.0f, 0.0f, 0.0f });
     ImGui::PushStyleColor(ImGuiCol_ButtonActive, { 0.0f, 0.0f, 0.0f, 0.0f });
     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, { 0.0f, 0.0f, 0.0f, 0.0f });
-    ImGui::ImageButton((void*)(intptr_t)thumbnail.getImage(), { 50.0f, 50.0f });
+    ImGui::ImageButton(("##asset-slot-icon" + std::to_string(id)).c_str(), (void*)(intptr_t)thumbnail.getImage(), { 50.0f, 50.0f });
     function();
     ImGui::PopStyleColor(3);
     ImGui::NextColumn();
@@ -49,7 +49,7 @@ void AssetSlot::displayTexture(int32_t id, UVK::Texture* asset, UVK::FString& na
 
     ImGui::TextWrapped("%s", name.c_str());
 
-    if (ImGui::ImageButton((void*)(intptr_t)editorPointer.fsicons()[UVK::EditorTextures::FS_ICON_CLOSE].getImage(), { 16.0f, 16.0f }))
+    if (ImGui::ImageButton(("##asset-slot-icon+texture" + std::to_string(id)).c_str(), (void*)(intptr_t)editorPointer.fsicons()[UVK::EditorTextures::FS_ICON_CLOSE].getImage(), { 16.0f, 16.0f }))
     {
         asset = nullptr;
         name = "None";
@@ -78,7 +78,7 @@ void AssetSlot::displayAudio(int32_t id, UVK::Texture* asset, UVK::FString& name
     });
     ImGui::TextWrapped("%s", name.c_str());
 
-    if (ImGui::ImageButton((void*)(intptr_t)editorPointer.fsicons()[UVK::EditorTextures::FS_ICON_CLOSE].getImage(), { 16.0f, 16.0f }))
+    if (ImGui::ImageButton(("##asset-slot-icon+audio" + std::to_string(id)).c_str(), (void*)(intptr_t)editorPointer.fsicons()[UVK::EditorTextures::FS_ICON_CLOSE].getImage(), { 16.0f, 16.0f }))
     {
         asset = nullptr;
         name = "None";
@@ -106,7 +106,7 @@ void AssetSlot::displayFont(int32_t id, UVK::Texture* asset, UVK::FString& name)
 
     ImGui::TextWrapped("%s", name.c_str());
 
-    if (ImGui::ImageButton((void*)(intptr_t)editorPointer.fsicons()[UVK::EditorTextures::FS_ICON_CLOSE].getImage(), { 16.0f, 16.0f }))
+    if (ImGui::ImageButton(("##asset-slot-icon+font" + std::to_string(id)).c_str(), (void*)(intptr_t)editorPointer.fsicons()[UVK::EditorTextures::FS_ICON_CLOSE].getImage(), { 16.0f, 16.0f }))
     {
         asset = nullptr;
         name = "None";
@@ -136,7 +136,7 @@ void AssetSlot::displayModel(int32_t id, UVK::Texture* asset, UVK::FString& name
 
     ImGui::TextWrapped("%s", name.c_str());
 
-    if (ImGui::ImageButton((void*)(intptr_t)editorPointer.fsicons()[UVK::EditorTextures::FS_ICON_CLOSE].getImage(), { 16.0f, 16.0f }))
+    if (ImGui::ImageButton(("##asset-slot-icon+model" + std::to_string(id)).c_str(), (void*)(intptr_t)editorPointer.fsicons()[UVK::EditorTextures::FS_ICON_CLOSE].getImage(), { 16.0f, 16.0f }))
     {
         asset = nullptr;
         name = "None";
@@ -166,7 +166,7 @@ void AssetSlot::displayShaders(int32_t id, UVK::Texture* asset, UVK::FString& na
 
     ImGui::TextWrapped("%s", name.c_str());
 
-    if (ImGui::ImageButton((void*)(intptr_t)editorPointer.fsicons()[UVK::EditorTextures::FS_ICON_CLOSE].getImage(), { 16.0f, 16.0f }))
+    if (ImGui::ImageButton(("##asset-slot-icon+shaders" + std::to_string(id)).c_str(), (void*)(intptr_t)editorPointer.fsicons()[UVK::EditorTextures::FS_ICON_CLOSE].getImage(), { 16.0f, 16.0f }))
     {
         asset = nullptr;
         name = "None";
@@ -196,7 +196,7 @@ void AssetSlot::displayVideo(int32_t id, UVK::Texture* asset, UVK::FString& name
 
     ImGui::TextWrapped("%s", name.c_str());
 
-    if (ImGui::ImageButton((void*)(intptr_t)editorPointer.fsicons()[UVK::EditorTextures::FS_ICON_CLOSE].getImage(), { 16.0f, 16.0f }))
+    if (ImGui::ImageButton(("##asset-slot-icon+video" + std::to_string(id)).c_str(), (void*)(intptr_t)editorPointer.fsicons()[UVK::EditorTextures::FS_ICON_CLOSE].getImage(), { 16.0f, 16.0f }))
     {
         asset = nullptr;
         name = "None";

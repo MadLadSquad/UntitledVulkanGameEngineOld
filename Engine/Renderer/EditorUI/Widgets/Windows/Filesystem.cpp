@@ -228,7 +228,7 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::
     ImGui::PushStyleColor(ImGuiCol_Button, { 0.0f, 0.0f, 0.0f, 0.0f });
     if (!(p == "../Content/" || p == "../Content"))
     {
-        ImGui::ImageButton((void*)(intptr_t)textures[UVK::EditorTextures::FS_ICON_FOLDER].getImage(), ImVec2(data.imageSize, data.imageSize));
+        ImGui::ImageButton("##folder_..back", (void*)(intptr_t)textures[UVK::EditorTextures::FS_ICON_FOLDER].getImage(), ImVec2(data.imageSize, data.imageSize));
         if (ImGui::BeginDragDropTarget())
         {
             //const ImGuiPayload* payload;
@@ -296,7 +296,7 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::
         {
             bool bFileSelected;
             auto it = applyColourToSelectedFiles(selectedFiles, currentSelectedFile, path, bFileSelected);
-            ImGui::ImageButton((void*)(intptr_t)textures[UVK::EditorTextures::FS_ICON_FOLDER].getImage(), ImVec2(data.imageSize, data.imageSize));
+            ImGui::ImageButton(("##folderindir" + std::to_string(i)).c_str(), (void*)(intptr_t)textures[UVK::EditorTextures::FS_ICON_FOLDER].getImage(), ImVec2(data.imageSize, data.imageSize));
             if (ImGui::BeginDragDropTarget())
             {
                 if (ImGui::AcceptDragDropPayload("ENGINE_FS_WIDGET_LVL") || ImGui::AcceptDragDropPayload("ENGINE_FS_WIDGET_ALL"))
@@ -356,7 +356,7 @@ bool Filesystem::display(std_filesystem::path& pt, UVK::Texture* textures, UVK::
         {
             bool bFileSelected;
             auto it = applyColourToSelectedFiles(selectedFiles, currentSelectedFile, path, bFileSelected);
-            ImGui::ImageButton((void*)(intptr_t)(selectTextures(textures, a, previews, bCurrentlyUsingPreviews, i, bNewFolder)->getImage()), ImVec2(data.imageSize, data.imageSize));
+            ImGui::ImageButton(("##fileselector" + std::to_string(i)).c_str(), (void*)(intptr_t)(selectTextures(textures, a, previews, bCurrentlyUsingPreviews, i, bNewFolder)->getImage()), ImVec2(data.imageSize, data.imageSize));
             if (ImGui::IsItemHovered())
             {
                 HANDLE_MOUSE_BUTTONS
