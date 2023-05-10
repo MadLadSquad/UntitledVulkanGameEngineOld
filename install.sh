@@ -99,7 +99,7 @@ if [ "${windows}" == true ]; then
   cp Release/*.dll . 2> /dev/null || exit
 else
   cmake .. -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=RELEASE || exit
-  make -j "${cpus}"
+  make -j "${cpus}" || exit
 fi
 
 cd ../../
