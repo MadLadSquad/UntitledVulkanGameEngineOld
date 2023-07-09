@@ -11,15 +11,26 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          lfs: true
+          submodules: true
+      - name: Checkout submodules
+        shell: bash
+        run: |
+          git submodule sync --recursive
+          git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
+      - name: Create archive
+        shell: bash
+        run: |
+          rm -rf .git/
+          tar cfJ untitled-vulkan-game-engine.tar.xz . || echo "Might have failed"
+      - name: Create Release
+        uses: softprops/action-gh-release@master
+        with:
           body: |
             Check our discord for patch notes: https://discord.gg/4kyWu2Vu
+            More on what is done this month can be found on the latest newsletter entry: https://madladsquad.com/#monthly-newsletter
           draft: false
           prerelease: false
+          files: untitled-vulkan-game-engine.tar.xz
+          generate_release_notes: false
